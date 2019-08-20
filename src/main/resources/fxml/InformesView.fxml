@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="534.0" prefWidth="921.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.InformesController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="TRANSACCIONES - CONSULTA DE OPERACIONES" />
+            <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" spacing="50.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="44.0" prefWidth="273.0" spacing="20.0">
+                     <children>
+                        <Label text="Buscar por:" />
+                        <ComboBox fx:id="cbxFiltroBuscar" prefWidth="150.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="44.0" prefWidth="263.0" spacing="20.0">
+                     <children>
+                        <Label alignment="CENTER" text="Filtrar: " />
+                        <TextField fx:id="txtFiltroBuscar" alignment="CENTER" />
+                     </children>
+                  </HBox>
+                  <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#handleBuscar" text="Buscar" />
+                  <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#handleLimpiar" text="Limpiar" />
+               </children>
+            </HBox>
+             <TableView fx:id="tblPesajes" onMouseClicked="#handleTblEntidadesSelected" prefHeight="432.0" prefWidth="758.0">
+                 <columns>
+                     <TableColumn fx:id="colTransaccion" prefWidth="75.0" text="Transacción" />
+                     <TableColumn fx:id="colFecha" prefWidth="75.0" text="Fecha" />
+                     <TableColumn fx:id="colChasis" prefWidth="75.0" text="Chasis" />
+                     <TableColumn fx:id="colAcoplado" prefWidth="75.0" text="Acoplado" />
+                     <TableColumn fx:id="colEntrada" prefWidth="75.0" text="Entrada" />
+                     <TableColumn fx:id="colSalida" prefWidth="75.0" text="Salida" />
+                     <TableColumn fx:id="colNeto" prefWidth="75.0" text="Neto" />
+                     <TableColumn fx:id="colBalanza" prefWidth="75.0" text="Balanza" />
+                     <TableColumn fx:id="colProducto" prefWidth="75.0" text="Producto" />
+                     <TableColumn fx:id="colCliente" prefWidth="75.0" text="Cliente" />
+                     <TableColumn fx:id="colTransporte" prefWidth="75.0" text="Transporte" />
+                     <TableColumn fx:id="colProcedencia" prefWidth="75.0" text="Procedencia" />
+                 </columns>
+             </TableView>
+            <HBox prefHeight="29.0" prefWidth="758.0" spacing="20.0">
+               <children>
+                  <Button fx:id="btnImprimir" mnemonicParsing="false" onAction="#handleImprimir" text="Imprimir" />
+                  <Button fx:id="btnImprimirDetalle" mnemonicParsing="false" onAction="#handleImprimirDetalle" text="Imprimir Detallado" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="30.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="403.0" prefWidth="909.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.ConfiguracionesController">
+   <children>
+      <VBox prefHeight="428.0" prefWidth="611.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <TabPane prefHeight="582.0" prefWidth="730.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Entidades">
+                     <content>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <SplitPane dividerPositions="0.10215053763440861" orientation="VERTICAL" prefHeight="374.0" prefWidth="611.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <items>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="609.0" spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <Label text="Seleccionar Entidad">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <ComboBox fx:id="cbxEntidades" onAction="#handleSelectedEntidades" prefWidth="150.0" />
+                                             </children>
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                          </HBox>
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.34596375617792424" layoutX="118.0" layoutY="171.0" prefHeight="541.0" prefWidth="743.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                   <children>
+                                                      <VBox prefHeight="539.0" prefWidth="153.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <children>
+                                                            <TableView fx:id="tblEntidades" onMouseClicked="#handleTblEntidadesSelected" prefHeight="314.0" prefWidth="210.0">
+                                                              <columns>
+                                                                <TableColumn fx:id="colNombre" prefWidth="120.0" text="Nombre" />
+                                                                  <TableColumn fx:id="colExistencia" prefWidth="67.0" text="Existencia" />
+                                                                  <TableColumn fx:id="colCodigo" prefWidth="120.0" text="Codigo" visible="false" />
+                                                              </columns>
+                                                            </TableView>
+                                                            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="190.0" spacing="10.0">
+                                                               <children>
+                                                                  <Button fx:id="btnNuevoEntidad" mnemonicParsing="false" onAction="#handleNuevoEntidades" text="Nuevo">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../images/anadir.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic></Button>
+                                                                  <Button fx:id="btnEliminarEntidad" mnemonicParsing="false" onAction="#handleEliminarEntidades" text="Eliminar" />
+                                                               </children>
+                                                            </HBox>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </AnchorPane>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="539.0" prefWidth="544.0">
+                                                   <children>
+                                                      <TitledPane animated="false" layoutX="82.0" layoutY="74.0" prefHeight="539.0" prefWidth="545.0" text="Detalle" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <content>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <GridPane layoutX="14.0" layoutY="14.0" prefHeight="74.0" prefWidth="359.0">
+                                                                    <columnConstraints>
+                                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.0" minWidth="10.0" prefWidth="135.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.0" minWidth="10.0" prefWidth="244.0" />
+                                                                    </columnConstraints>
+                                                                    <rowConstraints>
+                                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                    </rowConstraints>
+                                                                     <children>
+                                                                        <Label text="Existencia" GridPane.rowIndex="1" />
+                                                                        <Label text="Nombre" />
+                                                                        <TextField fx:id="txtEntidadNombre" GridPane.columnIndex="1" />
+                                                                        <TextField fx:id="txtEntidadExistencia" GridPane.columnIndex="1" GridPane.rowIndex="1" />                                                     
+                                                                     </children>
+                                                                  </GridPane>
+                                                                  <Button fx:id="btnAplicarEntidad" layoutX="320.0" layoutY="107.0" mnemonicParsing="false" onAction="#handleAplicarEntidades" text="Aplicar">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../images/guardar.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic></Button>
+                                                               </children>
+                                                            </AnchorPane>
+                                                        </content>
+                                                      </TitledPane>
+                                                   </children>
+                                                </AnchorPane>
+                                            </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                                </items>
+                              </SplitPane>
+                           </children>
+                        </AnchorPane>
+                     </content>  
+                </Tab>        	
+                <Tab text="Comunicaciones">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <SplitPane dividerPositions="0.10215053763440861" orientation="VERTICAL" prefHeight="598.0" prefWidth="739.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <items>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="58.0" prefWidth="737.0" spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <Label text="Configuración Indicador de Peso:">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <ComboBox fx:id="cbxIndicadores" onAction="#handleComunicaciones" prefWidth="150.0" />
+                                                <Label text="Indicador" />
+                                                <ComboBox fx:id="cbxIndicadorConfig" onAction="#handleSelectedIndicador" prefWidth="150.0" />
+                                                <Button fx:id="btnAplicarConecciones" mnemonicParsing="false" onAction="#handleAplicarComunicaciones" text="Aplicar">
+                                                   <graphic>
+                                                      <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../images/guardar.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic></Button>
+                                             </children>
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                          </HBox>
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="504.0" prefWidth="737.0">
+                                       <children>
+                                          <TextArea fx:id="txtIndicadorInfo" layoutX="260.0" layoutY="55.0" prefHeight="309.0" prefWidth="907.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                       </children>
+                                    </AnchorPane>
+                                </items>
+                              </SplitPane>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab text="Indicadores">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <SplitPane dividerPositions="0.28407224958949095" layoutX="118.0" layoutY="171.0" prefHeight="541.0" prefWidth="743.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <items>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                       <children>
+                                          <VBox prefHeight="539.0" prefWidth="153.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <TableView fx:id="tblIndicadores" onMouseClicked="#handleTblIndicadoresSelected" prefHeight="492.0" prefWidth="190.0">
+                                                  <columns>
+                                                    <TableColumn fx:id="colIndicadoresNombre" prefWidth="189.0" text="Nombre" />
+                                                      <TableColumn fx:id="colIndicadoresCodigo" prefWidth="189.0" text="Codigo" visible="false" />
+                                                  </columns>
+                                                </TableView>
+                                                <HBox alignment="CENTER" prefHeight="40.0" prefWidth="190.0" spacing="10.0">
+                                                   <children>
+                                                      <Button fx:id="btnNuevoIndicador" mnemonicParsing="false" onAction="#handleNuevoIndicadores" text="Nuevo">
+                                                         <graphic>
+                                                            <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../images/anadir.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic></Button>
+                                                      <Button fx:id="btnEliminarIndicador" mnemonicParsing="false" onAction="#handleEliminarIndicadores" text="Eliminar" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="539.0" prefWidth="544.0">
+                                       <children>
+                                          <TitledPane animated="false" layoutX="82.0" layoutY="74.0" prefHeight="539.0" prefWidth="545.0" text="Detalle" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <content>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                   <children>
+                                                      <GridPane layoutX="14.0" layoutY="14.0" prefHeight="222.0" prefWidth="604.0">
+                                                        <columnConstraints>
+                                                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.0" minWidth="10.0" prefWidth="190.0" />
+                                                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.0" minWidth="10.0" prefWidth="190.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.0" minWidth="10.0" prefWidth="190.0" />
+                                                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="201.0" minWidth="10.0" prefWidth="138.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <Label text="Longitud del dato" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                            <Label text="Posición inicio de dato" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                            <Label text="Caracter de Control" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                            <Label text="Longitud caracter de Control" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                            <Label text="Posición caracter de Control" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                            <TextField fx:id="txtEditPosicionControl" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                            <TextField fx:id="txtEditLongCaracterControl" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                            <TextField fx:id="txtEditCaracterControl" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                                            <TextField fx:id="txtEditPosInicioDato" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                                            <TextField fx:id="txtEditLongitudDato" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                                            <Label text="Nombre" GridPane.columnIndex="2" />
+                                                            <TextField fx:id="txtNombreIndicadores" GridPane.columnIndex="3" />
+                                                            <ComboBox fx:id="cbxPuerto" prefWidth="150.0" GridPane.columnIndex="1" />
+                                                            <Label text="Puerto" />
+                                                            <ComboBox fx:id="cbxVelocidad" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                            <Label text="Velocidad" GridPane.rowIndex="1" />
+                                                            <Label text="Bits de Datos" GridPane.rowIndex="2" />
+                                                            <Label text="Paridad" GridPane.rowIndex="3" />
+                                                            <Label text="Bits de Parada" GridPane.rowIndex="4" />
+                                                            <Label text="Control de Flujo" GridPane.rowIndex="5" />
+                                                            <ComboBox fx:id="cbxBitsDeDatos" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                            <ComboBox fx:id="cbxParidad" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                            <ComboBox fx:id="cbxBitsDeParada" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                            <ComboBox fx:id="cbxControlDeFlujo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                         </children>
+                                                      </GridPane>
+                                                      <Button fx:id="btnAplicarEditIndicacion" layoutX="349.0" layoutY="234.0" mnemonicParsing="false" onAction="#handleAplicarIndicadores" text="Aplicar">
+                                                         <graphic>
+                                                            <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../images/guardar.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic></Button>
+                                                   </children>
+                                                </AnchorPane>
+                                            </content>
+                                          </TitledPane>
+                                       </children>
+                                    </AnchorPane>
+                                </items>
+                              </SplitPane>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+
+<javafx.scene.layout.AnchorPane prefHeight="656.0" prefWidth="595.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.PrincipalController">
+	<children>
+		<BorderPane prefHeight="656.0" prefWidth="595.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<center>
+				<FlowPane prefHeight="228.0" prefWidth="225.0" BorderPane.alignment="CENTER" />
+			</center>
+			<bottom>
+				<HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+					<children>
+						<Button fx:id="btnSalir" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#exit">
+							<graphic>
+								<ImageView fitHeight="50.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+									<image>
+										<Image url="@../images/baseline_exit_to_app_black_24dp.png" />
+									</image>
+								</ImageView>
+							</graphic>
+						</Button>
+					</children>
+					<padding>
+						<Insets right="20.0" />
+					</padding>
+				</HBox>
+			</bottom>
+			<top>
+				<HBox alignment="CENTER" prefHeight="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+					<children>
+						<Button fx:id="btnTaras" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleTara" text="Tomar Tara">
+							<graphic>
+								<ImageView fitHeight="94.0" fitWidth="103.0" pickOnBounds="true" preserveRatio="true">
+									<image>
+										<Image url="@../images/baseline_compare_arrows_black_48dp.png" />
+									</image>
+								</ImageView>
+							</graphic>
+						</Button>
+						<Button fx:id="btnConfiguraciones" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleConfiguraciones" text="Configuraciones">
+							<graphic>
+								<ImageView fitHeight="94.0" fitWidth="103.0" pickOnBounds="true" preserveRatio="true">
+									<image>
+										<Image url="@../images/baseline_settings_black_48dp.png" />
+									</image>
+								</ImageView>
+							</graphic>
+						</Button>
+						<Button fx:id="btnInformes" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleInformes" prefHeight="141.0" prefWidth="135.0" text="Informes">
+							<graphic>
+								<ImageView fitHeight="104.0" fitWidth="103.0" pickOnBounds="true" preserveRatio="true">
+									<image>
+										<Image url="@../images/baseline_insert_chart_outlined_black_48dp.png" />
+									</image>
+								</ImageView>
+							</graphic>
+						</Button>
+						<Button fx:id="btnUsuarios" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleUsuarios" text="Usuarios">
+							<graphic>
+								<ImageView fitHeight="111.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+									<image>
+										<Image url="@../images/baseline_people_black_48dp.png" />
+									</image>
+								</ImageView>
+							</graphic>
+						</Button>
+							
+						<Button fx:id="BtnHerramientas" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleHerramientas" text="Herramientas">
+							<graphic>
+								<ImageView fitHeight="111.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+									<image>
+										<Image url="@../images/baseline_security_black_48dp.png" />
+									</image>
+								</ImageView>
+							</graphic>
+						</Button>
+					</children>
+				</HBox>
+			</top>
+		</BorderPane>
+	</children>
+</javafx.scene.layout.AnchorPane>
