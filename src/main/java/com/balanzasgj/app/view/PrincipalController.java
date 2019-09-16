@@ -1,17 +1,26 @@
 package com.balanzasgj.app.view;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import com.balanzasgj.app.basic.bean.ParametrosGoblales;
+import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
+import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class PrincipalController{
+public class PrincipalController implements Initializable{
 	@FXML
 	private Button btnTaras;
 	@FXML
@@ -23,11 +32,16 @@ public class PrincipalController{
 	@FXML
 	private Button btnUsuarios;	
 	@FXML
-	private Button btnHerramientas;			
+	private Button btnHerramientas;	
+	private ParametrosGoblalesPersistence parametrosGoblalesPersistence;
+	
+	@FXML
+	private Label lblEmpresa;
+	
 
 	@FXML
     private void handleUsuarios(ActionEvent event) {
-		this.openWindows("PesarEntradaSalidaView", "Tara");
+		this.openWindows("UsuariosView", "Usuarios");
     }
 	
 	@FXML
@@ -47,7 +61,7 @@ public class PrincipalController{
 	
 	@FXML
     private void handleHerramientas(ActionEvent event) {
-		this.openWindows("HerramientasView", "Herramientas");
+		this.openWindows("HerramientasView", "Sistema");
     }
 	
 	@FXML
@@ -57,7 +71,8 @@ public class PrincipalController{
 	
 	private void openWindows(String fxmlName, String title) {
 		try {
-			Parent rootHerramientas =FXMLLoader.load(getClass().getClassLoader().getResource("fxml/" + fxmlName + ".fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/" + fxmlName + ".fxml"));
+			Parent rootHerramientas = (Parent)loader.load();
 			Stage stage = new Stage();
 		    stage.initModality(Modality.APPLICATION_MODAL);
 		    stage.resizableProperty().setValue(Boolean.FALSE);
@@ -65,13 +80,34 @@ public class PrincipalController{
 		    Scene scene = new Scene(rootHerramientas);
 		    scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
 		    stage.setScene(scene);  
+		    
+		    if(loader.getController() instanceof PesarEntradaSalidaController) {
+		    	PesarEntradaSalidaController controller = (PesarEntradaSalidaController)loader.getController();
+		    	stage.setOnCloseRequest(E -> {
+		    		//controller.closeSocket();
+		    	   });
+		    }
+		    if(loader.getController() instanceof HerramientasController) {
+		    	IView controller = (HerramientasController)loader.getController();
+		    	controller.setStage(stage);
+		    }		    
 		    stage.show();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public void initialize() {
-    } 
+	}	
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		parametrosGoblalesPersistence = new ParametrosGoblalesPersistenceJdbc();
+		ParametrosGoblales pg = new ParametrosGoblales();
+		pg.setId("EMPRESA_NOMBRE");
+		parametrosGoblalesPersistence.load(pg);		
+		if(pg!= null) {
+			lblEmpresa.setText(pg.getValue());
+		}		
+		
+		lblEmpresa.setFont(new Font("Arial", 30));
+	} 
 }

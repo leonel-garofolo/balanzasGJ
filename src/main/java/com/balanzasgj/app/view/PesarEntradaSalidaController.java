@@ -1,15 +1,19 @@
 package com.balanzasgj.app.view;
 
 import java.math.BigDecimal;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.javafx.controls.customs.ComboBoxAutoComplete;
 
 import com.balanzasgj.app.basic.bean.ParametrosGoblales;
+import com.balanzasgj.app.conn.serial.ConnectionChannelException;
+import com.balanzasgj.app.conn.serial.InterceptorSerial;
 import com.balanzasgj.app.model.Clientes;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
@@ -44,6 +48,7 @@ import com.balanzasgj.app.view.columns.TransportesTableCell;
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -56,7 +61,7 @@ import javafx.scene.layout.HBox;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-public class PesarEntradaSalidaController {
+public class PesarEntradaSalidaController implements Initializable {	
 	@FXML
 	private HBox layout1;
 	@FXML
@@ -124,6 +129,9 @@ public class PesarEntradaSalidaController {
 	@FXML
 	private Button btnAplicar;
 	@FXML
+	private Button btnIngresoManual;	
+	
+	@FXML
 	private TableColumn<Taras, String> colTransaccion;
 	@FXML
 	private TableColumn<Taras, Date> colFecha;
@@ -160,7 +168,7 @@ public class PesarEntradaSalidaController {
 	private ComboBox<String> cbxFiltroBuscar;
 
 	private char statusTara;
-		
+
 	private ClientesPersistence clientesPersistence;
 	private OperacionesPersistence operacionesPersistence;
 	private ProcedenciasPersistence procedenciasPersistence;
@@ -171,25 +179,30 @@ public class PesarEntradaSalidaController {
 	private TarasPersistence tarasPersistence;
 	private ParametrosGoblalesPersistence parametrosGoblalesPersistence;
 	private long idTaraEdit = -1;
-	private Taras taraEdit;
+	private Taras taraEdit;	
 	
+	private boolean ingManual;
+	
+	private InterceptorSerial connectionChannel;
+
 	@FXML
-	private void handleNuevoPesaje(ActionEvent event) {
+	private void handleNuevoPesaje(ActionEvent event) {		
 		clearForm();
 		activarEndrada();
 		idTaraEdit = -1;
 		taraEdit = new Taras();
 		dateFecha.setValue(Utils.convertoToLocalDate(new Date()));
+		btnIngresoManual.setDisable(false);
 	}
-
 
 	@FXML
 	private void handleBuscar(ActionEvent event) {
-		if(cbxFiltroBuscar.getSelectionModel().isEmpty() || txtFiltroBuscar.getText().isEmpty()){
+		if (cbxFiltroBuscar.getSelectionModel().isEmpty() || txtFiltroBuscar.getText().isEmpty()) {
 			Message.error("Debe completar los datos de filtrado.");
-		}else{
+		} else {
 			tblPesajes.getItems().clear();
-			tblPesajes.getItems().addAll(tarasPersistence.findByField(cbxFiltroBuscar.getSelectionModel().getSelectedItem(), txtFiltroBuscar.getText()));
+			tblPesajes.getItems().addAll(tarasPersistence
+					.findByField(cbxFiltroBuscar.getSelectionModel().getSelectedItem(), txtFiltroBuscar.getText()));
 		}
 	}
 
@@ -199,35 +212,43 @@ public class PesarEntradaSalidaController {
 		txtFiltroBuscar.setText("");
 		refleshTableTaras();
 	}
-	
+
 	@FXML
 	private void handleTicket(ActionEvent event) {
-		if(taraEdit != null) {
-			List<Taras> taras = new ArrayList<>(); 
+		if (taraEdit != null) {
+			List<Taras> taras = new ArrayList<>();
 			taras.add(taraEdit);
 			HashMap<String, Object> params = new HashMap<>();
 			try {
-				ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras) );
+				ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
 			} catch (JRException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}		
+		}
 	}
 	
 	@FXML
-	private void handleAplicar(ActionEvent event) {
-		if(cbxProducto.getValue() != null
-				&& cbxCliente.getValue() != null
-				&& cbxTransporte.getValue() != null
-				&& cbxProcedencia.getValue() != null
-				&& txtPatenteChasis.getText() != null && !txtPatenteChasis.getText().isEmpty()
-				&& txtTransaccion.getText() != null && !txtTransaccion.getText().isEmpty()
-				&& dateFecha.getValue() != null) {
+	private void handleIngManual(ActionEvent event) {
+		String value = Message.optionSecurity();
+		if(value.equals("123")) {
+			this.ingManual = true;
+			btnSubir.setDisable(!ingManual);
+			btnBajar.setDisable(!ingManual);
+		}
+		System.out.println(value);
+	}
 
-			if(statusTara=='S' || statusTara=='E'){
+	@FXML
+	private void handleAplicar(ActionEvent event) {
+		if (cbxProducto.getValue() != null && cbxCliente.getValue() != null && cbxTransporte.getValue() != null
+				&& cbxProcedencia.getValue() != null && txtPatenteChasis.getText() != null
+				&& !txtPatenteChasis.getText().isEmpty() && txtTransaccion.getText() != null
+				&& !txtTransaccion.getText().isEmpty() && dateFecha.getValue() != null) {
+
+			if (statusTara == 'S' || statusTara == 'E') {
 				Taras tara = new Taras();
-				if(idTaraEdit >=0){
+				if (idTaraEdit >= 0) {
 					tara.setIdtaras(idTaraEdit);
 					tarasPersistence.load(tara);
 				}
@@ -238,21 +259,25 @@ public class PesarEntradaSalidaController {
 				tara.setTransporte(cbxTransporte.getValue());
 				tara.setProcedencias(cbxProcedencia.getValue());
 				tara.setPatente(txtPatenteChasis.getText());
-				if(statusTara=='S'){
+				if (statusTara == 'S') {
 					txtSalida.setText(txtNumberSerial.getText());
 					tara.setPesoSalida(new BigDecimal(txtSalida.getText()));
 					calcularNeto();
-				} else if(statusTara=='E'){
+				} else if (statusTara == 'E') {
 					txtEntrada.setText(txtNumberSerial.getText());
 					tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
 				}
-				tarasPersistence.save(tara );
+				tarasPersistence.save(tara);
 				refleshTableTaras();
 				saveContadorTransaccion();
 				Message.info("Los datos se guardaron correctamente.");
 				handleNuevoPesaje(event);
+				
+				btnSubir.setDisable(true);
+				btnBajar.setDisable(true);
+				btnIngresoManual.setDisable(true);
 			}
-		}else{
+		} else {
 			Message.error("Debe haber alguna entrada seleccionada.");
 		}
 	}
@@ -266,40 +291,41 @@ public class PesarEntradaSalidaController {
 
 	@FXML
 	private void handleTblEntidadesSelected(MouseEvent event) {
-		if (!tblPesajes.getSelectionModel().isEmpty() ) {
-			if(taraEdit == null){
+		if (!tblPesajes.getSelectionModel().isEmpty()) {
+			if (taraEdit == null) {
 				loadTara();
-			}else{
-				if(statusTara == '-'){
+			} else {
+				if (statusTara == '-') {
 					loadTara();
-				}else{
-					if( Message.option("Desea cancelar la tara actual por la seleccionada?")){
+				} else {
+					if (Message.option("Desea cancelar la tara actual por la seleccionada?")) {
 						btnPesarEntrada.setStyle("");
 						btnPesarSalida.setStyle("");
 						layout1.setDisable(true);
 						layout2.setDisable(true);
 						loadTara();
+						btnIngresoManual.setDisable(false);
 					}
 				}
 			}
 		}
 	}
 
-	private void loadTara(){
-		statusTara= '-';
+	private void loadTara() {
+		statusTara = '-';
 		taraEdit = tblPesajes.getSelectionModel().getSelectedItem();
-		idTaraEdit= taraEdit.getIdtaras();
+		idTaraEdit = taraEdit.getIdtaras();
 		txtTransaccion.setText(taraEdit.getTransaccion());
 		dateFecha.setValue(Utils.convertoToLocalDate(taraEdit.getFecha()));
-		if(taraEdit.getBalanza() != null){
+		if (taraEdit.getBalanza() != null) {
 			txtBalanza.setText(taraEdit.getBalanza());
 		}
 		txtPatenteChasis.setText(taraEdit.getPatente());
-		if(taraEdit.getPatenteAceptado() != null){
+		if (taraEdit.getPatenteAceptado() != null) {
 			txtPatenteAceptado.setText(taraEdit.getPatenteAceptado());
 		}
 		txtEntrada.setText(taraEdit.getPesoEntrada().toString());
-		if(taraEdit.getPesoSalida() != null){
+		if (taraEdit.getPesoSalida() != null) {
 			txtSalida.setText(taraEdit.getPesoSalida().toString());
 		}
 
@@ -308,100 +334,112 @@ public class PesarEntradaSalidaController {
 		cbxCliente.setValue(taraEdit.getCliente());
 		cbxProducto.setValue(taraEdit.getProducto());
 	}
-	
+
 	@FXML
 	private void handlePesarEntrada(ActionEvent event) {
 		activarEndrada();
 	}
 
-	private void activarEndrada(){
-		//Marcar entrada
-		statusTara= 'E';
+	private void activarEndrada() {
+		// Marcar entrada
+		statusTara = 'E';
 		btnPesarEntrada.setStyle("-fx-background-color: #7fffd4; ");
+		btnPesarSalida.setStyle("");
 		layout1.setDisable(false);
 		layout2.setDisable(false);
-		if(idTaraEdit == -1){
+		btnIngresoManual.setDisable(false);
+		
+		if (idTaraEdit == -1) {
 			ParametrosGoblales pg = new ParametrosGoblales();
 			pg.setId("EMPRESA_TRANSACCION");
 			parametrosGoblalesPersistence.load(pg);
-			if(pg!= null) {
+			if (pg != null) {
 				txtTransaccion.setText(Integer.valueOf(pg.getValue()) + 1 + "");
 			}
 		}
 	}
-	
+
 	@FXML
 	private void handlePesarSalida(ActionEvent event) {
-		//Marcar salida
-		statusTara= 'S';
+		// Marcar salida
+		statusTara = 'S';
 		btnPesarEntrada.setStyle("");
 		btnPesarSalida.setStyle("-fx-background-color: #7fffd4; ");
-	}	
-	
+		btnIngresoManual.setDisable(false);
+	}
+
 	private void calcularNeto() {
-		if(!txtEntrada.getText().equals("")
-				&& !txtSalida.getText().equals("")) {
-			txtNeto.setText(
-					String.valueOf(
-							Double.valueOf(txtSalida.getText()).doubleValue() - 
-							Double.valueOf(txtEntrada.getText()).doubleValue()));
+		if (!txtEntrada.getText().equals("") && !txtSalida.getText().equals("")) {
+			txtNeto.setText(String.valueOf(Double.valueOf(txtSalida.getText()).doubleValue()
+					- Double.valueOf(txtEntrada.getText()).doubleValue()));
 		}
 	}
-	
+
 	@FXML
-	private void handleEditProducto(ActionEvent event) {	
+	private void handleEditProducto(ActionEvent event) {
 	}
+
 	@FXML
-	private void handleEditCliente(ActionEvent event) {	
+	private void handleEditCliente(ActionEvent event) {
 	}
+
 	@FXML
-	private void handleEditTransporte(ActionEvent event) {	
+	private void handleEditTransporte(ActionEvent event) {
 	}
+
 	@FXML
-	private void handleEditProcedencia(ActionEvent event) {	
+	private void handleEditProcedencia(ActionEvent event) {
 	}
-	
+
 	@FXML
 	private void handleSubir(ActionEvent event) {
 		Long number = Long.valueOf(txtNumberSerial.getText());
-		txtNumberSerial.setText(String.valueOf(number + 1000));		
+		txtNumberSerial.setText(String.valueOf(number + 1000));
 	}
-	
+
 	@FXML
 	private void handleBajar(ActionEvent event) {
 		Long number = Long.valueOf(txtNumberSerial.getText());
-		txtNumberSerial.setText(String.valueOf(number - 1000));	
+		txtNumberSerial.setText(String.valueOf(number - 1000));
 	}
-	
+
 	@FXML
 	private void handleEntradaManual(ActionEvent event) {
-	}	
-	
+	}
+
 	@FXML
 	private void handleSalidaManual(ActionEvent event) {
 	}
-	
+
 	@FXML
 	private void handleCancelar(ActionEvent event) {
-	}	
-	
-	public void initialize() {
-		initValues();
-		initPersistence();
-		initSerialConnector();
-		clearForm();
-		
 	}
 
+	private void connectSerial() {
+		connectionChannel= new InterceptorSerial();	
+		try {
+			connectionChannel.connect();
+			System.out.println(connectionChannel.sendAndReceive("asdasd"));
+		} catch (ConnectionChannelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}		
+
 	private void initValues() {
+		this.ingManual = false;
+		btnSubir.setDisable(!ingManual);
+		btnBajar.setDisable(!ingManual);		
+		btnIngresoManual.setDisable(true);
+		
 		layout1.setDisable(true);
 		layout2.setDisable(true);
-		cbxComprobante.getItems().addAll(new String[] {
-			"FAC", "REM", "CP", "GUIA"
-		});
-		cbxFiltroBuscar.getItems().addAll(new String[] {
-				"Número de Transacción", "Patente Chasis", "Producto", "Cliente", "Transporte", "Procedencia"
-		});
+		cbxComprobante.getItems().addAll(new String[] { "FAC", "REM", "CP", "GUIA" });
+		cbxFiltroBuscar.getItems().addAll(new String[] { "Número de Transacción", "Patente Chasis", "Producto",
+				"Cliente", "Transporte", "Procedencia" });
 
 		dateFecha.setValue(LocalDate.now());
 		txtNumberSerial.textProperty().addListener((ov, oldValue, newValue) -> {
@@ -445,11 +483,11 @@ public class PesarEntradaSalidaController {
 		});
 		txtNumContenedor.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtNumContenedor.setText(newValue.toUpperCase());
-		});	
+		});
 	}
-	
+
 	private void initSerialConnector() {
-		
+
 	}
 
 	private void initPersistence() {
@@ -479,11 +517,11 @@ public class PesarEntradaSalidaController {
 
 			@Override
 			public BigDecimal getValue() {
-				if(cellData.getValue().getPesoEntrada() != null
-					&& cellData.getValue().getPesoSalida() != null){
-					return new BigDecimal(cellData.getValue().getPesoEntrada().doubleValue() - cellData.getValue().getPesoSalida().doubleValue());
+				if (cellData.getValue().getPesoEntrada() != null && cellData.getValue().getPesoSalida() != null) {
+					return new BigDecimal(cellData.getValue().getPesoEntrada().doubleValue()
+							- cellData.getValue().getPesoSalida().doubleValue());
 				}
-				return  new BigDecimal(0);
+				return new BigDecimal(0);
 
 			}
 		});
@@ -501,13 +539,11 @@ public class PesarEntradaSalidaController {
 		refleshTableTaras();
 	}
 
-
-
-	private void refleshTableTaras(){
+	private void refleshTableTaras() {
 		tblPesajes.getItems().clear();
 		tblPesajes.getItems().addAll(tarasPersistence.findByField("All", ""));
 	}
-	
+
 	private void clearForm() {
 		txtNumberSerial.setText("0");
 		txtTransaccion.setText("");
@@ -527,5 +563,23 @@ public class PesarEntradaSalidaController {
 		txtNumDoc.setText("");
 		txtPatenteChasis.setText("");
 		txtPatenteAceptado.setText("");
+	}
+
+	@Override
+	public void initialize(URL url, ResourceBundle resource) {		
+		initValues();
+		initPersistence();
+		initSerialConnector();
+		clearForm();
+		connectSerial();
+	}
+	
+	public void closeSocket() {
+		try {
+			connectionChannel.disconnect();
+		} catch (ConnectionChannelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

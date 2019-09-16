@@ -127,7 +127,7 @@
                                              </image>
                                           </ImageView>
                                        </graphic></Button>
-                                    <Button fx:id="btnIngresoManual" mnemonicParsing="false" onAction="#handleAplicar" prefHeight="26.0" prefWidth="103.0" text="Ing. Manual">
+                                    <Button fx:id="btnIngresoManual" mnemonicParsing="false" onAction="#handleIngManual" prefHeight="26.0" prefWidth="103.0" text="Ing. Manual">
                                        <graphic>
                                           <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -136,7 +136,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button fx:id="btnIngresoManual1" mnemonicParsing="false" onAction="#handleTicket" prefHeight="26.0" prefWidth="83.0" text="Ticket">
+                                    <Button fx:id="btnTicket" mnemonicParsing="false" onAction="#handleTicket" prefHeight="26.0" prefWidth="83.0" text="Ticket">
                                        <graphic>
                                           <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                              <image>

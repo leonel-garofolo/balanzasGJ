@@ -34,10 +34,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<!--
-					<source>${compileSource}</source>
-					<target>${compileSource}</target>
-					-->
+					<!-- <source>${compileSource}</source> <target>${compileSource}</target> -->
 					<executable>C:\Program Files\Java\jdk1.8.0_131\bin\javac.exe</executable>
 					<arguments>
 						<argument>-classpath</argument>
@@ -53,11 +50,8 @@
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
-					<!--
-					<source>${compileSource}</source>
-					<target>${compileSource}</target>
-					<executable>C:\Program Files\Java\jdk1.8.0_131\bin\javac.exe</executable>
-					-->
+					<!-- <source>${compileSource}</source> <target>${compileSource}</target> 
+						<executable>C:\Program Files\Java\jdk1.8.0_131\bin\javac.exe</executable> -->
 					<archive>
 						<manifest>
 							<mainClass>com.balanzasgj.app.App</mainClass>
@@ -79,25 +73,15 @@
 					</execution>
 				</executions>
 				<configuration>
-					<!--
-					<source>${compileSource}</source>
-					<target>${compileSource}</target>
-					<executable>C:\Program Files\Java\jdk1.8.0_131\bin\javac.exe</executable>
-					-->
+					<!-- <source>${compileSource}</source> <target>${compileSource}</target> 
+						<executable>C:\Program Files\Java\jdk1.8.0_131\bin\javac.exe</executable> -->
 					<shadedArtifactAttached>true</shadedArtifactAttached>
 					<shadedClassifierName>shaded</shadedClassifierName>
 					<createDependencyReducedPom>true</createDependencyReducedPom>
-					<!--
-					<skipTests>${skipTests}</skipTests>
-					<excludes>
-						<exclude>classworlds:classworlds</exclude>
-						<exclude>junit:junit</exclude>
-						<exclude>jmock:*</exclude>
-						<exclude>*:xml-apis</exclude>
-						<exclude>org.apache.maven:lib:tests</exclude>
-						<exclude>log4j:log4j:jar:</exclude>
-					</excludes>
-					-->
+					<!-- <skipTests>${skipTests}</skipTests> <excludes> <exclude>classworlds:classworlds</exclude> 
+						<exclude>junit:junit</exclude> <exclude>jmock:*</exclude> <exclude>*:xml-apis</exclude> 
+						<exclude>org.apache.maven:lib:tests</exclude> <exclude>log4j:log4j:jar:</exclude> 
+						</excludes> -->
 					<filters>
 						<filter>
 							<artifact>*:*</artifact>
@@ -164,6 +148,12 @@
 	</build>
 
 	<dependencies>
+		<!-- rxtx -->
+		<dependency>
+		    <groupId>org.rxtx</groupId>
+		    <artifactId>rxtx</artifactId>
+		    <version>2.1.7</version>
+		</dependency>
 		<!-- JasperReport -->
 		<dependency>
 			<groupId>ar.com.fdvs</groupId>
@@ -171,9 +161,9 @@
 			<version>5.1.2</version>
 		</dependency>
 		<dependency>
-		    <groupId>net.sf.jasperreports</groupId>
-		    <artifactId>jasperreports</artifactId>
-		    <version>6.4.1</version>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.4.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>

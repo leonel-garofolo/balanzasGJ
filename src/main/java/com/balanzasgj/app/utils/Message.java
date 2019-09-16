@@ -1,9 +1,10 @@
 package com.balanzasgj.app.utils;
 
+import java.util.Optional;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-
-import java.util.Optional;
+import javafx.scene.control.TextInputDialog;
 
 public class Message {
 
@@ -35,5 +36,19 @@ public class Message {
         } else {
            return false;
         }
+    }
+    
+    public static String optionSecurity(){
+    	TextInputDialog alert = new TextInputDialog("Clave");
+        alert.setTitle("Seguridad");
+        alert.setHeaderText(null);
+        alert.setContentText("Ingrese la clave de autorización:");
+
+        // Traditional way to get the response value.
+        Optional<String> result = alert.showAndWait();
+        if (result.isPresent()){
+            return result.get();
+        }
+        return "";
     }
 }

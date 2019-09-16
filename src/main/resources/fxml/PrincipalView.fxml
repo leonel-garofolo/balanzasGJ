@@ -8,12 +8,17 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
 
 <javafx.scene.layout.AnchorPane prefHeight="656.0" prefWidth="595.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.PrincipalController">
 	<children>
 		<BorderPane prefHeight="656.0" prefWidth="595.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<center>
-				<FlowPane prefHeight="228.0" prefWidth="225.0" BorderPane.alignment="CENTER" />
+				<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+					<children>				
+						<Label fx:id="lblEmpresa"  prefHeight="50" prefWidth="200" text="Transaccion"  />
+					</children>
+				</HBox>
 			</center>
 			<bottom>
 				<HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -73,7 +78,7 @@
 							</graphic>
 						</Button>
 							
-						<Button fx:id="BtnHerramientas" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleHerramientas" text="Herramientas">
+						<Button fx:id="BtnHerramientas" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleHerramientas" text="Sistema">
 							<graphic>
 								<ImageView fitHeight="111.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
 									<image>

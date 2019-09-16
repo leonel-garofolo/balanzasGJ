@@ -78,7 +78,15 @@
                                                                            </image>
                                                                         </ImageView>
                                                                      </graphic></Button>
-                                                                  <Button fx:id="btnEliminarEntidad" mnemonicParsing="false" onAction="#handleEliminarEntidades" text="Eliminar" />
+                                                                  <Button fx:id="btnEliminarEntidad" mnemonicParsing="false" onAction="#handleEliminarEntidades" text="Eliminar" >
+                                                                   <graphic>
+                                                                        <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../images/borrar.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     </Button>
                                                                </children>
                                                             </HBox>
                                                          </children>
