@@ -84,7 +84,7 @@ public class PrincipalController implements Initializable{
 		    if(loader.getController() instanceof PesarEntradaSalidaController) {
 		    	PesarEntradaSalidaController controller = (PesarEntradaSalidaController)loader.getController();
 		    	stage.setOnCloseRequest(E -> {
-		    		//controller.closeSocket();
+		    		controller.closeSocket();
 		    	   });
 		    }
 		    if(loader.getController() instanceof HerramientasController) {

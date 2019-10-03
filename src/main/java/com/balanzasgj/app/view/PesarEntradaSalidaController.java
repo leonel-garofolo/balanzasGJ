@@ -1,5 +1,6 @@
 package com.balanzasgj.app.view;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
@@ -12,8 +13,7 @@ import java.util.ResourceBundle;
 import org.javafx.controls.customs.ComboBoxAutoComplete;
 
 import com.balanzasgj.app.basic.bean.ParametrosGoblales;
-import com.balanzasgj.app.conn.serial.ConnectionChannelException;
-import com.balanzasgj.app.conn.serial.InterceptorSerial;
+import com.balanzasgj.app.conn.serial.SocketConnection;
 import com.balanzasgj.app.model.Clientes;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
@@ -45,6 +45,8 @@ import com.balanzasgj.app.view.columns.ProcedenciasTableCell;
 import com.balanzasgj.app.view.columns.ProductosTableCell;
 import com.balanzasgj.app.view.columns.TransportesTableCell;
 
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,7 +63,7 @@ import javafx.scene.layout.HBox;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-public class PesarEntradaSalidaController implements Initializable {	
+public class PesarEntradaSalidaController implements Initializable, SerialPortEventListener {	
 	@FXML
 	private HBox layout1;
 	@FXML
@@ -181,10 +183,8 @@ public class PesarEntradaSalidaController implements Initializable {
 	private long idTaraEdit = -1;
 	private Taras taraEdit;	
 	
-	private boolean ingManual;
-	
-	private InterceptorSerial connectionChannel;
-
+	private boolean ingManual;	
+	private SocketConnection socket;
 	@FXML
 	private void handleNuevoPesaje(ActionEvent event) {		
 		clearForm();
@@ -415,20 +415,6 @@ public class PesarEntradaSalidaController implements Initializable {
 	private void handleCancelar(ActionEvent event) {
 	}
 
-	private void connectSerial() {
-		connectionChannel= new InterceptorSerial();	
-		try {
-			connectionChannel.connect();
-			System.out.println(connectionChannel.sendAndReceive("asdasd"));
-		} catch (ConnectionChannelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}		
-
 	private void initValues() {
 		this.ingManual = false;
 		btnSubir.setDisable(!ingManual);
@@ -487,7 +473,9 @@ public class PesarEntradaSalidaController implements Initializable {
 	}
 
 	private void initSerialConnector() {
-
+		socket= new SocketConnection();
+		socket.conectar();
+		socket.addEventSocket(this);		
 	}
 
 	private void initPersistence() {
@@ -571,15 +559,23 @@ public class PesarEntradaSalidaController implements Initializable {
 		initPersistence();
 		initSerialConnector();
 		clearForm();
-		connectSerial();
 	}
 	
 	public void closeSocket() {
-		try {
-			connectionChannel.disconnect();
-		} catch (ConnectionChannelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		socket.close();
+	}
+
+	@Override
+	public void serialEvent(SerialPortEvent event) {
+		if (event.getEventType() == SerialPortEvent.DATA_AVAILABLE) {		
+			try {
+				int available = socket.getInput().available();
+				byte[] chunk = new byte[available];
+				socket.getInput().read(chunk, 0, available);
+				txtNumberSerial.setText(new String(chunk));
+			} catch (IOException e) {
+				System.out.println("IO Error Occurred: " + e.toString());
+			}
+		}		
 	}
 }

@@ -2,131 +2,92 @@ package com.balanzasgj.app.conn.serial;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.Enumeration;
+import java.util.TooManyListenersException;
 
-import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
-import javafx.application.Platform;
-import javafx.scene.control.TextField;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
 
-/**
- * A simple TCP server. When a client connects, it sends the client the current
- * datetime, then closes the connection. This is arguably the simplest server
- * you can write. Beware though that a client has to be completely served its
- * date before the server will be able to handle another client.
- */
-public class SocketConnection {
-	private SerialPort serialPort;
-	private Thread threadReader;
-	
+public class SocketConnection implements SerialPortEventListener {
+	SerialPort serialPort;
+	public static String st;
+	public char[] c;
+	/**
+	 * Creates new form reading
+	 */
+	private static final String PORT_NAMES[] = { "/dev/tty.usbmodem411", // Mac OS X
+			"/dev/ttyUSB0", // Linux
+			"COM1", // Windows
+	};
+	private InputStream input;	
+	private static final int TIME_OUT = 2000;
+	private static final int DATA_RATE = 9600;
+
 	public SocketConnection() {
-		super();
+		super();	
 	}
 
-	public void connect(String portName, TextField txtNumberSerial) throws Exception {
-		CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
-		if (portIdentifier.isCurrentlyOwned()) {
-			System.out.println("Error: Port is currently in use");
-		} else {
-			CommPort commPort = portIdentifier.open(this.getClass().getName(), 2000);
+	public void conectar() {
+		CommPortIdentifier portId = null;
+		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
+		// iterate through, looking for the port
+		while (portEnum.hasMoreElements()) {
+			CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
+			for (String portName : PORT_NAMES) {
+				if (currPortId.getName().equals(portName)) {
+					portId = currPortId;
+					break;
+				}
+			}
+		}
+		try {
+			serialPort = (SerialPort) portId.open(this.getClass().getName(), TIME_OUT);
+			// set port parameters
+			serialPort.setSerialPortParams(DATA_RATE, SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
+					SerialPort.PARITY_NONE);
+			input = serialPort.getInputStream();			
+		} catch (Exception e) {
+		}
+	}
 
-			if (commPort instanceof SerialPort) {
-				serialPort = (SerialPort) commPort;
-				serialPort.setSerialPortParams(
-						57600, 
-						SerialPort.DATABITS_8, 
-						SerialPort.STOPBITS_1,
-						SerialPort.PARITY_NONE);						
-				threadReader = new Thread(new SerialReader(serialPort.getInputStream(), txtNumberSerial));
-				threadReader.start();
-				//threadWrite = new Thread(new SerialWriter(serialPort.getOutputStream()));
-				//threadWrite.start();
+	public synchronized void close() {
+		if (serialPort != null) {
+			serialPort.removeEventListener();
+			serialPort.close();
+		}
+	}
 
-			} else {
-				System.out.println("Error: Only serial ports are handled by this example.");
+	public synchronized void serialEvent(SerialPortEvent oEvent) {
+		if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
+			try {
+				int available = input.available();
+				byte[] chunk = new byte[available];
+				input.read(chunk, 0, available);
+				st = new String(chunk);				
+				System.out.print(st);
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException ex) {
+					Thread.currentThread().interrupt();
+				}
+				// Displayed results are codepage dependent
+			} catch (IOException e) {
+				System.out.println("IO Error Occurred: " + e.toString());
+
 			}
 		}
 	}
 	
-	public void closeSocket() {
-		//serialPort.addEventListener(this);
-		serialPort.notifyOnDataAvailable(true);
-		serialPort.notifyOnOutputEmpty(true);
-		serialPort.close();
-       
+	public InputStream getInput() {
+		return input;
 	}
-
-	/** */
-	public static class SerialReader implements Runnable {
-		String val;
-		TextField txtNumberSerial;
-		InputStream in;
-
-		public SerialReader(InputStream in, TextField txtNumberSerial) {
-			this.in = in;
-			this.txtNumberSerial = txtNumberSerial;
-		}
-
-		public void run() {
-			val = "";
-			byte[] buffer = new byte[1024];
-			int len = -1;
-			try {
-				while ((len = this.in.read(buffer)) > -1) {
-					val = new String(buffer, 0, len);	
-					if(!val.equals("")) {
-						System.out.println(val);
-					}
-					
-					/*
-					Platform.runLater(() -> {
-						if(!val.equals("")) {
-							System.out.println(val);
-							txtNumberSerial.clear();
-							txtNumberSerial.appendText(val);
-						}						
-					});
-					*/
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/** */
-	public static class SerialWriter implements Runnable {
-		OutputStream out;
-
-		public SerialWriter(OutputStream out) {
-			this.out = out;
-		}
-
-		public void run() {
-			try {
-				int c = 0;
-				while ((c = System.in.read()) > -1) {
-					this.out.write(c);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public static void main(String[] args) {
-		SocketConnection socket = new SocketConnection();
+	public void addEventSocket(SerialPortEventListener event) {
 		try {
-			
-			socket.connect("COM1", null);
-			System.out.println("conectado");
-			Thread.sleep(5000);
-			System.out.println("por desconectar");
-			socket.closeSocket();
-			System.out.println("desconectado");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			serialPort.addEventListener(event);
+			serialPort.notifyOnDataAvailable(true);
+		} catch (TooManyListenersException e) {
 			e.printStackTrace();
 		}
 	}
