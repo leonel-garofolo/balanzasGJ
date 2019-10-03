@@ -15,6 +15,8 @@ import org.javafx.controls.customs.ComboBoxAutoComplete;
 import com.balanzasgj.app.basic.bean.ParametrosGoblales;
 import com.balanzasgj.app.conn.serial.SocketConnection;
 import com.balanzasgj.app.model.Clientes;
+import com.balanzasgj.app.model.Comunicaciones;
+import com.balanzasgj.app.model.Indicadores;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
 import com.balanzasgj.app.model.Taras;
@@ -45,6 +47,7 @@ import com.balanzasgj.app.view.columns.ProcedenciasTableCell;
 import com.balanzasgj.app.view.columns.ProductosTableCell;
 import com.balanzasgj.app.view.columns.TransportesTableCell;
 
+import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import javafx.beans.value.ObservableValueBase;
@@ -105,7 +108,7 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 	@FXML
 	private TextField txtConductor;
 	@FXML
-	private ComboBox cbxTipoDoc;
+	private ComboBox<String> cbxTipoDoc;
 	@FXML
 	private TextField txtNumDoc;
 	@FXML
@@ -183,8 +186,12 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 	private long idTaraEdit = -1;
 	private Taras taraEdit;	
 	
+	private Indicadores indicadorConfig;
+	
 	private boolean ingManual;	
 	private SocketConnection socket;
+	private String sBufferConnection;
+	
 	@FXML
 	private void handleNuevoPesaje(ActionEvent event) {		
 		clearForm();
@@ -474,8 +481,22 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 
 	private void initSerialConnector() {
 		socket= new SocketConnection();
-		socket.conectar();
-		socket.addEventSocket(this);		
+		List<Comunicaciones> comunicaciones= comunicacionesPersistence.findAll();
+		for(Comunicaciones comunicacion: comunicaciones) {
+			indicadorConfig= indicadoresPersistence.findById(comunicacion.getIdindicadores().longValue());
+			int paridad = 0;
+			if(indicadorConfig.getParidad().equals("n")) {
+				paridad = SerialPort.PARITY_NONE;
+			}
+			socket.conectar("COM" + indicadorConfig.getPuerto(), 
+					indicadorConfig.getVelocidad(), 
+					indicadorConfig.getBitsDeDatos(), 
+					Integer.valueOf(indicadorConfig.getBitsDeParada()), 
+					paridad, 
+					2000);
+			socket.addEventSocket(this);
+			break;
+		}	
 	}
 
 	private void initPersistence() {
@@ -572,7 +593,8 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 				int available = socket.getInput().available();
 				byte[] chunk = new byte[available];
 				socket.getInput().read(chunk, 0, available);
-				txtNumberSerial.setText(new String(chunk));
+				sBufferConnection = new String(chunk);
+				txtNumberSerial.setText(sBufferConnection);
 			} catch (IOException e) {
 				System.out.println("IO Error Occurred: " + e.toString());
 			}

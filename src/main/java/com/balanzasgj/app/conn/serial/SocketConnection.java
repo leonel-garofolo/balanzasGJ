@@ -17,10 +17,7 @@ public class SocketConnection implements SerialPortEventListener {
 	/**
 	 * Creates new form reading
 	 */
-	private static final String PORT_NAMES[] = { "/dev/tty.usbmodem411", // Mac OS X
-			"/dev/ttyUSB0", // Linux
-			"COM1", // Windows
-	};
+	
 	private InputStream input;	
 	private static final int TIME_OUT = 2000;
 	private static final int DATA_RATE = 9600;
@@ -29,24 +26,27 @@ public class SocketConnection implements SerialPortEventListener {
 		super();	
 	}
 
-	public void conectar() {
+	public void conectar(String portName, int dataRate, int dataBits, int stopBits, int parity, int timeOut) {
 		CommPortIdentifier portId = null;
 		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 		// iterate through, looking for the port
 		while (portEnum.hasMoreElements()) {
 			CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
-			for (String portName : PORT_NAMES) {
-				if (currPortId.getName().equals(portName)) {
-					portId = currPortId;
-					break;
-				}
+			if(currPortId.getName().equals(portName)) {
+				portId = currPortId;
+				break;
 			}
 		}
 		try {
-			serialPort = (SerialPort) portId.open(this.getClass().getName(), TIME_OUT);
+			serialPort = (SerialPort) portId.open(this.getClass().getName(), timeOut);
 			// set port parameters
-			serialPort.setSerialPortParams(DATA_RATE, SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
-					SerialPort.PARITY_NONE);
+			System.out.println("port: " + portName);
+			System.out.println("DataRate: " + dataRate);
+			System.out.println("dataBits: " + dataBits);
+			System.out.println("stopBits: " + stopBits);
+			System.out.println("parity: " + parity);
+			
+			serialPort.setSerialPortParams(dataRate, dataBits, stopBits, parity);
 			input = serialPort.getInputStream();			
 		} catch (Exception e) {
 		}
