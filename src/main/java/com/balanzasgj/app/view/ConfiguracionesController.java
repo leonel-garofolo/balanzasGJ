@@ -6,21 +6,18 @@ import com.balanzasgj.app.model.Clientes;
 import com.balanzasgj.app.model.Comunicaciones;
 import com.balanzasgj.app.model.Entidades;
 import com.balanzasgj.app.model.Indicadores;
-import com.balanzasgj.app.model.Operaciones;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
 import com.balanzasgj.app.model.Transportes;
 import com.balanzasgj.app.persistence.ClientesPersistence;
 import com.balanzasgj.app.persistence.ComunicacionesPersistence;
 import com.balanzasgj.app.persistence.IndicadoresPersistence;
-import com.balanzasgj.app.persistence.OperacionesPersistence;
 import com.balanzasgj.app.persistence.ProcedenciasPersistence;
 import com.balanzasgj.app.persistence.ProductosPersistence;
 import com.balanzasgj.app.persistence.TransportesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ClientesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ComunicacionesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.IndicadoresPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.OperacionesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProcedenciasPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.TransportesPersistenceJdbc;
@@ -113,8 +110,7 @@ public class ConfiguracionesController extends AnchorPane {
 	private TextArea txtIndicadorInfo;
 	
 
-	private ClientesPersistence clientesPersistence;
-	private OperacionesPersistence operacionesPersistence;
+	private ClientesPersistence clientesPersistence;	
 	private ProcedenciasPersistence procedenciasPersistence;
 	private ProductosPersistence productosPersistence;
 	private TransportesPersistence transportesPersistence;
@@ -124,8 +120,7 @@ public class ConfiguracionesController extends AnchorPane {
 	private boolean modoEditIndicadores = false;
 
 	static class TypeEntidades {
-		static String CLIENTE = "CLIENTES";
-		static String OPERACIONES = "OPERACIONES";
+		static String CLIENTE = "CLIENTES";		
 		static String PROCEDENCIAS = "PROCEDENCIAS";
 		static String PRODUCTOS = "PRODUCTOS";
 		static String TRANSPORTES = "TRANSPORTES";
@@ -248,9 +243,6 @@ public class ConfiguracionesController extends AnchorPane {
 			case "CLIENTES":
 				clientesPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				break;
-			case "OPERACIONES":
-				operacionesPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
-				break;
 			case "PROCEDENCIAS":
 				procedenciasPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				break;
@@ -293,9 +285,6 @@ public class ConfiguracionesController extends AnchorPane {
 		switch (entidadType) {
 		case "CLIENTES":
 			tblEntidades.getItems().addAll(clientesPersistence.findAll());
-			break;
-		case "OPERACIONES":
-			tblEntidades.getItems().addAll(operacionesPersistence.findAll());
 			break;
 		case "PROCEDENCIAS":
 			tblEntidades.getItems().addAll(procedenciasPersistence.findAll());
@@ -363,11 +352,6 @@ public class ConfiguracionesController extends AnchorPane {
 				clientesPersistence.save(cli);
 				this.loadFormEntidades(entidadType);
 				break;
-			case "OPERACIONES":
-				Operaciones op = new Operaciones();
-				op.setNombre(nombre);
-				operacionesPersistence.save(op);			
-				break;
 			case "PROCEDENCIAS":
 				Procedencias pro  = new Procedencias();
 				pro.setNombre(nombre);
@@ -432,8 +416,11 @@ public class ConfiguracionesController extends AnchorPane {
 		initTableView();
 		initComunicaciones();
 
-		this.cbxEntidades.getItems().addAll(new String[] { TypeEntidades.CLIENTE, TypeEntidades.OPERACIONES,
-				TypeEntidades.PROCEDENCIAS, TypeEntidades.PRODUCTOS, TypeEntidades.TRANSPORTES });
+		this.cbxEntidades.getItems().addAll(new String[] { 
+				TypeEntidades.CLIENTE,
+				TypeEntidades.PROCEDENCIAS, 
+				TypeEntidades.PRODUCTOS, 
+				TypeEntidades.TRANSPORTES });
 		initTextUpperCase();
 		
 
@@ -472,7 +459,6 @@ public class ConfiguracionesController extends AnchorPane {
 
 	private void initPersistence() {
 		this.clientesPersistence = new ClientesPersistenceJdbc();
-		this.operacionesPersistence = new OperacionesPersistenceJdbc();
 		this.procedenciasPersistence = new ProcedenciasPersistenceJdbc();
 		this.productosPersistence = new ProductosPersistenceJdbc();
 		this.transportesPersistence = new TransportesPersistenceJdbc();

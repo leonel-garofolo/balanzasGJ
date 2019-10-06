@@ -361,7 +361,26 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 			super.doUpdate(taras);
 		}
 		else {
-			super.doInsert(taras);
+			Connection conn = null;
+			try {
+				conn = getConnection();
+				PreparedStatement ps = conn.prepareStatement( getSqlInsert() );
+				//--- Call specific method to set the values to be inserted
+				setValuesForInsert(ps, 1, taras); 
+				//--- Execute SQL INSERT
+				ps.executeUpdate();
+				ResultSet rs = ps.getGeneratedKeys();
+                if(rs.next())
+                {
+                	taras.setIdtaras(rs.getLong(1)) ;
+                }
+                
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			} finally {
+				closeConnection(conn);
+			}
 		}
 		return taras ;
 	}	

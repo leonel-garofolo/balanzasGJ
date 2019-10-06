@@ -16,6 +16,7 @@ import com.balanzasgj.app.basic.bean.ParametrosGoblales;
 import com.balanzasgj.app.conn.serial.SocketConnection;
 import com.balanzasgj.app.model.Clientes;
 import com.balanzasgj.app.model.Comunicaciones;
+import com.balanzasgj.app.model.Ejes;
 import com.balanzasgj.app.model.Indicadores;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
@@ -50,6 +51,8 @@ import com.balanzasgj.app.view.columns.TransportesTableCell;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -59,24 +62,45 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-public class PesarEntradaSalidaController implements Initializable, SerialPortEventListener {	
+public class PesarEntradaSalidaController extends AnchorPane implements IView, Initializable, SerialPortEventListener {		
 	@FXML
 	private HBox layout1;
 	@FXML
 	private HBox layout2;
+	
+	/* PESAJE */
+	@FXML
+	private ComboBox<String> cbxModoTara;
+	@FXML
+	private ComboBox<String> cbxModalidad;
+	@FXML
+	private ComboBox<String> cbxModoChasis;
+	@FXML
+	private Button btnEliminarEje;	
+	
+	/* TOMAR PESAJE*/
 	@FXML
 	private TextField txtNumberSerial;
 	@FXML
 	private Button btnSubir;
 	@FXML
 	private Button btnBajar;
+	@FXML
+	private Button btnIngresoManual;
+	@FXML
+	private Button btnPesarEntrada;
+	@FXML
+	private Button btnPesarSalida;	
 	@FXML
 	private TextField txtEntrada;
 	@FXML
@@ -87,8 +111,8 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 	private TextField txtTransaccion;
 	@FXML
 	private DatePicker dateFecha;
-	@FXML
-	private TextField txtBalanza;
+	
+	/* FORMULARIO */
 	@FXML
 	private ComboBoxAutoComplete<Productos> cbxProducto;
 	@FXML
@@ -105,37 +129,28 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 	private Button btnAccesoTransporte;
 	@FXML
 	private Button btnAccesoProcedencia;
+	
 	@FXML
-	private TextField txtConductor;
-	@FXML
-	private ComboBox<String> cbxTipoDoc;
+	private TextField txtPatente;
 	@FXML
 	private TextField txtNumDoc;
-	@FXML
-	private TextField txtPatenteChasis;
-	@FXML
-	private TextField txtPatenteAceptado;
-	@FXML
-	private ComboBox<String> cbxComprobante;
-	@FXML
-	private TextField txtComprobante1;
-	@FXML
-	private TextField txtComprobante2;
-	@FXML
-	private TextField txtProcedenciaDestino;
-	@FXML
-	private TextField txtNumContenedor;
-	@FXML
-	private Button btnPesarEntrada;
-	@FXML
-	private Button btnPesarSalida;
-	@FXML
-	private Button btnNuevoPesaje;
-	@FXML
-	private Button btnAplicar;
-	@FXML
-	private Button btnIngresoManual;	
 	
+	@FXML
+	private TextField txtFactura;
+	@FXML
+	private TextArea txtObservaciones;
+	
+	/*Tabla de ejes*/
+	@FXML
+	private TableView<Ejes> tblEjes;	
+	@FXML
+	private TableColumn<Ejes, Integer> colNroEje;
+	@FXML
+	private TableColumn<Ejes, Double> colPeso;
+	
+	/*Tabla de pesajes*/
+	@FXML
+	private TableView<Taras> tblPesajes;
 	@FXML
 	private TableColumn<Taras, String> colTransaccion;
 	@FXML
@@ -160,8 +175,7 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 	private TableColumn<Taras, Transportes> colTransporte;
 	@FXML
 	private TableColumn<Taras, Procedencias> colProcedencia;
-	@FXML
-	private TableView<Taras> tblPesajes;
+	
 
 	@FXML
 	private Button btnBuscar;
@@ -190,7 +204,19 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 	
 	private boolean ingManual;	
 	private SocketConnection socket;
-	private String sBufferConnection;
+	private String sBufferConnection;	
+	private Stage stage;
+	
+	@FXML
+	private void handleEliminarEje(ActionEvent event) {		
+		if(!tblEjes.getItems().isEmpty()) {
+			// TODO eliminar el eje en la base
+			
+			
+			tblEjes.getItems().remove(tblEjes.getItems().size()- 1);
+			
+		}
+	}
 	
 	@FXML
 	private void handleNuevoPesaje(ActionEvent event) {		
@@ -249,11 +275,15 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 	@FXML
 	private void handleAplicar(ActionEvent event) {
 		if (cbxProducto.getValue() != null && cbxCliente.getValue() != null && cbxTransporte.getValue() != null
-				&& cbxProcedencia.getValue() != null && txtPatenteChasis.getText() != null
-				&& !txtPatenteChasis.getText().isEmpty() && txtTransaccion.getText() != null
-				&& !txtTransaccion.getText().isEmpty() && dateFecha.getValue() != null) {
+				&& cbxProcedencia.getValue() != null
+				&& txtPatente.getText() != null && !txtPatente.getText().isEmpty()
+				&& txtTransaccion.getText() != null && !txtTransaccion.getText().isEmpty() 
+				&& dateFecha.getValue() != null
+				&& !cbxModoChasis.getSelectionModel().isEmpty()) {
 
 			if (statusTara == 'S' || statusTara == 'E') {
+				boolean isEje = cbxModoChasis.getSelectionModel().getSelectedItem().equals("POR EJE");				
+				
 				Taras tara = new Taras();
 				if (idTaraEdit >= 0) {
 					tara.setIdtaras(idTaraEdit);
@@ -265,21 +295,56 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 				tara.setCliente(cbxCliente.getValue());
 				tara.setTransporte(cbxTransporte.getValue());
 				tara.setProcedencias(cbxProcedencia.getValue());
-				tara.setPatente(txtPatenteChasis.getText());
+				tara.setPatente(txtPatente.getText());
+				
+				double totalPesaje = 0d;
+				int lastEje = 0;
+				if(isEje) {
+					int count = tblEjes.getItems().size();
+					for(int i = 0; i < count; i++ ) {
+						totalPesaje +=tblEjes.getItems().get(i).getPeso(); 
+						if(i == (count-1) ) {
+							lastEje = tblEjes.getItems().get(i).getNroEje();
+						}
+					}
+					
+					totalPesaje += Double.valueOf(txtNumberSerial.getText());
+				}
 				if (statusTara == 'S') {
-					txtSalida.setText(txtNumberSerial.getText());
+					if(isEje) {
+						txtSalida.setText(String.valueOf(totalPesaje));
+					}else {
+						txtSalida.setText(txtNumberSerial.getText());
+					}
 					tara.setPesoSalida(new BigDecimal(txtSalida.getText()));
 					calcularNeto();
 				} else if (statusTara == 'E') {
-					txtEntrada.setText(txtNumberSerial.getText());
+					if(isEje) {
+						txtEntrada.setText(String.valueOf(totalPesaje));
+					} else {
+						txtEntrada.setText(txtNumberSerial.getText());
+					}
+					
 					tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
 				}
-				tarasPersistence.save(tara);
+				Taras insertTara = tarasPersistence.save(tara);
+				if (idTaraEdit == -1) {
+					idTaraEdit = insertTara.getIdtaras();
+				}
+				
+				// guardo todos los ejes cargados
+				if(isEje) {
+					Ejes eje = new Ejes();					
+					eje.setIdTaras(insertTara.getIdtaras());
+					eje.setType(statusTara);
+					eje.setNroEje(lastEje + 1);
+					eje.setPeso(Double.valueOf(txtNumberSerial.getText()));
+					tblEjes.getItems().add(eje);
+				}
+				
 				refleshTableTaras();
 				saveContadorTransaccion();
 				Message.info("Los datos se guardaron correctamente.");
-				handleNuevoPesaje(event);
-				
 				btnSubir.setDisable(true);
 				btnBajar.setDisable(true);
 				btnIngresoManual.setDisable(true);
@@ -307,7 +372,7 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 				} else {
 					if (Message.option("Desea cancelar la tara actual por la seleccionada?")) {
 						btnPesarEntrada.setStyle("");
-						btnPesarSalida.setStyle("");
+						btnPesarSalida.setStyle("");	
 						layout1.setDisable(true);
 						layout2.setDisable(true);
 						loadTara();
@@ -323,14 +388,8 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 		taraEdit = tblPesajes.getSelectionModel().getSelectedItem();
 		idTaraEdit = taraEdit.getIdtaras();
 		txtTransaccion.setText(taraEdit.getTransaccion());
-		dateFecha.setValue(Utils.convertoToLocalDate(taraEdit.getFecha()));
-		if (taraEdit.getBalanza() != null) {
-			txtBalanza.setText(taraEdit.getBalanza());
-		}
-		txtPatenteChasis.setText(taraEdit.getPatente());
-		if (taraEdit.getPatenteAceptado() != null) {
-			txtPatenteAceptado.setText(taraEdit.getPatenteAceptado());
-		}
+		dateFecha.setValue(Utils.convertoToLocalDate(taraEdit.getFecha()));		
+		txtPatente.setText(taraEdit.getPatente());
 		txtEntrada.setText(taraEdit.getPesoEntrada().toString());
 		if (taraEdit.getPesoSalida() != null) {
 			txtSalida.setText(taraEdit.getPesoSalida().toString());
@@ -411,14 +470,6 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 	}
 
 	@FXML
-	private void handleEntradaManual(ActionEvent event) {
-	}
-
-	@FXML
-	private void handleSalidaManual(ActionEvent event) {
-	}
-
-	@FXML
 	private void handleCancelar(ActionEvent event) {
 	}
 
@@ -427,10 +478,24 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 		btnSubir.setDisable(!ingManual);
 		btnBajar.setDisable(!ingManual);		
 		btnIngresoManual.setDisable(true);
-		
-		layout1.setDisable(true);
+		layout1.setDisable(true);	
 		layout2.setDisable(true);
-		cbxComprobante.getItems().addAll(new String[] { "FAC", "REM", "CP", "GUIA" });
+		cbxModoTara.getItems().addAll(new String[] { "NORMAL", "CON TARA"});
+		cbxModalidad.getItems().addAll(new String[] { "ESTANDAR", "ADUANA"});
+		cbxModoChasis.getItems().addAll(new String[] { "COMPLETO", "POR EJE"});
+		cbxModoChasis.valueProperty().addListener(new ChangeListener<String>() {
+	      	@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if(newValue.equals("POR EJE")) {
+					tblEjes.setVisible(true);
+					btnEliminarEje.setVisible(true);
+				}else {
+					tblEjes.setVisible(false);
+					btnEliminarEje.setVisible(false);
+				}
+			}
+	    });
+				
 		cbxFiltroBuscar.getItems().addAll(new String[] { "Número de Transacción", "Patente Chasis", "Producto",
 				"Cliente", "Transporte", "Procedencia" });
 
@@ -450,36 +515,15 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 		txtTransaccion.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtTransaccion.setText(newValue.toUpperCase());
 		});
-		txtBalanza.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtBalanza.setText(newValue.toUpperCase());
-		});
-		txtConductor.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtConductor.setText(newValue.toUpperCase());
-		});
 		txtNumDoc.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtNumDoc.setText(newValue.toUpperCase());
 		});
-		txtPatenteChasis.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtPatenteChasis.setText(newValue.toUpperCase());
-		});
-		txtPatenteAceptado.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtPatenteAceptado.setText(newValue.toUpperCase());
-		});
-		txtComprobante1.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtComprobante1.setText(newValue.toUpperCase());
-		});
-		txtComprobante2.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtComprobante2.setText(newValue.toUpperCase());
-		});
-		txtProcedenciaDestino.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtProcedenciaDestino.setText(newValue.toUpperCase());
-		});
-		txtNumContenedor.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtNumContenedor.setText(newValue.toUpperCase());
+		txtPatente.textProperty().addListener((ov, oldValue, newValue) -> {
+			txtPatente.setText(newValue.toUpperCase());
 		});
 	}
 
-	private void initSerialConnector() {
+	private void initSerialConnector() {		
 		socket= new SocketConnection();
 		List<Comunicaciones> comunicaciones= comunicacionesPersistence.findAll();
 		for(Comunicaciones comunicacion: comunicaciones) {
@@ -488,13 +532,20 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 			if(indicadorConfig.getParidad().equals("n")) {
 				paridad = SerialPort.PARITY_NONE;
 			}
-			socket.conectar("COM" + indicadorConfig.getPuerto(), 
-					indicadorConfig.getVelocidad(), 
-					indicadorConfig.getBitsDeDatos(), 
-					Integer.valueOf(indicadorConfig.getBitsDeParada()), 
-					paridad, 
-					2000);
-			socket.addEventSocket(this);
+			try {
+				socket.conectar("COM" + indicadorConfig.getPuerto(), 
+						indicadorConfig.getVelocidad(), 
+						indicadorConfig.getBitsDeDatos(), 
+						Integer.valueOf(indicadorConfig.getBitsDeParada()), 
+						paridad, 
+						2000);
+				socket.addEventSocket(this);			
+				stage.setTitle("Taras: Indicador Conectado -> " + indicadorConfig.getNombre() + " | Puerto: COM" + indicadorConfig.getPuerto() + " | Velocidad: " + indicadorConfig.getVelocidad());
+			}catch (Exception e) {				
+				e.printStackTrace();
+				stage.setTitle("Taras: ERROR DE CONEXION CON EL INDICADOR ");
+			}
+			
 			break;
 		}	
 	}
@@ -544,6 +595,10 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 		colProcedencia.setCellFactory(col -> new ProcedenciasTableCell<>());
 		colProducto.setCellValueFactory(new PropertyValueFactory<>("producto"));
 		colProducto.setCellFactory(col -> new ProductosTableCell<>());
+		
+		/*Tabla de ejes*/
+		colNroEje.setCellValueFactory(new PropertyValueFactory<>("nroEje"));
+		colPeso.setCellValueFactory(new PropertyValueFactory<>("peso"));
 
 		refleshTableTaras();
 	}
@@ -554,31 +609,24 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 	}
 
 	private void clearForm() {
+		dateFecha.setValue(Utils.convertoToLocalDate(new Date()));
 		txtNumberSerial.setText("0");
 		txtTransaccion.setText("");
-		dateFecha.setValue(null);
-		txtBalanza.setText("");
+		dateFecha.setValue(null);		
 		cbxProducto.setValue(null);
 		cbxCliente.setValue(null);
 		cbxTransporte.setValue(null);
-		cbxProcedencia.setValue(null);
-		cbxComprobante.setValue(null);
-		txtComprobante1.setText("");
-		txtComprobante2.setText("");
-		txtProcedenciaDestino.setText("");
-		txtNumContenedor.setText("");
-		txtConductor.setText("");
-		cbxTipoDoc.setValue(null);
+		cbxProcedencia.setValue(null);		
 		txtNumDoc.setText("");
-		txtPatenteChasis.setText("");
-		txtPatenteAceptado.setText("");
+		txtPatente.setText("");		
+		txtFactura.setText("");
+		txtObservaciones.setText("");
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {		
 		initValues();
-		initPersistence();
-		initSerialConnector();
+		initPersistence();		
 		clearForm();
 	}
 	
@@ -600,4 +648,10 @@ public class PesarEntradaSalidaController implements Initializable, SerialPortEv
 			}
 		}		
 	}
+	
+	@Override
+	public void setStage(Stage stage) {
+		this.stage =stage;
+		initSerialConnector();
+	} 
 }

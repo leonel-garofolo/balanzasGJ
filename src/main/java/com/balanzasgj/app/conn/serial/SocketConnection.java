@@ -6,9 +6,11 @@ import java.util.Enumeration;
 import java.util.TooManyListenersException;
 
 import gnu.io.CommPortIdentifier;
+import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+import gnu.io.UnsupportedCommOperationException;
 
 public class SocketConnection implements SerialPortEventListener {
 	SerialPort serialPort;
@@ -26,7 +28,7 @@ public class SocketConnection implements SerialPortEventListener {
 		super();	
 	}
 
-	public void conectar(String portName, int dataRate, int dataBits, int stopBits, int parity, int timeOut) {
+	public void conectar(String portName, int dataRate, int dataBits, int stopBits, int parity, int timeOut) throws Exception {
 		CommPortIdentifier portId = null;
 		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 		// iterate through, looking for the port
@@ -37,19 +39,16 @@ public class SocketConnection implements SerialPortEventListener {
 				break;
 			}
 		}
-		try {
-			serialPort = (SerialPort) portId.open(this.getClass().getName(), timeOut);
-			// set port parameters
-			System.out.println("port: " + portName);
-			System.out.println("DataRate: " + dataRate);
-			System.out.println("dataBits: " + dataBits);
-			System.out.println("stopBits: " + stopBits);
-			System.out.println("parity: " + parity);
-			
-			serialPort.setSerialPortParams(dataRate, dataBits, stopBits, parity);
-			input = serialPort.getInputStream();			
-		} catch (Exception e) {
-		}
+		serialPort = (SerialPort) portId.open(this.getClass().getName(), timeOut);
+		// set port parameters
+		System.out.println("port: " + portName);
+		System.out.println("DataRate: " + dataRate);
+		System.out.println("dataBits: " + dataBits);
+		System.out.println("stopBits: " + stopBits);
+		System.out.println("parity: " + parity);
+		
+		serialPort.setSerialPortParams(dataRate, dataBits, stopBits, parity);
+		input = serialPort.getInputStream();		
 	}
 
 	public synchronized void close() {

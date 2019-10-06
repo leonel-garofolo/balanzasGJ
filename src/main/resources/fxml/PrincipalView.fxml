@@ -41,7 +41,7 @@
 			<top>
 				<HBox alignment="CENTER" prefHeight="100.0" spacing="20.0" BorderPane.alignment="CENTER">
 					<children>
-						<Button fx:id="btnTaras" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleTara" text="Tomar Tara">
+						<Button fx:id="btnTaras" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleTara" text="Tomar Pesajes">
 							<graphic>
 								<ImageView fitHeight="94.0" fitWidth="103.0" pickOnBounds="true" preserveRatio="true">
 									<image>

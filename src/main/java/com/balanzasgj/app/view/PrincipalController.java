@@ -86,6 +86,7 @@ public class PrincipalController implements Initializable{
 		    	stage.setOnCloseRequest(E -> {
 		    		controller.closeSocket();
 		    	   });
+		    	controller.setStage(stage);
 		    }
 		    if(loader.getController() instanceof HerramientasController) {
 		    	IView controller = (HerramientasController)loader.getController();
