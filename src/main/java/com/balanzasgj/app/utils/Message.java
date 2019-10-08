@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextInputDialog;
 
 public class Message {
@@ -48,6 +49,20 @@ public class Message {
         Optional<String> result = alert.showAndWait();
         if (result.isPresent()){
             return result.get();
+        }
+        return "";
+    }
+    
+    public static String addElement(String element){
+    	TextInputDialog alert = new TextInputDialog("Ingrese el texto aqui...");
+        alert.setTitle("Seguridad");
+        alert.setHeaderText(null);
+        alert.setContentText(element);
+        
+        // Traditional way to get the response value.
+        Optional<String> result = alert.showAndWait();
+        if (result.isPresent()){
+            return result.get().toUpperCase();
         }
         return "";
     }

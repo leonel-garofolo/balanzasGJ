@@ -29,9 +29,6 @@
 	<field name="conductor" class="java.lang.String">
 		<fieldDescription><![CDATA[conductor]]></fieldDescription>
 	</field>
-	<field name="comprobanteNum2" class="java.lang.String">
-		<fieldDescription><![CDATA[comprobanteNum2]]></fieldDescription>
-	</field>
 	<field name="patente" class="java.lang.String">
 		<fieldDescription><![CDATA[patente]]></fieldDescription>
 	</field>
@@ -49,9 +46,6 @@
 	</field>
 	<field name="transaccion" class="java.lang.String">
 		<fieldDescription><![CDATA[transaccion]]></fieldDescription>
-	</field>
-	<field name="comprobanteTipo" class="java.lang.String">
-		<fieldDescription><![CDATA[comprobanteTipo]]></fieldDescription>
 	</field>
 	<field name="tipoDoc" class="java.lang.String">
 		<fieldDescription><![CDATA[tipoDoc]]></fieldDescription>

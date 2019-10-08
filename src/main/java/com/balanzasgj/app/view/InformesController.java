@@ -92,7 +92,7 @@ public class InformesController {
             Message.error("Debe completar los datos de filtrado.");
         }else{
             tblPesajes.getItems().clear();
-            tblPesajes.getItems().addAll(tarasPersistence.findByField(cbxFiltroBuscar.getSelectionModel().getSelectedItem(), txtFiltroBuscar.getText()));
+            tblPesajes.getItems().addAll(tarasPersistence.findByField(cbxFiltroBuscar.getSelectionModel().getSelectedItem(), txtFiltroBuscar.getText(), false));
         }
     }
 

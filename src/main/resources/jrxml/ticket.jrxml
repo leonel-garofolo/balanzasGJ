@@ -20,9 +20,6 @@
 	<field name="procedencias" class="com.balanzasgj.app.model.Procedencias">
 		<fieldDescription><![CDATA[procedencias]]></fieldDescription>
 	</field>
-	<field name="comprobanteNum2" class="java.lang.String">
-		<fieldDescription><![CDATA[comprobanteNum2]]></fieldDescription>
-	</field>
 	<field name="comprobanteNun1" class="java.lang.String">
 		<fieldDescription><![CDATA[comprobanteNun1]]></fieldDescription>
 	</field>
@@ -31,9 +28,6 @@
 	</field>
 	<field name="fechaSalida" class="java.util.Date">
 		<fieldDescription><![CDATA[fechaSalida]]></fieldDescription>
-	</field>
-	<field name="comprobanteTipo" class="java.lang.String">
-		<fieldDescription><![CDATA[comprobanteTipo]]></fieldDescription>
 	</field>
 	<field name="patenteAceptado" class="java.lang.String">
 		<fieldDescription><![CDATA[patenteAceptado]]></fieldDescription>
@@ -219,10 +213,6 @@
 				</reportElement>
 				<text><![CDATA[Documento:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="130" y="153" width="50" height="17" uuid="879e0480-f06f-42d6-b9dd-bd37f0dfffaf"/>
-				<textFieldExpression><![CDATA[($F{comprobanteTipo}==null?"":$F{comprobanteTipo})]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="0" y="153" width="130" height="17" uuid="72e92494-8985-4ae5-b3a1-513c78ceb57f"/>
 				<text><![CDATA[Tipo y Nro de Comprobante:]]></text>
@@ -230,10 +220,6 @@
 			<textField>
 				<reportElement x="180" y="153" width="37" height="17" uuid="540f3463-0065-4abf-854a-108f2a734e93"/>
 				<textFieldExpression><![CDATA[($F{comprobanteNun1}==null?"":$F{comprobanteNun1})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="217" y="153" width="63" height="17" uuid="d3ea0f8e-3aea-4842-b82f-b88bdfcde263"/>
-				<textFieldExpression><![CDATA[($F{comprobanteNum2}==null?"":$F{comprobanteNum2})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="355" y="174" width="195" height="18" uuid="623dd75b-e21f-4139-a293-bd5020215b55"/>

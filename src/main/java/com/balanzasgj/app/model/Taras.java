@@ -30,9 +30,9 @@ public class Taras implements Serializable
     private Clientes    cliente    ;
     private Transportes    transporte ;
     private Procedencias procedencias;
-    private String     comprobanteTipo ;
+    private String     modalidad ;
     private String     comprobanteNun1 ;
-    private String     comprobanteNum2 ;
+    private String     modoTara ;
     private String     destino      ;
     private String     conductor    ;
     private String     tipoDoc      ;
@@ -46,6 +46,7 @@ public class Taras implements Serializable
     private BigDecimal pesoSalida   ;
     private Date fechaSalida  ;
     private BigDecimal pesoNeto   ;
+    private String     modoChasis ;
 
     /**
      * Default constructor
@@ -149,20 +150,20 @@ public class Taras implements Serializable
 		this.cliente = cliente;
 	}
 	/**
-     * Set the "comprobanteTipo" field value
+     * Set the "modalidad" field value
      * This field is mapped on the database column "comprobante_tipo" ( type "VARCHAR", NotNull : false ) 
-     * @param comprobanteTipo
+     * @param modalidad
      */
-    public void setComprobanteTipo( String comprobanteTipo ) {
-        this.comprobanteTipo = comprobanteTipo;
+    public void setModalidad( String modalidad ) {
+        this.modalidad = modalidad;
     }
     /**
-     * Get the "comprobanteTipo" field value
+     * Get the "modalidad" field value
      * This field is mapped on the database column "comprobante_tipo" ( type "VARCHAR", NotNull : false ) 
      * @return the field value
      */
-    public String getComprobanteTipo() {
-        return this.comprobanteTipo;
+    public String getModalidad() {
+        return this.modalidad;
     }
 
     /**
@@ -183,20 +184,20 @@ public class Taras implements Serializable
     }
 
     /**
-     * Set the "comprobanteNum2" field value
+     * Set the "modoTara" field value
      * This field is mapped on the database column "comprobante_num_2" ( type "VARCHAR", NotNull : false ) 
-     * @param comprobanteNum2
+     * @param modoTara
      */
-    public void setComprobanteNum2( String comprobanteNum2 ) {
-        this.comprobanteNum2 = comprobanteNum2;
+    public void setModoTara( String modoTara ) {
+        this.modoTara = modoTara;
     }
     /**
-     * Get the "comprobanteNum2" field value
+     * Get the "modoTara" field value
      * This field is mapped on the database column "comprobante_num_2" ( type "VARCHAR", NotNull : false ) 
      * @return the field value
      */
-    public String getComprobanteNum2() {
-        return this.comprobanteNum2;
+    public String getModoTara() {
+        return this.modoTara;
     }
 
     /**
@@ -405,8 +406,16 @@ public class Taras implements Serializable
     public void setProcedencias(Procedencias procedencias) {
         this.procedencias = procedencias;
     }
+    
+    public String getModoChasis() {
+		return modoChasis;
+	}
 
-    //----------------------------------------------------------------------
+	public void setModoChasis(String modoChasis) {
+		this.modoChasis = modoChasis;
+	}
+
+	//----------------------------------------------------------------------
     // toString METHOD
     //----------------------------------------------------------------------
     @Override
@@ -422,11 +431,11 @@ public class Taras implements Serializable
         sb.append("|");
         sb.append(cliente);
         sb.append("|");
-        sb.append(comprobanteTipo);
+        sb.append(modalidad);
         sb.append("|");
         sb.append(comprobanteNun1);
         sb.append("|");
-        sb.append(comprobanteNum2);
+        sb.append(modoTara);
         sb.append("|");
         sb.append(destino);
         sb.append("|");

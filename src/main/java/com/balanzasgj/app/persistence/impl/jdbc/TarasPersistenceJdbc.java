@@ -28,7 +28,7 @@ import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements TarasPersistence {
 
 	private final static String SQL_SELECT_ALL = 
-		"select idtaras, transaccion, fecha, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, comprobante_tipo, comprobante_nun1, comprobante_num_2, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida " +
+		"select idtaras, transaccion, fecha, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis " +
 				"from taras t " +
 				"inner join clientes c on c.codigo = t.id_cliente " +
 				"inner join productos p on p.codigo = t.id_producto " +
@@ -37,7 +37,7 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 
 
 	private final static String SQL_SELECT =
-			"select idtaras, transaccion, fecha, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, comprobante_tipo, comprobante_nun1, comprobante_num_2, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida " +
+			"select idtaras, transaccion, fecha, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis " +
 					"from taras t " +
 					"inner join clientes c on c.codigo = t.id_cliente " +
 					"inner join productos p on p.codigo = t.id_producto " +
@@ -46,10 +46,10 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 					"where idtaras = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into taras ( transaccion, fecha, balanza, id_producto, id_cliente, id_transporte, id_procedencia, comprobante_tipo, comprobante_nun1, comprobante_num_2, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+		"insert into taras ( transaccion, fecha, balanza, id_producto, id_cliente, id_transporte, id_procedencia, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update taras set transaccion = ?, fecha = ?, balanza = ?, id_producto = ?, id_cliente = ?, id_transporte = ?, id_procedencia = ?, comprobante_tipo = ?, comprobante_nun1 = ?, comprobante_num_2 = ?, destino = ?, conductor = ?, tipo_doc = ?, num_doc = ?, patente = ?, patente_aceptado = ?, observacion = ?, contenedor_num = ?, peso_entrada = ?, peso_salida = ? where idtaras = ?";
+		"update taras set transaccion = ?, fecha = ?, balanza = ?, id_producto = ?, id_cliente = ?, id_transporte = ?, id_procedencia = ?, modalidad = ?, comprobante_nun1 = ?, modoTara = ?, destino = ?, conductor = ?, tipo_doc = ?, num_doc = ?, patente = ?, patente_aceptado = ?, observacion = ?, contenedor_num = ?, peso_entrada = ?, peso_salida = ?, modoChasis = ? where idtaras = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from taras where idtaras = ?";
@@ -93,9 +93,9 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		setValue(ps, i++, taras.getCliente().getCodigo()) ; // "id_cliente" : java.lang.Integer
 		setValue(ps, i++, taras.getTransporte().getCodigo() ) ; // "id_transporte" : java.lang.Integer
 		setValue(ps, i++, taras.getProcedencias().getCodigo() ) ; // "id_procedencia" : java.lang.Integer
-		setValue(ps, i++, taras.getComprobanteTipo() ) ; // "comprobante_tipo" : java.lang.String
+		setValue(ps, i++, taras.getModalidad() ) ; // "modalidad" : java.lang.String
 		setValue(ps, i++, taras.getComprobanteNun1() ) ; // "comprobante_nun1" : java.lang.String
-		setValue(ps, i++, taras.getComprobanteNum2() ) ; // "comprobante_num_2" : java.lang.String
+		setValue(ps, i++, taras.getModoTara() ) ; // "modoTara" : java.lang.String
 		setValue(ps, i++, taras.getDestino() ) ; // "destino" : java.lang.String
 		setValue(ps, i++, taras.getConductor() ) ; // "conductor" : java.lang.String
 		setValue(ps, i++, taras.getTipoDoc() ) ; // "tipo_doc" : java.lang.String
@@ -106,6 +106,7 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		setValue(ps, i++, taras.getContenedorNum() ) ; // "contenedor_num" : java.lang.String
 		setValue(ps, i++, taras.getPesoEntrada() ) ; // "peso_entrada" : java.math.BigDecimal
 		setValue(ps, i++, taras.getPesoSalida() ) ; // "peso_salida" : java.math.BigDecimal
+		setValue(ps, i++, taras.getModoChasis() ) ;
 	}
 
     //----------------------------------------------------------------------
@@ -119,9 +120,9 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		setValue(ps, i++, taras.getCliente().getCodigo()) ; // "id_cliente" : java.lang.Integer
 		setValue(ps, i++, taras.getTransporte().getCodigo() ) ; // "id_transporte" : java.lang.Integer
 		setValue(ps, i++, taras.getProcedencias().getCodigo() ) ; // "id_procedencia" : java.lang.Integer
-		setValue(ps, i++, taras.getComprobanteTipo() ) ; // "comprobante_tipo" : java.lang.String
+		setValue(ps, i++, taras.getModalidad() ) ; // "modalidad" : java.lang.String
 		setValue(ps, i++, taras.getComprobanteNun1() ) ; // "comprobante_nun1" : java.lang.String
-		setValue(ps, i++, taras.getComprobanteNum2() ) ; // "comprobante_num_2" : java.lang.String
+		setValue(ps, i++, taras.getModoTara() ) ; // "modoTara" : java.lang.String
 		setValue(ps, i++, taras.getDestino() ) ; // "destino" : java.lang.String
 		setValue(ps, i++, taras.getConductor() ) ; // "conductor" : java.lang.String
 		setValue(ps, i++, taras.getTipoDoc() ) ; // "tipo_doc" : java.lang.String
@@ -132,6 +133,7 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		setValue(ps, i++, taras.getContenedorNum() ) ; // "contenedor_num" : java.lang.String
 		setValue(ps, i++, taras.getPesoEntrada() ) ; // "peso_entrada" : java.math.BigDecimal
 		setValue(ps, i++, taras.getPesoSalida() ) ; // "peso_salida" : java.math.BigDecimal
+		setValue(ps, i++, taras.getModoChasis() ) ;
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, taras.getIdtaras() ) ; // "idtaras" : java.lang.Integer
 	}
@@ -185,9 +187,9 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		productos.setNombre(rs.getString("nombreProducto"));
 		taras.setProducto(productos);
 
-		taras.setComprobanteTipo(rs.getString("comprobante_tipo")); // java.lang.String
+		taras.setModalidad(rs.getString("modalidad")); // java.lang.String
 		taras.setComprobanteNun1(rs.getString("comprobante_nun1")); // java.lang.String
-		taras.setComprobanteNum2(rs.getString("comprobante_num_2")); // java.lang.String
+		taras.setModoTara(rs.getString("modoTara")); // java.lang.String
 		taras.setDestino(rs.getString("destino")); // java.lang.String
 		taras.setConductor(rs.getString("conductor")); // java.lang.String
 		taras.setTipoDoc(rs.getString("tipo_doc")); // java.lang.String
@@ -196,10 +198,12 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		taras.setPatenteAceptado(rs.getString("patente_aceptado")); // java.lang.String
 		taras.setObservacion(rs.getString("observacion")); // java.lang.String
 		taras.setContenedorNum(rs.getString("contenedor_num")); // java.lang.String
-		taras.setPesoEntrada(rs.getBigDecimal("peso_entrada")); // java.math.BigDecimal
+		taras.setPesoEntrada(rs.getBigDecimal("peso_entrada")); // java.math.BigDecimal		
 		if ( rs.wasNull() ) { taras.setPesoEntrada(null); }; // not primitive number => keep null value if any
 		taras.setPesoSalida(rs.getBigDecimal("peso_salida")); // java.math.BigDecimal
 		if ( rs.wasNull() ) { taras.setPesoSalida(null); }; // not primitive number => keep null value if any
+		
+		taras.setModoChasis(rs.getString("modoChasis"));
 
 		return taras ;
 	}
@@ -260,12 +264,14 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 	}
 
 	@Override
-	public List<Taras> findByField(String field, String data) {
+	public List<Taras> findByField(String field, String data, boolean salidasPendientes) {
 		List<Taras> list = new LinkedList<Taras>() ;
 		Connection conn = null;
 
 		String selectWithFilter = getSqlSelectAll();
-		selectWithFilter += " where peso_salida is null ";
+		if(salidasPendientes) {
+			selectWithFilter += " where peso_salida is null ";
+		}
 		if(field.equals("Número de Transacción")){
 			selectWithFilter += " and transaccion like '%" + data + "%' ";
 		}else if(field.equals("Patente Chasis")){

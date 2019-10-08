@@ -1,41 +1,46 @@
 package com.balanzasgj.app.model;
 
-public class Ejes {
+import java.io.Serializable;
+
+public class Ejes implements Serializable {
 	
-	private long idEje;
-	private int nroEje;
-	private double peso;
-	private long idTaras;
-	private char type;
-	
-	public long getIdEje() {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long idEje;
+	private Integer nroEje;
+	private Double peso;
+	private Long idTaras;
+	private String type;
+	public Long getIdEje() {
 		return idEje;
 	}
-	public void setIdEje(long idEje) {
+	public void setIdEje(Long idEje) {
 		this.idEje = idEje;
 	}
-	public int getNroEje() {
+	public Integer getNroEje() {
 		return nroEje;
 	}
-	public void setNroEje(int nroEje) {
+	public void setNroEje(Integer nroEje) {
 		this.nroEje = nroEje;
 	}
-	public double getPeso() {
+	public Double getPeso() {
 		return peso;
 	}
-	public void setPeso(double peso) {
+	public void setPeso(Double peso) {
 		this.peso = peso;
 	}
-	public long getIdTaras() {
+	public Long getIdTaras() {
 		return idTaras;
 	}
-	public void setIdTaras(long idTaras) {
+	public void setIdTaras(Long idTaras) {
 		this.idTaras = idTaras;
 	}
-	public char getType() {
+	public String getType() {
 		return type;
 	}
-	public void setType(char type) {
+	public void setType(String type) {
 		this.type = type;
 	}	
 }
