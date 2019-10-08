@@ -331,7 +331,15 @@
                               <ComboBox fx:id="cbxFiltroBuscar" prefWidth="200.0" />
                               <TextField fx:id="txtFiltroBuscar" />
                               <CheckBox fx:id="chkSalidasPendientes" mnemonicParsing="false" text="Salidas Pendientes" />
-                              <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#handleBuscar" text="Buscar" />
+                              <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#handleBuscar" text="Buscar" >
+                              	<graphic>
+                                   <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                      <image>
+                                         <Image url="@../images/looking.png" />
+                                      </image>
+                                   </ImageView>
+                                  </graphic>                           
+                              </Button>
                               <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#handleLimpiar" text="Limpiar" />
                            </children>
                            <padding>

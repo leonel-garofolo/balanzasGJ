@@ -2,9 +2,10 @@ package com.balanzasgj.app.utils;
 
 import java.util.Optional;
 
+import com.balanzasgj.app.view.custom.PasswordDialog;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextInputDialog;
 
 public class Message {
@@ -40,11 +41,8 @@ public class Message {
     }
     
     public static String optionSecurity(){
-    	TextInputDialog alert = new TextInputDialog("Clave");
-        alert.setTitle("Seguridad");
-        alert.setHeaderText(null);
-        alert.setContentText("Ingrese la clave de autorización:");
-
+    	PasswordDialog alert = new PasswordDialog();
+      
         // Traditional way to get the response value.
         Optional<String> result = alert.showAndWait();
         if (result.isPresent()){
