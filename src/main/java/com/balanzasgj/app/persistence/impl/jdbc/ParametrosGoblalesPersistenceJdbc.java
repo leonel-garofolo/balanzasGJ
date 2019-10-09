@@ -12,7 +12,7 @@ import java.util.List;
 
 import javax.inject.Named;
 
-import com.balanzasgj.app.basic.bean.ParametrosGoblales;
+import com.balanzasgj.app.model.ParametrosGoblales;
 import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 

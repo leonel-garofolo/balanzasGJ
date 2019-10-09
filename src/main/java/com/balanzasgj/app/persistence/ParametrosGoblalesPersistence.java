@@ -2,7 +2,7 @@ package com.balanzasgj.app.persistence;
 
 import java.util.List;
 
-import com.balanzasgj.app.basic.bean.ParametrosGoblales;
+import com.balanzasgj.app.model.ParametrosGoblales;
 
 public interface ParametrosGoblalesPersistence {
 	List<ParametrosGoblales> findAll();

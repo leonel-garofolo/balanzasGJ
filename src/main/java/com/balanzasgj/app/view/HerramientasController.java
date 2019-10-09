@@ -5,11 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.imageio.ImageIO;
-
 import org.javafx.controls.customs.StringField;
 
-import com.balanzasgj.app.basic.bean.ParametrosGoblales;
+import com.balanzasgj.app.model.ParametrosGoblales;
 import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
 

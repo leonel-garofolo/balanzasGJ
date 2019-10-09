@@ -33,6 +33,9 @@ public class UsuariosPersistenceJdbc extends GenericJdbcDAO<Usuarios> implements
 	private final static String SQL_SELECT = 
 		"select id, nombre, clave, id_perfil from usuarios where id = ?";
 	
+	private final static String SQL_SELECT_FOR_NAME = 
+			"select id, nombre, clave, id_perfil from usuarios where nombre = ?";
+	
 	private final static String SQL_SELECT_WITH_FILTER_PERFIL = 
 			"select id, nombre, clave, id_perfil from usuarios where id_perfil = ?";
 
@@ -156,6 +159,29 @@ public class UsuariosPersistenceJdbc extends GenericJdbcDAO<Usuarios> implements
 	//@Override
 	public boolean load( Usuarios Usuarios ) {
 		return super.doSelect(Usuarios) ;
+	}
+	
+	public Usuarios loadForNombre(String nombre ) {
+		Usuarios bean = null;
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			PreparedStatement ps = conn.prepareStatement(SQL_SELECT_FOR_NAME);			
+			setValue(ps, 1, nombre);
+			//--- Execute SQL SELECT
+			ResultSet rs = ps.executeQuery();
+			while ( rs.next() ) {
+				bean = newInstance();
+				populateBean(rs, bean);				
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(conn);
+		}
+		return bean;
 	}
 	
 	public List<Usuarios> loadForPerfil(long idPerfil ) {

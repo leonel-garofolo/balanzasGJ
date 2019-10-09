@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.balanzasgj.app.basic.bean.ParametrosGoblales;
+import com.balanzasgj.app.model.ParametrosGoblales;
 import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
 
@@ -37,7 +37,6 @@ public class PrincipalController implements Initializable{
 	
 	@FXML
 	private Label lblEmpresa;
-	
 
 	@FXML
     private void handleUsuarios(ActionEvent event) {
@@ -94,7 +93,6 @@ public class PrincipalController implements Initializable{
 		    }		    
 		    stage.show();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}	
@@ -110,5 +108,5 @@ public class PrincipalController implements Initializable{
 		}		
 		
 		lblEmpresa.setFont(new Font("Arial", 30));
-	} 
+	}
 }

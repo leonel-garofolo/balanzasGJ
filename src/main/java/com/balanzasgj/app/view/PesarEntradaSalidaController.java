@@ -12,12 +12,12 @@ import java.util.ResourceBundle;
 
 import org.javafx.controls.customs.ComboBoxAutoComplete;
 
-import com.balanzasgj.app.basic.bean.ParametrosGoblales;
 import com.balanzasgj.app.conn.serial.SocketConnection;
 import com.balanzasgj.app.model.Clientes;
 import com.balanzasgj.app.model.Comunicaciones;
 import com.balanzasgj.app.model.Ejes;
 import com.balanzasgj.app.model.Indicadores;
+import com.balanzasgj.app.model.ParametrosGoblales;
 import com.balanzasgj.app.model.Patentes;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
@@ -27,7 +27,6 @@ import com.balanzasgj.app.persistence.ClientesPersistence;
 import com.balanzasgj.app.persistence.ComunicacionesPersistence;
 import com.balanzasgj.app.persistence.EjesPersistence;
 import com.balanzasgj.app.persistence.IndicadoresPersistence;
-import com.balanzasgj.app.persistence.OperacionesPersistence;
 import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
 import com.balanzasgj.app.persistence.PatentesPersistence;
 import com.balanzasgj.app.persistence.ProcedenciasPersistence;
@@ -38,7 +37,6 @@ import com.balanzasgj.app.persistence.impl.jdbc.ClientesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ComunicacionesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.EjesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.IndicadoresPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.OperacionesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.PatentesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProcedenciasPersistenceJdbc;
@@ -200,7 +198,6 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private char statusTara;
 
 	private ClientesPersistence clientesPersistence;
-	private OperacionesPersistence operacionesPersistence;
 	private PatentesPersistence patentesPersistence;
 	private ProcedenciasPersistence procedenciasPersistence;
 	private ProductosPersistence productosPersistence;
@@ -706,7 +703,6 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private void initPersistence() {		
 		this.patentesPersistence = new PatentesPersistenceJdbc();
 		this.clientesPersistence = new ClientesPersistenceJdbc();
-		this.operacionesPersistence = new OperacionesPersistenceJdbc();
 		this.procedenciasPersistence = new ProcedenciasPersistenceJdbc();
 		this.productosPersistence = new ProductosPersistenceJdbc();
 		this.transportesPersistence = new TransportesPersistenceJdbc();
