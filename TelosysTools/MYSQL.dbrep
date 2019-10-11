@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Telosys Database Repository --><root>
-<tableList databaseId="0" databaseName="MYSQL" databaseProductName="MySQL" generation="2019-10-05 21:07:17">
+<tableList databaseId="0" databaseName="MYSQL" databaseProductName="MySQL" generation="2019-10-06 22:54:58">
 <table catalog="sist_pesada" databaseType="TABLE" javaBean="AjustesDeStocks" name="ajustes_de_stocks" schema="">
 <column dbAutoIncremented="true" dbComment="" dbDefaultValue="" dbName="codigo" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="10" dbTypeName="INT" inputType="number" javaName="codigo" javaType="java.lang.Integer" jdbcTypeCode="4" label="Codigo" notNull="true" selected="true"/>
 <column dbComment="" dbDefaultValue="" dbName="nombre" dbNotNull="false" dbPosition="2" dbSize="255" dbTypeName="VARCHAR" inputType="text" javaName="nombre" javaType="java.lang.String" jdbcTypeCode="12" label="Nombre" maxLength="255" notNull="false" selected="true"/>
@@ -45,6 +45,11 @@
 <column dbComment="" dbDefaultValue="" dbName="id" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="255" dbTypeName="VARCHAR" inputType="text" javaName="id" javaType="java.lang.String" jdbcTypeCode="12" label="Id" maxLength="255" notEmpty="true" notNull="true" selected="true"/>
 <column dbComment="" dbDefaultValue="" dbName="value" dbNotNull="true" dbPosition="2" dbSize="255" dbTypeName="VARCHAR" inputType="text" javaName="value" javaType="java.lang.String" jdbcTypeCode="12" label="Value" maxLength="255" notEmpty="true" notNull="true" selected="true"/>
 </table>
+<table catalog="sist_pesada" databaseType="TABLE" javaBean="Patentes" name="patentes" schema="">
+<column dbComment="" dbDefaultValue="" dbName="codigo" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="45" dbTypeName="VARCHAR" inputType="text" javaName="codigo" javaType="java.lang.String" jdbcTypeCode="12" label="Codigo" maxLength="45" notEmpty="true" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="tara" dbNotNull="true" dbPosition="2" dbSize="22" dbTypeName="DOUBLE" inputType="number" javaName="tara" javaType="java.lang.Double" jdbcTypeCode="8" label="Tara" notNull="true" selected="true"/>
+<column dateType="DT" dbComment="" dbDefaultValue="" dbName="update" dbNotNull="true" dbPosition="3" dbSize="19" dbTypeName="DATETIME" inputType="" javaName="update" javaType="java.util.Date" jdbcTypeCode="93" label="Update" notNull="true" selected="true"/>
+</table>
 <table catalog="sist_pesada" databaseType="TABLE" javaBean="Procedencias" name="procedencias" schema="">
 <column dbAutoIncremented="true" dbComment="" dbDefaultValue="" dbName="codigo" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="10" dbTypeName="INT" inputType="number" javaName="codigo" javaType="java.lang.Integer" jdbcTypeCode="4" label="Codigo" notNull="true" selected="true"/>
 <column dbComment="" dbDefaultValue="" dbName="nombre" dbNotNull="false" dbPosition="2" dbSize="255" dbTypeName="VARCHAR" inputType="text" javaName="nombre" javaType="java.lang.String" jdbcTypeCode="12" label="Nombre" maxLength="255" notNull="false" selected="true"/>
@@ -63,9 +68,9 @@
 <column dbComment="" dbDefaultValue="" dbName="id_cliente" dbNotNull="false" dbPosition="6" dbSize="10" dbTypeName="INT" inputType="number" javaName="idCliente" javaType="java.lang.Integer" jdbcTypeCode="4" label="Id cliente" notNull="false" selected="true"/>
 <column dbComment="" dbDefaultValue="" dbName="id_transporte" dbNotNull="false" dbPosition="7" dbSize="10" dbTypeName="INT" inputType="number" javaName="idTransporte" javaType="java.lang.Integer" jdbcTypeCode="4" label="Id transporte" notNull="false" selected="true"/>
 <column dbComment="" dbDefaultValue="" dbName="id_procedencia" dbNotNull="false" dbPosition="8" dbSize="10" dbTypeName="INT" inputType="number" javaName="idProcedencia" javaType="java.lang.Integer" jdbcTypeCode="4" label="Id procedencia" notNull="false" selected="true"/>
-<column dbComment="" dbDefaultValue="" dbName="comprobante_tipo" dbNotNull="false" dbPosition="9" dbSize="4" dbTypeName="VARCHAR" inputType="text" javaName="comprobanteTipo" javaType="java.lang.String" jdbcTypeCode="12" label="Comprobante tipo" maxLength="4" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="modalidad" dbNotNull="false" dbPosition="9" dbSize="45" dbTypeName="VARCHAR" inputType="text" javaName="modalidad" javaType="java.lang.String" jdbcTypeCode="12" label="Modalidad" maxLength="45" notNull="false" selected="true"/>
 <column dbComment="" dbDefaultValue="" dbName="comprobante_nun1" dbNotNull="false" dbPosition="10" dbSize="45" dbTypeName="VARCHAR" inputType="text" javaName="comprobanteNun1" javaType="java.lang.String" jdbcTypeCode="12" label="Comprobante nun1" maxLength="45" notNull="false" selected="true"/>
-<column dbComment="" dbDefaultValue="" dbName="comprobante_num_2" dbNotNull="false" dbPosition="11" dbSize="45" dbTypeName="VARCHAR" inputType="text" javaName="comprobanteNum2" javaType="java.lang.String" jdbcTypeCode="12" label="Comprobante num 2" maxLength="45" notNull="false" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="modoTara" dbNotNull="false" dbPosition="11" dbSize="45" dbTypeName="VARCHAR" inputType="text" javaName="modotara" javaType="java.lang.String" jdbcTypeCode="12" label="Modotara" maxLength="45" notNull="false" selected="true"/>
 <column dbComment="" dbDefaultValue="" dbName="destino" dbNotNull="false" dbPosition="12" dbSize="255" dbTypeName="VARCHAR" inputType="text" javaName="destino" javaType="java.lang.String" jdbcTypeCode="12" label="Destino" maxLength="255" notNull="false" selected="true"/>
 <column dbComment="" dbDefaultValue="" dbName="conductor" dbNotNull="false" dbPosition="13" dbSize="255" dbTypeName="VARCHAR" inputType="text" javaName="conductor" javaType="java.lang.String" jdbcTypeCode="12" label="Conductor" maxLength="255" notNull="false" selected="true"/>
 <column dbComment="" dbDefaultValue="" dbName="tipo_doc" dbNotNull="false" dbPosition="14" dbSize="3" dbTypeName="VARCHAR" inputType="text" javaName="tipoDoc" javaType="java.lang.String" jdbcTypeCode="12" label="Tipo doc" maxLength="3" notNull="false" selected="true"/>
@@ -77,6 +82,7 @@
 <column dbComment="" dbDefaultValue="" dbName="peso_entrada" dbNotNull="false" dbPosition="20" dbSize="9" dbTypeName="DECIMAL" inputType="number" javaName="pesoEntrada" javaType="java.math.BigDecimal" jdbcTypeCode="3" label="Peso entrada" notNull="false" selected="true"/>
 <column dbComment="" dbDefaultValue="" dbName="peso_salida" dbNotNull="false" dbPosition="21" dbSize="9" dbTypeName="DECIMAL" inputType="number" javaName="pesoSalida" javaType="java.math.BigDecimal" jdbcTypeCode="3" label="Peso salida" notNull="false" selected="true"/>
 <column dateType="DT" dbComment="" dbDefaultValue="CURRENT_TIMESTAMP" dbName="update_date" dbNotNull="true" dbPosition="22" dbSize="19" dbTypeName="TIMESTAMP" inputType="" javaName="updateDate" javaType="java.util.Date" jdbcTypeCode="93" label="Update date" notNull="true" selected="true"/>
+<column dbComment="" dbDefaultValue="" dbName="modoChasis" dbNotNull="false" dbPosition="23" dbSize="45" dbTypeName="VARCHAR" inputType="text" javaName="modochasis" javaType="java.lang.String" jdbcTypeCode="12" label="Modochasis" maxLength="45" notNull="false" selected="true"/>
 </table>
 <table catalog="sist_pesada" databaseType="TABLE" javaBean="Transportes" name="transportes" schema="">
 <column dbAutoIncremented="true" dbComment="" dbDefaultValue="" dbName="codigo" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="10" dbTypeName="INT" inputType="number" javaName="codigo" javaType="java.lang.Integer" jdbcTypeCode="4" label="Codigo" notNull="true" selected="true"/>

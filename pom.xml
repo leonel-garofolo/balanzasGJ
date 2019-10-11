@@ -97,7 +97,7 @@
 							implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
 						<transformer
 							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-							<mainClass>org.labruzeza.colectividades.App</mainClass>
+							<mainClass>com.balanzasgj.app.App</mainClass>
 						</transformer>
 					</transformers>
 				</configuration>
@@ -116,10 +116,10 @@
 						<configuration>
 							<headerType>gui</headerType>
 							<jar>${project.build.directory}/${artifactId}-${version}-shaded.jar</jar>
-							<outfile>${project.build.directory}/LaBruzezaCajaCliente.exe</outfile>
+							<outfile>${project.build.directory}/SistemaDePesaje.exe</outfile>
 							<downloadUrl>http://java.com/download</downloadUrl>
 							<classPath>
-								<mainClass>org.labruzeza.colectividades.App</mainClass>
+								<mainClass>com.balanzasgj.app.App</mainClass>
 								<preCp>anything</preCp>
 							</classPath>
 

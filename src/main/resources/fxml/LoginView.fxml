@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
-
-<AnchorPane prefHeight="134.0" prefWidth="291.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.balanzasgj.app.view.LoginController">
+<AnchorPane prefHeight="134.0" prefWidth="291.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.LoginController">
    <children>
       <GridPane layoutY="22.0" prefHeight="91.0" prefWidth="281.0">
         <columnConstraints>
@@ -20,7 +22,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="btnIngresar" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#handleIngresar" text="Ingresar" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button fx:id="btnIngresar" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#handleIngresar" prefHeight="25.0" prefWidth="79.0" text="Ingresar" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Usuario:">
                <GridPane.margin>
                   <Insets left="15.0" />
@@ -33,6 +35,11 @@
             </Label>
             <TextField fx:id="txtUsuario" GridPane.columnIndex="1" />
             <PasswordField fx:id="txtClave" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ImageView fitHeight="33.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../images/entrar.png" />
+               </image>
+            </ImageView>            	
          </children>
       </GridPane>
    </children>
