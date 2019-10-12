@@ -58,12 +58,14 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -94,13 +96,11 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	
 	/* TOMAR PESAJE*/
 	@FXML
-	private TextField txtNumberSerial;
-	@FXML
-	private Button btnSubir;
-	@FXML
-	private Button btnBajar;
+	private TextField txtNumberSerial;	
 	@FXML
 	private Button btnIngresoManual;
+	@FXML
+	private Label lblTara;	
 	@FXML
 	private Button btnTomarTara;	
 	@FXML
@@ -136,8 +136,11 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private Button btnAccesoProcedencia;
 	
+	/*
 	@FXML
 	private ComboBox<Patentes> cbxPatente;
+	*/
+	private TextField txtPatente;
 	@FXML
 	private TextField txtNumDoc;
 	
@@ -242,6 +245,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		taraEdit = new Taras();
 		dateFecha.setValue(Utils.convertoToLocalDate(new Date()));
 		btnIngresoManual.setDisable(false);
+		cbxModoTara.setValue("NORMAL");
+		cbxModalidad.setValue("ESTANDAR");
+		cbxModoChasis.setValue("COMPLETO");
 	}
 
 	@FXML
@@ -285,8 +291,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		String value = Message.optionSecurity();
 		if(value.equals("123")) {
 			this.ingManual = true;
-			btnSubir.setDisable(!ingManual);
-			btnBajar.setDisable(!ingManual);
+			txtNumberSerial.setEditable(ingManual);
+			txtNumberSerial.setDisable(!ingManual);
+			
 		}
 		System.out.println(value);
 	}
@@ -295,7 +302,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private void handleAplicar(ActionEvent event) {
 		if (cbxProducto.getValue() != null && cbxCliente.getValue() != null && cbxTransporte.getValue() != null
 				&& cbxProcedencia.getValue() != null
-				&& !cbxPatente.getSelectionModel().isEmpty()
+				//&& !cbxPatente.getSelectionModel().isEmpty()
+				&& !txtPatente.getText().isEmpty()
 				&& txtTransaccion.getText() != null && !txtTransaccion.getText().isEmpty() 
 				&& dateFecha.getValue() != null
 				&& !cbxModoTara.getSelectionModel().isEmpty()
@@ -316,7 +324,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 				tara.setCliente(cbxCliente.getValue());
 				tara.setTransporte(cbxTransporte.getValue());
 				tara.setProcedencias(cbxProcedencia.getValue());
-				tara.setPatente(cbxPatente.getSelectionModel().getSelectedItem().getCodigo());
+				//tara.setPatente(cbxPatente.getSelectionModel().getSelectedItem().getCodigo());
+				tara.setPatente(txtPatente.getText());
 				tara.setNumDoc(txtNumDoc.getText());
 				tara.setComprobanteNun1(txtFactura.getText());
 				tara.setObservacion(txtObservaciones.getText());
@@ -347,7 +356,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 				if (cbxModoTara.getSelectionModel().getSelectedItem().equals("CON TARA") 
 						&& !txtTara.equals("")) {
 					totalPeso = totalPeso - Double.valueOf(txtTara.getText());
-					Patentes p = cbxPatente.getSelectionModel().getSelectedItem();
+					//Patentes p = cbxPatente.getSelectionModel().getSelectedItem();
+					Patentes p = new Patentes();
+					p.setCodigo(txtPatente.getText());
 					p.setTara(Double.valueOf(txtTara.getText()));
 					this.patentesPersistence.save(p);
 					
@@ -380,9 +391,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 				
 				refleshTableTaras();
 				saveContadorTransaccion();
-				Message.info("Los datos se guardaron correctamente.");
-				btnSubir.setDisable(true);
-				btnBajar.setDisable(true);
+				Message.info("Los datos se guardaron correctamente.");				
 				btnIngresoManual.setDisable(true);
 			}
 		} else {
@@ -426,7 +435,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		idTaraEdit = taraEdit.getIdtaras();
 		txtTransaccion.setText(taraEdit.getTransaccion());
 		dateFecha.setValue(Utils.convertoToLocalDate(taraEdit.getFecha()));	
-		cbxPatente.setValue(this.patentesPersistence.findById(taraEdit.getPatente()));		
+		//cbxPatente.setValue(this.patentesPersistence.findById(taraEdit.getPatente()));
+		txtPatente.setText(this.patentesPersistence.findById(taraEdit.getPatente()).getCodigo());
 		txtEntrada.setText(taraEdit.getPesoEntrada().toString());
 		if (taraEdit.getPesoSalida() != null) {
 			txtSalida.setText(taraEdit.getPesoSalida().toString());
@@ -514,9 +524,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			pat.setTara(0d);
 			pat.setUpdate(new Date());
 			patentesPersistence.save(pat );
+			/*
 			cbxPatente.getItems().clear();
 			cbxPatente.getItems().addAll(patentesPersistence.findAll());			
 			cbxPatente.setValue(pat);
+			*/
+			
 		}
 	}
 
@@ -589,15 +602,20 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	}
 
 	private void initValues() {
+		tblEjes.setVisible(false);
+		btnEliminarEje.setVisible(false);
+		btnTomarTara.setVisible(false);
+		txtTara.setVisible(false);
+		lblTara.setVisible(false);
+		
 		this.ingManual = false;
-		btnSubir.setDisable(!ingManual);
-		btnBajar.setDisable(!ingManual);		
 		btnIngresoManual.setDisable(true);
 		layout1.setDisable(true);	
 		layout2.setDisable(true);
 		cbxModoTara.getItems().addAll(new String[] { "NORMAL", "CON TARA"});
 		cbxModalidad.getItems().addAll(new String[] { "ESTANDAR", "ADUANA"});
 		cbxModoChasis.getItems().addAll(new String[] { "COMPLETO", "POR EJE"});
+		/*
 		cbxPatente.valueProperty().addListener(new ChangeListener<Patentes>() {
 	      	@Override
 			public void changed(ObservableValue<? extends Patentes> observable, Patentes oldValue, Patentes newValue) {
@@ -606,6 +624,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	      		}
 			}
 	    });
+	    */
 		
 		
 		cbxModoTara.valueProperty().addListener(new ChangeListener<String>() {
@@ -624,6 +643,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 				
 		cbxFiltroBuscar.getItems().addAll(new String[] { "Número de Transacción", "Patente Chasis", "Producto",
 				"Cliente", "Transporte", "Procedencia" });
+		cbxFiltroBuscar.setValue("Patente Chasis");
 
 		dateFecha.setValue(LocalDate.now());
 		txtNumberSerial.textProperty().addListener((ov, oldValue, newValue) -> {
@@ -644,32 +664,50 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		txtNumDoc.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtNumDoc.setText(newValue.toUpperCase());
 		});
+		
+		
+		
+		txtNumberSerial.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	txtNumberSerial.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
 	}
 	
 	private void enabledTara(String newValue) {
 		if(newValue != null && statusTara != '-') {
   			if(newValue.equals("CON TARA")) {
-				btnTomarTara.setDisable(false);
+				btnTomarTara.setVisible(true);
+				txtTara.setVisible(true);
+				lblTara.setVisible(true);
 			}else {
-				btnTomarTara.setDisable(true);
+				btnTomarTara.setVisible(false);
+				txtTara.setVisible(false);
+				lblTara.setVisible(false);
 			}
   		} else {
-  			btnTomarTara.setDisable(true);
+  			btnTomarTara.setVisible(false);
+  			txtTara.setVisible(false);
+			lblTara.setVisible(false);
   		}
 	}
 	
 	private void enabledTableEjes(String newValue) {
 		if(newValue != null && statusTara != '-') {
   			if(newValue.equals("POR EJE")) {
-				tblEjes.setDisable(false);
-				btnEliminarEje.setDisable(false);
+				tblEjes.setVisible(true);
+				btnEliminarEje.setVisible(true);
 			}else {
-				tblEjes.setDisable(true);
-				btnEliminarEje.setDisable(true);
+				tblEjes.setVisible(false);
+				btnEliminarEje.setVisible(false);
 			}
   		} else {
-  			tblEjes.setDisable(true);
-			btnEliminarEje.setDisable(true);
+  			tblEjes.setVisible(false);
+			btnEliminarEje.setVisible(false);
   		}
 	}
 
@@ -712,7 +750,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		this.tarasPersistence = new TarasPersistenceJdbc();
 		this.parametrosGoblalesPersistence = new ParametrosGoblalesPersistenceJdbc();
 
-		cbxPatente.getItems().addAll(patentesPersistence.findAll());
+		//cbxPatente.getItems().addAll(patentesPersistence.findAll());
 		cbxProducto.getItems().addAll(productosPersistence.findAll());
 		cbxCliente.getItems().addAll(clientesPersistence.findAll());
 		cbxTransporte.getItems().addAll(transportesPersistence.findAll());
@@ -770,7 +808,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxTransporte.setValue(null);
 		cbxProcedencia.setValue(null);		
 		txtNumDoc.setText("");
-		cbxPatente.setValue(null);
+		//cbxPatente.setValue(null);
+		txtPatente.setText("");
 		txtTara.setText("");
 		txtFactura.setText("");
 		txtObservaciones.setText("");
@@ -793,15 +832,17 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 
 	@Override
 	public void serialEvent(SerialPortEvent event) {
-		if (event.getEventType() == SerialPortEvent.DATA_AVAILABLE) {		
-			try {
-				int available = socket.getInput().available();
-				byte[] chunk = new byte[available];
-				socket.getInput().read(chunk, 0, available);
-				sBufferConnection = new String(chunk);
-				txtNumberSerial.setText(sBufferConnection);
-			} catch (IOException e) {
-				System.out.println("IO Error Occurred: " + e.toString());
+		if(!ingManual) {
+			if (event.getEventType() == SerialPortEvent.DATA_AVAILABLE) {		
+				try {
+					int available = socket.getInput().available();
+					byte[] chunk = new byte[available];
+					socket.getInput().read(chunk, 0, available);
+					sBufferConnection = new String(chunk);
+					txtNumberSerial.setText(sBufferConnection);
+				} catch (IOException e) {
+					System.out.println("IO Error Occurred: " + e.toString());
+				}
 			}
 		}		
 	}

@@ -1,5 +1,9 @@
 package com.balanzasgj.app;
 
+import com.balanzasgj.app.view.HerramientasController;
+import com.balanzasgj.app.view.IView;
+import com.balanzasgj.app.view.LoginController;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +29,11 @@ public class AppClient extends Application {
 		Parent rootLogin = (Parent)loader.load();
 		this.scene = new Scene(rootLogin);		
 		scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());		
+		
+		if(loader.getController() instanceof LoginController) {
+	    	IView controller = (LoginController)loader.getController();
+	    	controller.setStage(primaryStage);
+	    }
 		
 		primaryStage.setScene(scene);
 		primaryStage.resizableProperty().set(false);

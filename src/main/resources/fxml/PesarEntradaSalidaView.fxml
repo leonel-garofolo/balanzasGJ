@@ -66,39 +66,19 @@
                                  </font>
                               </TextField>
                               <VBox prefHeight="109.0" prefWidth="5.0" spacing="15.0">
-                                 <children>
-                                    <Button fx:id="btnSubir" mnemonicParsing="false" onAction="#handleSubir" prefHeight="52.0" prefWidth="63.0">
-                                       <graphic>
-                                          <ImageView fitHeight="36.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/baseline_keyboard_arrow_up_black_24dp.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                    <Button fx:id="btnBajar" mnemonicParsing="false" onAction="#handleBajar" prefHeight="52.0" prefWidth="62.0">
-                                       <graphic>
-                                          <ImageView fitHeight="39.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/baseline_keyboard_arrow_down_black_24dp.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                 </children>
                                  <HBox.margin>
                                     <Insets bottom="15.0" right="3.0" top="15.0" />
                                  </HBox.margin>
                               </VBox>
                               <HBox prefHeight="142.0" prefWidth="242.0">
                                  <children>
-                                    <TableView fx:id="tblEjes" disable="true" prefHeight="142.0" prefWidth="158.0">
+                                    <TableView fx:id="tblEjes" prefHeight="142.0" prefWidth="158.0">
                                       <columns>
                                         <TableColumn fx:id="colNroEje" prefWidth="56.0" text="Nro Eje" />
                                         <TableColumn fx:id="colPeso" prefWidth="94.0" text="Peso" />
                                       </columns>
                                     </TableView>
-                                    <Button fx:id="btnEliminarEje" disable="true" mnemonicParsing="false" onAction="#handleEliminarEje" prefHeight="26.0" prefWidth="85.0" text="Eliminar">
+                                    <Button fx:id="btnEliminarEje" mnemonicParsing="false" onAction="#handleEliminarEje" prefHeight="26.0" prefWidth="85.0" text="Eliminar">
                                     	<graphic>
                                          <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
@@ -109,7 +89,7 @@
                                      </Button>
                                  </children>
                               </HBox>
-                              <VBox alignment="CENTER_RIGHT" prefHeight="142.0" prefWidth="471.0" spacing="3.0">
+                              <VBox alignment="CENTER_RIGHT" prefHeight="142.0" prefWidth="510.0" spacing="3.0">
                                  <children>
                                     <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
                                        <children>
@@ -122,7 +102,10 @@
                                                 </ImageView>
                                              </graphic>
                                           </Button>
-                                          <TextField fx:id="txtEntrada" disable="true" prefHeight="37.0" prefWidth="94.0" />
+                                          <TextField fx:id="txtEntrada" disable="true" prefHeight="37.0" prefWidth="94.0">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font></TextField>
                                           <Label text="kg" />
                                        </children>
                                        <padding>
@@ -140,7 +123,10 @@
                                                 </ImageView>
                                              </graphic>
                                           </Button>
-                                          <TextField fx:id="txtSalida" disable="true" prefHeight="37.0" prefWidth="95.0" />
+                                          <TextField fx:id="txtSalida" disable="true" prefHeight="37.0" prefWidth="95.0">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font></TextField>
                                           <Label text="kg" />
                                        </children>
                                        <padding>
@@ -154,7 +140,10 @@
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtNeto" disable="true" prefHeight="37.0" prefWidth="94.0" />
+                                          <TextField fx:id="txtNeto" disable="true" prefHeight="37.0" prefWidth="94.0">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font></TextField>
                                           <Label text="kg" />
                                        </children>
                                        <padding>
@@ -311,7 +300,7 @@
 	                                    </graphic>
                                     </Button>
                                     <ComboBoxAutoComplete fx:id="cbxPatente" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" />
-                                    <Label prefHeight="17.0" prefWidth="29.0" style="-fx-font-weight: bold;" text="Tara" GridPane.columnIndex="3" />
+                                    <Label fx:id="lblTara" prefHeight="17.0" prefWidth="29.0" style="-fx-font-weight: bold;" text="Tara" GridPane.columnIndex="3" />
                                     <TextField fx:id="txtTara" editable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="4" />
                                  </children>
                                  <HBox.margin>
@@ -331,7 +320,7 @@
                               <ComboBox fx:id="cbxFiltroBuscar" prefWidth="200.0" />
                               <TextField fx:id="txtFiltroBuscar" />
                               <CheckBox fx:id="chkSalidasPendientes" mnemonicParsing="false" text="Salidas Pendientes" />
-                              <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#handleBuscar" text="Buscar" >
+                              <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#handleBuscar" text="Buscar">
                               	<graphic>
                                    <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                       <image>

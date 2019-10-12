@@ -20,11 +20,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class LoginController implements Initializable{
+public class LoginController implements Initializable, IView{
 	@FXML
 	private TextField txtUsuario;
 	@FXML
@@ -32,6 +34,8 @@ public class LoginController implements Initializable{
 	@FXML
 	private Button btnIngresar;
 	private UsuariosPersistence usuariosPersistence;
+	
+	private Stage stage;
 	
 	@FXML
 	public void handleIngresar(Event e) {
@@ -46,9 +50,13 @@ public class LoginController implements Initializable{
 				return;
 			}
 			
-			Stage stage = new Stage();
+			
+			
+			//Stage stage = new Stage();
 			Screen screen = Screen.getPrimary();
 		    Rectangle2D bounds = screen.getVisualBounds();
+		    stage.setX(0);
+		    stage.setY(0);
 		    stage.setWidth(bounds.getWidth());
 		    stage.setHeight(bounds.getHeight());
 		    		    
@@ -70,12 +78,43 @@ public class LoginController implements Initializable{
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+			
+			//stage.hide();
 		}
 	}
 	
 		
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		this.usuariosPersistence = new UsuariosPersistenceJdbc();
+		this.usuariosPersistence = new UsuariosPersistenceJdbc();		
+		txtUsuario.setOnKeyPressed(new EventHandler<KeyEvent>()
+	    {
+	        @Override
+	        public void handle(KeyEvent ke)
+	        {
+	            if (ke.getCode().equals(KeyCode.ENTER))
+	            {
+	            	handleIngresar(ke);
+	            }
+	        }
+	    });
+		txtClave.setOnKeyPressed(new EventHandler<KeyEvent>()
+	    {
+	        @Override
+	        public void handle(KeyEvent ke)
+	        {
+	            if (ke.getCode().equals(KeyCode.ENTER))
+	            {
+	            	handleIngresar(ke);
+	            }
+	        }
+	    });
+		txtUsuario.requestFocus();
+	}
+
+
+	@Override
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 }
