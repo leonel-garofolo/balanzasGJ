@@ -23,6 +23,7 @@ import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
 import com.balanzasgj.app.model.Taras;
 import com.balanzasgj.app.model.Transportes;
+import com.balanzasgj.app.model.Usuarios;
 import com.balanzasgj.app.persistence.ClientesPersistence;
 import com.balanzasgj.app.persistence.ComunicacionesPersistence;
 import com.balanzasgj.app.persistence.EjesPersistence;
@@ -291,14 +292,22 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	
 	@FXML
 	private void handleIngManual(ActionEvent event) {
-		String value = Message.optionSecurity();
-		if(value.equals("123")) {
-			this.ingManual = true;
-			txtNumberSerial.setEditable(ingManual);
-			txtNumberSerial.setDisable(!ingManual);
-			
+		if(Usuarios.getPerfilLogeado().equals("SUPERVISOR")
+				|| Usuarios.getPerfilLogeado().equals("ADMINISTRADOR")) {
+			enabledIngManual();
+		} else {
+			String value = Message.optionSecurity();
+			if(value.equals("123")) {
+				enabledIngManual();				
+			}
 		}
-		System.out.println(value);
+	}
+	
+	private void enabledIngManual() {
+		this.ingManual = true;
+		txtNumberSerial.setEditable(ingManual);
+		txtNumberSerial.setDisable(!ingManual);
+		txtNumberSerial.requestFocus();
 	}
 
 	@FXML
@@ -785,11 +794,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 						2000);
 				socket.addEventSocket(this);			
 				stage.setTitle("Taras: Indicador Conectado -> " + indicadorConfig.getNombre() + " | Puerto: COM" + indicadorConfig.getPuerto() + " | Velocidad: " + indicadorConfig.getVelocidad());
-			}catch (Exception e) {				
-				e.printStackTrace();
+			}catch (Exception e) {
 				stage.setTitle("Taras: ERROR DE CONEXION CON EL INDICADOR ");
 			}
-			
 			break;
 		}	
 	}

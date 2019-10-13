@@ -40,13 +40,6 @@ public class SocketConnection implements SerialPortEventListener {
 			}
 		}
 		serialPort = (SerialPort) portId.open(this.getClass().getName(), timeOut);
-		// set port parameters
-		System.out.println("port: " + portName);
-		System.out.println("DataRate: " + dataRate);
-		System.out.println("dataBits: " + dataBits);
-		System.out.println("stopBits: " + stopBits);
-		System.out.println("parity: " + parity);
-		
 		serialPort.setSerialPortParams(dataRate, dataBits, stopBits, parity);
 		input = serialPort.getInputStream();		
 	}

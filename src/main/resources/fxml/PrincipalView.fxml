@@ -78,7 +78,7 @@
 							</graphic>
 						</Button>
 							
-						<Button fx:id="BtnHerramientas" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleHerramientas" text="Sistema">
+						<Button fx:id="btnHerramientas" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleHerramientas" text="Sistema">
 							<graphic>
 								<ImageView fitHeight="111.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
 									<image>

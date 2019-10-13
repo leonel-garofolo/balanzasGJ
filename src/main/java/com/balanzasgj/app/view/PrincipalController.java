@@ -111,18 +111,16 @@ public class PrincipalController implements Initializable{
 		lblEmpresa.setFont(new Font("Arial", 30));
 		
 		String perfil = Usuarios.getPerfilLogeado();
-		switch (perfil) {
-		case "ADMINISTRADOR":
-			
-			break;
+		switch (perfil) {		
 		case "SUPERVISOR":
-			
+			btnHerramientas.setDisable(true);
 			break;
 		case "OPERARIO":
 			btnInformes.setDisable(true);
 			btnUsuarios.setDisable(true);
+			btnConfiguraciones.setDisable(true);
+			btnHerramientas.setDisable(true);
 			break;
-
 		default:
 			break;
 		}

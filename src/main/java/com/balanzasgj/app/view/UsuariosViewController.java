@@ -1,6 +1,7 @@
 package com.balanzasgj.app.view;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.balanzasgj.app.model.Perfiles;
@@ -120,10 +121,13 @@ public class UsuariosViewController implements Initializable{
 		colNombrePerfil.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 		colUsuario.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 		
-		Perfiles perf = new Perfiles();
-		perf.setId(1);
-		perf.setNombre("ADMINISTRADOR");
-		tblPerfiles.getItems().add(perf);
+		Perfiles perf = null;
+		if(Usuarios.getPerfilLogeado().equals("ADMINISTRADOR")) {
+			perf = new Perfiles();
+			perf.setId(1);
+			perf.setNombre("ADMINISTRADOR");
+			tblPerfiles.getItems().add(perf);
+		}
 		
 		perf = new Perfiles();
 		perf.setId(2);
@@ -142,7 +146,21 @@ public class UsuariosViewController implements Initializable{
 			// perfil por defecto es el ADMINISTRADOR
 			tblUsuarios.getItems().addAll(usuariosPersistence.loadForPerfil(1));
 		}else {
-			tblUsuarios.getItems().addAll(usuariosPersistence.loadForPerfil(tblPerfiles.getSelectionModel().getSelectedItem().getId()));
+			if(Usuarios.getPerfilLogeado().equals("SUPERVISOR")) {
+				List<Usuarios> usuarios = usuariosPersistence.loadForPerfil(tblPerfiles.getSelectionModel().getSelectedItem().getId());
+				for(Usuarios u: usuarios) {
+					if(u.getIdPerfil() == 2) {
+						if(u.getNombre().equals(Usuarios.getUsuarioLogeado())) {
+							tblUsuarios.getItems().add(u);
+							break;
+						}
+					} else {
+						tblUsuarios.getItems().add(u);
+					}
+				}	
+			} else {
+				tblUsuarios.getItems().addAll(usuariosPersistence.loadForPerfil(tblPerfiles.getSelectionModel().getSelectedItem().getId()));
+			}
 		}
 	}
 }
