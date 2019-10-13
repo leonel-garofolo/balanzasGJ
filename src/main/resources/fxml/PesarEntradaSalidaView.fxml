@@ -93,7 +93,7 @@
                                  <children>
                                     <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
                                        <children>
-                                          <Button fx:id="btnPesarEntrada" mnemonicParsing="false" onAction="#handlePesarEntrada" prefHeight="37.0" prefWidth="94.0" text="Entrada">
+                                          <Button fx:id="btnPesarEntrada" focusTraversable="false" mnemonicParsing="false" onAction="#handlePesarEntrada" prefHeight="37.0" prefWidth="94.0" text="Entrada">
                                              <graphic>
                                                 <ImageView fitHeight="22.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -102,11 +102,11 @@
                                                 </ImageView>
                                              </graphic>
                                           </Button>
-                                          <TextField fx:id="txtEntrada" disable="true" prefHeight="37.0" prefWidth="94.0">
+                                          <TextField fx:id="txtEntrada" disable="true" focusTraversable="false" prefHeight="37.0" prefWidth="94.0">
                                              <font>
                                                 <Font size="14.0" />
                                              </font></TextField>
-                                          <Label text="kg" />
+                                          <Label focusTraversable="false" text="kg" />
                                        </children>
                                        <padding>
                                           <Insets right="15.0" />
@@ -114,7 +114,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
                                        <children>
-                                          <Button fx:id="btnPesarSalida" mnemonicParsing="false" onAction="#handlePesarSalida" prefHeight="37.0" prefWidth="94.0" text="Salida">
+                                          <Button fx:id="btnPesarSalida" focusTraversable="false" mnemonicParsing="false" onAction="#handlePesarSalida" prefHeight="37.0" prefWidth="94.0" text="Salida">
                                              <graphic>
                                                 <ImageView fitHeight="21.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -123,11 +123,11 @@
                                                 </ImageView>
                                              </graphic>
                                           </Button>
-                                          <TextField fx:id="txtSalida" disable="true" prefHeight="37.0" prefWidth="95.0">
+                                          <TextField fx:id="txtSalida" disable="true" focusTraversable="false" prefHeight="37.0" prefWidth="95.0">
                                              <font>
                                                 <Font size="14.0" />
                                              </font></TextField>
-                                          <Label text="kg" />
+                                          <Label focusTraversable="false" text="kg" />
                                        </children>
                                        <padding>
                                           <Insets right="15.0" />
@@ -135,16 +135,16 @@
                                     </HBox>
                                     <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
                                        <children>
-                                          <Label text="Neto">
+                                          <Label focusTraversable="false" text="Neto">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtNeto" disable="true" prefHeight="37.0" prefWidth="94.0">
+                                          <TextField fx:id="txtNeto" disable="true" focusTraversable="false" prefHeight="37.0" prefWidth="94.0">
                                              <font>
                                                 <Font size="14.0" />
                                              </font></TextField>
-                                          <Label text="kg" />
+                                          <Label focusTraversable="false" text="kg" />
                                        </children>
                                        <padding>
                                           <Insets right="15.0" />
@@ -152,15 +152,6 @@
                                     </HBox>
                                     <HBox alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="446.0" spacing="5.0">
                                        <children>
-                                          <Button fx:id="btnNuevoPesaje" mnemonicParsing="false" onAction="#handleNuevoPesaje" prefHeight="26.0" prefWidth="77.0" text="Nuevo">
-                                             <graphic>
-                                                <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/anadir.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
                                           <Button fx:id="btnTomarTara" disable="true" mnemonicParsing="false" onAction="#handleTomarTara" prefHeight="26.0" prefWidth="115.0" text="Tomar Tara">
                                              <graphic>
                                                 <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
@@ -170,20 +161,29 @@
                                                 </ImageView>
                                              </graphic>
                                           </Button>
-                                          <Button fx:id="btnAplicar" mnemonicParsing="false" onAction="#handleAplicar" prefHeight="26.0" prefWidth="83.0" text="Aplicar">
-                                             <graphic>
-                                                <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/guardar.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
                                           <Button fx:id="btnIngresoManual" mnemonicParsing="false" onAction="#handleIngManual" prefHeight="26.0" prefWidth="107.0" text="Ing. Manual">
                                              <graphic>
                                                 <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../images/clave.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="btnNuevoPesaje" mnemonicParsing="false" onAction="#handleNuevoPesaje" prefHeight="26.0" prefWidth="77.0" text="Nuevo">
+                                             <graphic>
+                                                <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/anadir.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="btnAplicar" mnemonicParsing="false" onAction="#handleAplicar" prefHeight="26.0" prefWidth="83.0" text="Aplicar">
+                                             <graphic>
+                                                <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../images/guardar.png" />
                                                    </image>
                                                 </ImageView>
                                              </graphic>
@@ -213,7 +213,7 @@
                      <children>
                         <HBox fx:id="layout2" prefHeight="297.0" prefWidth="971.0">
                            <children>
-                              <GridPane prefHeight="256.0" prefWidth="911.0">
+                              <GridPane focusTraversable="true" prefHeight="256.0" prefWidth="911.0">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="95.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="146.0" />
@@ -235,10 +235,10 @@
                                     <RowConstraints maxHeight="65.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Producto" GridPane.rowIndex="1" />
-                                    <Label prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Cliente" GridPane.rowIndex="2" />
-                                    <Label prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Transporte" GridPane.rowIndex="3" />
-                                    <Label prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Procedencia" GridPane.rowIndex="4" />
+                                    <Label focusTraversable="false" prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Producto" GridPane.rowIndex="1" />
+                                    <Label focusTraversable="false" prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Cliente" GridPane.rowIndex="2" />
+                                    <Label focusTraversable="false" prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Transporte" GridPane.rowIndex="3" />
+                                    <Label focusTraversable="false" prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Procedencia" GridPane.rowIndex="4" />
                                     <ComboBoxAutoComplete fx:id="cbxProducto" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <ComboBoxAutoComplete fx:id="cbxCliente" prefHeight="25.0" prefWidth="239.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <ComboBoxAutoComplete fx:id="cbxTransporte" prefHeight="25.0" prefWidth="241.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -280,28 +280,19 @@
                                     	</graphic>
                                     </Button>
                                     <Label prefHeight="17.0" prefWidth="72.0" text="Conductor" visible="false" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                                    <Label prefHeight="17.0" prefWidth="137.0" text="Documento" GridPane.rowIndex="5" />
-                                    <Label prefHeight="17.0" prefWidth="109.0" style="-fx-font-weight: bold;" text="Patente" />
+                                    <Label focusTraversable="false" prefHeight="17.0" prefWidth="137.0" text="Documento" GridPane.rowIndex="5" />
+                                    <Label focusTraversable="false" prefHeight="17.0" prefWidth="109.0" style="-fx-font-weight: bold;" text="Patente" />
                                     <TextField fx:id="txtConductor" visible="false" GridPane.columnIndex="6" GridPane.rowIndex="1" />
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
-                                    <Label prefHeight="17.0" prefWidth="109.0" text="Observaciones" GridPane.rowIndex="7" />
+                                    <Label focusTraversable="false" prefHeight="17.0" prefWidth="109.0" text="Observaciones" GridPane.rowIndex="7" />
                                     <TextArea fx:id="txtObservaciones" prefHeight="71.0" prefWidth="196.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />                                    
                                     <TextField fx:id="txtNumDoc" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                     <TextField fx:id="txtFactura" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                    <Label prefHeight="17.0" prefWidth="109.0" text="Factura" GridPane.rowIndex="6" />
-                                    <Button fx:id="btnAccesoPatente" mnemonicParsing="false" onAction="#handleEditPatente" prefHeight="26.0" prefWidth="28.0" GridPane.columnIndex="2">
-                                    	<graphic>
-		                                    <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-		                                       <image>
-		                                          <Image url="@../images/anadir.png" />
-		                                       </image>
-		                                    </ImageView>
-	                                    </graphic>
-                                    </Button>
-                                    <ComboBoxAutoComplete fx:id="cbxPatente" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                                    <Label focusTraversable="false" prefHeight="17.0" prefWidth="109.0" text="Factura" GridPane.rowIndex="6" />
+                                    <TextField fx:id="txtPatente" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" />
                                     <Label fx:id="lblTara" prefHeight="17.0" prefWidth="29.0" style="-fx-font-weight: bold;" text="Tara" GridPane.columnIndex="3" />
-                                    <TextField fx:id="txtTara" editable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="4" />
+                                    <TextField fx:id="txtTara" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="4" />
                                  </children>
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -317,10 +308,10 @@
                         <HBox alignment="CENTER_LEFT" spacing="20.0">
                            <children>
                               <Label text="Filtro de Busqueda: " />
-                              <ComboBox fx:id="cbxFiltroBuscar" prefWidth="200.0" />
-                              <TextField fx:id="txtFiltroBuscar" />
-                              <CheckBox fx:id="chkSalidasPendientes" mnemonicParsing="false" text="Salidas Pendientes" />
-                              <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#handleBuscar" text="Buscar">
+                              <ComboBox fx:id="cbxFiltroBuscar" focusTraversable="false" prefWidth="200.0" />
+                              <TextField fx:id="txtFiltroBuscar" focusTraversable="false" />
+                              <CheckBox fx:id="chkSalidasPendientes" focusTraversable="false" mnemonicParsing="false" text="Salidas Pendientes" />
+                              <Button fx:id="btnBuscar" focusTraversable="false" mnemonicParsing="false" onAction="#handleBuscar" text="Buscar">
                               	<graphic>
                                    <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                       <image>
@@ -329,7 +320,7 @@
                                    </ImageView>
                                   </graphic>                           
                               </Button>
-                              <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#handleLimpiar" text="Limpiar" />
+                              <Button fx:id="btnLimpiar" focusTraversable="false" mnemonicParsing="false" onAction="#handleLimpiar" text="Limpiar" />
                            </children>
                            <padding>
                               <Insets left="15.0" />

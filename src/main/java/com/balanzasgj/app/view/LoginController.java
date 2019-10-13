@@ -8,6 +8,7 @@ import com.balanzasgj.app.model.Usuarios;
 import com.balanzasgj.app.persistence.UsuariosPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.UsuariosPersistenceJdbc;
 import com.balanzasgj.app.utils.Message;
+import com.balanzasgj.app.utils.Utils;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -20,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
@@ -50,7 +52,21 @@ public class LoginController implements Initializable, IView{
 				return;
 			}
 			
-			
+			Usuarios.setUsuarioLogeado(usuario.getNombre());
+			switch (String.valueOf(usuario.getIdPerfil())) {
+			case "1":
+				Usuarios.setPerfilLogeado("ADMINISTRADOR");
+				break;
+			case "2":
+				Usuarios.setPerfilLogeado("SUPERVISOR");
+				break;
+			case "3":
+				Usuarios.setPerfilLogeado("OPERARIO");
+				break;
+
+			default:
+				break;
+			}
 			
 			//Stage stage = new Stage();
 			Screen screen = Screen.getPrimary();
@@ -78,14 +94,21 @@ public class LoginController implements Initializable, IView{
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			
-			//stage.hide();
 		}
 	}
 	
 		
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		if(Utils.isDebug()) {
+			txtUsuario.setText("admin");
+			txtClave.setText("123456");
+		}
+		txtUsuario.setTextFormatter(new TextFormatter<>((change) -> {
+		    change.setText(change.getText().toUpperCase());
+		    return change;
+		}));
+		
 		this.usuariosPersistence = new UsuariosPersistenceJdbc();		
 		txtUsuario.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {

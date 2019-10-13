@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.balanzasgj.app.model.ParametrosGoblales;
+import com.balanzasgj.app.model.Usuarios;
 import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
 
@@ -108,5 +109,22 @@ public class PrincipalController implements Initializable{
 		}		
 		
 		lblEmpresa.setFont(new Font("Arial", 30));
+		
+		String perfil = Usuarios.getPerfilLogeado();
+		switch (perfil) {
+		case "ADMINISTRADOR":
+			
+			break;
+		case "SUPERVISOR":
+			
+			break;
+		case "OPERARIO":
+			btnInformes.setDisable(true);
+			btnUsuarios.setDisable(true);
+			break;
+
+		default:
+			break;
+		}
 	}
 }

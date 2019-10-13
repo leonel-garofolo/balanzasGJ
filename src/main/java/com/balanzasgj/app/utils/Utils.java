@@ -16,4 +16,9 @@ public class Utils {
 	public static LocalDate convertoToLocalDate(Date dateToconvert){
 		return Instant.ofEpochMilli(dateToconvert.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
 	}
+	
+	public static boolean isDebug(){
+		return java.lang.management.ManagementFactory.getRuntimeMXBean().
+			    getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
+	}
 }

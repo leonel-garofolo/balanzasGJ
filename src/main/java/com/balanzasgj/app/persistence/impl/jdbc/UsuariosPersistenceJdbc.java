@@ -123,7 +123,7 @@ public class UsuariosPersistenceJdbc extends GenericJdbcDAO<Usuarios> implements
 		usuarios.setId(rs.getLong("id")); // java.lang.Integer
 		usuarios.setNombre(rs.getString("nombre")); // java.lang.String				
 		usuarios.setClave(rs.getString("clave")); // java.lang.String
-		usuarios.setIdPerfil(rs.getInt("clave")); // java.lang.Integer
+		usuarios.setIdPerfil(rs.getInt("id_perfil")); // java.lang.Integer
 		return usuarios ;
 	}
 

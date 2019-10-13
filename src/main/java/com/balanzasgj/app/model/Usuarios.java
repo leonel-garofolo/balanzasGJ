@@ -1,6 +1,8 @@
 package com.balanzasgj.app.model;
 
 public class Usuarios {
+	private static String usuarioLogeado;
+	private static String perfilLogeado;
 	
 	private long id;
 	private long idPerfil;
@@ -30,5 +32,17 @@ public class Usuarios {
 	}
 	public void setClave(String clave) {
 		this.clave = clave;
+	}
+	public static String getUsuarioLogeado() {
+		return usuarioLogeado;
+	}
+	public static void setUsuarioLogeado(String usuarioLogeado) {
+		Usuarios.usuarioLogeado = usuarioLogeado;
+	}
+	public static String getPerfilLogeado() {
+		return perfilLogeado;
+	}
+	public static void setPerfilLogeado(String perfilLogeado) {
+		Usuarios.perfilLogeado = perfilLogeado;
 	}
 }

@@ -8,6 +8,7 @@ package com.balanzasgj.app.persistence.impl.jdbc;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Named;
@@ -168,6 +169,7 @@ public class PatentesPersistenceJdbc extends GenericJdbcDAO<Patentes> implements
 	 */
 	@Override
 	public Patentes save(Patentes patentes) {
+		patentes.setUpdate(new Date());
 		if ( super.doExists(patentes) ) {
 			super.doUpdate(patentes);
 		}

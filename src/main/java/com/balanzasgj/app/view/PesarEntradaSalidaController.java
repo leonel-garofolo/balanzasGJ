@@ -70,7 +70,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -136,10 +139,10 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private Button btnAccesoProcedencia;
 	
-	/*
-	@FXML
+	/*	
 	private ComboBox<Patentes> cbxPatente;
 	*/
+	@FXML
 	private TextField txtPatente;
 	@FXML
 	private TextField txtNumDoc;
@@ -354,14 +357,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					totalPeso = Double.valueOf(txtNumberSerial.getText());						
 				}					
 				if (cbxModoTara.getSelectionModel().getSelectedItem().equals("CON TARA") 
-						&& !txtTara.equals("")) {
+						&& !txtTara.getText().isEmpty()) {
 					totalPeso = totalPeso - Double.valueOf(txtTara.getText());
-					//Patentes p = cbxPatente.getSelectionModel().getSelectedItem();
 					Patentes p = new Patentes();
 					p.setCodigo(txtPatente.getText());
 					p.setTara(Double.valueOf(txtTara.getText()));
-					this.patentesPersistence.save(p);
-					
+					this.patentesPersistence.save(p);					
 				}
 				if (statusTara == 'S') {					
 					txtSalida.setText(String.valueOf(totalPeso));
@@ -600,6 +601,27 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private void handleCancelar(ActionEvent event) {
 	}
+	
+	private void addPatente() {
+		String pantente = txtPatente.getText();
+		if(!pantente.isEmpty()) {
+			Patentes p =patentesPersistence.findById(pantente);
+			if(p == null) {
+				boolean desicion =Message.option("La patente no existe, desea agregarla?");
+				if(desicion) {
+					Patentes newPatente = new Patentes();
+					newPatente.setCodigo(pantente);
+					newPatente.setTara(Double.valueOf(txtTara.getText()));
+					patentesPersistence.save(newPatente);
+				} else {
+					txtPatente.setText("");
+					txtPatente.requestFocus();
+				}
+			} else {//cargo tara
+				txtTara.setText(p.getTara().toString());
+			}
+		}
+	}
 
 	private void initValues() {
 		tblEjes.setVisible(false);
@@ -615,17 +637,51 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxModoTara.getItems().addAll(new String[] { "NORMAL", "CON TARA"});
 		cbxModalidad.getItems().addAll(new String[] { "ESTANDAR", "ADUANA"});
 		cbxModoChasis.getItems().addAll(new String[] { "COMPLETO", "POR EJE"});
-		/*
-		cbxPatente.valueProperty().addListener(new ChangeListener<Patentes>() {
-	      	@Override
-			public void changed(ObservableValue<? extends Patentes> observable, Patentes oldValue, Patentes newValue) {
-	      		if(newValue != null && newValue.getTara() != null) {
-	      			txtTara.setText(String.valueOf(newValue.getTara()));
-	      		}
-			}
+		txtPatente.setOnKeyPressed(new EventHandler<KeyEvent>()
+	    {
+	        @Override
+	        public void handle(KeyEvent ke)
+	        {
+	            if (ke.getCode().equals(KeyCode.ENTER))
+	            {
+	            	addPatente();
+	            }
+	            if (ke.getCode().equals(KeyCode.SPACE))
+	            {
+	            	ke.consume();
+	            }
+	        }
 	    });
-	    */
-		
+		txtPatente.setOnKeyTyped(new EventHandler<KeyEvent>()
+	    {
+	        @Override
+	        public void handle(KeyEvent ke)
+	        {	           
+	        	if (Character.isWhitespace(ke.getCharacter().charAt(0))) {
+        		   ke.consume();
+        		}
+	        }
+	    });
+		txtPatente.setTextFormatter(new TextFormatter<>((change) -> {
+		    change.setText(change.getText().toUpperCase());
+		    return change;
+		}));
+		txtNumDoc.setTextFormatter(new TextFormatter<>((change) -> {
+		    change.setText(change.getText().toUpperCase());
+		    return change;
+		}));
+		txtFactura.setTextFormatter(new TextFormatter<>((change) -> {
+		    change.setText(change.getText().toUpperCase());
+		    return change;
+		}));
+		txtObservaciones.setTextFormatter(new TextFormatter<>((change) -> {
+		    change.setText(change.getText().toUpperCase());
+		    return change;
+		}));		
+		txtFiltroBuscar.setTextFormatter(new TextFormatter<>((change) -> {
+		    change.setText(change.getText().toUpperCase());
+		    return change;
+		}));
 		
 		cbxModoTara.valueProperty().addListener(new ChangeListener<String>() {
 	      	@Override
@@ -750,7 +806,6 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		this.tarasPersistence = new TarasPersistenceJdbc();
 		this.parametrosGoblalesPersistence = new ParametrosGoblalesPersistenceJdbc();
 
-		//cbxPatente.getItems().addAll(patentesPersistence.findAll());
 		cbxProducto.getItems().addAll(productosPersistence.findAll());
 		cbxCliente.getItems().addAll(clientesPersistence.findAll());
 		cbxTransporte.getItems().addAll(transportesPersistence.findAll());
@@ -808,9 +863,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxTransporte.setValue(null);
 		cbxProcedencia.setValue(null);		
 		txtNumDoc.setText("");
-		//cbxPatente.setValue(null);
 		txtPatente.setText("");
-		txtTara.setText("");
+		txtTara.setText("0");
 		txtFactura.setText("");
 		txtObservaciones.setText("");
 		
