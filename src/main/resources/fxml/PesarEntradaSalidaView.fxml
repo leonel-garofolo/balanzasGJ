@@ -47,7 +47,7 @@
                               <ComboBox fx:id="cbxModalidad" prefWidth="130.0" />
                               <ComboBox fx:id="cbxModoChasis" prefWidth="130.0" />
                               <Label prefHeight="17.0" prefWidth="66.0" text="Transacción" />
-                              <TextField fx:id="txtTransaccion" disable="true" prefHeight="25.0" prefWidth="99.0" />
+                              <TextField fx:id="txtTransaccion" editable="false" prefHeight="25.0" prefWidth="99.0" />
                               <Label prefHeight="17.0" prefWidth="37.0" text="Fecha" />
                               <DatePicker fx:id="dateFecha" prefHeight="25.0" prefWidth="142.0" />
                            </children>
@@ -102,9 +102,9 @@
                                                 </ImageView>
                                              </graphic>
                                           </Button>
-                                          <TextField fx:id="txtEntrada" disable="true" focusTraversable="false" prefHeight="37.0" prefWidth="94.0">
+                                          <TextField fx:id="txtEntrada" editable="false" focusTraversable="false" prefHeight="37.0" prefWidth="94.0">
                                              <font>
-                                                <Font size="14.0" />
+                                                <Font size="16.0" />
                                              </font></TextField>
                                           <Label focusTraversable="false" text="kg" />
                                        </children>
@@ -123,9 +123,9 @@
                                                 </ImageView>
                                              </graphic>
                                           </Button>
-                                          <TextField fx:id="txtSalida" disable="true" focusTraversable="false" prefHeight="37.0" prefWidth="95.0">
+                                          <TextField fx:id="txtSalida" editable="false" focusTraversable="false" prefHeight="37.0" prefWidth="95.0">
                                              <font>
-                                                <Font size="14.0" />
+                                                <Font size="16.0" />
                                              </font></TextField>
                                           <Label focusTraversable="false" text="kg" />
                                        </children>
@@ -140,9 +140,9 @@
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtNeto" disable="true" focusTraversable="false" prefHeight="37.0" prefWidth="94.0">
+                                          <TextField fx:id="txtNeto" editable="false" focusTraversable="false" prefHeight="37.0" prefWidth="94.0">
                                              <font>
-                                                <Font size="14.0" />
+                                                <Font size="16.0" />
                                              </font></TextField>
                                           <Label focusTraversable="false" text="kg" />
                                        </children>

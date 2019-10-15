@@ -26,4 +26,11 @@ public class Clientes extends Entidades implements Serializable
     public Clientes() {
         super();
     }
+    
+    @Override
+    public String toString() { 
+        StringBuffer sb = new StringBuffer();       
+        sb.append(nombre);
+        return sb.toString(); 
+    }
 }

@@ -58,11 +58,12 @@ import gnu.io.SerialPortEventListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ObservableValueBase;
-import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -81,6 +82,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.Mnemonic;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import net.sf.jasperreports.engine.JRException;
@@ -433,8 +435,38 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			btnPesarEntrada.setStyle("");
 			btnPesarSalida.setStyle("");	
 			layout1.setDisable(true);
+			//editableLayout(false);
 			layout2.setDisable(true);			
 			loadTara();	
+		}
+	}
+	
+	private void editableLayout(boolean edit) {
+		ObservableList<Node> nodes = layout2.getChildren();
+		for(Node n : nodes) {			
+			if(n instanceof GridPane) {
+				GridPane nodeGrid = (GridPane)n;
+				ObservableList<Node> gridNodes = nodeGrid.getChildren();
+				for(Node gridN : gridNodes) {
+					if(gridN instanceof TextField) {
+						((TextField) gridN).setEditable(edit);
+						continue;
+					}
+					if(gridN instanceof ComboBox) {
+						((ComboBox) gridN).setEditable(edit);
+						continue;
+					}
+					if(gridN instanceof TextArea) {
+						((TextArea) gridN).setEditable(edit);
+						continue;
+					}
+					if(gridN instanceof Button) {
+						((Button) gridN).setDisable(edit);
+						continue;
+					}
+					
+				}
+			}
 		}
 	}
 
@@ -483,6 +515,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		btnPesarEntrada.setStyle("-fx-background-color: #7fffd4; ");
 		btnPesarSalida.setStyle("");
 		layout1.setDisable(false);
+		//editableLayout(false);
 		layout2.setDisable(false);
 		btnIngresoManual.setDisable(false);
 				
@@ -652,18 +685,13 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		
 		this.ingManual = false;
 		btnIngresoManual.setDisable(true);
-		layout1.setDisable(true);	
+		layout1.setDisable(true);
+		//editableLayout(false);
 		layout2.setDisable(true);
 		cbxModoTara.getItems().addAll(new String[] { "NORMAL", "CON TARA"});
 		cbxModalidad.getItems().addAll(new String[] { "ESTANDAR", "ADUANA"});
 		cbxModoChasis.getItems().addAll(new String[] { "COMPLETO", "POR EJE"});
-		txtPatente.setOnKeyReleased(this);
-		/*
-		cbxProducto.setOnKeyReleased(this);
-		cbxCliente.setOnKeyReleased(this);
-		cbxTransporte.setOnKeyReleased(this);
-		cbxProcedencia.setOnKeyReleased(this);
-		*/
+		txtPatente.setOnKeyReleased(this);		
 		txtNumDoc.setOnKeyReleased(this);
 		txtFactura.setOnKeyReleased(this);
 		txtObservaciones.setOnKeyReleased(this);
