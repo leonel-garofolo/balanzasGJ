@@ -59,6 +59,9 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 
 	private final static String SQL_COUNT = 
 		"select count(*) from taras where idtaras = ?";
+	
+	private final static String SQL_COUNT_PENDING = 
+			"select count(*) as total from taras where peso_salida is null && patente = ?";
 
     //----------------------------------------------------------------------
 	/**
@@ -476,5 +479,30 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 	@Override
 	protected String getSqlCountAll() {
 		return SQL_COUNT_ALL ;
+	}
+
+	@Override
+	public boolean checkPending(String patente) {
+		int total = 0;
+		Connection conn = null;		
+		try {
+			
+			conn = getConnection();
+			PreparedStatement ps = conn.prepareStatement(SQL_COUNT_PENDING);
+			ps.setString(1, patente);
+			//--- Execute SQL SELECT
+			ResultSet rs = ps.executeQuery();
+			while ( rs.next() ) {
+				total =rs.getInt("total");
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(conn);
+		}
+		
+		return total > 0;
 	}
 }

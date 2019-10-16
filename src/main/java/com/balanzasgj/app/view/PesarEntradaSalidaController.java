@@ -3,7 +3,8 @@ package com.balanzasgj.app.view;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,7 +47,6 @@ import com.balanzasgj.app.persistence.impl.jdbc.TarasPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.TransportesPersistenceJdbc;
 import com.balanzasgj.app.utils.Message;
 import com.balanzasgj.app.utils.ShowJasper;
-import com.balanzasgj.app.utils.Utils;
 import com.balanzasgj.app.view.columns.ClientesTableCell;
 import com.balanzasgj.app.view.columns.ProcedenciasTableCell;
 import com.balanzasgj.app.view.columns.ProductosTableCell;
@@ -58,16 +58,13 @@ import gnu.io.SerialPortEventListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ObservableValueBase;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -82,7 +79,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.Mnemonic;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import net.sf.jasperreports.engine.JRException;
@@ -91,8 +87,6 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 public class PesarEntradaSalidaController extends AnchorPane implements IView, Initializable, SerialPortEventListener, EventHandler<KeyEvent> {		
 	@FXML
 	private HBox layout1;
-	@FXML
-	private HBox layout2;
 	
 	/* PESAJE */
 	@FXML
@@ -126,7 +120,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private TextField txtTransaccion;
 	@FXML
-	private DatePicker dateFecha;
+	private TextField txtFecha;
 	
 	/* FORMULARIO */
 	@FXML
@@ -159,6 +153,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private TextField txtPatente;
 	@FXML
 	private TextField txtNumDoc;
+	@FXML
+	private TextField txtConductor;
 	
 	@FXML
 	private TextField txtFactura;
@@ -182,8 +178,6 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private TableColumn<Taras, Date> colFecha;
 	@FXML
 	private TableColumn<Taras, String> colChasis;
-	@FXML
-	private TableColumn<Taras, String> colAcoplado;
 	@FXML
 	private TableColumn<Taras, BigDecimal> colEntrada;
 	@FXML
@@ -235,6 +229,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private SocketConnection socket;
 	private String sBufferConnection;	
 	private Stage stage;
+	
+	private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
 	@FXML
 	private TextField txtTara;
@@ -259,11 +255,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		idTaraEdit = -1;
 		activarEndrada();		
 		taraEdit = new Taras();
-		dateFecha.setValue(Utils.convertoToLocalDate(new Date()));
+		txtFecha.setText(format.format(new Date()));
 		btnIngresoManual.setDisable(false);
 		cbxModoTara.setValue("NORMAL");
 		cbxModalidad.setValue("ESTANDAR");
 		cbxModoChasis.setValue("COMPLETO");
+		editableLayout(true);
 	}
 
 	@FXML
@@ -309,7 +306,14 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			enabledIngManual();
 		} else {
 			String value = Message.optionSecurity();
-			if(value.equals("123")) {
+			ParametrosGoblales pg = new ParametrosGoblales();
+			pg.setId("EMPRESA_ING_MANUAL");
+			parametrosGoblalesPersistence.load(pg);	
+			String clave = pg.getValue();
+			if(clave == null) {
+				clave = "123";
+			}
+			if(value.equals(clave)) {
 				enabledIngManual();				
 			}
 		}
@@ -329,7 +333,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 				//&& !cbxPatente.getSelectionModel().isEmpty()
 				&& !txtPatente.getText().isEmpty()
 				&& txtTransaccion.getText() != null && !txtTransaccion.getText().isEmpty() 
-				&& dateFecha.getValue() != null
+				&& !txtFecha.getText().isEmpty()
 				&& !cbxModoTara.getSelectionModel().isEmpty()
 				&& !cbxModalidad.getSelectionModel().isEmpty()
 				&& !cbxModoChasis.getSelectionModel().isEmpty()) {
@@ -343,19 +347,28 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					tarasPersistence.load(tara);
 				}
 				tara.setTransaccion(txtTransaccion.getText());
-				tara.setFecha(Utils.convertToDate(dateFecha.getValue()));
+				try {
+					tara.setFecha(format.parse(txtFecha.getText()));
+				} catch (ParseException e) {
+					System.out.println("error de formato");
+				}
 				tara.setProducto(cbxProducto.getValue());
 				tara.setCliente(cbxCliente.getValue());
 				tara.setTransporte(cbxTransporte.getValue());
 				tara.setProcedencias(cbxProcedencia.getValue());
-				//tara.setPatente(cbxPatente.getSelectionModel().getSelectedItem().getCodigo());
 				tara.setPatente(txtPatente.getText());
 				tara.setNumDoc(txtNumDoc.getText());
+				tara.setConductor(txtConductor.getText());
 				tara.setComprobanteNun1(txtFactura.getText());
 				tara.setObservacion(txtObservaciones.getText());
 				tara.setModoTara(cbxModoTara.getSelectionModel().getSelectedItem());
 				tara.setModalidad(cbxModalidad.getSelectionModel().getSelectedItem());
-				tara.setModoChasis(cbxModoChasis.getSelectionModel().getSelectedItem());
+				tara.setModoChasis(cbxModoChasis.getSelectionModel().getSelectedItem());				
+				if(indicadorConfig != null && !stage.getTitle().contains("ERROR")) {
+					tara.setBalanza(indicadorConfig.getNombre());
+				}else {
+					tara.setBalanza("ING. MANUAL");
+				}
 				
 				double totalPesaje = 0d;
 				int lastEje = 0;
@@ -395,6 +408,13 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					
 					tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
 				}
+				//comprobar si existe una patente con pesaje de salida pendiente
+				boolean existPending = tarasPersistence.checkPending(tara.getPatente());
+				if(tara.getIdtaras() == null && existPending) {
+					Message.error("Error al guardar, ya existe un pesaje pendiente con la patente " + tara.getPatente() + ".");
+					return;
+				}
+				
 				Taras insertTara = tarasPersistence.save(tara);
 				if (idTaraEdit == -1) {
 					idTaraEdit = insertTara.getIdtaras();
@@ -416,6 +436,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 				Message.info("Los datos se guardaron correctamente.");
 				clearForm();
 				btnIngresoManual.setDisable(true);
+				handleNuevoPesaje(event);
 			}
 		} else {
 			Message.error("Debe haber alguna entrada seleccionada.");
@@ -435,39 +456,22 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			btnPesarEntrada.setStyle("");
 			btnPesarSalida.setStyle("");	
 			layout1.setDisable(true);
-			//editableLayout(false);
-			layout2.setDisable(true);			
+			editableLayout(false);
 			loadTara();	
 		}
 	}
 	
 	private void editableLayout(boolean edit) {
-		ObservableList<Node> nodes = layout2.getChildren();
-		for(Node n : nodes) {			
-			if(n instanceof GridPane) {
-				GridPane nodeGrid = (GridPane)n;
-				ObservableList<Node> gridNodes = nodeGrid.getChildren();
-				for(Node gridN : gridNodes) {
-					if(gridN instanceof TextField) {
-						((TextField) gridN).setEditable(edit);
-						continue;
-					}
-					if(gridN instanceof ComboBox) {
-						((ComboBox) gridN).setEditable(edit);
-						continue;
-					}
-					if(gridN instanceof TextArea) {
-						((TextArea) gridN).setEditable(edit);
-						continue;
-					}
-					if(gridN instanceof Button) {
-						((Button) gridN).setDisable(edit);
-						continue;
-					}
-					
-				}
-			}
-		}
+		txtPatente.setEditable(edit);
+		txtNumDoc.setEditable(edit);
+		txtConductor.setEditable(edit);
+		txtFactura.setEditable(edit);
+		txtObservaciones.setEditable(edit);
+
+		cbxTransporte.setDisable(!edit);	
+		cbxProcedencia.setDisable(!edit);
+		cbxCliente.setDisable(!edit);
+		cbxProducto.setDisable(!edit);
 	}
 
 	private void loadTara() {
@@ -477,10 +481,15 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		taraEdit = tblPesajes.getSelectionModel().getSelectedItem();
 		idTaraEdit = taraEdit.getIdtaras();
 		txtTransaccion.setText(taraEdit.getTransaccion());
-		dateFecha.setValue(Utils.convertoToLocalDate(taraEdit.getFecha()));
+		txtFecha.setText(format.format(taraEdit.getFecha()));
 		txtPatente.setText(this.patentesPersistence.findById(taraEdit.getPatente()).getCodigo());
 		txtEntrada.setText(taraEdit.getPesoEntrada().toString());
-		if (taraEdit.getPesoSalida() != null) {
+		
+		if(taraEdit.getPesoEntrada() != null && taraEdit.getPesoSalida() != null) {
+			btnPesarEntrada.setDisable(true);
+			btnPesarSalida.setDisable(true);
+			txtSalida.setText(taraEdit.getPesoSalida().toString());
+		}else if (taraEdit.getPesoSalida() != null) {
 			txtSalida.setText(taraEdit.getPesoSalida().toString());
 		} else {
 			activarSalida();
@@ -489,6 +498,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			txtNeto.setText(taraEdit.getPesoNeto().toString());
 		}
 		txtNumDoc.setText(taraEdit.getNumDoc());
+		txtConductor.setText(taraEdit.getConductor());
 		txtFactura.setText(taraEdit.getComprobanteNun1());
 		txtObservaciones.setText(taraEdit.getObservacion());
 
@@ -512,11 +522,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private void activarEndrada() {
 		// Marcar entrada
 		statusTara = 'E';
+		btnPesarEntrada.setDisable(false);
+		btnPesarSalida.setDisable(true);
 		btnPesarEntrada.setStyle("-fx-background-color: #7fffd4; ");
 		btnPesarSalida.setStyle("");
 		layout1.setDisable(false);
-		//editableLayout(false);
-		layout2.setDisable(false);
+		editableLayout(false);
 		btnIngresoManual.setDisable(false);
 				
 		
@@ -541,6 +552,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private void activarSalida() {
 		// Marcar salida
 		statusTara = 'S';
+		btnPesarEntrada.setDisable(true);
+		btnPesarSalida.setDisable(false);
 		btnPesarEntrada.setStyle("");
 		btnPesarSalida.setStyle("-fx-background-color: #7fffd4; ");
 		btnIngresoManual.setDisable(false);
@@ -550,11 +563,6 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			enabledTara(cbxModoTara.getValue());
 			enabledTableEjes(cbxModoChasis.getValue());			
 		}
-	}
-
-	@FXML
-	private void handlePesarSalida(ActionEvent event) {
-		activarSalida();
 	}
 
 	private void calcularNeto() {
@@ -676,7 +684,18 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		}
 	}
 
-	private void initValues() {
+	private void initValues() {		
+		txtFecha.setDisable(true);
+		txtFecha.setStyle("-fx-opacity: 1");
+		cbxProducto.setStyle("-fx-opacity: 1");
+		cbxProducto.getEditor().setStyle("-fx-opacity: 1");		
+		cbxCliente.setStyle("-fx-opacity: 1");
+		cbxCliente.getEditor().setStyle("-fx-opacity: 1");
+		cbxTransporte.setStyle("-fx-opacity: 1");
+		cbxTransporte.getEditor().setStyle("-fx-opacity: 1");
+		cbxProcedencia.setStyle("-fx-opacity: 1");
+		cbxProcedencia.getEditor().setStyle("-fx-opacity: 1");
+		
 		tblEjes.setVisible(false);
 		btnEliminarEje.setVisible(false);
 		btnTomarTara.setVisible(false);
@@ -686,13 +705,13 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		this.ingManual = false;
 		btnIngresoManual.setDisable(true);
 		layout1.setDisable(true);
-		//editableLayout(false);
-		layout2.setDisable(true);
+		editableLayout(false);
 		cbxModoTara.getItems().addAll(new String[] { "NORMAL", "CON TARA"});
 		cbxModalidad.getItems().addAll(new String[] { "ESTANDAR", "ADUANA"});
 		cbxModoChasis.getItems().addAll(new String[] { "COMPLETO", "POR EJE"});
 		txtPatente.setOnKeyReleased(this);		
 		txtNumDoc.setOnKeyReleased(this);
+		txtConductor.setOnKeyReleased(this);
 		txtFactura.setOnKeyReleased(this);
 		txtObservaciones.setOnKeyReleased(this);
 		
@@ -726,6 +745,10 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		    change.setText(change.getText().toUpperCase());
 		    return change;
 		}));
+		txtConductor.setTextFormatter(new TextFormatter<>((change) -> {
+		    change.setText(change.getText().toUpperCase());
+		    return change;
+		}));
 		txtFactura.setTextFormatter(new TextFormatter<>((change) -> {
 		    change.setText(change.getText().toUpperCase());
 		    return change;
@@ -756,8 +779,6 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxFiltroBuscar.getItems().addAll(new String[] { "Número de Transacción", "Patente Chasis", "Producto",
 				"Cliente", "Transporte", "Procedencia" });
 		cbxFiltroBuscar.setValue("Patente Chasis");
-
-		dateFecha.setValue(LocalDate.now());
 		txtNumberSerial.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtNumberSerial.setText(newValue.toUpperCase());
 		});
@@ -775,9 +796,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		});
 		txtNumDoc.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtNumDoc.setText(newValue.toUpperCase());
+		});		
+		txtConductor.textProperty().addListener((ov, oldValue, newValue) -> {
+			if(newValue != null) {
+				txtConductor.setText(newValue.toUpperCase());
+			}
 		});
-		
-		
 		
 		txtNumberSerial.textProperty().addListener(new ChangeListener<String>() {
 		    @Override
@@ -872,8 +896,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		
 		colTransaccion.setCellValueFactory(new PropertyValueFactory<>("transaccion"));
 		colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
-		colChasis.setCellValueFactory(new PropertyValueFactory<>("patente"));
-		colAcoplado.setCellValueFactory(new PropertyValueFactory<>("contenedorNum"));
+		colChasis.setCellValueFactory(new PropertyValueFactory<>("patente"));		
 		colEntrada.setCellValueFactory(new PropertyValueFactory<>("pesoEntrada"));
 		colSalida.setCellValueFactory(new PropertyValueFactory<>("pesoSalida"));
 
@@ -895,7 +918,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 
 		colTransporte.setCellValueFactory(new PropertyValueFactory<>("transporte"));
 		colTransporte.setCellFactory(col -> new TransportesTableCell<>());
-		colProcedencia.setCellValueFactory(new PropertyValueFactory<>("procedencia"));
+		colProcedencia.setCellValueFactory(new PropertyValueFactory<>("procedencias"));
 		colProcedencia.setCellFactory(col -> new ProcedenciasTableCell<>());
 		colProducto.setCellValueFactory(new PropertyValueFactory<>("producto"));
 		colProducto.setCellFactory(col -> new ProductosTableCell<>());
@@ -913,18 +936,18 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	}
 
 	private void clearForm() {
-		dateFecha.setValue(Utils.convertoToLocalDate(new Date()));
+		txtFecha.setText("");
 		txtEntrada.setText("");
 		txtSalida.setText("");
 		txtNeto.setText("");
 		txtNumberSerial.setText("0");
 		txtTransaccion.setText("");
-		dateFecha.setValue(null);		
 		cbxProducto.setValue(null);
 		cbxCliente.setValue(null);
 		cbxTransporte.setValue(null);
 		cbxProcedencia.setValue(null);		
 		txtNumDoc.setText("");
+		txtConductor.setText("");
 		txtPatente.setText("");
 		txtTara.setText("0");
 		txtFactura.setText("");
@@ -1006,6 +1029,10 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 				return;
 			}
 			if(event.getSource() == txtNumDoc) {
+				txtConductor.requestFocus();
+				return;
+			}
+			if(event.getSource() == txtConductor) {
 				txtFactura.requestFocus();
 				return;
 			}

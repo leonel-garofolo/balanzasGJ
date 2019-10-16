@@ -10,11 +10,13 @@ import org.javafx.controls.customs.StringField;
 import com.balanzasgj.app.model.ParametrosGoblales;
 import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
+import com.balanzasgj.app.utils.Message;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -49,10 +51,11 @@ public class HerramientasController extends AnchorPane implements IView {
 	@FXML
 	private TextField txtNombreEmpresa;	
 	
+	@FXML
+	private PasswordField txtClaveIngManual;
+		
 	private Stage stage;
-	
 	private ParametrosGoblalesPersistence parametrosGoblalesPersistence;
-	
 	
 	@FXML
     private void handleSelectImagen(ActionEvent event) {		
@@ -118,12 +121,20 @@ public class HerramientasController extends AnchorPane implements IView {
 			parametrosGoblalesPersistence.save(pg);
 		}
 		
+		if(!txtClaveIngManual.getText().isEmpty()) {			
+			pg.setId("EMPRESA_ING_MANUAL");
+			pg.setValue(txtClaveIngManual.getText());
+			parametrosGoblalesPersistence.save(pg);
+		}
+		
 		pg = new ParametrosGoblales();
 		pg.setId("EMPRESA_RESTORE");
 		parametrosGoblalesPersistence.load(pg);		
 		if(pg!= null) {
 			txtPathRst.setText(pg.getValue());
 		}
+		
+		Message.info("Los datos se guardaron correctamente.");
     }
 	
 	@FXML
@@ -220,6 +231,13 @@ public class HerramientasController extends AnchorPane implements IView {
 		parametrosGoblalesPersistence.load(pg);		
 		if(pg!= null) {
 			txtPathRst.setText(pg.getValue());
+		}
+		
+		pg = new ParametrosGoblales();
+		pg.setId("EMPRESA_ING_MANUAL");
+		parametrosGoblalesPersistence.load(pg);		
+		if(pg!= null) {
+			txtClaveIngManual.setText(pg.getValue());
 		}
     }
 	@Override

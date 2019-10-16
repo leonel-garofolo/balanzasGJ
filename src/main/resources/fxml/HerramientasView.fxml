@@ -35,6 +35,8 @@
 										<Label text="Transacción" GridPane.rowIndex="3" />
 										<StringField fx:id="txtNombre" maxValue="100" prefHeight="25.0" prefWidth="303.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 										<StringField fx:id="txtTransaccion" maxValue="100" prefHeight="25.0" prefWidth="207.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label text="Clave Ing. Manual:" GridPane.rowIndex="4" />
+                              <PasswordField fx:id="txtClaveIngManual" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 									</children>
 								</GridPane>
 							</children>

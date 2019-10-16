@@ -20,8 +20,8 @@
 					</children>
 				</HBox>
 			</center>
-			<bottom>
-				<HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+			<bottom>				
+				<HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
 					<children>
 						<Button fx:id="btnSalir" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#exit">
 							<graphic>

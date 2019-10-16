@@ -14,16 +14,19 @@ import com.balanzasgj.app.persistence.TarasPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.TarasPersistenceJdbc;
 import com.balanzasgj.app.utils.Message;
 import com.balanzasgj.app.utils.ShowJasper;
+import com.balanzasgj.app.utils.Utils;
 import com.balanzasgj.app.view.columns.ClientesTableCell;
 import com.balanzasgj.app.view.columns.ProcedenciasTableCell;
 import com.balanzasgj.app.view.columns.ProductosTableCell;
 import com.balanzasgj.app.view.columns.TransportesTableCell;
+import com.ibm.icu.util.Calendar;
 
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -76,11 +79,13 @@ public class InformesController {
     private Button btnImprimir;
     @FXML
     private Button btnImprimirDetalle;
-
+    
+    @FXML
+    private DatePicker timeFechaDesde;
+    @FXML
+    private DatePicker timeFechaHasta;
+    
     private TarasPersistence tarasPersistence;
-
-
-
 
     @FXML
     private void handleTblEntidadesSelected(ActionEvent event) {
@@ -99,8 +104,22 @@ public class InformesController {
     @FXML
     private void handleLimpiar(ActionEvent event) {
         refleshTableTaras();
-        cbxFiltroBuscar.getSelectionModel().clearSelection();
+        cleanSearch();
+    }
+    
+    private void cleanSearch() {
+    	cbxFiltroBuscar.getSelectionModel().clearSelection();
+    	cbxFiltroBuscar.setValue("Patente");
         txtFiltroBuscar.setText("");
+        
+        Calendar cDesde = Calendar.getInstance();
+        cDesde.set(Calendar.HOUR_OF_DAY, 0);
+        cDesde.set(Calendar.MINUTE, 0);
+    	timeFechaDesde.setValue(Utils.convertoToLocalDate(cDesde.getTime()));
+    	Calendar cHasta = Calendar.getInstance();
+        cDesde.set(Calendar.HOUR_OF_DAY, 23);
+        cDesde.set(Calendar.MINUTE, 59);
+    	timeFechaHasta.setValue(Utils.convertoToLocalDate(cHasta.getTime()));
     }
 
     @FXML
@@ -132,8 +151,9 @@ public class InformesController {
     }
 
 
-    public void initialize() {
+    public void initialize() {    	
         initValues();
+        cleanSearch();
         initPersistence();
         refleshTableTaras();
     }
@@ -174,8 +194,8 @@ public class InformesController {
 
     private void initValues() {
         cbxFiltroBuscar.getItems().addAll(new String[]{
-                "Número de Transacción", "Patente Chasis", "Producto", "Cliente", "Transporte", "Procedencia"
-        });
+                "Número de Transacción", "Patente", "Producto", "Cliente", "Transporte", "Procedencia"
+        });        
     }
 
 
