@@ -9,12 +9,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Named;
 
-import com.balanzasgj.app.model.*;
+import com.balanzasgj.app.model.Clientes;
+import com.balanzasgj.app.model.Procedencias;
+import com.balanzasgj.app.model.Productos;
+import com.balanzasgj.app.model.Taras;
+import com.balanzasgj.app.model.Transportes;
 import com.balanzasgj.app.persistence.TarasPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 
@@ -226,7 +232,7 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 	}
 
 	@Override
-	public List<Taras> findByFieldInformes(String field, String data) {
+	public List<Taras> findByFieldInformes(String field, String data, Date fechaDesde, Date fechaHasta) {
 		List<Taras> list = new LinkedList<Taras>() ;
 		Connection conn = null;
 
@@ -245,6 +251,15 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		}else if(field.equals("Procedencia")){
 			selectWithFilter += " and nombrePro like '%" + data + "%' ";
 		}
+		
+		SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
+		if(fechaDesde != null) {
+			selectWithFilter += " and fecha >= '" + dFormat.format(fechaDesde) + "' ";
+		}
+		if(fechaDesde != null) {
+			selectWithFilter += " and fecha <= '" + dFormat.format(fechaHasta) + "' ";
+		}
+		
 		selectWithFilter += " order by update_date desc";
 		try {
 			conn = getConnection();

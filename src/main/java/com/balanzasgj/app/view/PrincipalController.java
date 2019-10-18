@@ -31,14 +31,15 @@ public class PrincipalController implements Initializable{
 	@FXML
 	private Button btnSalir;	
 	@FXML
-	private Button btnUsuarios;	
-	@FXML
 	private Button btnHerramientas;	
 	private ParametrosGoblalesPersistence parametrosGoblalesPersistence;
 	
 	@FXML
 	private Label lblEmpresa;
-
+	
+	@FXML
+	private Label lblUsuario;
+	
 	@FXML
     private void handleUsuarios(ActionEvent event) {
 		this.openWindows("UsuariosView", "Usuarios");
@@ -109,16 +110,18 @@ public class PrincipalController implements Initializable{
 		}		
 		
 		lblEmpresa.setFont(new Font("Arial", 30));
+		lblUsuario.setFont(new Font("Arial", 14));
+		lblUsuario.setStyle("-fx-font-weight: bold");
+		lblUsuario.setText(Usuarios.getUsuarioLogeado().toUpperCase());
+		
 		
 		String perfil = Usuarios.getPerfilLogeado();
 		switch (perfil) {		
-		case "SUPERVISOR":
+		case Usuarios.P_SUPERVISOR:
 			btnHerramientas.setDisable(true);
 			break;
-		case "OPERARIO":
-			btnInformes.setDisable(true);
-			btnUsuarios.setDisable(true);
-			btnConfiguraciones.setDisable(true);
+		case Usuarios.P_OPERADOR:
+			btnInformes.setDisable(true);			
 			btnHerramientas.setDisable(true);
 			break;
 		default:

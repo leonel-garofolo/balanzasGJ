@@ -22,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
@@ -55,13 +56,13 @@ public class LoginController implements Initializable, IView{
 			Usuarios.setUsuarioLogeado(usuario.getNombre());
 			switch (String.valueOf(usuario.getIdPerfil())) {
 			case "1":
-				Usuarios.setPerfilLogeado("ADMINISTRADOR");
+				Usuarios.setPerfilLogeado(Usuarios.P_ADMINISTRADOR);
 				break;
 			case "2":
-				Usuarios.setPerfilLogeado("SUPERVISOR");
+				Usuarios.setPerfilLogeado(Usuarios.P_SUPERVISOR);
 				break;
 			case "3":
-				Usuarios.setPerfilLogeado("OPERARIO");
+				Usuarios.setPerfilLogeado(Usuarios.P_OPERADOR);
 				break;
 
 			default:
@@ -81,8 +82,11 @@ public class LoginController implements Initializable, IView{
 				Parent rootPrincipal = (Parent)loader.load();
 				Scene scene = new Scene(rootPrincipal);
 				scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
+				
 				stage.setScene(scene);
 				stage.resizableProperty().set(false);				
+				Image ico = new Image("images/icono/peso.png"); 
+				stage.getIcons().add(ico); 
 				stage.show();
 				
 				stage.setOnHiding(new EventHandler<WindowEvent>() {
@@ -100,6 +104,7 @@ public class LoginController implements Initializable, IView{
 		
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		txtUsuario.requestFocus();
 		if(Utils.isDebug()) {
 			txtUsuario.setText("admin");
 			txtClave.setText("123456");
@@ -132,12 +137,12 @@ public class LoginController implements Initializable, IView{
 	            }
 	        }
 	    });
-		txtUsuario.requestFocus();
 	}
 
 
 	@Override
 	public void setStage(Stage stage) {
 		this.stage = stage;
+		this.stage.requestFocus();
 	}
 }

@@ -33,7 +33,7 @@
                   <HBox alignment="CENTER" prefHeight="44.0" prefWidth="210.0" spacing="5.0">
                      <children>
                         <Label alignment="CENTER" text="Filtrar: " />
-                        <TextField fx:id="txtFiltroBuscar" alignment="CENTER" />
+                        <TextField fx:id="txtFiltroBuscar" />
                      </children>
                   </HBox>
                   <DatePicker fx:id="timeFechaDesde" prefHeight="25.0" prefWidth="140.0" />
@@ -52,18 +52,17 @@
             </HBox>
              <TableView fx:id="tblPesajes" onMouseClicked="#handleTblEntidadesSelected" prefHeight="432.0" prefWidth="758.0">
                  <columns>
-                     <TableColumn fx:id="colTransaccion" prefWidth="75.0" text="Transacción" />
-                     <TableColumn fx:id="colFecha" prefWidth="75.0" text="Fecha" />
-                     <TableColumn fx:id="colChasis" prefWidth="75.0" text="Chasis" />
-                     <TableColumn fx:id="colAcoplado" prefWidth="75.0" text="Acoplado" />
-                     <TableColumn fx:id="colEntrada" prefWidth="75.0" text="Entrada" />
-                     <TableColumn fx:id="colSalida" prefWidth="75.0" text="Salida" />
-                     <TableColumn fx:id="colNeto" prefWidth="75.0" text="Neto" />
-                     <TableColumn fx:id="colBalanza" prefWidth="75.0" text="Balanza" />
-                     <TableColumn fx:id="colProducto" prefWidth="75.0" text="Producto" />
-                     <TableColumn fx:id="colCliente" prefWidth="75.0" text="Cliente" />
-                     <TableColumn fx:id="colTransporte" prefWidth="75.0" text="Transporte" />
-                     <TableColumn fx:id="colProcedencia" prefWidth="75.0" text="Procedencia" />
+                     <TableColumn fx:id="colTransaccion" text="Transacción" />
+                     <TableColumn fx:id="colFecha" text="Fecha" />
+                     <TableColumn fx:id="colChasis" text="Patente" />
+                     <TableColumn fx:id="colEntrada" text="Entrada" />
+                     <TableColumn fx:id="colSalida" text="Salida" />
+                     <TableColumn fx:id="colNeto" text="Neto" />
+                     <TableColumn fx:id="colBalanza" text="Balanza" />
+                     <TableColumn fx:id="colProducto" text="Producto" />
+                     <TableColumn fx:id="colCliente" text="Cliente" />
+                     <TableColumn fx:id="colTransporte" text="Transporte" />
+                     <TableColumn fx:id="colProcedencia" text="Procedencia" />
                  </columns>
              </TableView>
             <HBox prefHeight="29.0" prefWidth="758.0" spacing="20.0">

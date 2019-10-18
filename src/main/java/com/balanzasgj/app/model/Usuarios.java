@@ -1,6 +1,11 @@
 package com.balanzasgj.app.model;
 
 public class Usuarios {
+	public final static String P_ADMINISTRADOR = "ADMINISTRADOR";
+	public final static String P_SUPERVISOR = "SUPERVISOR";
+	public final static String P_OPERADOR = "OPERADOR";
+	
+	
 	private static String usuarioLogeado;
 	private static String perfilLogeado;
 	

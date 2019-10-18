@@ -9,6 +9,7 @@ import com.balanzasgj.app.model.Indicadores;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
 import com.balanzasgj.app.model.Transportes;
+import com.balanzasgj.app.model.Usuarios;
 import com.balanzasgj.app.persistence.ClientesPersistence;
 import com.balanzasgj.app.persistence.ComunicacionesPersistence;
 import com.balanzasgj.app.persistence.IndicadoresPersistence;
@@ -28,6 +29,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -109,7 +112,21 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private TextArea txtIndicadorInfo;
 	
-
+	@FXML
+	private AnchorPane usuariosView;
+	
+	@FXML
+	private Tab tabCom;
+	
+	@FXML
+	private Tab tabInd;
+	
+	@FXML
+	private Tab tabUsuarios;
+	
+	@FXML
+	private TabPane tabPane;
+		
 	private ClientesPersistence clientesPersistence;	
 	private ProcedenciasPersistence procedenciasPersistence;
 	private ProductosPersistence productosPersistence;
@@ -411,6 +428,19 @@ public class ConfiguracionesController extends AnchorPane {
 	}
 
 	public void initialize() {
+		switch (Usuarios.getPerfilLogeado()) {
+		case Usuarios.P_SUPERVISOR:
+			tabCom.setDisable(true);
+			tabInd.setDisable(true);
+			break;
+		case Usuarios.P_OPERADOR:			
+			tabCom.setDisable(true);
+			tabInd.setDisable(true);
+			tabUsuarios.setDisable(true);
+			break;
+		default:
+			break;
+		}
 		
 		initPersistence();
 		initTableView();

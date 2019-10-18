@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Label?>
 
-<javafx.scene.layout.AnchorPane prefHeight="656.0" prefWidth="595.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.PrincipalController">
+<AnchorPane prefHeight="656.0" prefWidth="595.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="com.balanzasgj.app.view.PrincipalController">
 	<children>
 		<BorderPane prefHeight="656.0" prefWidth="595.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<center>
@@ -21,21 +21,34 @@
 				</HBox>
 			</center>
 			<bottom>				
-				<HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
+				<HBox maxWidth="Infinity">
 					<children>
-						<Button fx:id="btnSalir" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#exit">
-							<graphic>
-								<ImageView fitHeight="50.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
-									<image>
-										<Image url="@../images/baseline_exit_to_app_black_24dp.png" />
-									</image>
-								</ImageView>
-							</graphic>
-						</Button>
+						<HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+							<padding>
+								<Insets left="20.0" />
+							</padding>
+							<children>
+								<Label fx:id="lblUsuario"  prefHeight="50" prefWidth="200"   />
+							</children>
+						</HBox>
+					
+						<HBox alignment="CENTER_RIGHT">
+							<children>
+								<Button fx:id="btnSalir" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#exit">
+									<graphic>
+										<ImageView fitHeight="50.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+											<image>
+												<Image url="@../images/baseline_exit_to_app_black_24dp.png" />
+											</image>
+										</ImageView>
+									</graphic>
+								</Button>
+							</children>
+							<padding>
+								<Insets right="20.0" />
+							</padding>
+						</HBox>
 					</children>
-					<padding>
-						<Insets right="20.0" />
-					</padding>
 				</HBox>
 			</bottom>
 			<top>
@@ -67,17 +80,7 @@
 									</image>
 								</ImageView>
 							</graphic>
-						</Button>
-						<Button fx:id="btnUsuarios" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleUsuarios" text="Usuarios">
-							<graphic>
-								<ImageView fitHeight="111.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
-									<image>
-										<Image url="@../images/baseline_people_black_48dp.png" />
-									</image>
-								</ImageView>
-							</graphic>
-						</Button>
-							
+						</Button>						
 						<Button fx:id="btnHerramientas" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleHerramientas" text="Sistema">
 							<graphic>
 								<ImageView fitHeight="111.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
@@ -92,4 +95,4 @@
 			</top>
 		</BorderPane>
 	</children>
-</javafx.scene.layout.AnchorPane>
+</AnchorPane>

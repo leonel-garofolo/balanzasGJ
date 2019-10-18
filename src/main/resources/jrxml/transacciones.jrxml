@@ -267,7 +267,7 @@ inner join procedencias pro on pro.codigo = t.id_procedencia]]>
 	<summary>
 		<band height="57" splitType="Stretch">
 			<componentElement>
-				<reportElement x="0" y="0" width="640" height="40" uuid="96cf48e5-c424-4a6c-a0ed-b83848b11e15">
+				<reportElement x="-5" y="0" width="555" height="50" uuid="96cf48e5-c424-4a6c-a0ed-b83848b11e15">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -327,25 +327,8 @@ inner join procedencias pro on pro.codigo = t.id_procedencia]]>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="50" uuid="a41f6d35-2f66-4470-b3fc-ac12e13f11e1">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
-						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="50" height="20" uuid="0f71b3aa-ff9e-40ac-8a09-f4c87ead9e93"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Chasis]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="Table_TD" height="30">
-							<textField>
-								<reportElement x="0" y="0" width="50" height="30" uuid="41597a47-1d0d-4c91-a496-c5552c2322db"/>
-								<textElement textAlignment="Center"/>
-								<textFieldExpression><![CDATA[(($F{patente_aceptado}!=null)?$F{patente_aceptado}:"")]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
 					<jr:column width="40" uuid="69c47c26-f9f3-42a8-8660-8ed95ff04eaf">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
 						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="40" height="20" uuid="5ab17d54-1f2b-4dac-af41-401f8eb8d515"/>
@@ -361,7 +344,7 @@ inner join procedencias pro on pro.codigo = t.id_procedencia]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="40" uuid="37c73077-7844-4357-85af-8718a175b7b0">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
 						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="40" height="20" uuid="1c43c481-f6cd-4d9b-8c5f-994516196e2a"/>
@@ -377,7 +360,7 @@ inner join procedencias pro on pro.codigo = t.id_procedencia]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="40" uuid="25704def-3a1a-4ecc-adc2-2b443cb764a1">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
 						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="40" height="20" uuid="bae59438-be1a-4ea5-845b-fca83c0f28e7"/>
@@ -392,7 +375,7 @@ inner join procedencias pro on pro.codigo = t.id_procedencia]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="50" uuid="7a1a00e5-5dc1-47d7-aa29-cfa1895b1a95">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
 						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="50" height="20" uuid="07a07688-d4ba-47a4-b34d-11df119b857e"/>
@@ -408,7 +391,7 @@ inner join procedencias pro on pro.codigo = t.id_procedencia]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="40" uuid="5e47be27-cbdf-4bb1-b251-9c4ba1193fd5">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column9"/>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
 						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="40" height="20" uuid="edfc1cd1-4718-4fab-a36a-0a842bc5130b"/>
@@ -424,7 +407,7 @@ inner join procedencias pro on pro.codigo = t.id_procedencia]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="40" uuid="355d32ff-84a2-4fe4-beb4-988a5cf0998b">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column10"/>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column9"/>
 						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="40" height="20" uuid="713f4587-7751-472c-8336-a956290d8c79"/>
@@ -440,7 +423,7 @@ inner join procedencias pro on pro.codigo = t.id_procedencia]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="40" uuid="059db57c-f4d4-4818-ab9c-b9a14f935def">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column11"/>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column10"/>
 						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="40" height="20" uuid="b7f45f05-c804-4f99-a3d0-5042be046030"/>
@@ -456,7 +439,7 @@ inner join procedencias pro on pro.codigo = t.id_procedencia]]>
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="40" uuid="f185aedf-6aa9-43d8-8eb0-082793f69f76">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column12"/>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column11"/>
 						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="40" height="20" uuid="8ab95359-9361-4820-aa6d-d6ba2b661920"/>

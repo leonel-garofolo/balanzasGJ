@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 
-<AnchorPane prefHeight="134.0" prefWidth="291.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.LoginController">
+<AnchorPane focusTraversable="true" prefHeight="134.0" prefWidth="291.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.LoginController">
    <children>
       <GridPane layoutY="22.0" prefHeight="91.0" prefWidth="281.0">
         <columnConstraints>

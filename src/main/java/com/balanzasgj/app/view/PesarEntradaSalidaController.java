@@ -301,8 +301,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	
 	@FXML
 	private void handleIngManual(ActionEvent event) {
-		if(Usuarios.getPerfilLogeado().equals("SUPERVISOR")
-				|| Usuarios.getPerfilLogeado().equals("ADMINISTRADOR")) {
+		if(Usuarios.getPerfilLogeado().equals(Usuarios.P_SUPERVISOR)
+				|| Usuarios.getPerfilLogeado().equals(Usuarios.P_ADMINISTRADOR)) {
 			enabledIngManual();
 		} else {
 			String value = Message.optionSecurity();

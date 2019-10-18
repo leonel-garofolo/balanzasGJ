@@ -20,8 +20,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
-public class UsuariosViewController implements Initializable{
+public class UsuariosViewController extends AnchorPane implements Initializable{
 	@FXML
 	private TableView<Perfiles> tblPerfiles;
 	@FXML
@@ -122,21 +123,21 @@ public class UsuariosViewController implements Initializable{
 		colUsuario.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 		
 		Perfiles perf = null;
-		if(Usuarios.getPerfilLogeado().equals("ADMINISTRADOR")) {
+		if(Usuarios.getPerfilLogeado().equals(Usuarios.P_ADMINISTRADOR)) {
 			perf = new Perfiles();
 			perf.setId(1);
-			perf.setNombre("ADMINISTRADOR");
+			perf.setNombre(Usuarios.P_ADMINISTRADOR);
 			tblPerfiles.getItems().add(perf);
 		}
 		
 		perf = new Perfiles();
 		perf.setId(2);
-		perf.setNombre("SUPERVISOR");
+		perf.setNombre(Usuarios.P_SUPERVISOR);
 		tblPerfiles.getItems().add(perf);
 		
 		perf = new Perfiles();
 		perf.setId(3);
-		perf.setNombre("OPERARIO");
+		perf.setNombre(Usuarios.P_OPERADOR);
 		tblPerfiles.getItems().add(perf);		
 	}
 	
@@ -146,7 +147,7 @@ public class UsuariosViewController implements Initializable{
 			// perfil por defecto es el ADMINISTRADOR
 			tblUsuarios.getItems().addAll(usuariosPersistence.loadForPerfil(1));
 		}else {
-			if(Usuarios.getPerfilLogeado().equals("SUPERVISOR")) {
+			if(Usuarios.getPerfilLogeado().equals(Usuarios.P_SUPERVISOR)) {
 				List<Usuarios> usuarios = usuariosPersistence.loadForPerfil(tblPerfiles.getSelectionModel().getSelectedItem().getId());
 				for(Usuarios u: usuarios) {
 					if(u.getIdPerfil() == 2) {

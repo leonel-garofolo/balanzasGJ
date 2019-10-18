@@ -1,6 +1,8 @@
 package com.balanzasgj.app.view;
 
 import java.math.BigDecimal;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -30,6 +32,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -39,11 +42,9 @@ public class InformesController {
     @FXML
     private TableColumn<Taras, String> colTransaccion;
     @FXML
-    private TableColumn<Taras, Date> colFecha;
+    private TableColumn<Taras, String> colFecha;
     @FXML
     private TableColumn<Taras, String> colChasis;
-    @FXML
-    private TableColumn<Taras, String> colAcoplado;
     @FXML
     private TableColumn<Taras, BigDecimal> colEntrada;
     @FXML
@@ -86,6 +87,7 @@ public class InformesController {
     private DatePicker timeFechaHasta;
     
     private TarasPersistence tarasPersistence;
+    private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     @FXML
     private void handleTblEntidadesSelected(ActionEvent event) {
@@ -93,19 +95,33 @@ public class InformesController {
 
     @FXML
     private void handleBuscar(ActionEvent event) {
-        if(cbxFiltroBuscar.getSelectionModel().isEmpty() || txtFiltroBuscar.getText().isEmpty()){
-            Message.error("Debe completar los datos de filtrado.");
+        if(cbxFiltroBuscar.getSelectionModel().isEmpty()){
+            Message.error("Debe seleccionar el criterio de busqueda.");
         }else{
+        	Calendar cDesde = Calendar.getInstance();
+        	cDesde.setTime(Utils.convertToDate(timeFechaDesde.getValue()));
+        	cDesde.set(Calendar.HOUR_OF_DAY, 0);
+        	cDesde.set(Calendar.MINUTE, 0);
+        	
+        	Calendar cHasta = Calendar.getInstance();
+        	cHasta.setTime(Utils.convertToDate(timeFechaHasta.getValue()));
+        	cHasta.set(Calendar.HOUR_OF_DAY, 23);
+        	cHasta.set(Calendar.MINUTE, 59);
+        	
             tblPesajes.getItems().clear();
-            tblPesajes.getItems().addAll(tarasPersistence.findByField(cbxFiltroBuscar.getSelectionModel().getSelectedItem(), txtFiltroBuscar.getText(), false));
+            tblPesajes.getItems().addAll(tarasPersistence.findByFieldInformes(
+            		cbxFiltroBuscar.getSelectionModel().getSelectedItem(), 
+            		txtFiltroBuscar.getText(), 
+            		cDesde.getTime(), 
+            		cHasta.getTime()));
         }
     }
 
     @FXML
-    private void handleLimpiar(ActionEvent event) {
-        refleshTableTaras();
+    private void handleLimpiar(ActionEvent event) {        
         cleanSearch();
-    }
+        handleBuscar(null);
+    }   
     
     private void cleanSearch() {
     	cbxFiltroBuscar.getSelectionModel().clearSelection();
@@ -117,8 +133,8 @@ public class InformesController {
         cDesde.set(Calendar.MINUTE, 0);
     	timeFechaDesde.setValue(Utils.convertoToLocalDate(cDesde.getTime()));
     	Calendar cHasta = Calendar.getInstance();
-        cDesde.set(Calendar.HOUR_OF_DAY, 23);
-        cDesde.set(Calendar.MINUTE, 59);
+    	cHasta.set(Calendar.HOUR_OF_DAY, 23);
+    	cHasta.set(Calendar.MINUTE, 59);
     	timeFechaHasta.setValue(Utils.convertoToLocalDate(cHasta.getTime()));
     }
 
@@ -145,26 +161,29 @@ public class InformesController {
 		}
     }
 
-    private void refleshTableTaras(){
-        tblPesajes.getItems().clear();
-        tblPesajes.getItems().addAll(tarasPersistence.findAll());
-    }
-
-
     public void initialize() {    	
         initValues();
         cleanSearch();
         initPersistence();
-        refleshTableTaras();
+        handleBuscar(null);
     }
 
     private void initPersistence() {
         this.tarasPersistence = new TarasPersistenceJdbc();
 
         colTransaccion.setCellValueFactory(new PropertyValueFactory<>("transaccion"));
-        colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
-        colChasis.setCellValueFactory(new PropertyValueFactory<>("patente"));
-        colAcoplado.setCellValueFactory(new PropertyValueFactory<>("contenedorNum"));
+        colFecha.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
+
+            @Override
+            public String getValue() {
+                if(cellData.getValue().getFecha() != null){
+                    return format.format(cellData.getValue().getFecha());
+                }
+                return "";
+
+            }
+        });
+        colChasis.setCellValueFactory(new PropertyValueFactory<>("patente"));       
         colEntrada.setCellValueFactory(new PropertyValueFactory<>("pesoEntrada"));
         colSalida.setCellValueFactory(new PropertyValueFactory<>("pesoSalida"));
 
@@ -196,6 +215,10 @@ public class InformesController {
         cbxFiltroBuscar.getItems().addAll(new String[]{
                 "Número de Transacción", "Patente", "Producto", "Cliente", "Transporte", "Procedencia"
         });        
+        txtFiltroBuscar.setTextFormatter(new TextFormatter<>((change) -> {
+		    change.setText(change.getText().toUpperCase());
+		    return change;
+		}));
     }
 
 

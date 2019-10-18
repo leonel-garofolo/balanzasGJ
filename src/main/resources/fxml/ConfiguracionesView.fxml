@@ -28,9 +28,9 @@
    <children>
       <VBox prefHeight="428.0" prefWidth="611.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TabPane prefHeight="582.0" prefWidth="730.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="tabPane" prefHeight="582.0" prefWidth="730.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab text="Entidades">
+                <Tab text="Tablas">
                      <content>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
@@ -40,7 +40,7 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="609.0" spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <Label text="Seleccionar Entidad">
+                                                <Label text="Seleccionar Tabla">
                                                    <HBox.margin>
                                                       <Insets left="10.0" />
                                                    </HBox.margin>
@@ -139,7 +139,7 @@
                         </AnchorPane>
                      </content>  
                 </Tab>        	
-                <Tab text="Comunicaciones">
+                <Tab fx:id="tabCom" text="Comunicaciones">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -183,7 +183,7 @@
                         </AnchorPane>
                   </content>
                 </Tab>
-                  <Tab text="Indicadores">
+                  <Tab fx:id="tabInd" text="Indicadores">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -292,6 +292,11 @@
                            </children>
                         </AnchorPane>
                     </content>
+                  </Tab>
+                  <Tab fx:id="tabUsuarios" text="Usuarios">
+                  	<content>
+                  		<fx:include source="UsuariosView.fxml" fx:id="usuariosView" />
+                  	</content>
                   </Tab>
               </tabs>
             </TabPane>

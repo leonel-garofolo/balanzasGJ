@@ -1,6 +1,5 @@
 package com.balanzasgj.app;
 
-import com.balanzasgj.app.view.HerramientasController;
 import com.balanzasgj.app.view.IView;
 import com.balanzasgj.app.view.LoginController;
 
@@ -9,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -27,7 +27,8 @@ public class AppClient extends Application {
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/LoginView.fxml"));
 		Parent rootLogin = (Parent)loader.load();
-		this.scene = new Scene(rootLogin);		
+		this.scene = new Scene(rootLogin);	
+		
 		scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());		
 		
 		if(loader.getController() instanceof LoginController) {
@@ -35,9 +36,12 @@ public class AppClient extends Application {
 	    	controller.setStage(primaryStage);
 	    }
 		
-		primaryStage.setScene(scene);
+		primaryStage.setScene(scene);		
+		Image ico = new Image("images/icono/peso.png"); 
+		primaryStage.getIcons().add(ico); 
 		primaryStage.resizableProperty().set(false);
 		primaryStage.show();
+		primaryStage.requestFocus();
 		
 		primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
 
