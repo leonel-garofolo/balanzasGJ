@@ -290,6 +290,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			List<Taras> taras = new ArrayList<>();
 			taras.add(taraEdit);
 			HashMap<String, Object> params = new HashMap<>();
+			ParametrosGoblales pg = new ParametrosGoblales();
+			pg.setId("EMPRESA_NOMBRE");	
+			parametrosGoblalesPersistence.load(pg);
+	        params.put("EMPRESA_NOMBRE", pg.getValue());
+	        params.put("USUARIO", Usuarios.getUsuarioLogeado());
+
 			try {
 				ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
 			} catch (JRException e) {
