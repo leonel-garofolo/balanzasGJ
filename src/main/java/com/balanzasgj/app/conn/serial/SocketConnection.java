@@ -6,16 +6,15 @@ import java.util.Enumeration;
 import java.util.TooManyListenersException;
 
 import gnu.io.CommPortIdentifier;
-import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
-import gnu.io.UnsupportedCommOperationException;
 
 public class SocketConnection implements SerialPortEventListener {
 	SerialPort serialPort;
 	public static String st;
-	public char[] c;
+	public char[] c;	
+
 	/**
 	 * Creates new form reading
 	 */

@@ -230,6 +230,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private String sBufferConnection;	
 	private Stage stage;
 	
+	private int posicionInicioDato;
+	private int longitudDato;
+	
 	private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
 	@FXML
@@ -858,6 +861,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		List<Comunicaciones> comunicaciones= comunicacionesPersistence.findAll();
 		for(Comunicaciones comunicacion: comunicaciones) {
 			indicadorConfig= indicadoresPersistence.findById(comunicacion.getIdindicadores().longValue());
+			this.posicionInicioDato = indicadorConfig.getPosicionInicioDato();
+			this.longitudDato = indicadorConfig.getLongitudDato();
 			int paridad = 0;
 			if(indicadorConfig.getParidad().equals("n")) {
 				paridad = SerialPort.PARITY_NONE;
@@ -983,8 +988,20 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					int available = socket.getInput().available();
 					byte[] chunk = new byte[available];
 					socket.getInput().read(chunk, 0, available);
-					sBufferConnection = new String(chunk);
-					txtNumberSerial.setText(sBufferConnection);
+					sBufferConnection = new String(chunk).trim();									
+					if(this.posicionInicioDato < sBufferConnection.length()) {
+						sBufferConnection = sBufferConnection.substring(this.posicionInicioDato);
+					}
+					if((this.longitudDato -1) < sBufferConnection.length()) {
+						sBufferConnection = sBufferConnection.substring(sBufferConnection.length() - this.longitudDato, sBufferConnection.length());
+					}
+					if(!txtNumberSerial.getText().equals(sBufferConnection)) {
+						try {
+							Integer.valueOf(sBufferConnection);
+							txtNumberSerial.setText(sBufferConnection);
+						}catch ( NumberFormatException e) {							
+						}
+					}
 				} catch (IOException e) {
 					System.out.println("IO Error Occurred: " + e.toString());
 				}
