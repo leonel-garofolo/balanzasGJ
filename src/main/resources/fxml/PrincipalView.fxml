@@ -16,7 +16,7 @@
 			<center>
 				<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 					<children>				
-						<Label fx:id="lblEmpresa"  prefHeight="50" prefWidth="200" text="Transaccion"  />
+						<Label fx:id="lblEmpresa"  prefHeight="50" prefWidth="500" text="Transaccion"  />
 					</children>
 				</HBox>
 			</center>
