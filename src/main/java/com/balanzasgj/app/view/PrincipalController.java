@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.balanzasgj.app.App;
 import com.balanzasgj.app.model.ParametrosGoblales;
 import com.balanzasgj.app.model.Usuarios;
 import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
@@ -65,16 +66,18 @@ public class PrincipalController implements Initializable, IView{
 			Parent rootPrincipal = (Parent)loader.load();			
 			Scene scene = new Scene(rootPrincipal);			
 			scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
-			IView controller = (LoginController)loader.getController();
-	    	controller.setStage(stage);	
+			LoginController controller = (LoginController)loader.getController();
+	    	
 			stage.setScene(scene);
-			stage.resizableProperty().set(false);				
-			Image ico = new Image("images/icono/peso.png"); 
-			stage.getIcons().add(ico); 
-			stage.show();
 			Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
 			stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
 			stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+			stage.resizableProperty().set(false);				
+			Image ico = new Image(App.PATH_ICONO); 
+			stage.getIcons().add(ico); 
+			controller.setStage(stage);	
+			stage.show();
+			
 			
 			stage.setOnHiding(new EventHandler<WindowEvent>() {
 

@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 
-<AnchorPane focusTraversable="true" prefHeight="134.0" prefWidth="291.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.LoginController">
+<AnchorPane prefHeight="134.0" prefWidth="291.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.LoginController">
    <children>
       <GridPane layoutY="22.0" prefHeight="91.0" prefWidth="281.0">
         <columnConstraints>
@@ -33,7 +33,7 @@
                   <Insets left="15.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="txtUsuario" GridPane.columnIndex="1" />
+            <TextField fx:id="txtUsuario" focusTraversable="false" GridPane.columnIndex="1" />
             <PasswordField fx:id="txtClave" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <ImageView fitHeight="33.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <image>

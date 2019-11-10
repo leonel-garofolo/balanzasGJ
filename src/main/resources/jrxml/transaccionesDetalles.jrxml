@@ -250,13 +250,6 @@
 	</detail>
 	<pageFooter>
 		<band height="20" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="-19" width="140" height="16" uuid="5051e246-930e-4dfe-a48e-0f87965a7a5e"/>
-				<textElement>
-					<font fontName="Arial" size="12"/>
-				</textElement>
-				<text><![CDATA[Pesar SRL (341) 55555]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="408" y="-19" width="83" height="16" uuid="a6e1d07d-8d9e-4542-99c1-42464cf18439"/>
 				<textElement textAlignment="Right">

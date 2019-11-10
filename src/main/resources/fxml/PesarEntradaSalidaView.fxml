@@ -90,7 +90,7 @@
                               </HBox>
                               <VBox alignment="CENTER_RIGHT" prefHeight="146.0" prefWidth="602.0" spacing="3.0">
                                  <children>
-                                    <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
+                                    <HBox fx:id="hEntrada" alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
                                        <children>
                                           <Button fx:id="btnPesarEntrada" focusTraversable="false" mnemonicParsing="false" onAction="#handlePesarEntrada" prefHeight="37.0" prefWidth="94.0" text="Entrada">
                                              <graphic>
@@ -111,7 +111,7 @@
                                           <Insets right="15.0" />
                                        </padding>
                                     </HBox>
-                                    <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
+                                    <HBox fx:id="hSalida" alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
                                        <children>
                                           <Button fx:id="btnPesarSalida" focusTraversable="false" mnemonicParsing="false" prefHeight="37.0" prefWidth="94.0" text="Salida">
                                              <graphic>
@@ -132,7 +132,7 @@
                                           <Insets right="15.0" />
                                        </padding>
                                     </HBox>
-                                    <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
+                                    <HBox fx:id="hNeto" alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
                                        <children>
                                           <Label focusTraversable="false" text="Neto">
                                              <font>
@@ -298,6 +298,8 @@
                                     <TextField fx:id="txtConductor" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="7" />
                                     <Label fx:id="lblDias" prefHeight="17.0" prefWidth="29.0" style="-fx-font-weight: bold;" text="Días" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                     <TextField fx:id="txtDiasVenc" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblUltima" prefHeight="17.0" prefWidth="74.0" style="-fx-font-weight: bold;" text="Ultima Toma" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtUltima" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                                  </children>
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />

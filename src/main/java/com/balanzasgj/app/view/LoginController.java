@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.balanzasgj.app.App;
 import com.balanzasgj.app.model.Usuarios;
 import com.balanzasgj.app.persistence.UsuariosPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.UsuariosPersistenceJdbc;
@@ -29,7 +30,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class LoginController implements Initializable, IView{
+public class LoginController implements Initializable, IView, EventHandler<WindowEvent>{
 	@FXML
 	private TextField txtUsuario;
 	@FXML
@@ -87,7 +88,7 @@ public class LoginController implements Initializable, IView{
 				
 				stage.setScene(scene);
 				stage.resizableProperty().set(false);				
-				Image ico = new Image("images/icono/peso.png"); 
+				Image ico = new Image(App.PATH_ICONO); 
 				stage.getIcons().add(ico); 
 				stage.show();
 				
@@ -105,8 +106,7 @@ public class LoginController implements Initializable, IView{
 	
 		
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		txtUsuario.requestFocus();
+	public void initialize(URL location, ResourceBundle resources) {		
 		if(Utils.isDebug()) {
 			txtUsuario.setText("admin");
 			txtClave.setText("123456");
@@ -144,7 +144,12 @@ public class LoginController implements Initializable, IView{
 
 	@Override
 	public void setStage(Stage stage) {
-		this.stage = stage;
-		this.stage.requestFocus();
+		this.stage = stage;		
+		this.stage.setOnShowing(this);
+	}
+	
+	@Override
+	public void handle(WindowEvent e) {
+		txtUsuario.requestFocus();		
 	}
 }
