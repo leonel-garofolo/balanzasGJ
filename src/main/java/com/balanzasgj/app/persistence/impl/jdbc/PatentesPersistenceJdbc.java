@@ -27,16 +27,16 @@ import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 public class PatentesPersistenceJdbc extends GenericJdbcDAO<Patentes> implements PatentesPersistence {
 
 	private final static String SQL_SELECT_ALL = 
-		"select codigo, tara, date_update from patentes"; 
+		"select codigo, tara, dias, date_update from patentes"; 
 
 	private final static String SQL_SELECT = 
-		"select codigo, tara, date_update from patentes where codigo = ?";
+		"select codigo, tara, dias, date_update from patentes where codigo = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into patentes ( codigo, tara, date_update ) values ( ?, ?, ? )";
+		"insert into patentes ( codigo, tara, dias, date_update ) values ( ?, ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update patentes set tara = ?, date_update = ? where codigo = ?";
+		"update patentes set tara = ?, dias=?, date_update = ? where codigo = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from patentes where codigo = ?";
@@ -74,6 +74,7 @@ public class PatentesPersistenceJdbc extends GenericJdbcDAO<Patentes> implements
 		//--- Set PRIMARY KEY and DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		setValue(ps, i++, patentes.getCodigo() ) ; // "codigo" : java.lang.String
 		setValue(ps, i++, patentes.getTara() ) ; // "tara" : java.lang.Double
+		setValue(ps, i++, patentes.getDiasVenc()) ; // "tara" : java.lang.Double
 		setValue(ps, i++, patentes.getUpdate() ) ; // "update" : java.util.Date
 	}
 
@@ -82,6 +83,7 @@ public class PatentesPersistenceJdbc extends GenericJdbcDAO<Patentes> implements
 	protected void setValuesForUpdate(PreparedStatement ps, int i, Patentes patentes) throws SQLException {
 		//--- Set DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		setValue(ps, i++, patentes.getTara() ) ; // "tara" : java.lang.Double
+		setValue(ps, i++, patentes.getDiasVenc()) ; // "tara" : java.lang.Double
 		setValue(ps, i++, patentes.getUpdate() ) ; // "update" : java.util.Date
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, patentes.getCodigo() ) ; // "codigo" : java.lang.String
@@ -112,6 +114,7 @@ public class PatentesPersistenceJdbc extends GenericJdbcDAO<Patentes> implements
 		//--- Set data from ResultSet to Bean attributes
 		patentes.setCodigo(rs.getString("codigo")); // java.lang.String
 		patentes.setTara(rs.getDouble("tara")); // java.lang.Double
+		patentes.setDiasVenc(rs.getInt("dias")); // java.lang.Double
 		if ( rs.wasNull() ) { patentes.setTara(null); }; // not primitive number => keep null value if any
 		patentes.setUpdate(rs.getDate("date_update")); // java.util.Date
 		return patentes ;

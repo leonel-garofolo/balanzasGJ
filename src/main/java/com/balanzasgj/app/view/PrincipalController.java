@@ -10,18 +10,23 @@ import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
-public class PrincipalController implements Initializable{
+public class PrincipalController implements Initializable, IView{
 	@FXML
 	private Button btnTaras;
 	@FXML
@@ -39,6 +44,7 @@ public class PrincipalController implements Initializable{
 	
 	@FXML
 	private Label lblUsuario;
+	private Stage stage;
 	
 	@FXML
     private void handleUsuarios(ActionEvent event) {
@@ -49,6 +55,38 @@ public class PrincipalController implements Initializable{
     private void handleTara(ActionEvent event) {
 		this.openWindows("PesarEntradaSalidaView", "Tara");
     }
+	
+	@FXML
+    private void handleCerrarSesion(ActionEvent event) {					
+	    stage.setWidth(300);
+		stage.setHeight(190);
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/LoginView.fxml"));			
+			Parent rootPrincipal = (Parent)loader.load();			
+			Scene scene = new Scene(rootPrincipal);			
+			scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
+			IView controller = (LoginController)loader.getController();
+	    	controller.setStage(stage);	
+			stage.setScene(scene);
+			stage.resizableProperty().set(false);				
+			Image ico = new Image("images/icono/peso.png"); 
+			stage.getIcons().add(ico); 
+			stage.show();
+			Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+			stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+			stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+			
+			stage.setOnHiding(new EventHandler<WindowEvent>() {
+
+	            public void handle(WindowEvent event) {
+	            	System.exit(0);
+	            }
+	        });		
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+    }
+	
 	
 	@FXML
     private void handleConfiguraciones(ActionEvent event) {
@@ -127,5 +165,11 @@ public class PrincipalController implements Initializable{
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void setStage(Stage stage) {
+		this.stage= stage;
+		
 	}
 }

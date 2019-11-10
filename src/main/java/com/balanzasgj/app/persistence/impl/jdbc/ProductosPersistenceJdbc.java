@@ -26,16 +26,16 @@ import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implements ProductosPersistence{
 
 	private final static String SQL_SELECT_ALL = 
-		"select codigo, nombre, existencia from productos"; 
+		"select codigo, nombre from productos"; 
 
 	private final static String SQL_SELECT = 
-		"select codigo, nombre, existencia from productos where codigo = ?";
+		"select codigo, nombre from productos where codigo = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into productos ( nombre, existencia ) values ( ?, ? )";
+		"insert into productos ( nombre ) values ( ? )";
 
 	private final static String SQL_UPDATE = 
-		"update productos set nombre = ?, existencia = ? where codigo = ?";
+		"update productos set nombre = ? where codigo = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from productos where codigo = ?";
@@ -73,7 +73,6 @@ public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implemen
 		//--- Set PRIMARY KEY and DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		// "codigo" is auto-incremented => no set in insert		
 		setValue(ps, i++, productos.getNombre() ) ; // "nombre" : java.lang.String
-		setValue(ps, i++, productos.getExistencia() ) ; // "existencia" : java.lang.Integer
 	}
 
     //----------------------------------------------------------------------
@@ -81,7 +80,6 @@ public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implemen
 	protected void setValuesForUpdate(PreparedStatement ps, int i, Productos productos) throws SQLException {
 		//--- Set DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		setValue(ps, i++, productos.getNombre() ) ; // "nombre" : java.lang.String
-		setValue(ps, i++, productos.getExistencia() ) ; // "existencia" : java.lang.Integer
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, productos.getCodigo() ) ; // "codigo" : java.lang.Integer
 	}
@@ -112,8 +110,6 @@ public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implemen
 		productos.setCodigo(rs.getLong("codigo")); // java.lang.Integer
 		if ( rs.wasNull() ) { productos.setCodigo(null); }; // not primitive number => keep null value if any
 		productos.setNombre(rs.getString("nombre")); // java.lang.String
-		productos.setExistencia(rs.getInt("existencia")); // java.lang.Integer
-		if ( rs.wasNull() ) { productos.setExistencia(null); }; // not primitive number => keep null value if any
 		return productos ;
 	}
 

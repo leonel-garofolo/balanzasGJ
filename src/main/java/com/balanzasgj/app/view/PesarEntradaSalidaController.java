@@ -106,6 +106,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private Label lblTara;	
 	@FXML
+	private Label lblDias;	
+	@FXML
 	private Button btnTomarTara;	
 	@FXML
 	private Button btnPesarEntrada;
@@ -199,14 +201,24 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private Button btnBuscar;
 	@FXML
-	private Button btnLimpiar;
-	@FXML
-	private TextField txtFiltroBuscar;
-	@FXML
-	private ComboBox<String> cbxFiltroBuscar;
+	private CheckBox chkSalidasPendientes;
 	
 	@FXML
-	private CheckBox chkSalidasPendientes;
+	private Label lblProducto;
+	@FXML
+	private Label lblCliente;
+	@FXML
+	private Label lblTransporte;
+	@FXML
+	private Label lblProcedencia;
+	@FXML
+	private Label lblObservaciones;
+	@FXML
+	private Label lblFactura;	
+	@FXML
+	private Label lblConductor;
+	@FXML
+	private Label lblDocumento;	
 	
 	private char statusTara;
 
@@ -238,6 +250,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private TextField txtTara;
 	
+	@FXML
+	private TextField txtDiasVenc;
+	
 	
 	@FXML
 	private void handleTomarTara(ActionEvent event) {
@@ -268,25 +283,11 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 
 	@FXML
 	private void handleBuscar(ActionEvent event) {
-		if (cbxFiltroBuscar.getSelectionModel().isEmpty()) {
-			tblPesajes.getItems().clear();
-			tblPesajes.getItems().addAll(tarasPersistence
-					.findByField("All", txtFiltroBuscar.getText(), chkSalidasPendientes.isSelected()));
-		} else {
-			tblPesajes.getItems().clear();
-			tblPesajes.getItems().addAll(tarasPersistence
-					.findByField(cbxFiltroBuscar.getSelectionModel().getSelectedItem(), txtFiltroBuscar.getText(), chkSalidasPendientes.isSelected()));
-		}
+		tblPesajes.getItems().clear();
+		tblPesajes.getItems().addAll(tarasPersistence
+				.findByField("All", "", chkSalidasPendientes.isSelected()));
 	}
-
-	@FXML
-	private void handleLimpiar(ActionEvent event) {
-		cbxFiltroBuscar.getSelectionModel().clearSelection();
-		txtFiltroBuscar.setText("");
-		chkSalidasPendientes.setSelected(false);
-		refleshTableTaras();
-	}
-
+	
 	@FXML
 	private void handleTicket(ActionEvent event) {
 		if (taraEdit != null) {
@@ -337,118 +338,126 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 
 	@FXML
 	private void handleAplicar(ActionEvent event) {
-		if (cbxProducto.getValue() != null && cbxCliente.getValue() != null && cbxTransporte.getValue() != null
-				&& cbxProcedencia.getValue() != null
-				//&& !cbxPatente.getSelectionModel().isEmpty()
-				&& !txtPatente.getText().isEmpty()
-				&& txtTransaccion.getText() != null && !txtTransaccion.getText().isEmpty() 
-				&& !txtFecha.getText().isEmpty()
-				&& !cbxModoTara.getSelectionModel().isEmpty()
-				&& !cbxModalidad.getSelectionModel().isEmpty()
-				&& !cbxModoChasis.getSelectionModel().isEmpty()) {
-
-			if (statusTara == 'S' || statusTara == 'E') {
-				boolean isEje = cbxModoChasis.getSelectionModel().getSelectedItem().equals("POR EJE");				
-				
-				Taras tara = new Taras();
-				if (idTaraEdit >= 0) {
-					tara.setIdtaras(idTaraEdit);
-					tarasPersistence.load(tara);
-				}
-				tara.setTransaccion(txtTransaccion.getText());
-				try {
-					tara.setFecha(format.parse(txtFecha.getText()));
-				} catch (ParseException e) {
-					System.out.println("error de formato");
-				}
-				tara.setProducto(cbxProducto.getValue());
-				tara.setCliente(cbxCliente.getValue());
-				tara.setTransporte(cbxTransporte.getValue());
-				tara.setProcedencias(cbxProcedencia.getValue());
-				tara.setPatente(txtPatente.getText());
-				tara.setNumDoc(txtNumDoc.getText());
-				tara.setConductor(txtConductor.getText());
-				tara.setComprobanteNun1(txtFactura.getText());
-				tara.setObservacion(txtObservaciones.getText());
-				tara.setModoTara(cbxModoTara.getSelectionModel().getSelectedItem());
-				tara.setModalidad(cbxModalidad.getSelectionModel().getSelectedItem());
-				tara.setModoChasis(cbxModoChasis.getSelectionModel().getSelectedItem());				
-				if(indicadorConfig != null && !stage.getTitle().contains("ERROR")) {
-					tara.setBalanza(indicadorConfig.getNombre());
-				}else {
-					tara.setBalanza("ING. MANUAL");
-				}
-				
-				double totalPesaje = 0d;
-				int lastEje = 0;
-				if(isEje) {
-					int count = tblEjes.getItems().size();
-					for(int i = 0; i < count; i++ ) {
-						totalPesaje +=tblEjes.getItems().get(i).getPeso(); 
-						if(i == (count-1) ) {
-							lastEje = tblEjes.getItems().get(i).getNroEje();
-						}
-					}
-					
-					totalPesaje += Double.valueOf(txtNumberSerial.getText());
-				}
-				
-				double totalPeso = 0d;
-				if(isEje) {
-					totalPeso = totalPesaje;						
-				} else {
-					totalPeso = Double.valueOf(txtNumberSerial.getText());						
-				}					
-				if (cbxModoTara.getSelectionModel().getSelectedItem().equals("CON TARA") 
-						&& !txtTara.getText().isEmpty()) {
-					totalPeso = totalPeso - Double.valueOf(txtTara.getText());
-					Patentes p = new Patentes();
-					p.setCodigo(txtPatente.getText());
-					p.setTara(Double.valueOf(txtTara.getText()));
-					this.patentesPersistence.save(p);					
-				}
-				if (statusTara == 'S') {					
-					txtSalida.setText(String.valueOf(totalPeso));
-					tara.setPesoSalida(new BigDecimal(txtSalida.getText()));
-					calcularNeto();
-				} else if (statusTara == 'E') {
-										
-					txtEntrada.setText(String.valueOf(totalPeso));
-					
-					tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
-				}
-				//comprobar si existe una patente con pesaje de salida pendiente
-				boolean existPending = tarasPersistence.checkPending(tara.getPatente());
-				if(tara.getIdtaras() == null && existPending) {
-					Message.error("Error al guardar, ya existe un pesaje pendiente con la patente " + tara.getPatente() + ".");
-					return;
-				}
-				
-				Taras insertTara = tarasPersistence.save(tara);
-				if (idTaraEdit == -1) {
-					idTaraEdit = insertTara.getIdtaras();
-				}
-				
-				// guardo todos los ejes cargados
-				if(isEje) {
-					Ejes eje = new Ejes();					
-					eje.setIdTaras(insertTara.getIdtaras());
-					eje.setType(String.valueOf(statusTara));
-					eje.setNroEje(lastEje + 1);
-					eje.setPeso(Double.valueOf(txtNumberSerial.getText()));
-					tblEjes.getItems().add(eje);
-					ejesPersistence.save(eje);
-				}
-								
-				refleshTableTaras();
-				saveContadorTransaccion();
+		if(cbxModoTara.getSelectionModel().getSelectedItem().equals("CON TARA")) {
+			if (!txtTara.getText().isEmpty() && !txtDiasVenc.getText().isEmpty() ) {
+				//totalPeso = totalPeso - Double.valueOf(txtTara.getText());
+				Patentes p = new Patentes();
+				p.setCodigo(txtPatente.getText());
+				p.setTara(Double.valueOf(txtTara.getText()));
+				p.setDiasVenc(Integer.valueOf(txtDiasVenc.getText()));
+				this.patentesPersistence.save(p);					
 				Message.info("Los datos se guardaron correctamente.");
 				clearForm();
-				btnIngresoManual.setDisable(true);
-				handleNuevoPesaje(event);
+			} else {
+				Message.error("Debe Completar la tara y los dias de vencimiento.");
 			}
 		} else {
-			Message.error("Debe haber alguna entrada seleccionada.");
+			if (cbxProducto.getValue() != null && cbxCliente.getValue() != null && cbxTransporte.getValue() != null
+					&& cbxProcedencia.getValue() != null
+					//&& !cbxPatente.getSelectionModel().isEmpty()
+					&& !txtPatente.getText().isEmpty()
+					&& txtTransaccion.getText() != null && !txtTransaccion.getText().isEmpty() 
+					&& !txtFecha.getText().isEmpty()
+					&& !cbxModoTara.getSelectionModel().isEmpty()
+					&& !cbxModalidad.getSelectionModel().isEmpty()
+					&& !cbxModoChasis.getSelectionModel().isEmpty()) {
+
+				if (statusTara == 'S' || statusTara == 'E') {
+					boolean isEje = cbxModoChasis.getSelectionModel().getSelectedItem().equals("POR EJE");				
+					
+					Taras tara = new Taras();
+					if (idTaraEdit >= 0) {
+						tara.setIdtaras(idTaraEdit);
+						tarasPersistence.load(tara);
+					}
+					tara.setTransaccion(txtTransaccion.getText());
+					try {
+						tara.setFecha(format.parse(txtFecha.getText()));
+					} catch (ParseException e) {
+						System.out.println("error de formato");
+					}
+					tara.setProducto(cbxProducto.getValue());
+					tara.setCliente(cbxCliente.getValue());
+					tara.setTransporte(cbxTransporte.getValue());
+					tara.setProcedencias(cbxProcedencia.getValue());
+					tara.setPatente(txtPatente.getText());
+					tara.setNumDoc(txtNumDoc.getText());
+					tara.setConductor(txtConductor.getText());
+					tara.setComprobanteNun1(txtFactura.getText());
+					tara.setObservacion(txtObservaciones.getText());
+					tara.setModoTara(cbxModoTara.getSelectionModel().getSelectedItem());
+					tara.setModalidad(cbxModalidad.getSelectionModel().getSelectedItem());
+					tara.setModoChasis(cbxModoChasis.getSelectionModel().getSelectedItem());				
+					if(indicadorConfig != null && !stage.getTitle().contains("ERROR")) {
+						tara.setBalanza(indicadorConfig.getNombre());
+					}else {
+						tara.setBalanza("ING. MANUAL");
+					}
+					
+					double totalPesaje = 0d;
+					int lastEje = 0;
+					if(isEje) {
+						int count = tblEjes.getItems().size();
+						for(int i = 0; i < count; i++ ) {
+							totalPesaje +=tblEjes.getItems().get(i).getPeso(); 
+							if(i == (count-1) ) {
+								lastEje = tblEjes.getItems().get(i).getNroEje();
+							}
+						}
+						
+						totalPesaje += Double.valueOf(txtNumberSerial.getText());
+					}
+					
+					double totalPeso = 0d;
+					if(isEje) {
+						totalPeso = totalPesaje;						
+					} else {
+						totalPeso = Double.valueOf(txtNumberSerial.getText());						
+					}					
+					
+					if (statusTara == 'S') {					
+						txtSalida.setText(String.valueOf(totalPeso));
+						tara.setPesoSalida(new BigDecimal(txtSalida.getText()));
+						calcularNeto();
+					} else if (statusTara == 'E') {
+											
+						txtEntrada.setText(String.valueOf(totalPeso));
+						
+						tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
+					}
+					//comprobar si existe una patente con pesaje de salida pendiente
+					boolean existPending = tarasPersistence.checkPending(tara.getPatente());
+					if(tara.getIdtaras() == null && existPending) {
+						Message.error("Error al guardar, ya existe un pesaje pendiente con la patente " + tara.getPatente() + ".");
+						return;
+					}
+					
+					Taras insertTara = tarasPersistence.save(tara);
+					if (idTaraEdit == -1) {
+						idTaraEdit = insertTara.getIdtaras();
+					}
+					
+					// guardo todos los ejes cargados
+					if(isEje) {
+						Ejes eje = new Ejes();					
+						eje.setIdTaras(insertTara.getIdtaras());
+						eje.setType(String.valueOf(statusTara));
+						eje.setNroEje(lastEje + 1);
+						eje.setPeso(Double.valueOf(txtNumberSerial.getText()));
+						tblEjes.getItems().add(eje);
+						ejesPersistence.save(eje);
+					}
+									
+					refleshTableTaras();
+					saveContadorTransaccion();
+					Message.info("Los datos se guardaron correctamente.");
+					clearForm();
+					btnIngresoManual.setDisable(true);
+					handleNuevoPesaje(event);
+				}
+			} else {
+				Message.error("Debe haber alguna entrada seleccionada.");
+			}
 		}
 	}
 
@@ -671,6 +680,15 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private void handleCancelar(ActionEvent event) {
 	}
 	
+	@FXML
+	private void handleModoTara(ActionEvent event) {
+		if(cbxModoTara.getSelectionModel().getSelectedItem() != null && 
+				cbxModoTara.getSelectionModel().getSelectedItem().equals("CON TARA")) {
+			modoTara();
+		}else {
+			modoNormal();
+		}
+	}
 	private void addPatente() {
 		String pantente = txtPatente.getText();
 		if(!pantente.isEmpty()) {
@@ -687,6 +705,15 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					txtPatente.setText("");
 				}
 			} else {//cargo tara
+				if(!cbxModoTara.getSelectionModel().getSelectedItem().equals("CON TARA") ) {
+					boolean existPending = tarasPersistence.checkPending(pantente);				
+					if(existPending) {
+						Message.error("Error al guardar, ya existe un pesaje pendiente con la patente " + pantente + ".");
+						txtPatente.setText("");
+						txtPatente.requestFocus();
+						return;
+					}
+				}
 				txtTara.setText(p.getTara().toString());
 				cbxProducto.requestFocus();
 			}
@@ -709,7 +736,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		btnEliminarEje.setVisible(false);
 		btnTomarTara.setVisible(false);
 		txtTara.setVisible(false);
+		txtDiasVenc.setVisible(false);
 		lblTara.setVisible(false);
+		lblDias.setVisible(false);
 		
 		this.ingManual = false;
 		btnIngresoManual.setDisable(true);
@@ -766,11 +795,6 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		    change.setText(change.getText().toUpperCase());
 		    return change;
 		}));		
-		txtFiltroBuscar.setTextFormatter(new TextFormatter<>((change) -> {
-		    change.setText(change.getText().toUpperCase());
-		    return change;
-		}));
-		
 		cbxModoTara.valueProperty().addListener(new ChangeListener<String>() {
 	      	@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -784,10 +808,6 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	      		enabledTableEjes(newValue);
 			}
 	    });
-				
-		cbxFiltroBuscar.getItems().addAll(new String[] { "Número de Transacción", "Patente Chasis", "Producto",
-				"Cliente", "Transporte", "Procedencia" });
-		cbxFiltroBuscar.setValue("Patente Chasis");
 		txtNumberSerial.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtNumberSerial.setText(newValue.toUpperCase());
 		});
@@ -821,6 +841,16 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		        }
 		    }
 		});
+		
+		txtDiasVenc.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	txtDiasVenc.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
 	}
 	
 	private void enabledTara(String newValue) {
@@ -828,16 +858,22 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
   			if(newValue.equals("CON TARA")) {
 				btnTomarTara.setVisible(true);
 				txtTara.setVisible(true);
+				txtDiasVenc.setVisible(true);
 				lblTara.setVisible(true);
+				lblDias.setVisible(true);
 			}else {
 				btnTomarTara.setVisible(false);
 				txtTara.setVisible(false);
+				txtDiasVenc.setVisible(false);
 				lblTara.setVisible(false);
+				lblDias.setVisible(false);
 			}
   		} else {
   			btnTomarTara.setVisible(false);
   			txtTara.setVisible(false);
 			lblTara.setVisible(false);
+			lblDias.setVisible(false);
+			txtDiasVenc.setVisible(false);
   		}
 	}
 	
@@ -875,12 +911,45 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 						paridad, 
 						2000);
 				socket.addEventSocket(this);			
-				stage.setTitle("Taras: Indicador Conectado -> " + indicadorConfig.getNombre() + " | Puerto: COM" + indicadorConfig.getPuerto() + " | Velocidad: " + indicadorConfig.getVelocidad());
+				stage.setTitle("Tomar Pesajes: Indicador Conectado -> " + indicadorConfig.getNombre() + " | Puerto: COM" + indicadorConfig.getPuerto() + " | Velocidad: " + indicadorConfig.getVelocidad());
 			}catch (Exception e) {
-				stage.setTitle("Taras: ERROR DE CONEXION CON EL INDICADOR ");
+				stage.setTitle("Tomar Pesajes: ERROR DE CONEXION CON EL INDICADOR ");
 			}
 			break;
 		}	
+	}
+	
+	private void modoTara() {
+		cambiarModo(false);
+	}
+	
+	private void modoNormal() {
+		cambiarModo(true);
+	}
+	
+	private void cambiarModo(boolean visible) {
+		lblProducto.setVisible(visible);
+		cbxProducto.setVisible(visible);
+		lblCliente.setVisible(visible);
+		cbxCliente.setVisible(visible);
+		lblTransporte.setVisible(visible);
+		cbxTransporte.setVisible(visible);
+		lblProcedencia.setVisible(visible);
+		cbxProcedencia.setVisible(visible);
+		
+		lblFactura.setVisible(visible);
+		txtFactura.setVisible(visible);
+		lblObservaciones.setVisible(visible);
+		txtObservaciones.setVisible(visible);
+		lblConductor.setVisible(visible);
+		txtConductor.setVisible(visible);
+		lblDocumento.setVisible(visible);
+		txtNumDoc.setVisible(visible);
+		
+		btnAccesoProducto.setVisible(visible);		
+		btnAccesoCliente.setVisible(visible);
+		btnAccesoTransporte.setVisible(visible);
+		btnAccesoProcedencia.setVisible(visible);
 	}
 
 	private void initPersistence() {		
@@ -1008,7 +1077,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			}
 		}		
 	}
-	
+		
 	@Override
 	public void setStage(Stage stage) {
 		this.stage =stage;

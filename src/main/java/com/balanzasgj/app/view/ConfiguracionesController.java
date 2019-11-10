@@ -23,6 +23,8 @@ import com.balanzasgj.app.persistence.impl.jdbc.ProcedenciasPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.TransportesPersistenceJdbc;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,9 +48,7 @@ public class ConfiguracionesController extends AnchorPane {
 	private TableColumn<Entidades, Long> colCodigo;
 
 	@FXML
-	private TableColumn<Entidades, String> colNombre;
-	@FXML
-	private TableColumn<Entidades, Integer> colExistencia;
+	private TableColumn<Entidades, String> colNombre;	
 
 	@FXML
 	private TableColumn<Indicadores, Long> colIndicadoresCodigo;
@@ -60,9 +60,7 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private Button btnEliminarEntidad;
 	@FXML
-	private TextField txtEntidadNombre;
-	@FXML
-	private TextField txtEntidadExistencia;
+	private TextField txtEntidadNombre;	
 	@FXML
 	private Button btnAplicarEntidad;
 	@FXML
@@ -70,7 +68,7 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private ComboBox<Comunicaciones> cbxIndicadores;
 	@FXML
-	private ComboBox<Integer> cbxPuerto;
+	private TextField txtPuerto;
 	@FXML
 	private ComboBox<Integer> cbxVelocidad;
 	@FXML
@@ -209,11 +207,7 @@ public class ConfiguracionesController extends AnchorPane {
 	private void handleTblEntidadesSelected(MouseEvent event) {
 		if (!tblEntidades.getSelectionModel().isEmpty()) {
 			modoEditEntidades=true;
-			txtEntidadNombre.setText(tblEntidades.getSelectionModel().getSelectedItem().getNombre());
-			if (cbxEntidades.getSelectionModel().getSelectedItem().equals("PRODUCTOS")) {
-				txtEntidadExistencia.setText(
-						((Productos) tblEntidades.getSelectionModel().getSelectedItem()).getExistencia().toString());
-			}
+			txtEntidadNombre.setText(tblEntidades.getSelectionModel().getSelectedItem().getNombre());			
 		}
 	}
 	
@@ -228,7 +222,7 @@ public class ConfiguracionesController extends AnchorPane {
 			txtEditCaracterControl.setText(indicadores.getCaracterControl());
 			txtEditPosInicioDato.setText(indicadores.getPosicionInicioDato().toString());
 			txtEditLongitudDato.setText(indicadores.getLongitudDato().toString());
-			cbxPuerto.setValue(indicadores.getPuerto());
+			txtPuerto.setText(indicadores.getPuerto().toString());
 			cbxVelocidad.setValue(indicadores.getVelocidad());
 			cbxBitsDeDatos.setValue(indicadores.getBitsDeDatos());
 			cbxParidad.setValue(indicadores.getParidad());
@@ -247,7 +241,6 @@ public class ConfiguracionesController extends AnchorPane {
 	private void handleNuevoEntidades(ActionEvent event) {
 		this.modoEditEntidades=false;
 		txtEntidadNombre.setText("");
-		txtEntidadExistencia.setText("");
 		txtEntidadNombre.requestFocus();
 	}
 	
@@ -307,8 +300,6 @@ public class ConfiguracionesController extends AnchorPane {
 			tblEntidades.getItems().addAll(procedenciasPersistence.findAll());
 			break;
 		case "PRODUCTOS":
-			colExistencia.setVisible(true);
-			txtEntidadExistencia.setDisable(false);
 			tblEntidades.getItems().addAll(productosPersistence.findAll());
 			break;
 		case "TRANSPORTES":
@@ -329,11 +320,8 @@ public class ConfiguracionesController extends AnchorPane {
 
 	private void cleanFormEntidades() {
 		this.modoEditEntidades=false;
-		colExistencia.setVisible(false);
-		txtEntidadExistencia.setDisable(true);
 		tblEntidades.getItems().clear();
-		txtEntidadNombre.setText("");
-		txtEntidadExistencia.setText("");
+		txtEntidadNombre.setText("");		
 	}
 	
 	private void cleanFormIndicadores() {
@@ -375,13 +363,9 @@ public class ConfiguracionesController extends AnchorPane {
 				procedenciasPersistence.save(pro);			
 				break;
 			case "PRODUCTOS":
-				String existencia = txtEntidadExistencia.getText();
 				Productos producto = new Productos();
-				producto.setNombre(nombre);
-				producto.setExistencia(Integer.valueOf(existencia));
+				producto.setNombre(nombre);				
 				productosPersistence.save(producto);
-				colExistencia.setVisible(true);
-				txtEntidadExistencia.setDisable(false);			
 				break;
 			case "TRANSPORTES":			
 				Transportes tras = new Transportes();
@@ -404,7 +388,7 @@ public class ConfiguracionesController extends AnchorPane {
 		indicadores.setCaracterControl(txtEditCaracterControl.getText());
 		indicadores.setPosicionInicioDato(Integer.valueOf(txtEditPosInicioDato.getText()));
 		indicadores.setLongitudDato(Integer.valueOf(txtEditLongitudDato.getText()));
-		indicadores.setPuerto(cbxPuerto.getValue());
+		indicadores.setPuerto(Integer.valueOf(txtPuerto.getText()));
 		indicadores.setVelocidad(cbxVelocidad.getValue());
 		indicadores.setBitsDeDatos(cbxBitsDeDatos.getValue());
 		indicadores.setParidad(cbxParidad.getValue());
@@ -462,27 +446,77 @@ public class ConfiguracionesController extends AnchorPane {
 		txtEntidadNombre.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtEntidadNombre.setText(newValue.toUpperCase());
 		});
-		txtEntidadExistencia.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtEntidadExistencia.setText(newValue.toUpperCase());
-		});
 		txtNombreIndicadores.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtNombreIndicadores.setText(newValue.toUpperCase());
 		});				
 		txtEditPosicionControl.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtEditPosicionControl.setText(newValue.toUpperCase());
+		});		
+		
+		txtEditPosicionControl.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	txtEditPosicionControl.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
 		});
+		
 		txtEditLongCaracterControl.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtEditLongCaracterControl.setText(newValue.toUpperCase());
 		});
+		txtEditLongCaracterControl.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	txtEditLongCaracterControl.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
+		
 		txtEditCaracterControl.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtEditCaracterControl.setText(newValue.toUpperCase());
 		});
+		
 		txtEditPosInicioDato.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtEditPosInicioDato.setText(newValue.toUpperCase());
+		});
+		txtEditPosInicioDato.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	txtEditPosInicioDato.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
 		});
 		
 		txtEditLongitudDato.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtEditLongitudDato.setText(newValue.toUpperCase());
+		});
+		txtEditLongitudDato.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	txtEditLongitudDato.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
+		});
+		
+		txtPuerto.textProperty().addListener((ov, oldValue, newValue) -> {
+			txtPuerto.setText(newValue.toUpperCase());
+		});
+		txtPuerto.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+		        String newValue) {
+		        if (!newValue.matches("\\d*")) {
+		        	txtPuerto.setText(newValue.replaceAll("[^\\d]", ""));
+		        }
+		    }
 		});
 		
 	}
@@ -497,8 +531,7 @@ public class ConfiguracionesController extends AnchorPane {
 	}
 
 	private void initComunicaciones() {		
-		this.cbxIndicadores.getItems().addAll(comunicacionesPersistence.findAll());
-		cbxPuerto.getItems().addAll(new Integer[] {1,2,3,4,5,6,7,8});
+		this.cbxIndicadores.getItems().addAll(comunicacionesPersistence.findAll());		
 		cbxVelocidad.getItems().addAll(new Integer[] {1200,2400,4800,9600,19200});		
 		cbxBitsDeDatos.getItems().addAll(new Integer[] {7,8});
 		cbxParidad.getItems().addAll(new String[] {"n","e","o"});
@@ -510,8 +543,7 @@ public class ConfiguracionesController extends AnchorPane {
 						"2 - comRTS"});
 	}
 
-	private void initTableView() {
-		colExistencia.setVisible(false);
+	private void initTableView() {		
 		colCodigo.setCellValueFactory(cellData -> new ObservableValueBase<Long>() {
 
 			@Override
@@ -528,20 +560,7 @@ public class ConfiguracionesController extends AnchorPane {
 				return cellData.getValue().getNombre().toString();
 			}
 
-		});
-		colExistencia.setCellValueFactory(cellData -> new ObservableValueBase<Integer>() {
-
-			@Override
-			public Integer getValue() {
-				Integer value = null;
-				if (cellData.getValue() instanceof Productos) {
-					value = ((Productos) cellData.getValue()).getExistencia();
-				}
-
-				return value;
-			}
-		});
-		
+		});				
 		colIndicadoresCodigo.setCellValueFactory(cellData -> new ObservableValueBase<Long>() {
 
 			@Override

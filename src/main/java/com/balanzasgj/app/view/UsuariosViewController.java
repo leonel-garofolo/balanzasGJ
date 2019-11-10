@@ -115,6 +115,12 @@ public class UsuariosViewController extends AnchorPane implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.usuariosPersistence = new UsuariosPersistenceJdbc();
+		txtUsuario.textProperty().addListener((ov, oldValue, newValue) -> {
+			txtUsuario.setText(newValue.toUpperCase());
+		});
+		txtClave.textProperty().addListener((ov, oldValue, newValue) -> {
+			txtClave.setText(newValue.toUpperCase());
+		});
 		loadTables();
 	}
 	

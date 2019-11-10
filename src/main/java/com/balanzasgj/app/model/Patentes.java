@@ -21,7 +21,8 @@ public class Patentes implements Serializable
 {
     private static final long serialVersionUID = 1L;
     private String codigo ; // String // Id or Primary Key
-    private Double tara ;  // Double 
+    private Double tara ;  // Double
+    private int diasVenc ;  // Double 
     private Date update ;  // Date 
 
     /**
@@ -89,7 +90,15 @@ public class Patentes implements Serializable
         return this.update;
     }
 
-    //----------------------------------------------------------------------
+    public int getDiasVenc() {
+		return diasVenc;
+	}
+
+	public void setDiasVenc(int diasVenc) {
+		this.diasVenc = diasVenc;
+	}
+
+	//----------------------------------------------------------------------
     // toString METHOD
     //----------------------------------------------------------------------
     @Override

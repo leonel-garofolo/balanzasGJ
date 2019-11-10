@@ -17,33 +17,14 @@ import java.io.Serializable;
  */
 public class Productos extends Entidades implements Serializable
 {
-    private static final long serialVersionUID = 1L;
-    private Integer    existencia   ;
+    private static final long serialVersionUID = 1L;    
 
     /**
      * Default constructor
      */
     public Productos() {
         super();
-    }
-    
-
-    /**
-     * Set the "existencia" field value
-     * This field is mapped on the database column "existencia" ( type "INT", NotNull : false ) 
-     * @param existencia
-     */
-    public void setExistencia( Integer existencia ) {
-        this.existencia = existencia;
-    }
-    /**
-     * Get the "existencia" field value
-     * This field is mapped on the database column "existencia" ( type "INT", NotNull : false ) 
-     * @return the field value
-     */
-    public Integer getExistencia() {
-        return this.existencia;
-    }
+    }        
 
     //----------------------------------------------------------------------
     // toString METHOD

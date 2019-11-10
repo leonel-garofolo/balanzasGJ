@@ -30,24 +30,7 @@
 							<children>
 								<Label fx:id="lblUsuario"  prefHeight="50" prefWidth="200"   />
 							</children>
-						</HBox>
-					
-						<HBox alignment="CENTER_RIGHT">
-							<children>
-								<Button fx:id="btnSalir" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#exit">
-									<graphic>
-										<ImageView fitHeight="50.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
-											<image>
-												<Image url="@../images/baseline_exit_to_app_black_24dp.png" />
-											</image>
-										</ImageView>
-									</graphic>
-								</Button>
-							</children>
-							<padding>
-								<Insets right="20.0" />
-							</padding>
-						</HBox>
+						</HBox>											
 					</children>
 				</HBox>
 			</bottom>
@@ -86,6 +69,24 @@
 								<ImageView fitHeight="111.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
 									<image>
 										<Image url="@../images/baseline_security_black_48dp.png" />
+									</image>
+								</ImageView>
+							</graphic>
+						</Button>
+						<Button fx:id="btnCerrarSesion" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleCerrarSesion" text="Cerrar Sesión">
+							<graphic>
+								<ImageView fitHeight="111.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+									<image>
+										<Image url="@../images/baseline_vpn_key_black_48dp.png" />
+									</image>
+								</ImageView>
+							</graphic>
+						</Button>
+						<Button fx:id="btnSalir" contentDisplay="TOP" mnemonicParsing="false" onAction="#exit" text="Salir">
+							<graphic>
+								<ImageView fitHeight="111.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+									<image>
+										<Image url="@../images/baseline_exit_to_app_black_48dp.png" />
 									</image>
 								</ImageView>
 							</graphic>

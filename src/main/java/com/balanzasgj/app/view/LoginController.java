@@ -79,7 +79,9 @@ public class LoginController implements Initializable, IView{
 		    		    
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/PrincipalView.fxml"));
-				Parent rootPrincipal = (Parent)loader.load();
+				Parent rootPrincipal = (Parent)loader.load();				
+				IView controller = (PrincipalController)loader.getController();
+		    	controller.setStage(stage);		    			    	
 				Scene scene = new Scene(rootPrincipal);
 				scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
 				
