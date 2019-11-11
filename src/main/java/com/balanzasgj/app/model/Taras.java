@@ -24,7 +24,8 @@ public class Taras implements Serializable
     private Long    idtaras      ; // Id or Primary Key
 
     private String     transaccion  ;
-    private Date       fecha        ;
+    private Date       fechaEntrada        ;
+    private Date 		fechaSalida  ;
     private String     balanza      ;
     private Productos    producto   ;
     private Clientes    cliente    ;
@@ -41,10 +42,9 @@ public class Taras implements Serializable
     private String     patenteAceptado ;
     private String     observacion  ;
     private String     contenedorNum ;
-    private Date fechaEntrada  ;
+    
     private BigDecimal pesoEntrada  ;
     private BigDecimal pesoSalida   ;
-    private Date fechaSalida  ;
     private BigDecimal pesoNeto   ;
     private String     modoChasis ;
 
@@ -92,23 +92,7 @@ public class Taras implements Serializable
     public String getTransaccion() {
         return this.transaccion;
     }
-
-    /**
-     * Set the "fecha" field value
-     * This field is mapped on the database column "fecha" ( type "DATETIME", NotNull : false ) 
-     * @param fecha
-     */
-    public void setFecha( Date fecha ) {
-        this.fecha = fecha;
-    }
-    /**
-     * Get the "fecha" field value
-     * This field is mapped on the database column "fecha" ( type "DATETIME", NotNull : false ) 
-     * @return the field value
-     */
-    public Date getFecha() {
-        return this.fecha;
-    }
+   
     public Date getFechaEntrada() {
 		return fechaEntrada;
 	}
@@ -424,8 +408,6 @@ public class Taras implements Serializable
         sb.append(idtaras);
         sb.append("|");
         sb.append(transaccion);
-        sb.append("|");
-        sb.append(fecha);
         sb.append("|");
         sb.append(balanza);
         sb.append("|");

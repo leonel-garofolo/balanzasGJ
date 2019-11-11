@@ -381,7 +381,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					}
 					tara.setTransaccion(txtTransaccion.getText());
 					try {
-						tara.setFecha(format.parse(txtFecha.getText()));
+						if(statusTara == 'E') {
+							tara.setFechaEntrada(format.parse(txtFecha.getText()));
+						} else {
+							tara.setFechaSalida(new Date());
+						}
+						
 					} catch (ParseException e) {
 						System.out.println("error de formato");
 					}
@@ -510,7 +515,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		taraEdit = tblPesajes.getSelectionModel().getSelectedItem();
 		idTaraEdit = taraEdit.getIdtaras();
 		txtTransaccion.setText(taraEdit.getTransaccion());
-		txtFecha.setText(format.format(taraEdit.getFecha()));
+		txtFecha.setText(format.format(taraEdit.getFechaEntrada()));
 		txtPatente.setText(this.patentesPersistence.findById(taraEdit.getPatente()).getCodigo());
 		txtEntrada.setText(taraEdit.getPesoEntrada().toString());
 		
@@ -1022,7 +1027,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxProcedencia.reload();
 		
 		colTransaccion.setCellValueFactory(new PropertyValueFactory<>("transaccion"));
-		colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+		colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha_entrada"));
 		colChasis.setCellValueFactory(new PropertyValueFactory<>("patente"));		
 		colEntrada.setCellValueFactory(new PropertyValueFactory<>("pesoEntrada"));
 		colSalida.setCellValueFactory(new PropertyValueFactory<>("pesoSalida"));

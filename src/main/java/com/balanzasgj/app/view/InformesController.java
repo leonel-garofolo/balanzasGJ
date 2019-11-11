@@ -176,8 +176,8 @@ public class InformesController {
 
             @Override
             public String getValue() {
-                if(cellData.getValue().getFecha() != null){
-                    return format.format(cellData.getValue().getFecha());
+                if(cellData.getValue().getFechaEntrada() != null){
+                    return format.format(cellData.getValue().getFechaEntrada());
                 }
                 return "";
 

@@ -69,9 +69,6 @@
 	<field name="cliente" class="com.balanzasgj.app.model.Clientes">
 		<fieldDescription><![CDATA[cliente]]></fieldDescription>
 	</field>
-	<field name="fecha" class="java.util.Date">
-		<fieldDescription><![CDATA[fecha]]></fieldDescription>
-	</field>
 	<field name="pesoNeto" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[pesoNeto]]></fieldDescription>
 	</field>
@@ -104,56 +101,56 @@
 	<pageHeader>
 		<band height="220" splitType="Stretch">
 			<textField>
-				<reportElement x="100" y="108" width="100" height="16" uuid="bab860e1-ba51-4c08-9d43-d59bfb5390a0"/>
+				<reportElement x="80" y="108" width="100" height="16" uuid="bab860e1-ba51-4c08-9d43-d59bfb5390a0"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{procedencias}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="100" y="64" width="100" height="16" uuid="f18f74ea-398c-4d46-be20-aa9d54586c5c"/>
+				<reportElement x="80" y="64" width="100" height="16" uuid="f18f74ea-398c-4d46-be20-aa9d54586c5c"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="64" width="100" height="16" uuid="5c0a39a0-579b-4b73-8fd9-4e66f7f6ef3a"/>
+				<reportElement x="0" y="64" width="80" height="16" uuid="5c0a39a0-579b-4b73-8fd9-4e66f7f6ef3a"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<text><![CDATA[Cliente:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="100" y="84" width="100" height="16" uuid="96aa3b28-9c3c-47e1-9183-b3731afa15ac"/>
+				<reportElement x="80" y="84" width="100" height="16" uuid="96aa3b28-9c3c-47e1-9183-b3731afa15ac"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{transporte}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="84" width="100" height="16" uuid="9717eabf-62b3-4dd8-a14b-2e15288e3b0d"/>
+				<reportElement x="0" y="84" width="80" height="16" uuid="9717eabf-62b3-4dd8-a14b-2e15288e3b0d"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<text><![CDATA[Transporte:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="100" y="44" width="100" height="16" uuid="b1a3c119-4001-4895-bc68-ae29efd1a50c"/>
+				<reportElement x="80" y="44" width="100" height="16" uuid="b1a3c119-4001-4895-bc68-ae29efd1a50c"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="108" width="100" height="16" uuid="4560f94e-c9eb-4c0f-b156-fdfe4140235f"/>
+				<reportElement x="0" y="108" width="80" height="16" uuid="4560f94e-c9eb-4c0f-b156-fdfe4140235f"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<text><![CDATA[Procedencia:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="44" width="100" height="16" uuid="cf08b5c9-f1cb-4b98-8718-b24a1fc26ec7"/>
+				<reportElement x="0" y="44" width="80" height="16" uuid="cf08b5c9-f1cb-4b98-8718-b24a1fc26ec7"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
@@ -261,14 +258,14 @@
 				<text><![CDATA[Observación:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="3" width="100" height="16" uuid="e219ae9f-6400-4394-9cdd-79e24b789fcf"/>
+				<reportElement x="0" y="3" width="80" height="16" uuid="e219ae9f-6400-4394-9cdd-79e24b789fcf"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<text><![CDATA[Entrada:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="23" width="100" height="16" uuid="d05b1994-695e-4db7-b363-59cdd1146c5d"/>
+				<reportElement x="0" y="23" width="80" height="16" uuid="d05b1994-695e-4db7-b363-59cdd1146c5d"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
@@ -310,13 +307,6 @@
 				<textFieldExpression><![CDATA[$F{transaccion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="100" y="3" width="100" height="16" uuid="abbeb924-1ba3-4e75-86e5-40032fcb795d"/>
-				<textElement>
-					<font fontName="Arial" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="270" y="3" width="100" height="16" uuid="d4b8ab82-356e-474e-9e89-58e7d8765c90"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
@@ -344,6 +334,20 @@
 				</textElement>
 				<text><![CDATA[PESO NETO:]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="80" y="2" width="100" height="19" uuid="4eee9a3f-d3f0-42ac-90c2-cf8925e08b14"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaEntrada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="23" width="100" height="15" uuid="abb1b255-a449-427f-834d-8d825862e8c9"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaSalida}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<pageFooter>

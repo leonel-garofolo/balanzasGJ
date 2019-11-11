@@ -34,7 +34,7 @@ import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements TarasPersistence {
 
 	private final static String SQL_SELECT_ALL = 
-		"select idtaras, transaccion, fecha, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis " +
+		"select idtaras, transaccion, fecha_entrada, fecha_salida, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis " +
 				"from taras t " +
 				"inner join clientes c on c.codigo = t.id_cliente " +
 				"inner join productos p on p.codigo = t.id_producto " +
@@ -43,7 +43,7 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 
 
 	private final static String SQL_SELECT =
-			"select idtaras, transaccion, fecha, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis " +
+			"select idtaras, transaccion, fecha_entrada, fecha_salida, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis " +
 					"from taras t " +
 					"inner join clientes c on c.codigo = t.id_cliente " +
 					"inner join productos p on p.codigo = t.id_producto " +
@@ -52,10 +52,10 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 					"where idtaras = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into taras ( transaccion, fecha, balanza, id_producto, id_cliente, id_transporte, id_procedencia, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+		"insert into taras ( transaccion, fecha_entrada, fecha_salida, balanza, id_producto, id_cliente, id_transporte, id_procedencia, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update taras set transaccion = ?, fecha = ?, balanza = ?, id_producto = ?, id_cliente = ?, id_transporte = ?, id_procedencia = ?, modalidad = ?, comprobante_nun1 = ?, modoTara = ?, destino = ?, conductor = ?, tipo_doc = ?, num_doc = ?, patente = ?, patente_aceptado = ?, observacion = ?, contenedor_num = ?, peso_entrada = ?, peso_salida = ?, modoChasis = ? where idtaras = ?";
+		"update taras set transaccion = ?, fecha_entrada = ?, fecha_salida = ?, balanza = ?, id_producto = ?, id_cliente = ?, id_transporte = ?, id_procedencia = ?, modalidad = ?, comprobante_nun1 = ?, modoTara = ?, destino = ?, conductor = ?, tipo_doc = ?, num_doc = ?, patente = ?, patente_aceptado = ?, observacion = ?, contenedor_num = ?, peso_entrada = ?, peso_salida = ?, modoChasis = ? where idtaras = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from taras where idtaras = ?";
@@ -96,7 +96,8 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		//--- Set PRIMARY KEY and DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		// "idtaras" is auto-incremented => no set in insert		
 		setValue(ps, i++, taras.getTransaccion() ) ; // "transaccion" : java.lang.String
-		setValue(ps, i++, taras.getFecha() ) ; // "fecha" : java.util.Date
+		setValue(ps, i++, taras.getFechaEntrada() ) ; // "fecha" : java.util.Date
+		setValue(ps, i++, taras.getFechaSalida()) ; // "fecha" : java.util.Date
 		setValue(ps, i++, taras.getBalanza() ) ; // "balanza" : java.lang.String
 		setValue(ps, i++, taras.getProducto().getCodigo() ) ; // "id_producto" : java.lang.Integer
 		setValue(ps, i++, taras.getCliente().getCodigo()) ; // "id_cliente" : java.lang.Integer
@@ -123,7 +124,8 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 	protected void setValuesForUpdate(PreparedStatement ps, int i, Taras taras) throws SQLException {
 		//--- Set DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		setValue(ps, i++, taras.getTransaccion() ) ; // "transaccion" : java.lang.String
-		setValue(ps, i++, taras.getFecha() ) ; // "fecha" : java.util.Date
+		setValue(ps, i++, taras.getFechaEntrada() ) ; // "fecha" : java.util.Date
+		setValue(ps, i++, taras.getFechaSalida() ) ; // "fecha" : java.util.Date
 		setValue(ps, i++, taras.getBalanza() ) ; // "balanza" : java.lang.String
 		setValue(ps, i++, taras.getProducto().getCodigo() ) ; // "id_producto" : java.lang.Integer
 		setValue(ps, i++, taras.getCliente().getCodigo()) ; // "id_cliente" : java.lang.Integer
@@ -173,7 +175,8 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		taras.setIdtaras(rs.getLong("idtaras")); // java.lang.Integer
 		if ( rs.wasNull() ) { taras.setIdtaras(null); }; // not primitive number => keep null value if any
 		taras.setTransaccion(rs.getString("transaccion")); // java.lang.String
-		taras.setFecha(rs.getDate("fecha")); // java.util.Date
+		taras.setFechaEntrada(rs.getTimestamp("fecha_entrada")); // java.util.Date
+		taras.setFechaSalida(rs.getTimestamp("fecha_salida")); // java.util.Date
 		taras.setBalanza(rs.getString("balanza")); // java.lang.String
 
 		Clientes cli = new Clientes();

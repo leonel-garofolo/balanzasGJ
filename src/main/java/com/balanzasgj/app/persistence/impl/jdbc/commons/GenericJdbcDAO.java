@@ -380,7 +380,7 @@ public abstract class GenericJdbcDAO<T> {
 	//-----------------------------------------------------------------------------------------
 	protected void setValue(PreparedStatement ps, int i, java.util.Date value) throws SQLException {
 		if ( value != null ) {
-			ps.setDate(i, new java.sql.Date(value.getTime())); // Convert util.Date to sql.Date
+			ps.setTimestamp(i, new java.sql.Timestamp(value.getTime())); // Convert util.Date to sql.Date
 		}
 		else {
 			ps.setNull(i, java.sql.Types.DATE); 

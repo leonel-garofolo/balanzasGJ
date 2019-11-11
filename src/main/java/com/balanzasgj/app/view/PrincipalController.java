@@ -119,6 +119,8 @@ public class PrincipalController implements Initializable, IView{
 		    stage.initModality(Modality.APPLICATION_MODAL);
 		    stage.resizableProperty().setValue(Boolean.FALSE);
 		    stage.setTitle(title);
+		    Image ico = new Image(App.PATH_ICONO); 
+			stage.getIcons().add(ico); 
 		    Scene scene = new Scene(rootHerramientas);
 		    scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
 		    stage.setScene(scene);  
