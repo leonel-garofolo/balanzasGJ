@@ -212,14 +212,14 @@
 				<text><![CDATA[Documento:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="153" width="150" height="17" uuid="72e92494-8985-4ae5-b3a1-513c78ceb57f"/>
+				<reportElement x="0" y="153" width="80" height="17" uuid="72e92494-8985-4ae5-b3a1-513c78ceb57f"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<text><![CDATA[Comprobante:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="180" y="153" width="37" height="17" uuid="540f3463-0065-4abf-854a-108f2a734e93"/>
+				<reportElement x="80" y="153" width="100" height="17" uuid="540f3463-0065-4abf-854a-108f2a734e93"/>
 				<textFieldExpression><![CDATA[($F{comprobanteNun1}==null?"":$F{comprobanteNun1})]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -244,14 +244,14 @@
 				<textFieldExpression><![CDATA[$F{pesoEntrada}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="100" y="170" width="240" height="45" uuid="ce3c52be-b585-46ad-839f-40b69a1eee5b"/>
+				<reportElement x="80" y="170" width="240" height="45" uuid="ce3c52be-b585-46ad-839f-40b69a1eee5b"/>
 				<textElement>
 					<font fontName="Arial" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{observacion} == null?"":$F{observacion})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="170" width="100" height="20" uuid="16fd2852-9fa6-468c-8949-529bab1fa684"/>
+				<reportElement x="0" y="170" width="80" height="20" uuid="16fd2852-9fa6-468c-8949-529bab1fa684"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
@@ -346,7 +346,7 @@
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{fechaSalida}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{fechaSalida}==null?"": $F{fechaSalida})]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

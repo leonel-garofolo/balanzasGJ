@@ -334,12 +334,12 @@
                         </HBox>
                         <TableView fx:id="tblPesajes" onMouseClicked="#handleTblEntidadesSelected" prefHeight="263.0" prefWidth="1086.0">
                           <columns>
-                            <TableColumn fx:id="colTransaccion" prefWidth="75.0" text="Transacción" />
-                            <TableColumn fx:id="colFecha" prefWidth="75.0" text="Fecha" />
-                              <TableColumn fx:id="colChasis" prefWidth="75.0" text="Patente" />                              
-                              <TableColumn fx:id="colEntrada" prefWidth="75.0" text="Entrada" />
-                              <TableColumn fx:id="colSalida" prefWidth="75.0" text="Salida" />
-                              <TableColumn fx:id="colNeto" prefWidth="75.0" text="Neto" />
+                            <TableColumn fx:id="colTransaccion" prefWidth="74.0" text="Transacción" />
+                            <TableColumn fx:id="colFecha" prefWidth="119.0" text="Fecha" />
+                              <TableColumn fx:id="colChasis" prefWidth="87.0" text="Patente" />                              
+                              <TableColumn fx:id="colEntrada" prefWidth="65.0" text="Entrada" />
+                              <TableColumn fx:id="colSalida" prefWidth="65.0" text="Salida" />
+                              <TableColumn fx:id="colNeto" prefWidth="65.0" text="Neto" />
                               <TableColumn fx:id="colBalanza" prefWidth="121.0" text="Balanza" />
                               <TableColumn fx:id="colProducto" prefWidth="121.0" text="Producto" />
                               <TableColumn fx:id="colCliente" prefWidth="121.0" text="Cliente" />

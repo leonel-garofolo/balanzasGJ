@@ -181,7 +181,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private TableColumn<Taras, String> colTransaccion;
 	@FXML
-	private TableColumn<Taras, Date> colFecha;
+	private TableColumn<Taras, String> colFecha;
 	@FXML
 	private TableColumn<Taras, String> colChasis;
 	@FXML
@@ -1027,7 +1027,17 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxProcedencia.reload();
 		
 		colTransaccion.setCellValueFactory(new PropertyValueFactory<>("transaccion"));
-		colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha_entrada"));
+		colFecha.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
+
+            @Override
+            public String getValue() {
+                if(cellData.getValue().getFechaEntrada() != null){
+                    return format.format(cellData.getValue().getFechaEntrada());
+                }
+                return "";
+
+            }
+        });
 		colChasis.setCellValueFactory(new PropertyValueFactory<>("patente"));		
 		colEntrada.setCellValueFactory(new PropertyValueFactory<>("pesoEntrada"));
 		colSalida.setCellValueFactory(new PropertyValueFactory<>("pesoSalida"));

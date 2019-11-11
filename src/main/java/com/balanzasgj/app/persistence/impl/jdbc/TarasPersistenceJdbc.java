@@ -257,10 +257,10 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		
 		SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
 		if(fechaDesde != null) {
-			selectWithFilter += " and fecha >= '" + dFormat.format(fechaDesde) + "' ";
+			selectWithFilter += " and fecha_entrada >= '" + dFormat.format(fechaDesde) + "' ";
 		}
 		if(fechaDesde != null) {
-			selectWithFilter += " and fecha <= '" + dFormat.format(fechaHasta) + "' ";
+			selectWithFilter += " and fecha_entrada <= '" + dFormat.format(fechaHasta) + "' ";
 		}
 		
 		selectWithFilter += " order by update_date desc";
