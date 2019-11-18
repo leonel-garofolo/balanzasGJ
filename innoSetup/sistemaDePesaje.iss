@@ -42,12 +42,12 @@ Source: "D:\innoSetup\SistemaDePesaje\script_restore.bat"; DestDir: "C:\mysql\bi
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\icono.jpg"
+Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\icono.jpg"; Tasks: desktopicon
 
 [Run]
 Filename: "{reg:HKLM\SOFTWARE\MySQL AB\MySQL Server 5.5,Location}\bin\mysqld.exe"; Parameters: "--install"; WorkingDir: "{reg:HKLM\SOFTWARE\MySQL AB\MySQL Server 5.5,Location}\bin"; StatusMsg: "Installing MySQL Service";Description: "Installing MySQL Service"; Flags: runhidden; Check: MySQL_Is
-Filename: C:\mysql\bin\MySQLInstanceConfig.exe; Parameters: "MySQLInstanceConfig.exe -i -q ServerType=DEVELOPMENT DatabaseType=MIXED ConnectionUsage=DSS Port=3306 ServiceName=MySQL55 RootPassword=30121"; StatusMsg: "Configurando Instancia de Base de datos"
+Filename: C:\mysql\bin\MySQLInstanceConfig.exe; Parameters: "MySQLInstanceConfig.exe -i -q ServerType=DEVELOPMENT DatabaseType=MIXED ConnectionUsage=DSS Port=3306 ServiceName=MySQL55 RootPassword="; StatusMsg: "Configurando Instancia de Base de datos"
 Filename: C:\mysql\bin\script_restore.bat; StatusMsg: "Importando base de datos"
 
 [Code]
