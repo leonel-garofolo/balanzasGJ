@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
+import org.apache.xmlgraphics.util.DoubleFormatUtil;
 import org.javafx.controls.customs.ComboBoxAutoComplete;
 
 import com.balanzasgj.app.conn.serial.SocketConnection;
@@ -903,8 +905,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		    @Override
 		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
 		        String newValue) {
-		        if (!newValue.matches("\\d*")) {
-		        	txtNumberSerial.setText(newValue.replaceAll("[^\\d]", ""));
+		        if (!newValue.matches("-?\\\\d+(.\\\\d+)?")) {
+		        	txtNumberSerial.setText(newValue.replaceAll("-?\\\\d+(.\\\\d+)?", ""));
 		        }
 		    }
 		});
@@ -1162,7 +1164,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					int available = socket.getInput().available();
 					byte[] chunk = new byte[available];
 					socket.getInput().read(chunk, 0, available);
-					sBufferConnection = new String(chunk).trim();									
+					sBufferConnection = new String(chunk).trim().replaceAll("[^\\d.]", "");									
 					if(this.posicionInicioDato < sBufferConnection.length()) {
 						sBufferConnection = sBufferConnection.substring(this.posicionInicioDato);
 					}
@@ -1171,9 +1173,11 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					}
 					if(!txtNumberSerial.getText().equals(sBufferConnection)) {
 						try {
-							Integer.valueOf(sBufferConnection);
+							Double.valueOf(sBufferConnection);
 							txtNumberSerial.setText(sBufferConnection);
-						}catch ( NumberFormatException e) {							
+						}catch ( NumberFormatException e) {													
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
 					}
 				} catch (IOException e) {

@@ -56,7 +56,7 @@
                         </HBox>
                         <HBox prefHeight="163.0" prefWidth="585.0">
                            <children>
-                              <TextField fx:id="txtNumberSerial" disable="true" opacity="0.72" prefHeight="102.0" prefWidth="216.0" text="0">
+                              <TextField fx:id="txtNumberSerial" disable="true" opacity="0.72" prefHeight="102.0" prefWidth="246.0" text="0">
                                  <HBox.margin>
                                     <Insets bottom="20.0" left="5.0" right="5.0" top="20.0" />
                                  </HBox.margin>
@@ -64,12 +64,7 @@
                                     <Font name="System Bold" size="48.0" />
                                  </font>
                               </TextField>
-                              <VBox prefHeight="109.0" prefWidth="5.0" spacing="15.0">
-                                 <HBox.margin>
-                                    <Insets bottom="15.0" right="3.0" top="15.0" />
-                                 </HBox.margin>
-                              </VBox>
-                              <HBox prefHeight="142.0" prefWidth="242.0">
+                              <HBox prefHeight="146.0" prefWidth="285.0">
                                  <children>
                                     <TableView fx:id="tblEjes" prefHeight="142.0" prefWidth="158.0">
                                       <columns>
@@ -88,7 +83,7 @@
                                      </Button>
                                  </children>
                               </HBox>
-                              <VBox alignment="CENTER_RIGHT" prefHeight="146.0" prefWidth="602.0" spacing="3.0">
+                              <VBox alignment="CENTER_RIGHT" prefHeight="146.0" prefWidth="539.0" spacing="3.0">
                                  <children>
                                     <HBox fx:id="hEntrada" alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
                                        <children>

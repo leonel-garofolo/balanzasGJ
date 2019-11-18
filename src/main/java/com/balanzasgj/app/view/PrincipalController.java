@@ -218,7 +218,6 @@ public class PrincipalController implements Initializable, IView{
 			btnHerramientas.setDisable(true);
 			break;
 		case Usuarios.P_OPERADOR:
-			btnInformes.setDisable(true);			
 			btnHerramientas.setDisable(true);
 			break;
 		default:
