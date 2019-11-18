@@ -31,6 +31,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -42,6 +43,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class ConfiguracionesController extends AnchorPane {
+	
+	private static final String CLIENTE = "CLIENTES";		
+	private static final String PROCEDENCIAS = "PROCEDENCIAS";
+	private static final String PRODUCTOS = "PRODUCTOS";
+	private static final String TRANSPORTES = "TRANSPORTES";
+	
 	@FXML
 	private TableView<Entidades> tblEntidades;
 	@FXML
@@ -124,6 +131,20 @@ public class ConfiguracionesController extends AnchorPane {
 	
 	@FXML
 	private TabPane tabPane;
+	
+	@FXML
+	private Label lblNombre;
+	
+	@FXML
+	private Label lblTara;
+	@FXML
+	private Label lblTaraValue;
+	
+	@FXML
+	private Label lblFecha;
+	@FXML
+	private Label lblFechaValue;
+	
 		
 	private ClientesPersistence clientesPersistence;	
 	private ProcedenciasPersistence procedenciasPersistence;
@@ -134,13 +155,6 @@ public class ConfiguracionesController extends AnchorPane {
 	private boolean modoEditEntidades = false;
 	private boolean modoEditIndicadores = false;
 
-	static class TypeEntidades {
-		static String CLIENTE = "CLIENTES";		
-		static String PROCEDENCIAS = "PROCEDENCIAS";
-		static String PRODUCTOS = "PRODUCTOS";
-		static String TRANSPORTES = "TRANSPORTES";
-
-	}
 
 	@FXML
 	private void handleCerrar(ActionEvent event) {
@@ -250,16 +264,16 @@ public class ConfiguracionesController extends AnchorPane {
 				&& !tblEntidades.getSelectionModel().isEmpty()) {
 			String entidadType = cbxEntidades.getSelectionModel().getSelectedItem();
 			switch (entidadType) {
-			case "CLIENTES":
+			case CLIENTE:
 				clientesPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				break;
-			case "PROCEDENCIAS":
+			case PROCEDENCIAS:
 				procedenciasPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				break;
-			case "PRODUCTOS":
+			case PRODUCTOS:
 				productosPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				break;
-			case "TRANSPORTES":
+			case TRANSPORTES:
 				transportesPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				break;
 			default:
@@ -293,16 +307,16 @@ public class ConfiguracionesController extends AnchorPane {
 	private void loadFormEntidades(String entidadType) {
 		cleanFormEntidades();
 		switch (entidadType) {
-		case "CLIENTES":
+		case CLIENTE:
 			tblEntidades.getItems().addAll(clientesPersistence.findAll());
 			break;
-		case "PROCEDENCIAS":
+		case PROCEDENCIAS:
 			tblEntidades.getItems().addAll(procedenciasPersistence.findAll());
 			break;
-		case "PRODUCTOS":
+		case PRODUCTOS:
 			tblEntidades.getItems().addAll(productosPersistence.findAll());
 			break;
-		case "TRANSPORTES":
+		case TRANSPORTES:
 			tblEntidades.getItems().addAll(transportesPersistence.findAll());
 			break;
 		default:
@@ -348,7 +362,7 @@ public class ConfiguracionesController extends AnchorPane {
 			
 		}else {
 			switch (entidadType) {
-			case "CLIENTES":
+			case CLIENTE:
 				Clientes cli = new Clientes();
 				if(modoEditEntidades) {
 					cli.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
@@ -357,17 +371,17 @@ public class ConfiguracionesController extends AnchorPane {
 				clientesPersistence.save(cli);
 				this.loadFormEntidades(entidadType);
 				break;
-			case "PROCEDENCIAS":
+			case PROCEDENCIAS:
 				Procedencias pro  = new Procedencias();
 				pro.setNombre(nombre);
 				procedenciasPersistence.save(pro);			
 				break;
-			case "PRODUCTOS":
+			case PRODUCTOS:
 				Productos producto = new Productos();
 				producto.setNombre(nombre);				
 				productosPersistence.save(producto);
 				break;
-			case "TRANSPORTES":			
+			case TRANSPORTES:			
 				Transportes tras = new Transportes();
 				tras.setNombre(nombre);
 				transportesPersistence.save(tras);
@@ -412,6 +426,11 @@ public class ConfiguracionesController extends AnchorPane {
 	}
 
 	public void initialize() {
+		lblTara.setVisible(false);
+		lblTaraValue.setVisible(false);
+		lblFecha.setVisible(false);
+		lblFechaValue.setVisible(false);
+		
 		switch (Usuarios.getPerfilLogeado()) {
 		case Usuarios.P_SUPERVISOR:
 			tabCom.setDisable(true);
@@ -431,10 +450,10 @@ public class ConfiguracionesController extends AnchorPane {
 		initComunicaciones();
 
 		this.cbxEntidades.getItems().addAll(new String[] { 
-				TypeEntidades.CLIENTE,
-				TypeEntidades.PROCEDENCIAS, 
-				TypeEntidades.PRODUCTOS, 
-				TypeEntidades.TRANSPORTES });
+				CLIENTE,
+				PROCEDENCIAS, 
+				PRODUCTOS, 
+				TRANSPORTES });
 		initTextUpperCase();
 		
 
