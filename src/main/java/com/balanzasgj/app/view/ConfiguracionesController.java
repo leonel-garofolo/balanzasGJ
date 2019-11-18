@@ -347,14 +347,7 @@ public class ConfiguracionesController extends AnchorPane {
 		txtEditCaracterControl.setText("");
 		txtEditPosInicioDato.setText("");
 		txtEditLongitudDato.setText("");
-	}
-	private void editFormEntidades(String entidadType) {
-
-	}
-
-	private void newFormEntidades(String entidadType) {
-
-	}
+	}	
 
 	private void saveEntidades(String entidadType) {
 		String nombre = txtEntidadNombre.getText();
@@ -417,13 +410,6 @@ public class ConfiguracionesController extends AnchorPane {
 		loadFormIndicadores();
 	}
 
-	private void editFormIndicadores() {
-
-	}
-
-	private void newFormIndicadores() {
-
-	}
 
 	public void initialize() {
 		lblTara.setVisible(false);
