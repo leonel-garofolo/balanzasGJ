@@ -30,6 +30,7 @@ public class ParametrosGoblales implements Serializable
 	
 	public static final String P_EMPRESA_TRANSACCION= "EMPRESA_TRANSACCION";
 	public static final String P_EMPRESA_BACKUP= "EMPRESA_BACKUP";
+	public static final String P_EMPRESA_AUTOMATICO= "EMPRESA_AUTOMATICO";
 	
     private static final long serialVersionUID = 1L;
 

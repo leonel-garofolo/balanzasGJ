@@ -163,7 +163,7 @@ public class PrincipalController implements Initializable, IView{
 		this.sf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		parametrosGoblalesPersistence = new ParametrosGoblalesPersistenceJdbc();
 		ParametrosGoblales pg = new ParametrosGoblales();
-		pg.setId("EMPRESA_NOMBRE");
+		pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE);
 		parametrosGoblalesPersistence.load(pg);		
 		if(pg!= null) {
 			lblEmpresa.setText(pg.getValue());

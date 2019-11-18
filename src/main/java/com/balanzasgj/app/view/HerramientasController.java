@@ -4,11 +4,12 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.imageio.ImageIO;
 import javax.sql.rowset.serial.SerialBlob;
@@ -20,6 +21,7 @@ import com.balanzasgj.app.model.ParametrosGoblales;
 import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
 import com.balanzasgj.app.utils.Message;
+import com.balanzasgj.app.utils.Utils;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -28,12 +30,14 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.converter.DateTimeStringConverter;
 
 public class HerramientasController extends AnchorPane implements IView {
 	@FXML
@@ -49,6 +53,9 @@ public class HerramientasController extends AnchorPane implements IView {
 	private Button btnGuardar;
 	@FXML
 	private Button btnCerrar;
+	
+	@FXML
+	private TextField txtBkpAuto;
 	
 	@FXML
 	private TextField txtPathBkp; 
@@ -125,6 +132,13 @@ public class HerramientasController extends AnchorPane implements IView {
 			pg.setValue(txtTransaccion.getText());
 			parametrosGoblalesPersistence.save(pg);
 		}
+				
+		if(!txtBkpAuto.getText().isEmpty()) {			
+			pg.setId(ParametrosGoblales.P_EMPRESA_AUTOMATICO);
+			pg.setValue(txtBkpAuto.getText());
+			parametrosGoblalesPersistence.save(pg);
+		}
+		
 		if(!txtPathBkp.getText().isEmpty()) {			
 			pg.setId(ParametrosGoblales.P_EMPRESA_BACKUP);
 			pg.setValue(txtPathBkp.getText());
@@ -217,46 +231,26 @@ public class HerramientasController extends AnchorPane implements IView {
 	@FXML
     private void handleRestaurar(ActionEvent event) {
 		if(!txtPathRst.getText().isEmpty()) {
-			try {
-				String command = "D:\\aplicaciones\\xampp\\mysql\\bin\\mysqldump -u root sist_pesada < " + txtPathRst;
-				System.out.println(command);				
-				Runtime.getRuntime().exec(command);				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
+			Utils.restaurarBackup(txtPathRst.getText());
 		}
-		
     }
 	
 	@FXML
     private void handleGenerar(ActionEvent event) {
 		if(!txtPathBkp.getText().isEmpty()) {
-			try {
-				String command = "D:\\aplicaciones\\xampp\\mysql\\bin\\mysqldump -u root sist_pesada";
-				System.out.println(command);
-				
-				
-				Process p = Runtime.getRuntime().exec(command);
-				 InputStream is = p.getInputStream();
-			      FileOutputStream fos = new FileOutputStream(txtPathBkp.getText() + "\\backup_.sql");
-			      byte[] buffer = new byte[1000];
-
-			      int leido = is.read(buffer);
-			      while (leido > 0) {
-			         fos.write(buffer, 0, leido);
-			         leido = is.read(buffer);
-			      }
-
-			      fos.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
+			Utils.generarBackup(txtPathBkp.getText());
 		}
     }	
 	
-	public void initialize() {
+	public void initialize() {		
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+		try {
+			txtBkpAuto.setTextFormatter(new TextFormatter<>(new DateTimeStringConverter(format), format.parse("00:00:00")));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		imgEmpresa.setStyle(".image-view-wrapper:border {" + 
 				"    -fx-border-color: black;" + 
 				"    -fx-border-style: solid;" + 
@@ -352,6 +346,13 @@ public class HerramientasController extends AnchorPane implements IView {
 		parametrosGoblalesPersistence.load(pg);		
 		if(pg!= null) {
 			txtPathBkp.setText(pg.getValue());
+		}
+		
+		pg = new ParametrosGoblales();
+		pg.setId(ParametrosGoblales.P_EMPRESA_AUTOMATICO);
+		parametrosGoblalesPersistence.load(pg);		
+		if(pg!= null) {
+			txtBkpAuto.setText(pg.getValue());
 		}
 		
 		pg = new ParametrosGoblales();
