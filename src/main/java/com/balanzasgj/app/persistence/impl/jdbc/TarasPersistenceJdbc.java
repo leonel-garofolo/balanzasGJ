@@ -239,20 +239,19 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		List<Taras> list = new LinkedList<Taras>() ;
 		Connection conn = null;
 
-		String selectWithFilter = getSqlSelectAll();
-		selectWithFilter += " where 1=1 ";
+		String selectWithFilter = getSqlSelectAll() + " where 1=1 ";
 		if(field.equals("Número de Transacción")){
 			selectWithFilter += " and transaccion like '%" + data + "%' ";
 		}else if(field.equals("Patente Chasis")){
 			selectWithFilter += " and patente like '%" + data + "%' ";
 		}else if(field.equals("Producto")){
-			selectWithFilter += " and nombreProducto like '%" + data + "%' ";
+			selectWithFilter += " and p.nombre like '%" + data + "%' ";
 		}else if(field.equals("Cliente")){
-			selectWithFilter += " and nombreCli like '%" + data + "%' ";
+			selectWithFilter += " and c.nombre like '%" + data + "%' ";
 		}else if(field.equals("Transporte")){
-			selectWithFilter += " and nombreTra like '%" + data + "%' ";
+			selectWithFilter += " and  tra.nombre  like '%" + data + "%' ";
 		}else if(field.equals("Procedencia")){
-			selectWithFilter += " and nombrePro like '%" + data + "%' ";
+			selectWithFilter += " and pro.nombre like '%" + data + "%' ";
 		}
 		
 		SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
@@ -264,6 +263,7 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		}
 		
 		selectWithFilter += " order by update_date desc";
+		System.out.println(selectWithFilter);
 		try {
 			conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement(selectWithFilter);
@@ -289,24 +289,25 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		List<Taras> list = new LinkedList<Taras>() ;
 		Connection conn = null;
 
-		String selectWithFilter = getSqlSelectAll();
+		String selectWithFilter = getSqlSelectAll() + " where 1=1 ";
 		if(salidasPendientes) {
-			selectWithFilter += " where peso_salida is null ";
+			selectWithFilter += " and peso_salida is null ";
 		}
 		if(field.equals("Número de Transacción")){
 			selectWithFilter += " and transaccion like '%" + data + "%' ";
-		}else if(field.equals("Patente Chasis")){
+		}else if(field.equals("Patente")){
 			selectWithFilter += " and patente like '%" + data + "%' ";
 		}else if(field.equals("Producto")){
-			selectWithFilter += " and nombreProducto like '%" + data + "%' ";
+			selectWithFilter += " and p.nombre like '%" + data + "%' ";
 		}else if(field.equals("Cliente")){
-			selectWithFilter += " and nombreCli like '%" + data + "%' ";
+			selectWithFilter += " and c.nombre like '%" + data + "%' ";
 		}else if(field.equals("Transporte")){
-			selectWithFilter += " and nombreTra like '%" + data + "%' ";
+			selectWithFilter += " and  tra.nombre  like '%" + data + "%' ";
 		}else if(field.equals("Procedencia")){
-			selectWithFilter += " and nombrePro like '%" + data + "%' ";
+			selectWithFilter += " and pro.nombre like '%" + data + "%' ";
 		}
 		selectWithFilter += " order by update_date desc";
+		System.out.println(selectWithFilter);
 		try {
 			conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement(selectWithFilter);

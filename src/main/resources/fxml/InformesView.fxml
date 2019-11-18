@@ -30,10 +30,10 @@
                         <ComboBox fx:id="cbxFiltroBuscar" prefWidth="150.0" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="44.0" prefWidth="210.0" spacing="5.0">
+                  <HBox fx:id="filterCombo" alignment="CENTER" prefHeight="44.0" prefWidth="210.0" spacing="5.0">
                      <children>
-                        <Label alignment="CENTER" text="Filtrar: " />
-                        <TextField fx:id="txtFiltroBuscar" />
+                        <Label fx:id="lblFiltrar" prefWidth="50.0" alignment="CENTER" text="Filtrar: " />
+                        
                      </children>
                   </HBox>
                   <DatePicker fx:id="timeFechaDesde" prefHeight="25.0" prefWidth="140.0" />
