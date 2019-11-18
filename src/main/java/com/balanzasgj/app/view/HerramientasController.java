@@ -1,9 +1,18 @@
 package com.balanzasgj.app.view;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
+
+import javax.imageio.ImageIO;
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 
 import org.javafx.controls.customs.StringField;
 
@@ -12,6 +21,7 @@ import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
 import com.balanzasgj.app.utils.Message;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -49,7 +59,19 @@ public class HerramientasController extends AnchorPane implements IView {
 	private ImageView imgEmpresa;
 	
 	@FXML
-	private TextField txtNombreEmpresa;	
+	private TextField txtNombreEmpresa;
+	
+	@FXML
+	private TextField txtDireccion;
+	
+	@FXML
+	private TextField txtTel;
+	
+	@FXML
+	private TextField txtLocalidad;
+	
+	@FXML
+	private TextField txtProv;
 	
 	@FXML
 	private PasswordField txtClaveIngManual;
@@ -94,35 +116,84 @@ public class HerramientasController extends AnchorPane implements IView {
     private void handleGuardar(ActionEvent event) {
 		ParametrosGoblales pg = new ParametrosGoblales();
 		if(!txtNombre.getText().isEmpty()) {
-			pg.setId("EMPRESA_TICKET");
+			pg.setId(ParametrosGoblales.P_EMPRESA_TICKET);
 			pg.setValue(txtNombre.getText());
 			parametrosGoblalesPersistence.save(pg);
 		}
 		if(!txtTransaccion.getText().isEmpty()) {			
-			pg.setId("EMPRESA_TRANSACCION");
+			pg.setId(ParametrosGoblales.P_EMPRESA_TRANSACCION);
 			pg.setValue(txtTransaccion.getText());
 			parametrosGoblalesPersistence.save(pg);
 		}
 		if(!txtPathBkp.getText().isEmpty()) {			
-			pg.setId("EMPRESA_BACKUP");
+			pg.setId(ParametrosGoblales.P_EMPRESA_BACKUP);
 			pg.setValue(txtPathBkp.getText());
 			parametrosGoblalesPersistence.save(pg);
 		}
 		
 		if(txtPathRst.getText() != null && !txtPathRst.getText().isEmpty()) {			
-			pg.setId("EMPRESA_RESTORE");
+			pg.setId(ParametrosGoblales.P_EMPRESA_RESTORE);
 			pg.setValue(txtPathRst.getText());
 			parametrosGoblalesPersistence.save(pg);
 		}
 		
 		if(!txtNombreEmpresa.getText().isEmpty()) {			
-			pg.setId("EMPRESA_NOMBRE");
+			pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE);
 			pg.setValue(txtNombreEmpresa.getText());
 			parametrosGoblalesPersistence.save(pg);
 		}
 		
+		if(!txtDireccion.getText().isEmpty()) {			
+			pg.setId(ParametrosGoblales.P_EMPRESA_DIR);
+			pg.setValue(txtDireccion.getText());
+			parametrosGoblalesPersistence.save(pg);
+		}
+		
+		if(!txtLocalidad.getText().isEmpty()) {			
+			pg.setId(ParametrosGoblales.P_EMPRESA_LOC);
+			pg.setValue(txtLocalidad.getText());
+			parametrosGoblalesPersistence.save(pg);
+		}
+		
+		if(!txtProv.getText().isEmpty()) {			
+			pg.setId(ParametrosGoblales.P_EMPRESA_PROV);
+			pg.setValue(txtProv.getText());
+			parametrosGoblalesPersistence.save(pg);
+		}
+		
+		if(!txtTel.getText().isEmpty()) {			
+			pg.setId(ParametrosGoblales.P_EMPRESA_TEL);
+			pg.setValue(txtTel.getText());
+			parametrosGoblalesPersistence.save(pg);
+		}
+		
+		
+		if(imgEmpresa.getImage() != null) {			
+			pg.setId(ParametrosGoblales.P_EMPRESA_IMG);
+			BufferedImage bImage = SwingFXUtils.fromFXImage(imgEmpresa.getImage(), null);
+			ByteArrayOutputStream s = new ByteArrayOutputStream();
+			try {
+				ImageIO.write(bImage, "png", s);
+				byte[] res  = s.toByteArray();
+				s.close();
+				pg.setValue("");
+				 Blob blob = new SerialBlob(res);
+				pg.setValueByte(blob);
+				parametrosGoblalesPersistence.save(pg);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SerialException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		if(!txtClaveIngManual.getText().isEmpty()) {			
-			pg.setId("EMPRESA_ING_MANUAL");
+			pg.setId(ParametrosGoblales.P_EMPRESA_ING_MANUAL);
 			pg.setValue(txtClaveIngManual.getText());
 			parametrosGoblalesPersistence.save(pg);
 		}
@@ -200,41 +271,98 @@ public class HerramientasController extends AnchorPane implements IView {
 		});		
 		
 		ParametrosGoblales pg = new ParametrosGoblales();
-		pg.setId("EMPRESA_TICKET");
+		pg.setId(ParametrosGoblales.P_EMPRESA_TICKET);
 		parametrosGoblalesPersistence.load(pg);
 		if(pg!= null) {
 			txtNombre.setValue(pg.getValue());
 		}		
 		
 		pg = new ParametrosGoblales();
-		pg.setId("EMPRESA_TRANSACCION");
+		pg.setId(ParametrosGoblales.P_EMPRESA_TRANSACCION);
 		parametrosGoblalesPersistence.load(pg);
 		if(pg!= null) {
 			txtTransaccion.setValue(pg.getValue());
 		}		
 		
-		pg.setId("EMPRESA_NOMBRE");
+		pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE);
 		parametrosGoblalesPersistence.load(pg);
 		if(pg!= null) {
 			txtNombreEmpresa.setText(pg.getValue());
 		}
 		
+		pg.setId(ParametrosGoblales.P_EMPRESA_DIR);
+		parametrosGoblalesPersistence.load(pg);
+		if(pg!= null) {
+			txtDireccion.setText(pg.getValue());
+		}
+		
+		
+		pg.setId(ParametrosGoblales.P_EMPRESA_LOC);
+		parametrosGoblalesPersistence.load(pg);
+		if(pg!= null) {
+			txtLocalidad.setText(pg.getValue());
+		}
+		
+		
+		pg.setId(ParametrosGoblales.P_EMPRESA_PROV);
+		parametrosGoblalesPersistence.load(pg);
+		if(pg!= null) {
+			txtProv.setText(pg.getValue());
+		}
+		
+		
+		pg.setId(ParametrosGoblales.P_EMPRESA_TEL);
+		parametrosGoblalesPersistence.load(pg);
+		if(pg!= null) {
+			txtTel.setText(pg.getValue());
+		}
+		
+		pg.setId(ParametrosGoblales.P_EMPRESA_IMG);
+		parametrosGoblalesPersistence.load(pg);
+		if(pg!= null && pg.getValueByte() != null) {
+			//convert blob to byte[]
+            InputStream input;
+			try {
+				input = pg.getValueByte().getBinaryStream();
+				byte[] img = new byte[new Long(pg.getValueByte().length()).intValue()];
+	            input.read(img);
+
+	            //convert byte[] to image
+	            InputStream inputStream = new ByteArrayInputStream(img);
+	            BufferedImage buffer = ImageIO.read(inputStream);
+	            Image image = SwingFXUtils.toFXImage(buffer, null);
+	            imgEmpresa.setImage(image);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
+		}
+		
 		pg = new ParametrosGoblales();
-		pg.setId("EMPRESA_BACKUP");
+		pg.setId(ParametrosGoblales.P_EMPRESA_IMG);
+		parametrosGoblalesPersistence.load(pg);		
+		
+		
+		pg = new ParametrosGoblales();
+		pg.setId(ParametrosGoblales.P_EMPRESA_BACKUP);
 		parametrosGoblalesPersistence.load(pg);		
 		if(pg!= null) {
 			txtPathBkp.setText(pg.getValue());
 		}
 		
 		pg = new ParametrosGoblales();
-		pg.setId("EMPRESA_RESTORE");
+		pg.setId(ParametrosGoblales.P_EMPRESA_RESTORE);
 		parametrosGoblalesPersistence.load(pg);		
 		if(pg!= null) {
 			txtPathRst.setText(pg.getValue());
 		}
 		
 		pg = new ParametrosGoblales();
-		pg.setId("EMPRESA_ING_MANUAL");
+		pg.setId(ParametrosGoblales.P_EMPRESA_ING_MANUAL);
 		parametrosGoblalesPersistence.load(pg);		
 		if(pg!= null) {
 			txtClaveIngManual.setText(pg.getValue());

@@ -7,6 +7,7 @@
 package com.balanzasgj.app.model;
 
 import java.io.Serializable;
+import java.sql.Blob;
 
 
 /**
@@ -17,11 +18,26 @@ import java.io.Serializable;
  */
 public class ParametrosGoblales implements Serializable
 {
+	public static final String P_EMPRESA_RESTORE= "EMPRESA_RESTORE";
+	public static final String P_EMPRESA_NOMBRE= "EMPRESA_NOMBRE";
+	public static final String P_EMPRESA_DIR= "EMPRESA_DIR";
+	public static final String P_EMPRESA_LOC= "EMPRESA_LOC";
+	public static final String P_EMPRESA_PROV = "EMPRESA_PROV";
+	public static final String P_EMPRESA_TEL= "EMPRESA_TEL";
+	public static final String P_EMPRESA_IMG= "EMPRESA_IMG";	
+	public static final String P_EMPRESA_ING_MANUAL= "EMPRESA_ING_MANUAL";
+	public static final String P_EMPRESA_TICKET= "EMPRESA_TICKET";
+	
+	public static final String P_EMPRESA_TRANSACCION= "EMPRESA_TRANSACCION";
+	public static final String P_EMPRESA_BACKUP= "EMPRESA_BACKUP";
+	
     private static final long serialVersionUID = 1L;
 
     private String    id           ; // Id or Primary Key
 
     private String     value        ;
+    private Blob     valueByte        ;
+    
 
     /**
      * Default constructor
@@ -58,9 +74,19 @@ public class ParametrosGoblales implements Serializable
      */
     public String getValue() {
         return this.value;
-    }
+    }    
+   
+    public Blob getValueByte() {
+		return valueByte;
+	}
 
-    //----------------------------------------------------------------------
+
+	public void setValueByte(Blob valueByte) {
+		this.valueByte = valueByte;
+	}
+
+
+	//----------------------------------------------------------------------
     // toString METHOD
     //----------------------------------------------------------------------
     @Override

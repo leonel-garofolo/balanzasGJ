@@ -15,6 +15,21 @@
 		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="USUARIO" class="java.lang.String"/>
+	<parameter name="EMPRESA_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_LOC" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_TEL" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_PROV" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_IMG" class="java.awt.Image">
+		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -351,14 +366,26 @@
 		</band>
 	</pageHeader>
 	<pageFooter>
-		<band height="38" splitType="Stretch">
+		<band height="54" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="400" height="20" uuid="1e49e387-7f4f-42f2-98d2-5f95a7f67157"/>
+				<reportElement x="0" y="0" width="555" height="20" uuid="1e49e387-7f4f-42f2-98d2-5f95a7f67157"/>
 				<textElement>
-					<font size="12"/>
+					<font fontName="Arial" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{EMPRESA_NOMBRE}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="0" y="21" width="380" height="19" uuid="6e86569b-47a0-462c-b52f-5a9e8b70973c"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_DIR}==null?"":$P{EMPRESA_DIR} ) + " " + ($P{EMPRESA_LOC}== null?"":$P{EMPRESA_LOC})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="280" height="14" uuid="004edb21-c854-4624-ac99-71dd81665171"/>
+				<textFieldExpression><![CDATA["Tel.:" + ($P{EMPRESA_TEL} ==null?"":$P{EMPRESA_TEL})]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="500" y="0" width="55" height="54" uuid="6b10f739-0c21-4c85-91db-b46aff05196f"/>
+				<imageExpression><![CDATA[$P{EMPRESA_IMG}]]></imageExpression>
+			</image>
 		</band>
 	</pageFooter>
 </jasperReport>

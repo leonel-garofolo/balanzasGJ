@@ -1,8 +1,11 @@
 package com.balanzasgj.app.view;
 
+import java.awt.Image;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,6 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 import org.javafx.controls.customs.ComboBoxAutoComplete;
 
@@ -306,11 +311,49 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			taras.add(taraEdit);
 			HashMap<String, Object> params = new HashMap<>();
 			ParametrosGoblales pg = new ParametrosGoblales();
-			pg.setId("EMPRESA_NOMBRE");	
+			pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE);	
 			parametrosGoblalesPersistence.load(pg);
-	        params.put("EMPRESA_NOMBRE", pg.getValue());
+	        params.put(ParametrosGoblales.P_EMPRESA_NOMBRE, pg.getValue());
+	        
+	        pg = new ParametrosGoblales();
+			pg.setId(ParametrosGoblales.P_EMPRESA_DIR);	
+			parametrosGoblalesPersistence.load(pg);
+	        params.put(ParametrosGoblales.P_EMPRESA_DIR, pg.getValue());
+	        
+	        pg = new ParametrosGoblales();
+			pg.setId(ParametrosGoblales.P_EMPRESA_TEL);	
+			parametrosGoblalesPersistence.load(pg);
+	        params.put(ParametrosGoblales.P_EMPRESA_TEL, pg.getValue());
+	        
+	        pg = new ParametrosGoblales();
+			pg.setId(ParametrosGoblales.P_EMPRESA_LOC);	
+			parametrosGoblalesPersistence.load(pg);
+	        params.put(ParametrosGoblales.P_EMPRESA_LOC, pg.getValue());
+	        
+	        pg = new ParametrosGoblales();
+			pg.setId(ParametrosGoblales.P_EMPRESA_PROV);	
+			parametrosGoblalesPersistence.load(pg);
+	        params.put(ParametrosGoblales.P_EMPRESA_PROV, pg.getValue());	               
 	        params.put("USUARIO", Usuarios.getUsuarioLogeado());
-
+	        
+	        pg = new ParametrosGoblales();
+			pg.setId(ParametrosGoblales.P_EMPRESA_IMG);	
+			parametrosGoblalesPersistence.load(pg);
+			if(pg.getValueByte() != null) {
+				try {
+					byte[] img = new byte[new Long(pg.getValueByte().length()).intValue()];
+					Image image = ImageIO.read(new ByteArrayInputStream(img));
+		            
+		            params.put(ParametrosGoblales.P_EMPRESA_IMG, image);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
 			try {
 				ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
 			} catch (JRException e) {

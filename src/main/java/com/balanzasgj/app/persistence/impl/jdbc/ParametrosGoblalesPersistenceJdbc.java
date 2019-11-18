@@ -26,16 +26,16 @@ import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 public class ParametrosGoblalesPersistenceJdbc extends GenericJdbcDAO<ParametrosGoblales> implements ParametrosGoblalesPersistence {
 
 	private final static String SQL_SELECT_ALL = 
-		"select id, value from parametros_goblales"; 
+		"select id, value, valueByte from parametros_goblales"; 
 
 	private final static String SQL_SELECT = 
-		"select id, value from parametros_goblales where id = ?";
+		"select id, value, valueByte from parametros_goblales where id = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into parametros_goblales ( id, value ) values ( ?, ? )";
+		"insert into parametros_goblales ( id, value, valueByte ) values ( ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update parametros_goblales set value = ? where id = ?";
+		"update parametros_goblales set value = ?, valueByte = ? where id = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from parametros_goblales where id = ?";
@@ -73,6 +73,7 @@ public class ParametrosGoblalesPersistenceJdbc extends GenericJdbcDAO<Parametros
 		//--- Set PRIMARY KEY and DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		setValue(ps, i++, parametrosGoblales.getId() ) ; // "id" : java.lang.Integer
 		setValue(ps, i++, parametrosGoblales.getValue() ) ; // "value" : java.lang.String
+		setValue(ps, i++, parametrosGoblales.getValueByte() ) ; // "value" : java.lang.Blob
 	}
 
     //----------------------------------------------------------------------
@@ -80,6 +81,7 @@ public class ParametrosGoblalesPersistenceJdbc extends GenericJdbcDAO<Parametros
 	protected void setValuesForUpdate(PreparedStatement ps, int i, ParametrosGoblales parametrosGoblales) throws SQLException {
 		//--- Set DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		setValue(ps, i++, parametrosGoblales.getValue() ) ; // "value" : java.lang.String
+		setValue(ps, i++, parametrosGoblales.getValueByte() ) ; // "value" : java.lang.String
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, parametrosGoblales.getId() ) ; // "id" : java.lang.Integer
 	}
@@ -110,6 +112,7 @@ public class ParametrosGoblalesPersistenceJdbc extends GenericJdbcDAO<Parametros
 		parametrosGoblales.setId(rs.getString("id")); // java.lang.Integer
 		if ( rs.wasNull() ) { parametrosGoblales.setId(null); }; // not primitive number => keep null value if any
 		parametrosGoblales.setValue(rs.getString("value")); // java.lang.String
+		parametrosGoblales.setValueByte(rs.getBlob("valueByte")); // java.lang.String
 		return parametrosGoblales ;
 	}
 

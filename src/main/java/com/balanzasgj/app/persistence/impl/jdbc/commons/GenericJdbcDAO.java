@@ -6,6 +6,7 @@
 package com.balanzasgj.app.persistence.impl.jdbc.commons;
 
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -373,6 +374,10 @@ public abstract class GenericJdbcDAO<T> {
 	protected void setValue(PreparedStatement ps, int i, String value) throws SQLException {
 		ps.setString(i, value);
 	}
+	protected void setValue(PreparedStatement ps, int i, Blob value) throws SQLException {
+		ps.setBlob(i, value);
+	}
+	
 	//-----------------------------------------------------------------------------------------
 	protected void setValue(PreparedStatement ps, int i, Boolean value) throws SQLException {
 		ps.setBoolean(i, value);

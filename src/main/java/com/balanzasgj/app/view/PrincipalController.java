@@ -1,15 +1,23 @@
 package com.balanzasgj.app.view;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 import com.balanzasgj.app.App;
 import com.balanzasgj.app.model.ParametrosGoblales;
 import com.balanzasgj.app.model.Usuarios;
 import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
+import com.ibm.icu.text.SimpleDateFormat;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,13 +29,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class PrincipalController implements Initializable, IView{
+public class PrincipalController implements Initializable, IView{	
+	private SimpleDateFormat sf;
+	@FXML
+	private ImageView imgEmpresa;
+	
 	@FXML
 	private Button btnTaras;
 	@FXML
@@ -42,6 +55,9 @@ public class PrincipalController implements Initializable, IView{
 	
 	@FXML
 	private Label lblEmpresa;
+	
+	@FXML
+	private Label lblHora;
 	
 	@FXML
 	private Label lblUsuario;
@@ -143,7 +159,8 @@ public class PrincipalController implements Initializable, IView{
 	}	
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+	public void initialize(URL location, ResourceBundle resources) {		
+		this.sf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		parametrosGoblalesPersistence = new ParametrosGoblalesPersistenceJdbc();
 		ParametrosGoblales pg = new ParametrosGoblales();
 		pg.setId("EMPRESA_NOMBRE");
@@ -152,11 +169,48 @@ public class PrincipalController implements Initializable, IView{
 			lblEmpresa.setText(pg.getValue());
 		}		
 		
+		pg.setId(ParametrosGoblales.P_EMPRESA_IMG);
+		parametrosGoblalesPersistence.load(pg);
+		if(pg!= null && pg.getValueByte() != null) {
+			//convert blob to byte[]
+            InputStream input;
+			try {
+				input = pg.getValueByte().getBinaryStream();
+				byte[] img = new byte[new Long(pg.getValueByte().length()).intValue()];
+	            input.read(img);
+
+	            //convert byte[] to image
+	            InputStream inputStream = new ByteArrayInputStream(img);
+	            BufferedImage buffer = ImageIO.read(inputStream);
+	            Image image = SwingFXUtils.toFXImage(buffer, null);
+	            imgEmpresa.setImage(image);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
+		}
+		
 		lblEmpresa.setFont(new Font("Arial", 30));
 		lblUsuario.setFont(new Font("Arial", 14));
 		lblUsuario.setStyle("-fx-font-weight: bold");
-		lblUsuario.setText(Usuarios.getUsuarioLogeado().toUpperCase());
-		
+		lblUsuario.setText(Usuarios.getUsuarioLogeado().toUpperCase());		
+		lblHora.setText("");
+		/*
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				while(true) {
+					lblHora.setText(sf.format(new Date()));
+				}
+			} 
+			
+		});
+		*/
 		
 		String perfil = Usuarios.getPerfilLogeado();
 		switch (perfil) {		
