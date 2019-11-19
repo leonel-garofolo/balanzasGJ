@@ -30,6 +30,21 @@
 	<parameter name="EMPRESA_IMG" class="java.awt.Image">
 		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="EMPRESA_NOMBRE_BAL" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_DIR_BAL" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_LOC_BAL" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_TEL_BAL" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_PROV_BAL" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -103,7 +118,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="28" splitType="Stretch">
+		<band height="79" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="555" height="23" uuid="b31b8f1a-eb74-477e-ba50-4311dbcf18be"/>
 				<textElement textAlignment="Center">
@@ -111,6 +126,21 @@
 				</textElement>
 				<text><![CDATA[Comprobante de Pesaje]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="0" y="20" width="500" height="20" uuid="f7d73f44-52ac-4b7b-ae4f-847e108b9850"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{EMPRESA_NOMBRE_BAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="500" height="19" uuid="34384adf-055f-4647-91cd-265129b6645b"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_DIR_BAL}==null?"":$P{EMPRESA_DIR_BAL} ) + " - " + ($P{EMPRESA_LOC_BAL}== null?"":$P{EMPRESA_LOC_BAL}) + " - " + ($P{EMPRESA_PROV_BAL}==null?"":$P{EMPRESA_PROV_BAL} )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="59" width="500" height="14" uuid="01b9188c-c431-4a15-909b-70a21b740842"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_TEL_BAL} ==null?"": "Tel.:" + $P{EMPRESA_TEL_BAL})]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -366,7 +396,7 @@
 		</band>
 	</pageHeader>
 	<pageFooter>
-		<band height="54" splitType="Stretch">
+		<band height="62" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="555" height="20" uuid="1e49e387-7f4f-42f2-98d2-5f95a7f67157"/>
 				<textElement>
@@ -375,12 +405,12 @@
 				<textFieldExpression><![CDATA[$P{EMPRESA_NOMBRE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="21" width="380" height="19" uuid="6e86569b-47a0-462c-b52f-5a9e8b70973c"/>
-				<textFieldExpression><![CDATA[($P{EMPRESA_DIR}==null?"":$P{EMPRESA_DIR} ) + " " + ($P{EMPRESA_LOC}== null?"":$P{EMPRESA_LOC})]]></textFieldExpression>
+				<reportElement x="0" y="21" width="500" height="19" uuid="6e86569b-47a0-462c-b52f-5a9e8b70973c"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_DIR}==null?"":$P{EMPRESA_DIR} ) + " - " + ($P{EMPRESA_LOC}== null?"":$P{EMPRESA_LOC}) + " - " + ($P{EMPRESA_PROV}== null?"":$P{EMPRESA_PROV})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="40" width="280" height="14" uuid="004edb21-c854-4624-ac99-71dd81665171"/>
-				<textFieldExpression><![CDATA["Tel.:" + ($P{EMPRESA_TEL} ==null?"":$P{EMPRESA_TEL})]]></textFieldExpression>
+				<reportElement x="0" y="40" width="500" height="14" uuid="004edb21-c854-4624-ac99-71dd81665171"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_TEL} ==null?"": "Tel.:" + $P{EMPRESA_TEL})]]></textFieldExpression>
 			</textField>
 			<image onErrorType="Blank">
 				<reportElement x="500" y="0" width="55" height="54" uuid="6b10f739-0c21-4c85-91db-b46aff05196f"/>

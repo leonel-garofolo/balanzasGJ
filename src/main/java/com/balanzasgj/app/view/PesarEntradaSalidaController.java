@@ -312,30 +312,58 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			List<Taras> taras = new ArrayList<>();
 			taras.add(taraEdit);
 			HashMap<String, Object> params = new HashMap<>();
+			
+			/*PROPIETARIO DE LA BALANZA*/
 			ParametrosGoblales pg = new ParametrosGoblales();
+			pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE_BAL);	
+			parametrosGoblalesPersistence.load(pg);
+	        params.put(ParametrosGoblales.P_EMPRESA_NOMBRE_BAL, (pg.getValue()== null?"":pg.getValue()));
+	        	        
+	        pg = new ParametrosGoblales();
+			pg.setId(ParametrosGoblales.P_EMPRESA_DIR_BAL);	
+			parametrosGoblalesPersistence.load(pg);
+	        params.put(ParametrosGoblales.P_EMPRESA_DIR_BAL, (pg.getValue()== null?"":pg.getValue()));
+	        
+	        pg = new ParametrosGoblales();
+			pg.setId(ParametrosGoblales.P_EMPRESA_TEL_BAL);	
+			parametrosGoblalesPersistence.load(pg);
+	        params.put(ParametrosGoblales.P_EMPRESA_TEL_BAL, (pg.getValue()== null?"":pg.getValue()));
+	        
+	        pg = new ParametrosGoblales();
+			pg.setId(ParametrosGoblales.P_EMPRESA_LOC_BAL);	
+			parametrosGoblalesPersistence.load(pg);
+	        params.put(ParametrosGoblales.P_EMPRESA_LOC_BAL, (pg.getValue()== null?"":pg.getValue()));
+	        
+	        pg = new ParametrosGoblales();
+			pg.setId(ParametrosGoblales.P_EMPRESA_PROV_BAL);	
+			parametrosGoblalesPersistence.load(pg);
+	        params.put(ParametrosGoblales.P_EMPRESA_PROV_BAL, (pg.getValue()== null?"":pg.getValue()));	
+	        
+	        /* EMPRESA*/
+	        pg = new ParametrosGoblales();
 			pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE);	
 			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_NOMBRE, pg.getValue());
+	        params.put(ParametrosGoblales.P_EMPRESA_NOMBRE, (pg.getValue()== null?"":pg.getValue()));
 	        
 	        pg = new ParametrosGoblales();
 			pg.setId(ParametrosGoblales.P_EMPRESA_DIR);	
 			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_DIR, pg.getValue());
+	        params.put(ParametrosGoblales.P_EMPRESA_DIR, (pg.getValue()== null?"":pg.getValue()));
 	        
 	        pg = new ParametrosGoblales();
 			pg.setId(ParametrosGoblales.P_EMPRESA_TEL);	
 			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_TEL, pg.getValue());
+	        params.put(ParametrosGoblales.P_EMPRESA_TEL, (pg.getValue()== null?"":pg.getValue()));
 	        
 	        pg = new ParametrosGoblales();
 			pg.setId(ParametrosGoblales.P_EMPRESA_LOC);	
 			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_LOC, pg.getValue());
+	        params.put(ParametrosGoblales.P_EMPRESA_LOC, (pg.getValue()== null?"":pg.getValue()));
 	        
 	        pg = new ParametrosGoblales();
 			pg.setId(ParametrosGoblales.P_EMPRESA_PROV);	
 			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_PROV, pg.getValue());	               
+	        params.put(ParametrosGoblales.P_EMPRESA_PROV, (pg.getValue()== null?"":pg.getValue()));	               
 	        params.put("USUARIO", Usuarios.getUsuarioLogeado());
 	        
 	        pg = new ParametrosGoblales();

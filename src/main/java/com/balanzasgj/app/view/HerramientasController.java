@@ -41,7 +41,7 @@ import javafx.util.converter.DateTimeStringConverter;
 
 public class HerramientasController extends AnchorPane implements IView {
 	@FXML
-	private StringField txtNombre;
+	private StringField txtNombreEmpresa;
 	@FXML
 	private StringField txtTransaccion;
 	
@@ -63,22 +63,34 @@ public class HerramientasController extends AnchorPane implements IView {
 	@FXML
 	private TextField txtPathRst; 		
 	@FXML
-	private ImageView imgEmpresa;
+	private ImageView imgEmpresa;	
 	
 	@FXML
-	private TextField txtNombreEmpresa;
+	private StringField txtDireccion;
 	
 	@FXML
-	private TextField txtDireccion;
+	private StringField txtTel;
 	
 	@FXML
-	private TextField txtTel;
+	private StringField txtLocalidad;
 	
 	@FXML
-	private TextField txtLocalidad;
+	private StringField txtProv;
 	
 	@FXML
-	private TextField txtProv;
+	private StringField txtNombreBalanza;
+	
+	@FXML
+	private StringField txtDireccionBalanza;
+	
+	@FXML
+	private StringField txtTelBalanza;
+	
+	@FXML
+	private StringField txtLocalidadBalanza;
+	
+	@FXML
+	private StringField txtProvBalanza;
 	
 	@FXML
 	private PasswordField txtClaveIngManual;
@@ -121,25 +133,20 @@ public class HerramientasController extends AnchorPane implements IView {
 		
 	@FXML
     private void handleGuardar(ActionEvent event) {
-		ParametrosGoblales pg = new ParametrosGoblales();
-		if(!txtNombre.getText().isEmpty()) {
-			pg.setId(ParametrosGoblales.P_EMPRESA_TICKET);
-			pg.setValue(txtNombre.getText());
-			parametrosGoblalesPersistence.save(pg);
-		}
-		if(!txtTransaccion.getText().isEmpty()) {			
+		ParametrosGoblales pg = new ParametrosGoblales();		
+		if(txtTransaccion != null && !txtTransaccion.getText().isEmpty()) {			
 			pg.setId(ParametrosGoblales.P_EMPRESA_TRANSACCION);
 			pg.setValue(txtTransaccion.getText());
 			parametrosGoblalesPersistence.save(pg);
 		}
 				
-		if(!txtBkpAuto.getText().isEmpty()) {			
+		if(txtTransaccion != null &&  !txtBkpAuto.getText().isEmpty()) {			
 			pg.setId(ParametrosGoblales.P_EMPRESA_AUTOMATICO);
 			pg.setValue(txtBkpAuto.getText());
 			parametrosGoblalesPersistence.save(pg);
 		}
 		
-		if(!txtPathBkp.getText().isEmpty()) {			
+		if(txtTransaccion != null &&  !txtPathBkp.getText().isEmpty()) {			
 			pg.setId(ParametrosGoblales.P_EMPRESA_BACKUP);
 			pg.setValue(txtPathBkp.getText());
 			parametrosGoblalesPersistence.save(pg);
@@ -151,31 +158,63 @@ public class HerramientasController extends AnchorPane implements IView {
 			parametrosGoblalesPersistence.save(pg);
 		}
 		
-		if(!txtNombreEmpresa.getText().isEmpty()) {			
+		/* PROPIETARIO DE LA BALANZA*/
+		if(txtNombreBalanza != null &&  !txtNombreBalanza.getText().isEmpty()) {			
+			pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE_BAL);
+			pg.setValue(txtNombreBalanza.getText());
+			parametrosGoblalesPersistence.save(pg);
+		}
+		
+		if(txtDireccionBalanza != null &&  !txtDireccionBalanza.getText().isEmpty()) {			
+			pg.setId(ParametrosGoblales.P_EMPRESA_DIR_BAL);
+			pg.setValue(txtDireccionBalanza.getText());
+			parametrosGoblalesPersistence.save(pg);
+		}
+		
+		if(txtLocalidadBalanza != null && !txtLocalidadBalanza.getText().isEmpty()) {			
+			pg.setId(ParametrosGoblales.P_EMPRESA_LOC_BAL);
+			pg.setValue(txtLocalidadBalanza.getText());
+			parametrosGoblalesPersistence.save(pg);
+		}
+		
+		if(txtProvBalanza != null &&  !txtProvBalanza.getText().isEmpty()) {			
+			pg.setId(ParametrosGoblales.P_EMPRESA_PROV_BAL);
+			pg.setValue(txtProvBalanza.getText());
+			parametrosGoblalesPersistence.save(pg);
+		}
+		
+		if(txtTelBalanza != null &&  !txtTelBalanza.getText().isEmpty()) {			
+			pg.setId(ParametrosGoblales.P_EMPRESA_TEL_BAL);
+			pg.setValue(txtTelBalanza.getText());
+			parametrosGoblalesPersistence.save(pg);
+		}
+		
+		/* DATOS DE LA EMPRESA*/
+		if(txtNombreEmpresa != null &&  !txtNombreEmpresa.getText().isEmpty()) {			
 			pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE);
 			pg.setValue(txtNombreEmpresa.getText());
 			parametrosGoblalesPersistence.save(pg);
 		}
 		
-		if(!txtDireccion.getText().isEmpty()) {			
+		if(txtDireccion != null &&  !txtDireccion.getText().isEmpty()) {			
 			pg.setId(ParametrosGoblales.P_EMPRESA_DIR);
 			pg.setValue(txtDireccion.getText());
 			parametrosGoblalesPersistence.save(pg);
 		}
 		
-		if(!txtLocalidad.getText().isEmpty()) {			
+		if(txtLocalidad != null && !txtLocalidad.getText().isEmpty()) {			
 			pg.setId(ParametrosGoblales.P_EMPRESA_LOC);
 			pg.setValue(txtLocalidad.getText());
 			parametrosGoblalesPersistence.save(pg);
 		}
 		
-		if(!txtProv.getText().isEmpty()) {			
+		if(txtProv != null &&  !txtProv.getText().isEmpty()) {			
 			pg.setId(ParametrosGoblales.P_EMPRESA_PROV);
 			pg.setValue(txtProv.getText());
 			parametrosGoblalesPersistence.save(pg);
 		}
 		
-		if(!txtTel.getText().isEmpty()) {			
+		if(txtTel != null &&  !txtTel.getText().isEmpty()) {			
 			pg.setId(ParametrosGoblales.P_EMPRESA_TEL);
 			pg.setValue(txtTel.getText());
 			parametrosGoblalesPersistence.save(pg);
@@ -257,9 +296,38 @@ public class HerramientasController extends AnchorPane implements IView {
 				"    -fx-border-width: 5" + 
 				"}");
 		parametrosGoblalesPersistence = new ParametrosGoblalesPersistenceJdbc();
-		txtNombre.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtNombre.setValue(newValue.toUpperCase());
+		txtNombreEmpresa.textProperty().addListener((ov, oldValue, newValue) -> {
+			txtNombreEmpresa.setValue(newValue.toUpperCase());
 		});
+		txtDireccion.textProperty().addListener((ov, oldValue, newValue) -> {
+			txtDireccion.setText(newValue.toUpperCase());
+		});
+		txtLocalidad.textProperty().addListener((ov, oldValue, newValue) -> {
+			txtLocalidad.setText(newValue.toUpperCase());
+		});
+		txtProv.textProperty().addListener((ov, oldValue, newValue) -> {
+			txtProv.setText(newValue.toUpperCase());
+		});
+		txtTel.textProperty().addListener((ov, oldValue, newValue) -> {
+			txtTel.setText(newValue.toUpperCase());
+		});
+		
+		txtNombreBalanza.textProperty().addListener((ov, oldValue, newValue) -> {
+			txtNombreBalanza.setText(newValue.toUpperCase());
+		});
+		txtDireccionBalanza.textProperty().addListener((ov, oldValue, newValue) -> {
+			txtDireccionBalanza.setText(newValue.toUpperCase());
+		});
+		txtLocalidadBalanza.textProperty().addListener((ov, oldValue, newValue) -> {
+			txtLocalidadBalanza.setText(newValue.toUpperCase());
+		});
+		txtProvBalanza.textProperty().addListener((ov, oldValue, newValue) -> {
+			txtProvBalanza.setText(newValue.toUpperCase());
+		});
+		txtTelBalanza.textProperty().addListener((ov, oldValue, newValue) -> {
+			txtTelBalanza.setText(newValue.toUpperCase());
+		});
+		
 		txtTransaccion.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtTransaccion.setValue(newValue.toUpperCase());
 		});		
@@ -268,7 +336,7 @@ public class HerramientasController extends AnchorPane implements IView {
 		pg.setId(ParametrosGoblales.P_EMPRESA_TICKET);
 		parametrosGoblalesPersistence.load(pg);
 		if(pg!= null) {
-			txtNombre.setValue(pg.getValue());
+			txtNombreEmpresa.setValue(pg.getValue());
 		}		
 		
 		pg = new ParametrosGoblales();

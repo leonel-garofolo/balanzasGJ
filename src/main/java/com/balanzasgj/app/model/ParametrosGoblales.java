@@ -24,6 +24,12 @@ public class ParametrosGoblales implements Serializable
 	public static final String P_EMPRESA_LOC= "EMPRESA_LOC";
 	public static final String P_EMPRESA_PROV = "EMPRESA_PROV";
 	public static final String P_EMPRESA_TEL= "EMPRESA_TEL";
+	public static final String P_EMPRESA_NOMBRE_BAL= "EMPRESA_NOMBRE_BAL";
+	public static final String P_EMPRESA_DIR_BAL= "EMPRESA_DIR_BAL";
+	public static final String P_EMPRESA_LOC_BAL= "EMPRESA_LOC_BAL";
+	public static final String P_EMPRESA_PROV_BAL = "EMPRESA_PROV_BAL";
+	public static final String P_EMPRESA_TEL_BAL= "EMPRESA_TEL_BAL";
+	
 	public static final String P_EMPRESA_IMG= "EMPRESA_IMG";	
 	public static final String P_EMPRESA_ING_MANUAL= "EMPRESA_ING_MANUAL";
 	public static final String P_EMPRESA_TICKET= "EMPRESA_TICKET";
