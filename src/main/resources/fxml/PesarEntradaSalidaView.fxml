@@ -64,12 +64,13 @@
                                     <Font name="System Bold" size="48.0" />
                                  </font>
                               </TextField>
-                              <HBox prefHeight="146.0" prefWidth="285.0">
+                              <HBox prefHeight="146.0" prefWidth="318.0">
                                  <children>
-                                    <TableView fx:id="tblEjes" prefHeight="142.0" prefWidth="158.0">
+                                    <TableView fx:id="tblEjes" prefHeight="146.0" prefWidth="218.0">
                                       <columns>
                                         <TableColumn fx:id="colNroEje" prefWidth="56.0" text="Nro Eje" />
-                                        <TableColumn fx:id="colPeso" prefWidth="94.0" text="Peso" />
+                                        <TableColumn fx:id="colPesoEntrada" text="Peso Entrada" />
+                                          <TableColumn fx:id="colPesoSalida" text="Peso Salida" />
                                       </columns>
                                     </TableView>
                                     <Button fx:id="btnEliminarEje" mnemonicParsing="false" onAction="#handleEliminarEje" prefHeight="26.0" prefWidth="85.0" text="Eliminar">
@@ -146,7 +147,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="446.0" spacing="5.0">
                                        <children>
-                                          <Button fx:id="btnTomarTara" mnemonicParsing="false" onAction="#handleTomarTara" prefHeight="26.0" prefWidth="115.0" text="Tomar Tara">
+                                          <Button fx:id="btnTomar" mnemonicParsing="false" onAction="#handleTomar" prefHeight="26.0" prefWidth="115.0" text="Tomar Tara">
                                              <graphic>
                                                 <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>

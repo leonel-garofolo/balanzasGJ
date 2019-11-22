@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Named;
+
 import com.balanzasgj.app.model.Ejes;
 import com.balanzasgj.app.persistence.EjesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
@@ -27,18 +28,18 @@ import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 public class EjesPersistenceJdbc extends GenericJdbcDAO<Ejes> implements EjesPersistence {
 
 	private final static String SQL_SELECT_ALL = 
-		"select idEjes, nroEje, peso, type, idTaras from ejes"; 
+		"select idEjes, nroEje, peso_entrada, peso_salida, idTaras from ejes"; 
 	private final static String SQL_SELECT_ALL_TARAS = 
-			"select idEjes, nroEje, peso, type, idTaras from ejes where idTaras = ? and type = ? ";
+			"select idEjes, nroEje, peso_entrada, peso_salida, idTaras from ejes where idTaras = ? ";
 
 	private final static String SQL_SELECT = 
 		"select idEjes, nroEje, peso, type, idTaras from ejes where idEjes = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into ejes ( nroEje, peso, type, idTaras ) values ( ?, ?, ?, ? )";
+		"insert into ejes ( nroEje, peso_entrada, peso_salida, idTaras ) values ( ?, ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update ejes set nroEje = ?, peso = ?, type = ?, idTaras = ? where idEjes = ?";
+		"update ejes set nroEje = ?, peso_entrada = ?, peso_salida = ?,  idTaras = ? where idEjes = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from ejes where idEjes = ?";
@@ -76,8 +77,8 @@ public class EjesPersistenceJdbc extends GenericJdbcDAO<Ejes> implements EjesPer
 		//--- Set PRIMARY KEY and DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		// "idEjes" is auto-incremented => no set in insert		
 		setValue(ps, i++, ejes.getNroEje() ) ; // "nroEje" : java.lang.Integer
-		setValue(ps, i++, ejes.getPeso() ) ; // "peso" : java.lang.Double
-		setValue(ps, i++, ejes.getType() ) ; // "type" : java.lang.String
+		setValue(ps, i++, ejes.getPesoEntrada() ) ; // "peso" : java.lang.Double
+		setValue(ps, i++, ejes.getPesoSalida()) ; //
 		setValue(ps, i++, ejes.getIdTaras() ) ; // "idTaras" : java.lang.Integer
 	}
 
@@ -86,8 +87,8 @@ public class EjesPersistenceJdbc extends GenericJdbcDAO<Ejes> implements EjesPer
 	protected void setValuesForUpdate(PreparedStatement ps, int i, Ejes ejes) throws SQLException {
 		//--- Set DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		setValue(ps, i++, ejes.getNroEje() ) ; // "nroEje" : java.lang.Integer
-		setValue(ps, i++, ejes.getPeso() ) ; // "peso" : java.lang.Double
-		setValue(ps, i++, ejes.getType() ) ; // "type" : java.lang.String
+		setValue(ps, i++, ejes.getPesoEntrada() ) ; // "peso" : java.lang.Double
+		setValue(ps, i++, ejes.getPesoSalida() ) ; //
 		setValue(ps, i++, ejes.getIdTaras() ) ; // "idTaras" : java.lang.Integer
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, ejes.getIdEje() ) ; // "idEjes" : java.lang.Integer
@@ -120,9 +121,9 @@ public class EjesPersistenceJdbc extends GenericJdbcDAO<Ejes> implements EjesPer
 		if ( rs.wasNull() ) { ejes.setIdEje(null); }; // not primitive number => keep null value if any
 		ejes.setNroEje(rs.getInt("nroEje")); // java.lang.Integer
 		if ( rs.wasNull() ) { ejes.setNroEje(null); }; // not primitive number => keep null value if any
-		ejes.setPeso(rs.getDouble("peso")); // java.lang.Double
-		if ( rs.wasNull() ) { ejes.setPeso(null); }; // not primitive number => keep null value if any
-		ejes.setType(rs.getString("type")); // java.lang.String
+		ejes.setPesoEntrada(rs.getDouble("peso_entrada")); // java.lang.Double
+		if ( rs.wasNull() ) { ejes.setPesoEntrada(null); }; // not primitive number => keep null value if any
+		ejes.setPesoSalida(rs.getDouble("peso_salida")); // java.lang.String
 		ejes.setIdTaras(rs.getLong("idTaras")); // java.lang.Integer
 		if ( rs.wasNull() ) { ejes.setIdTaras(null); }; // not primitive number => keep null value if any
 		return ejes ;
@@ -270,15 +271,14 @@ public class EjesPersistenceJdbc extends GenericJdbcDAO<Ejes> implements EjesPer
 	}
 
 	@Override
-	public List<Ejes> findAll(Long idTara, String type) {
+	public List<Ejes> findAll(Long idTara) {
 		List<Ejes> list = new LinkedList<Ejes>() ;
 		Connection conn = null;
  
 		try {
 			conn = getConnection();
 			PreparedStatement ps = conn.prepareStatement( SQL_SELECT_ALL_TARAS );
-			ps.setLong(1, idTara);
-			ps.setString(2, type);
+			ps.setLong(1, idTara);			
 			//--- Execute SQL SELECT 
 			ResultSet rs = ps.executeQuery();
 			while ( rs.next() ) {
