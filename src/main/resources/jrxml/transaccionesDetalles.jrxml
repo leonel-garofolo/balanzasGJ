@@ -2,6 +2,16 @@
 <!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="transaccionesDetalles" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e373889a-fc0e-4297-9a5a-ab4aff79c358">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="tarasFactory"/>
+	<parameter name="EMPRESA_NOMBRE" class="java.lang.String"/>
+	<parameter name="EMPRESA_DIR" class="java.lang.String"/>
+	<parameter name="EMPRESA_LOC" class="java.lang.String"/>
+	<parameter name="EMPRESA_PROV" class="java.lang.String"/>
+	<parameter name="EMPRESA_TEL" class="java.lang.String"/>
+	<parameter name="EMPRESA_NOMBRE_BAL" class="java.lang.String"/>
+	<parameter name="EMPRESA_DIR_BAL" class="java.lang.String"/>
+	<parameter name="EMPRESA_LOC_BAL" class="java.lang.String"/>
+	<parameter name="EMPRESA_PROV_BAL" class="java.lang.String"/>
+	<parameter name="EMPRESA_TEL_BAL" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -86,7 +96,20 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="7" splitType="Stretch"/>
+		<band height="65" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="400" height="20" uuid="639422aa-7e57-4a99-ad34-11465c672aaf"/>
+				<textFieldExpression><![CDATA[$P{EMPRESA_NOMBRE_BAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="400" height="20" uuid="0516bf14-5524-491f-afa8-9e8af04b90b1"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_DIR_BAL}==null?"":$P{EMPRESA_DIR_BAL} ) + " - " + ($P{EMPRESA_LOC_BAL}== null?"":$P{EMPRESA_LOC_BAL}) + " - " + ($P{EMPRESA_PROV_BAL}==null?"":$P{EMPRESA_PROV_BAL} )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="400" height="20" uuid="1ba4c984-9974-488d-a392-074af88e92bf"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_TEL_BAL} ==null?"": "Tel.:" + $P{EMPRESA_TEL_BAL})]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageHeader>
 	<detail>
 		<band height="164" splitType="Stretch">
@@ -274,7 +297,7 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="20" splitType="Stretch">
+		<band height="61" splitType="Stretch">
 			<textField>
 				<reportElement x="408" y="-19" width="83" height="16" uuid="a6e1d07d-8d9e-4542-99c1-42464cf18439"/>
 				<textElement textAlignment="Right">
@@ -288,6 +311,18 @@
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="400" height="20" uuid="1758fa3a-8892-453b-9d34-14ff1fdae444"/>
+				<textFieldExpression><![CDATA[$P{EMPRESA_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="400" height="20" uuid="a6afb36f-7c2c-41ba-a0ff-af2d06674493"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_DIR}==null?"":$P{EMPRESA_DIR} ) + " - " + ($P{EMPRESA_LOC}== null?"":$P{EMPRESA_LOC}) + " - " + ($P{EMPRESA_PROV}== null?"":$P{EMPRESA_PROV})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="400" height="20" uuid="e4b6c685-271a-4bef-bb3c-9312cd94f571"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_TEL} ==null?"": "Tel.:" + $P{EMPRESA_TEL})]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

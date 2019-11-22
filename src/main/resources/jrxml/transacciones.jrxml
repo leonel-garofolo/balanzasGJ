@@ -142,6 +142,16 @@ inner join procedencias pro on pro.codigo = t.id_procedencia]]>
 			<property name="com.jaspersoft.studio.field.tree.path" value="taras"/>
 		</field>
 	</subDataset>
+	<parameter name="EMPRESA_NOMBRE" class="java.lang.String"/>
+	<parameter name="EMPRESA_DIR" class="java.lang.String"/>
+	<parameter name="EMPRESA_LOC" class="java.lang.String"/>
+	<parameter name="EMPRESA_PROV" class="java.lang.String"/>
+	<parameter name="EMPRESA_TEL" class="java.lang.String"/>
+	<parameter name="EMPRESA_NOMBRE_BAL" class="java.lang.String"/>
+	<parameter name="EMPRESA_DIR_BAL" class="java.lang.String"/>
+	<parameter name="EMPRESA_LOC_BAL" class="java.lang.String"/>
+	<parameter name="EMPRESA_PROV_BAL" class="java.lang.String"/>
+	<parameter name="EMPRESA_TEL_BAL" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[select idtaras, transaccion, fecha, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, comprobante_tipo, comprobante_nun1, comprobante_num_2, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida 
 from taras t 
@@ -264,10 +274,26 @@ inner join procedencias pro on pro.codigo = t.id_procedencia]]>
 			</staticText>
 		</band>
 	</title>
-	<summary>
-		<band height="57" splitType="Stretch">
+	<pageHeader>
+		<band height="73">
+			<textField>
+				<reportElement x="0" y="0" width="380" height="20" uuid="1a940ee1-2a18-42ae-94bc-3e8727b8d4a0"/>
+				<textFieldExpression><![CDATA[$P{EMPRESA_NOMBRE_BAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="380" height="20" uuid="3fd2664b-0198-4f33-81be-416d6aea18d5"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_DIR_BAL}==null?"":$P{EMPRESA_DIR_BAL} ) + " - " + ($P{EMPRESA_LOC_BAL}== null?"":$P{EMPRESA_LOC_BAL}) + " - " + ($P{EMPRESA_PROV_BAL}==null?"":$P{EMPRESA_PROV_BAL} )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="43" width="380" height="16" uuid="68170453-2a15-45f1-899d-a30da133831d"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_TEL_BAL} ==null?"": "Tel.:" + $P{EMPRESA_TEL_BAL})]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="50">
 			<componentElement>
-				<reportElement x="-5" y="0" width="555" height="50" uuid="96cf48e5-c424-4a6c-a0ed-b83848b11e15">
+				<reportElement x="0" y="0" width="555" height="50" uuid="96cf48e5-c424-4a6c-a0ed-b83848b11e15">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -457,5 +483,21 @@ inner join procedencias pro on pro.codigo = t.id_procedencia]]>
 				</jr:table>
 			</componentElement>
 		</band>
-	</summary>
+	</detail>
+	<pageFooter>
+		<band height="63">
+			<textField>
+				<reportElement x="0" y="0" width="380" height="20" uuid="7b4cc3a3-6ca6-4383-8298-ba17ce614529"/>
+				<textFieldExpression><![CDATA[$P{EMPRESA_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="380" height="20" uuid="937eb3a8-9152-48bd-ad2c-9f7dee2d1a02"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_DIR}==null?"":$P{EMPRESA_DIR} ) + " - " + ($P{EMPRESA_LOC}== null?"":$P{EMPRESA_LOC}) + " - " + ($P{EMPRESA_PROV}== null?"":$P{EMPRESA_PROV})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="380" height="20" uuid="ba1722c6-c3e9-4ad6-a2d5-93f1f44b3f16"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_TEL} ==null?"": "Tel.:" + $P{EMPRESA_TEL})]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
 </jasperReport>
