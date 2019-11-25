@@ -1264,7 +1264,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					int available = socket.getInput().available();
 					byte[] chunk = new byte[available];
 					socket.getInput().read(chunk, 0, available);
-					sBufferConnection = new String(chunk).trim().replaceAll("[^\\d.]", "");									
+					sBufferConnection = new String(chunk).trim().replaceAll("[^\\d.]", "");
+					System.out.println(sBufferConnection);
 					if(this.posicionInicioDato < sBufferConnection.length()) {
 						sBufferConnection = sBufferConnection.substring(this.posicionInicioDato);
 					}

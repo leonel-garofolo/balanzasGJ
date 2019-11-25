@@ -112,7 +112,7 @@
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="164" splitType="Stretch">
+		<band height="144" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="0" width="555" height="1" uuid="6dfe6aaf-3127-413e-a0a8-5b43c55322a9">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -299,14 +299,14 @@
 	<pageFooter>
 		<band height="61" splitType="Stretch">
 			<textField>
-				<reportElement x="408" y="-19" width="83" height="16" uuid="a6e1d07d-8d9e-4542-99c1-42464cf18439"/>
+				<reportElement x="408" y="0" width="83" height="16" uuid="a6e1d07d-8d9e-4542-99c1-42464cf18439"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Pagina " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="491" y="-19" width="64" height="16" uuid="ab8edcc8-af7b-497d-987d-26d86fe9e14b"/>
+				<reportElement x="491" y="0" width="64" height="16" uuid="ab8edcc8-af7b-497d-987d-26d86fe9e14b"/>
 				<textElement textAlignment="Left">
 					<font fontName="Arial" size="12"/>
 				</textElement>

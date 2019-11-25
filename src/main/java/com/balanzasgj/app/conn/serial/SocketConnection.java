@@ -2,6 +2,7 @@ package com.balanzasgj.app.conn.serial;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.TooManyListenersException;
 
@@ -13,34 +14,42 @@ import gnu.io.SerialPortEventListener;
 public class SocketConnection implements SerialPortEventListener {
 	SerialPort serialPort;
 	public static String st;
-	public char[] c;	
+	public char[] c;
 
 	/**
 	 * Creates new form reading
 	 */
-	
-	private InputStream input;	
+	public static String dataToSend;
+	private InputStream input;
+	private OutputStream output;
 	private static final int TIME_OUT = 2000;
 	private static final int DATA_RATE = 9600;
-
+    private static final char STX = 0x02;
+	private static final char ETX = 0x03;
+	private static final char EOT = 0x04;
+	private static final char ENQ = 0x05;
+	private static final char ACK = 0x06;
+	
 	public SocketConnection() {
-		super();	
+		super();
 	}
 
-	public void conectar(String portName, int dataRate, int dataBits, int stopBits, int parity, int timeOut) throws Exception {
+	public void conectar(String portName, int dataRate, int dataBits, int stopBits, int parity, int timeOut)
+			throws Exception {
 		CommPortIdentifier portId = null;
 		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 		// iterate through, looking for the port
 		while (portEnum.hasMoreElements()) {
 			CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
-			if(currPortId.getName().equals(portName)) {
+			if (currPortId.getName().equals(portName)) {
 				portId = currPortId;
 				break;
 			}
 		}
 		serialPort = (SerialPort) portId.open(this.getClass().getName(), timeOut);
 		serialPort.setSerialPortParams(dataRate, dataBits, stopBits, parity);
-		input = serialPort.getInputStream();		
+		input = serialPort.getInputStream();
+		output = serialPort.getOutputStream();		
 	}
 
 	public synchronized void close() {
@@ -48,15 +57,19 @@ public class SocketConnection implements SerialPortEventListener {
 			serialPort.removeEventListener();
 			serialPort.close();
 		}
-	}
+	}	
 
+	
+	public void sendData(String data) {
+		(new Thread(new SerialWriter(output, data))).start();
+	}
 	public synchronized void serialEvent(SerialPortEvent oEvent) {
 		if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			try {
 				int available = input.available();
 				byte[] chunk = new byte[available];
 				input.read(chunk, 0, available);
-				st = new String(chunk);				
+				st = new String(chunk);
 				System.out.print(st);
 				try {
 					Thread.sleep(5000);
@@ -70,10 +83,36 @@ public class SocketConnection implements SerialPortEventListener {
 			}
 		}
 	}
-	
+
+	public static class SerialWriter implements Runnable {
+
+		OutputStream out;
+		String data;
+
+		public SerialWriter(OutputStream out, String data) {
+			this.out = out;
+			this.data = data;
+		}
+
+		public void run() {
+			try {
+				if (data != null) {
+					data = data + "\r\n";
+					byte[] b = data.getBytes();
+					while (true) {
+						this.out.write(b);
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public InputStream getInput() {
 		return input;
 	}
+
 	public void addEventSocket(SerialPortEventListener event) {
 		try {
 			serialPort.addEventListener(event);
