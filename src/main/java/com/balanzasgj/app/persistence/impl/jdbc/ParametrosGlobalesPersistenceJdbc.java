@@ -12,78 +12,78 @@ import java.util.List;
 
 import javax.inject.Named;
 
-import com.balanzasgj.app.model.ParametrosGoblales;
-import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
+import com.balanzasgj.app.model.ParametrosGlobales;
+import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 
 /**
- * ParametrosGoblales persistence implementation 
+ * ParametrosGlobales persistence implementation 
  * 
  * @author Telosys
  *
  */
-@Named("ParametrosGoblalesPersistence")
-public class ParametrosGoblalesPersistenceJdbc extends GenericJdbcDAO<ParametrosGoblales> implements ParametrosGoblalesPersistence {
+@Named("ParametrosGlobalesPersistence")
+public class ParametrosGlobalesPersistenceJdbc extends GenericJdbcDAO<ParametrosGlobales> implements ParametrosGlobalesPersistence {
 
 	private final static String SQL_SELECT_ALL = 
-		"select id, value, valueByte from parametros_goblales"; 
+		"select id, value, valueByte from parametros_globales"; 
 
 	private final static String SQL_SELECT = 
-		"select id, value, valueByte from parametros_goblales where id = ?";
+		"select id, value, valueByte from parametros_globales where id = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into parametros_goblales ( id, value, valueByte ) values ( ?, ?, ? )";
+		"insert into parametros_globales ( id, value, valueByte ) values ( ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update parametros_goblales set value = ?, valueByte = ? where id = ?";
+		"update parametros_globales set value = ?, valueByte = ? where id = ?";
 
 	private final static String SQL_DELETE = 
-		"delete from parametros_goblales where id = ?";
+		"delete from parametros_globales where id = ?";
 
 	private final static String SQL_COUNT_ALL = 
-		"select count(*) from parametros_goblales";
+		"select count(*) from parametros_globales";
 
 	private final static String SQL_COUNT = 
-		"select count(*) from parametros_goblales where id = ?";
+		"select count(*) from parametros_globales where id = ?";
 
     //----------------------------------------------------------------------
 	/**
 	 * DAO constructor
 	 */
-	public ParametrosGoblalesPersistenceJdbc() {
+	public ParametrosGlobalesPersistenceJdbc() {
 		super();
 	}
 
     //----------------------------------------------------------------------
 	@Override
-	protected void setAutoIncrementedKey(ParametrosGoblales record, long value) {
+	protected void setAutoIncrementedKey(ParametrosGlobales record, long value) {
 		throw new IllegalStateException("Unexpected call to method 'setAutoIncrementedKey'");
 	}
 
     //----------------------------------------------------------------------
 	@Override
-	protected void setValuesForPrimaryKey(PreparedStatement ps, int i, ParametrosGoblales parametrosGoblales) throws SQLException {
+	protected void setValuesForPrimaryKey(PreparedStatement ps, int i, ParametrosGlobales parametrosGlobales) throws SQLException {
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
-		setValue(ps, i++, parametrosGoblales.getId() ) ; // "id" : java.lang.Integer
+		setValue(ps, i++, parametrosGlobales.getId() ) ; // "id" : java.lang.Integer
 	}
 
     //----------------------------------------------------------------------
 	@Override
-	protected void setValuesForInsert(PreparedStatement ps, int i, ParametrosGoblales parametrosGoblales) throws SQLException {
+	protected void setValuesForInsert(PreparedStatement ps, int i, ParametrosGlobales parametrosGlobales) throws SQLException {
 		//--- Set PRIMARY KEY and DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
-		setValue(ps, i++, parametrosGoblales.getId() ) ; // "id" : java.lang.Integer
-		setValue(ps, i++, parametrosGoblales.getValue() ) ; // "value" : java.lang.String
-		setValue(ps, i++, parametrosGoblales.getValueByte() ) ; // "value" : java.lang.Blob
+		setValue(ps, i++, parametrosGlobales.getId() ) ; // "id" : java.lang.Integer
+		setValue(ps, i++, parametrosGlobales.getValue() ) ; // "value" : java.lang.String
+		setValue(ps, i++, parametrosGlobales.getValueByte() ) ; // "value" : java.lang.Blob
 	}
 
     //----------------------------------------------------------------------
 	@Override
-	protected void setValuesForUpdate(PreparedStatement ps, int i, ParametrosGoblales parametrosGoblales) throws SQLException {
+	protected void setValuesForUpdate(PreparedStatement ps, int i, ParametrosGlobales parametrosGlobales) throws SQLException {
 		//--- Set DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
-		setValue(ps, i++, parametrosGoblales.getValue() ) ; // "value" : java.lang.String
-		setValue(ps, i++, parametrosGoblales.getValueByte() ) ; // "value" : java.lang.String
+		setValue(ps, i++, parametrosGlobales.getValue() ) ; // "value" : java.lang.String
+		setValue(ps, i++, parametrosGlobales.getValueByte() ) ; // "value" : java.lang.String
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
-		setValue(ps, i++, parametrosGoblales.getId() ) ; // "id" : java.lang.Integer
+		setValue(ps, i++, parametrosGlobales.getId() ) ; // "id" : java.lang.Integer
 	}
 
 	//----------------------------------------------------------------------
@@ -92,28 +92,28 @@ public class ParametrosGoblalesPersistenceJdbc extends GenericJdbcDAO<Parametros
 	 * @param id;
 	 * @return the new instance
 	 */
-	private ParametrosGoblales newInstanceWithPrimaryKey( String id ) {
-		ParametrosGoblales parametrosGoblales = new ParametrosGoblales();
-		parametrosGoblales.setId( id );
-		return parametrosGoblales ;
+	private ParametrosGlobales newInstanceWithPrimaryKey( String id ) {
+		ParametrosGlobales parametrosGlobales = new ParametrosGlobales();
+		parametrosGlobales.setId( id );
+		return parametrosGlobales ;
 	}
 
 	//----------------------------------------------------------------------
 	@Override
-	protected ParametrosGoblales newInstance() {
-		return new ParametrosGoblales() ;
+	protected ParametrosGlobales newInstance() {
+		return new ParametrosGlobales() ;
 	}
 
     //----------------------------------------------------------------------
 	@Override
-	protected ParametrosGoblales populateBean(ResultSet rs, ParametrosGoblales parametrosGoblales) throws SQLException {
+	protected ParametrosGlobales populateBean(ResultSet rs, ParametrosGlobales parametrosGlobales) throws SQLException {
 
 		//--- Set data from ResultSet to Bean attributes
-		parametrosGoblales.setId(rs.getString("id")); // java.lang.Integer
-		if ( rs.wasNull() ) { parametrosGoblales.setId(null); }; // not primitive number => keep null value if any
-		parametrosGoblales.setValue(rs.getString("value")); // java.lang.String
-		parametrosGoblales.setValueByte(rs.getBlob("valueByte")); // java.lang.String
-		return parametrosGoblales ;
+		parametrosGlobales.setId(rs.getString("id")); // java.lang.Integer
+		if ( rs.wasNull() ) { parametrosGlobales.setId(null); }; // not primitive number => keep null value if any
+		parametrosGlobales.setValue(rs.getString("value")); // java.lang.String
+		parametrosGlobales.setValueByte(rs.getBlob("valueByte")); // java.lang.String
+		return parametrosGlobales ;
 	}
 
 	//----------------------------------------------------------------------
@@ -121,10 +121,10 @@ public class ParametrosGoblalesPersistenceJdbc extends GenericJdbcDAO<Parametros
 	 * @see interface 
 	 */
 	@Override
-	public ParametrosGoblales findById( String id ) {
-		ParametrosGoblales parametrosGoblales = newInstanceWithPrimaryKey( id ) ;
-		if ( super.doSelect(parametrosGoblales) ) {
-			return parametrosGoblales ;
+	public ParametrosGlobales findById( String id ) {
+		ParametrosGlobales parametrosGlobales = newInstanceWithPrimaryKey( id ) ;
+		if ( super.doSelect(parametrosGlobales) ) {
+			return parametrosGlobales ;
 		}
 		else {
 			return null ; // Not found
@@ -135,7 +135,7 @@ public class ParametrosGoblalesPersistenceJdbc extends GenericJdbcDAO<Parametros
 	 * @see interface 
 	 */
 	@Override
-	public List<ParametrosGoblales> findAll() {
+	public List<ParametrosGlobales> findAll() {
 		return super.doSelectAll();
 	}
 
@@ -144,21 +144,21 @@ public class ParametrosGoblalesPersistenceJdbc extends GenericJdbcDAO<Parametros
 	 * Loads the given bean, it is supposed to contains the primary key value(s) in its attribute(s)<br>
 	 * If found, the given instance is populated with the values retrieved from the database<br>
 	 * If not found, the given instance remains unchanged
-	 * @param parametrosGoblales
+	 * @param parametrosGlobales
 	 * @return true if found, false if not found
 	 */
 	//@Override
-	public boolean load( ParametrosGoblales parametrosGoblales ) {
-		return super.doSelect(parametrosGoblales) ;
+	public boolean load( ParametrosGlobales parametrosGlobales ) {
+		return super.doSelect(parametrosGlobales) ;
 	}
 
     //----------------------------------------------------------------------
 	/**
 	 * Inserts the given bean in the database 
-	 * @param parametrosGoblales
+	 * @param parametrosGlobales
 	 */
-	public long insert(ParametrosGoblales parametrosGoblales) {
-		super.doInsert(parametrosGoblales);
+	public long insert(ParametrosGlobales parametrosGlobales) {
+		super.doInsert(parametrosGlobales);
 		return 0L ;
 	}
 
@@ -166,17 +166,17 @@ public class ParametrosGoblalesPersistenceJdbc extends GenericJdbcDAO<Parametros
 	/* (non-Javadoc)
 	 * @see interface 
 	 */	
-	public ParametrosGoblales create(ParametrosGoblales parametrosGoblales) {
-		insert(parametrosGoblales);
-		return parametrosGoblales ;
+	public ParametrosGlobales create(ParametrosGlobales parametrosGlobales) {
+		insert(parametrosGlobales);
+		return parametrosGlobales ;
 	}	
 
     //----------------------------------------------------------------------
 	/* (non-Javadoc)
 	 * @see interface 
 	 */	
-	public boolean update(ParametrosGoblales parametrosGoblales) {
-		int r = super.doUpdate(parametrosGoblales);
+	public boolean update(ParametrosGlobales parametrosGlobales) {
+		int r = super.doUpdate(parametrosGlobales);
 		return r > 0 ;
 
 	}	
@@ -186,14 +186,14 @@ public class ParametrosGoblalesPersistenceJdbc extends GenericJdbcDAO<Parametros
 	 * @see interface 
 	 */
 	@Override
-	public ParametrosGoblales save(ParametrosGoblales parametrosGoblales) {
-		if ( super.doExists(parametrosGoblales) ) {
-			super.doUpdate(parametrosGoblales);
+	public ParametrosGlobales save(ParametrosGlobales parametrosGlobales) {
+		if ( super.doExists(parametrosGlobales) ) {
+			super.doUpdate(parametrosGlobales);
 		}
 		else {
-			super.doInsert(parametrosGoblales);
+			super.doInsert(parametrosGlobales);
 		}
-		return parametrosGoblales ;
+		return parametrosGlobales ;
 	}	
 
     //----------------------------------------------------------------------
@@ -202,8 +202,8 @@ public class ParametrosGoblalesPersistenceJdbc extends GenericJdbcDAO<Parametros
 	 */
 	@Override
 	public boolean deleteById( String id ) {
-		ParametrosGoblales parametrosGoblales = newInstanceWithPrimaryKey( id ) ;
-		int r = super.doDelete(parametrosGoblales);
+		ParametrosGlobales parametrosGlobales = newInstanceWithPrimaryKey( id ) ;
+		int r = super.doDelete(parametrosGlobales);
 		return r > 0 ;
 	}
 
@@ -211,8 +211,8 @@ public class ParametrosGoblalesPersistenceJdbc extends GenericJdbcDAO<Parametros
 	/* (non-Javadoc)
 	 * @see interface 
 	 */	
-	public boolean delete( ParametrosGoblales parametrosGoblales ) {
-		int r = super.doDelete(parametrosGoblales);
+	public boolean delete( ParametrosGlobales parametrosGlobales ) {
+		int r = super.doDelete(parametrosGlobales);
 		return r > 0 ;
 	}
 
@@ -224,18 +224,18 @@ public class ParametrosGoblalesPersistenceJdbc extends GenericJdbcDAO<Parametros
 	 */
 	// @Override
 	public boolean exists( String id ) {
-		ParametrosGoblales parametrosGoblales = newInstanceWithPrimaryKey( id ) ;
-		return super.doExists(parametrosGoblales);
+		ParametrosGlobales parametrosGlobales = newInstanceWithPrimaryKey( id ) ;
+		return super.doExists(parametrosGlobales);
 	}
     //----------------------------------------------------------------------
 	/**
 	 * Checks the existence of the given bean in the database 
-	 * @param parametrosGoblales
+	 * @param parametrosGlobales
 	 * @return
 	 */
 	// @Override
-	public boolean exists( ParametrosGoblales parametrosGoblales ) {
-		return super.doExists(parametrosGoblales);
+	public boolean exists( ParametrosGlobales parametrosGlobales ) {
+		return super.doExists(parametrosGlobales);
 	}
 
     //----------------------------------------------------------------------

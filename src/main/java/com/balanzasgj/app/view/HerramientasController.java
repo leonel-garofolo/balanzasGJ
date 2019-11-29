@@ -17,9 +17,9 @@ import javax.sql.rowset.serial.SerialException;
 
 import org.javafx.controls.customs.StringField;
 
-import com.balanzasgj.app.model.ParametrosGoblales;
-import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
-import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
+import com.balanzasgj.app.model.ParametrosGlobales;
+import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
+import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
 import com.balanzasgj.app.utils.Message;
 import com.balanzasgj.app.utils.Utils;
 
@@ -96,7 +96,7 @@ public class HerramientasController extends AnchorPane implements IView {
 	private PasswordField txtClaveIngManual;
 		
 	private Stage stage;
-	private ParametrosGoblalesPersistence parametrosGoblalesPersistence;
+	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
 	
 	@FXML
     private void handleSelectImagen(ActionEvent event) {		
@@ -133,96 +133,96 @@ public class HerramientasController extends AnchorPane implements IView {
 		
 	@FXML
     private void handleGuardar(ActionEvent event) {
-		ParametrosGoblales pg = new ParametrosGoblales();		
+		ParametrosGlobales pg = new ParametrosGlobales();		
 		if(txtTransaccion != null && !txtTransaccion.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_TRANSACCION);
+			pg.setId(ParametrosGlobales.P_EMPRESA_TRANSACCION);
 			pg.setValue(txtTransaccion.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 				
 		if(txtTransaccion != null &&  !txtBkpAuto.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_AUTOMATICO);
+			pg.setId(ParametrosGlobales.P_EMPRESA_AUTOMATICO);
 			pg.setValue(txtBkpAuto.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		if(txtTransaccion != null &&  !txtPathBkp.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_BACKUP);
+			pg.setId(ParametrosGlobales.P_EMPRESA_BACKUP);
 			pg.setValue(txtPathBkp.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		if(txtPathRst.getText() != null && !txtPathRst.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_RESTORE);
+			pg.setId(ParametrosGlobales.P_EMPRESA_RESTORE);
 			pg.setValue(txtPathRst.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		/* PROPIETARIO DE LA BALANZA*/
 		if(txtNombreBalanza != null &&  !txtNombreBalanza.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE_BAL);
+			pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL);
 			pg.setValue(txtNombreBalanza.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		if(txtDireccionBalanza != null &&  !txtDireccionBalanza.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_DIR_BAL);
+			pg.setId(ParametrosGlobales.P_EMPRESA_DIR_BAL);
 			pg.setValue(txtDireccionBalanza.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		if(txtLocalidadBalanza != null && !txtLocalidadBalanza.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_LOC_BAL);
+			pg.setId(ParametrosGlobales.P_EMPRESA_LOC_BAL);
 			pg.setValue(txtLocalidadBalanza.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		if(txtProvBalanza != null &&  !txtProvBalanza.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_PROV_BAL);
+			pg.setId(ParametrosGlobales.P_EMPRESA_PROV_BAL);
 			pg.setValue(txtProvBalanza.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		if(txtTelBalanza != null &&  !txtTelBalanza.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_TEL_BAL);
+			pg.setId(ParametrosGlobales.P_EMPRESA_TEL_BAL);
 			pg.setValue(txtTelBalanza.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		/* DATOS DE LA EMPRESA*/
 		if(txtNombreEmpresa != null &&  !txtNombreEmpresa.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE);
+			pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);
 			pg.setValue(txtNombreEmpresa.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		if(txtDireccion != null &&  !txtDireccion.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_DIR);
+			pg.setId(ParametrosGlobales.P_EMPRESA_DIR);
 			pg.setValue(txtDireccion.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		if(txtLocalidad != null && !txtLocalidad.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_LOC);
+			pg.setId(ParametrosGlobales.P_EMPRESA_LOC);
 			pg.setValue(txtLocalidad.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		if(txtProv != null &&  !txtProv.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_PROV);
+			pg.setId(ParametrosGlobales.P_EMPRESA_PROV);
 			pg.setValue(txtProv.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		if(txtTel != null &&  !txtTel.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_TEL);
+			pg.setId(ParametrosGlobales.P_EMPRESA_TEL);
 			pg.setValue(txtTel.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		
 		if(imgEmpresa.getImage() != null) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_IMG);
+			pg.setId(ParametrosGlobales.P_EMPRESA_IMG);
 			BufferedImage bImage = SwingFXUtils.fromFXImage(imgEmpresa.getImage(), null);
 			ByteArrayOutputStream s = new ByteArrayOutputStream();
 			try {
@@ -232,7 +232,7 @@ public class HerramientasController extends AnchorPane implements IView {
 				pg.setValue("");
 				 Blob blob = new SerialBlob(res);
 				pg.setValueByte(blob);
-				parametrosGoblalesPersistence.save(pg);
+				parametrosGlobalesPersistence.save(pg);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -246,14 +246,14 @@ public class HerramientasController extends AnchorPane implements IView {
 		}
 		
 		if(!txtClaveIngManual.getText().isEmpty()) {			
-			pg.setId(ParametrosGoblales.P_EMPRESA_ING_MANUAL);
+			pg.setId(ParametrosGlobales.P_EMPRESA_ING_MANUAL);
 			pg.setValue(txtClaveIngManual.getText());
-			parametrosGoblalesPersistence.save(pg);
+			parametrosGlobalesPersistence.save(pg);
 		}
 		
-		pg = new ParametrosGoblales();
+		pg = new ParametrosGlobales();
 		pg.setId("EMPRESA_RESTORE");
-		parametrosGoblalesPersistence.load(pg);		
+		parametrosGlobalesPersistence.load(pg);		
 		if(pg!= null) {
 			txtPathRst.setText(pg.getValue());
 		}
@@ -295,7 +295,7 @@ public class HerramientasController extends AnchorPane implements IView {
 				"    -fx-border-style: solid;" + 
 				"    -fx-border-width: 5" + 
 				"}");
-		parametrosGoblalesPersistence = new ParametrosGoblalesPersistenceJdbc();
+		parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
 		txtNombreEmpresa.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtNombreEmpresa.setValue(newValue.toUpperCase());
 		});
@@ -332,55 +332,55 @@ public class HerramientasController extends AnchorPane implements IView {
 			txtTransaccion.setValue(newValue.toUpperCase());
 		});		
 		
-		ParametrosGoblales pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_TICKET);
-		parametrosGoblalesPersistence.load(pg);
+		ParametrosGlobales pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_TICKET);
+		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			txtNombreEmpresa.setValue(pg.getValue());
 		}		
 		
-		pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_TRANSACCION);
-		parametrosGoblalesPersistence.load(pg);
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_TRANSACCION);
+		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			txtTransaccion.setValue(pg.getValue());
 		}		
 		
-		pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE);
-		parametrosGoblalesPersistence.load(pg);
+		pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);
+		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			txtNombreEmpresa.setText(pg.getValue());
 		}
 		
-		pg.setId(ParametrosGoblales.P_EMPRESA_DIR);
-		parametrosGoblalesPersistence.load(pg);
+		pg.setId(ParametrosGlobales.P_EMPRESA_DIR);
+		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			txtDireccion.setText(pg.getValue());
 		}
 		
 		
-		pg.setId(ParametrosGoblales.P_EMPRESA_LOC);
-		parametrosGoblalesPersistence.load(pg);
+		pg.setId(ParametrosGlobales.P_EMPRESA_LOC);
+		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			txtLocalidad.setText(pg.getValue());
 		}
 		
 		
-		pg.setId(ParametrosGoblales.P_EMPRESA_PROV);
-		parametrosGoblalesPersistence.load(pg);
+		pg.setId(ParametrosGlobales.P_EMPRESA_PROV);
+		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			txtProv.setText(pg.getValue());
 		}
 		
 		
-		pg.setId(ParametrosGoblales.P_EMPRESA_TEL);
-		parametrosGoblalesPersistence.load(pg);
+		pg.setId(ParametrosGlobales.P_EMPRESA_TEL);
+		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			txtTel.setText(pg.getValue());
 		}
 		
-		pg.setId(ParametrosGoblales.P_EMPRESA_IMG);
-		parametrosGoblalesPersistence.load(pg);
+		pg.setId(ParametrosGlobales.P_EMPRESA_IMG);
+		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null && pg.getValueByte() != null) {
 			//convert blob to byte[]
             InputStream input;
@@ -404,35 +404,35 @@ public class HerramientasController extends AnchorPane implements IView {
             
 		}
 		
-		pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_IMG);
-		parametrosGoblalesPersistence.load(pg);		
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_IMG);
+		parametrosGlobalesPersistence.load(pg);		
 		
 		
-		pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_BACKUP);
-		parametrosGoblalesPersistence.load(pg);		
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_BACKUP);
+		parametrosGlobalesPersistence.load(pg);		
 		if(pg!= null) {
 			txtPathBkp.setText(pg.getValue());
 		}
 		
-		pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_AUTOMATICO);
-		parametrosGoblalesPersistence.load(pg);		
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_AUTOMATICO);
+		parametrosGlobalesPersistence.load(pg);		
 		if(pg!= null) {
 			txtBkpAuto.setText(pg.getValue());
 		}
 		
-		pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_RESTORE);
-		parametrosGoblalesPersistence.load(pg);		
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_RESTORE);
+		parametrosGlobalesPersistence.load(pg);		
 		if(pg!= null) {
 			txtPathRst.setText(pg.getValue());
 		}
 		
-		pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_ING_MANUAL);
-		parametrosGoblalesPersistence.load(pg);		
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_ING_MANUAL);
+		parametrosGlobalesPersistence.load(pg);		
 		if(pg!= null) {
 			txtClaveIngManual.setText(pg.getValue());
 		}

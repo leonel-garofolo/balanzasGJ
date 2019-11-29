@@ -1,3 +1,17 @@
+/* BORRADO */
+TRUNCATE TABLE ejes;
+TRUNCATE TABLE clientes;
+TRUNCATE TABLE importadores_exportadores;
+TRUNCATE TABLE patentes;
+TRUNCATE TABLE procedencias;
+TRUNCATE TABLE productos;
+TRUNCATE TABLE taras;
+TRUNCATE TABLE transportes;
+
+/* seteo de pass */
+mysqladmin -u root -p password newpass
+
+
 /*0.0.2*/
 alter table parametros_goblales add valueByte LONGBLOB default null;
 

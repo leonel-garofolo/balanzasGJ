@@ -23,7 +23,7 @@ import com.balanzasgj.app.model.Clientes;
 import com.balanzasgj.app.model.Comunicaciones;
 import com.balanzasgj.app.model.Ejes;
 import com.balanzasgj.app.model.Indicadores;
-import com.balanzasgj.app.model.ParametrosGoblales;
+import com.balanzasgj.app.model.ParametrosGlobales;
 import com.balanzasgj.app.model.Patentes;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
@@ -34,7 +34,7 @@ import com.balanzasgj.app.persistence.ClientesPersistence;
 import com.balanzasgj.app.persistence.ComunicacionesPersistence;
 import com.balanzasgj.app.persistence.EjesPersistence;
 import com.balanzasgj.app.persistence.IndicadoresPersistence;
-import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
+import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
 import com.balanzasgj.app.persistence.PatentesPersistence;
 import com.balanzasgj.app.persistence.ProcedenciasPersistence;
 import com.balanzasgj.app.persistence.ProductosPersistence;
@@ -44,7 +44,7 @@ import com.balanzasgj.app.persistence.impl.jdbc.ClientesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ComunicacionesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.EjesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.IndicadoresPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
+import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.PatentesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProcedenciasPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
@@ -63,7 +63,6 @@ import gnu.io.SerialPortEventListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ObservableValueBase;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -260,7 +259,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private ComunicacionesPersistence comunicacionesPersistence;
 	private EjesPersistence ejesPersistence;
 	private TarasPersistence tarasPersistence;
-	private ParametrosGoblalesPersistence parametrosGoblalesPersistence;
+	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
 	private long idTaraEdit = -1;
 	private Taras taraEdit;	
 	
@@ -351,67 +350,67 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			HashMap<String, Object> params = new HashMap<>();
 			
 			/*PROPIETARIO DE LA BALANZA*/
-			ParametrosGoblales pg = new ParametrosGoblales();
-			pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE_BAL);	
-			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_NOMBRE_BAL, (pg.getValue()== null?"":pg.getValue()));
+			ParametrosGlobales pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL);	
+			parametrosGlobalesPersistence.load(pg);
+	        params.put(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL, (pg.getValue()== null?"":pg.getValue()));
 	        	        
-	        pg = new ParametrosGoblales();
-			pg.setId(ParametrosGoblales.P_EMPRESA_DIR_BAL);	
-			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_DIR_BAL, (pg.getValue()== null?"":pg.getValue()));
+	        pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_DIR_BAL);	
+			parametrosGlobalesPersistence.load(pg);
+	        params.put(ParametrosGlobales.P_EMPRESA_DIR_BAL, (pg.getValue()== null?"":pg.getValue()));
 	        
-	        pg = new ParametrosGoblales();
-			pg.setId(ParametrosGoblales.P_EMPRESA_TEL_BAL);	
-			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_TEL_BAL, (pg.getValue()== null?"":pg.getValue()));
+	        pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_TEL_BAL);	
+			parametrosGlobalesPersistence.load(pg);
+	        params.put(ParametrosGlobales.P_EMPRESA_TEL_BAL, (pg.getValue()== null?"":pg.getValue()));
 	        
-	        pg = new ParametrosGoblales();
-			pg.setId(ParametrosGoblales.P_EMPRESA_LOC_BAL);	
-			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_LOC_BAL, (pg.getValue()== null?"":pg.getValue()));
+	        pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_LOC_BAL);	
+			parametrosGlobalesPersistence.load(pg);
+	        params.put(ParametrosGlobales.P_EMPRESA_LOC_BAL, (pg.getValue()== null?"":pg.getValue()));
 	        
-	        pg = new ParametrosGoblales();
-			pg.setId(ParametrosGoblales.P_EMPRESA_PROV_BAL);	
-			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_PROV_BAL, (pg.getValue()== null?"":pg.getValue()));	
+	        pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_PROV_BAL);	
+			parametrosGlobalesPersistence.load(pg);
+	        params.put(ParametrosGlobales.P_EMPRESA_PROV_BAL, (pg.getValue()== null?"":pg.getValue()));	
 	        
 	        /* EMPRESA*/
-	        pg = new ParametrosGoblales();
-			pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE);	
-			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_NOMBRE, (pg.getValue()== null?"":pg.getValue()));
+	        pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);	
+			parametrosGlobalesPersistence.load(pg);
+	        params.put(ParametrosGlobales.P_EMPRESA_NOMBRE, (pg.getValue()== null?"":pg.getValue()));
 	        
-	        pg = new ParametrosGoblales();
-			pg.setId(ParametrosGoblales.P_EMPRESA_DIR);	
-			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_DIR, (pg.getValue()== null?"":pg.getValue()));
+	        pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_DIR);	
+			parametrosGlobalesPersistence.load(pg);
+	        params.put(ParametrosGlobales.P_EMPRESA_DIR, (pg.getValue()== null?"":pg.getValue()));
 	        
-	        pg = new ParametrosGoblales();
-			pg.setId(ParametrosGoblales.P_EMPRESA_TEL);	
-			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_TEL, (pg.getValue()== null?"":pg.getValue()));
+	        pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_TEL);	
+			parametrosGlobalesPersistence.load(pg);
+	        params.put(ParametrosGlobales.P_EMPRESA_TEL, (pg.getValue()== null?"":pg.getValue()));
 	        
-	        pg = new ParametrosGoblales();
-			pg.setId(ParametrosGoblales.P_EMPRESA_LOC);	
-			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_LOC, (pg.getValue()== null?"":pg.getValue()));
+	        pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_LOC);	
+			parametrosGlobalesPersistence.load(pg);
+	        params.put(ParametrosGlobales.P_EMPRESA_LOC, (pg.getValue()== null?"":pg.getValue()));
 	        
-	        pg = new ParametrosGoblales();
-			pg.setId(ParametrosGoblales.P_EMPRESA_PROV);	
-			parametrosGoblalesPersistence.load(pg);
-	        params.put(ParametrosGoblales.P_EMPRESA_PROV, (pg.getValue()== null?"":pg.getValue()));	               
+	        pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_PROV);	
+			parametrosGlobalesPersistence.load(pg);
+	        params.put(ParametrosGlobales.P_EMPRESA_PROV, (pg.getValue()== null?"":pg.getValue()));	               
 	        params.put("USUARIO", Usuarios.getUsuarioLogeado());
 	        
-	        pg = new ParametrosGoblales();
-			pg.setId(ParametrosGoblales.P_EMPRESA_IMG);	
-			parametrosGoblalesPersistence.load(pg);
+	        pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_IMG);	
+			parametrosGlobalesPersistence.load(pg);
 			if(pg.getValueByte() != null) {
 				try {
 					byte[] img = new byte[new Long(pg.getValueByte().length()).intValue()];
 					Image image = ImageIO.read(new ByteArrayInputStream(img));
 		            
-		            params.put(ParametrosGoblales.P_EMPRESA_IMG, image);
+		            params.put(ParametrosGlobales.P_EMPRESA_IMG, image);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -437,9 +436,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			enabledIngManual();
 		} else {
 			String value = Message.optionSecurity();
-			ParametrosGoblales pg = new ParametrosGoblales();
+			ParametrosGlobales pg = new ParametrosGlobales();
 			pg.setId("EMPRESA_ING_MANUAL");
-			parametrosGoblalesPersistence.load(pg);	
+			parametrosGlobalesPersistence.load(pg);	
 			String clave = pg.getValue();
 			if(clave == null) {
 				clave = "123";
@@ -586,10 +585,10 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	}
 
 	private void saveContadorTransaccion() {
-		ParametrosGoblales pg = new ParametrosGoblales();
+		ParametrosGlobales pg = new ParametrosGlobales();
 		pg.setId("EMPRESA_TRANSACCION");
 		pg.setValue(txtTransaccion.getText());
-		parametrosGoblalesPersistence.save(pg);
+		parametrosGlobalesPersistence.save(pg);
 	}
 
 	@FXML
@@ -685,9 +684,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 				
 		
 		if (idTaraEdit == -1) {
-			ParametrosGoblales pg = new ParametrosGoblales();
+			ParametrosGlobales pg = new ParametrosGlobales();
 			pg.setId("EMPRESA_TRANSACCION");
-			parametrosGoblalesPersistence.load(pg);
+			parametrosGlobalesPersistence.load(pg);
 			if (pg != null) {
 				txtTransaccion.setText(Integer.valueOf(pg.getValue()) + 1 + "");
 			}
@@ -1153,7 +1152,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		this.comunicacionesPersistence = new ComunicacionesPersistenceJdbc();
 		this.ejesPersistence = new EjesPersistenceJdbc();
 		this.tarasPersistence = new TarasPersistenceJdbc();
-		this.parametrosGoblalesPersistence = new ParametrosGoblalesPersistenceJdbc();
+		this.parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
 		
 		
 		cbxProducto.getItems().addAll(productosPersistence.findAll());

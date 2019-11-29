@@ -11,10 +11,10 @@ import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 
 import com.balanzasgj.app.App;
-import com.balanzasgj.app.model.ParametrosGoblales;
+import com.balanzasgj.app.model.ParametrosGlobales;
 import com.balanzasgj.app.model.Usuarios;
-import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
-import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
+import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
+import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
 import com.ibm.icu.text.SimpleDateFormat;
 
 import javafx.embed.swing.SwingFXUtils;
@@ -51,7 +51,7 @@ public class PrincipalController implements Initializable, IView{
 	private Button btnSalir;	
 	@FXML
 	private Button btnHerramientas;	
-	private ParametrosGoblalesPersistence parametrosGoblalesPersistence;
+	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
 	
 	@FXML
 	private Label lblEmpresa;
@@ -161,16 +161,16 @@ public class PrincipalController implements Initializable, IView{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {		
 		this.sf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		parametrosGoblalesPersistence = new ParametrosGoblalesPersistenceJdbc();
-		ParametrosGoblales pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE);
-		parametrosGoblalesPersistence.load(pg);		
+		parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
+		ParametrosGlobales pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);
+		parametrosGlobalesPersistence.load(pg);		
 		if(pg!= null) {
 			lblEmpresa.setText(pg.getValue());
 		}		
 		
-		pg.setId(ParametrosGoblales.P_EMPRESA_IMG);
-		parametrosGoblalesPersistence.load(pg);
+		pg.setId(ParametrosGlobales.P_EMPRESA_IMG);
+		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null && pg.getValueByte() != null) {
 			//convert blob to byte[]
             InputStream input;

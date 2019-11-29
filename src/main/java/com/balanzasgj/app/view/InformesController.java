@@ -14,20 +14,20 @@ import org.javafx.controls.customs.ComboBoxAutoComplete;
 
 import com.balanzasgj.app.informes.TransaccionesInforme;
 import com.balanzasgj.app.model.Clientes;
-import com.balanzasgj.app.model.ParametrosGoblales;
+import com.balanzasgj.app.model.ParametrosGlobales;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
 import com.balanzasgj.app.model.Taras;
 import com.balanzasgj.app.model.Transportes;
 import com.balanzasgj.app.model.Usuarios;
 import com.balanzasgj.app.persistence.ClientesPersistence;
-import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
+import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
 import com.balanzasgj.app.persistence.ProcedenciasPersistence;
 import com.balanzasgj.app.persistence.ProductosPersistence;
 import com.balanzasgj.app.persistence.TarasPersistence;
 import com.balanzasgj.app.persistence.TransportesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ClientesPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
+import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProcedenciasPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.TarasPersistenceJdbc;
@@ -135,7 +135,7 @@ public class InformesController {
 	private ProcedenciasPersistence procedenciasPersistence;
 	private ProductosPersistence productosPersistence;
 	private TransportesPersistence transportesPersistence;
-	private ParametrosGoblalesPersistence parametrosGoblalesPersistence;
+	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
 	
 
     @FXML
@@ -229,67 +229,67 @@ public class InformesController {
     private void handleImprimirDetalle(ActionEvent event) {
     	HashMap<String, Object> params = new HashMap<>();
     	/*PROPIETARIO DE LA BALANZA*/
-		ParametrosGoblales pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE_BAL);	
-		parametrosGoblalesPersistence.load(pg);
-        params.put(ParametrosGoblales.P_EMPRESA_NOMBRE_BAL, (pg.getValue()== null?"":pg.getValue()));
+		ParametrosGlobales pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL);	
+		parametrosGlobalesPersistence.load(pg);
+        params.put(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL, (pg.getValue()== null?"":pg.getValue()));
         	        
-        pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_DIR_BAL);	
-		parametrosGoblalesPersistence.load(pg);
-        params.put(ParametrosGoblales.P_EMPRESA_DIR_BAL, (pg.getValue()== null?"":pg.getValue()));
+        pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_DIR_BAL);	
+		parametrosGlobalesPersistence.load(pg);
+        params.put(ParametrosGlobales.P_EMPRESA_DIR_BAL, (pg.getValue()== null?"":pg.getValue()));
         
-        pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_TEL_BAL);	
-		parametrosGoblalesPersistence.load(pg);
-        params.put(ParametrosGoblales.P_EMPRESA_TEL_BAL, (pg.getValue()== null?"":pg.getValue()));
+        pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_TEL_BAL);	
+		parametrosGlobalesPersistence.load(pg);
+        params.put(ParametrosGlobales.P_EMPRESA_TEL_BAL, (pg.getValue()== null?"":pg.getValue()));
         
-        pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_LOC_BAL);	
-		parametrosGoblalesPersistence.load(pg);
-        params.put(ParametrosGoblales.P_EMPRESA_LOC_BAL, (pg.getValue()== null?"":pg.getValue()));
+        pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_LOC_BAL);	
+		parametrosGlobalesPersistence.load(pg);
+        params.put(ParametrosGlobales.P_EMPRESA_LOC_BAL, (pg.getValue()== null?"":pg.getValue()));
         
-        pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_PROV_BAL);	
-		parametrosGoblalesPersistence.load(pg);
-        params.put(ParametrosGoblales.P_EMPRESA_PROV_BAL, (pg.getValue()== null?"":pg.getValue()));	
+        pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_PROV_BAL);	
+		parametrosGlobalesPersistence.load(pg);
+        params.put(ParametrosGlobales.P_EMPRESA_PROV_BAL, (pg.getValue()== null?"":pg.getValue()));	
         
         /* EMPRESA*/
-        pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_NOMBRE);	
-		parametrosGoblalesPersistence.load(pg);
-        params.put(ParametrosGoblales.P_EMPRESA_NOMBRE, (pg.getValue()== null?"":pg.getValue()));
+        pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);	
+		parametrosGlobalesPersistence.load(pg);
+        params.put(ParametrosGlobales.P_EMPRESA_NOMBRE, (pg.getValue()== null?"":pg.getValue()));
         
-        pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_DIR);	
-		parametrosGoblalesPersistence.load(pg);
-        params.put(ParametrosGoblales.P_EMPRESA_DIR, (pg.getValue()== null?"":pg.getValue()));
+        pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_DIR);	
+		parametrosGlobalesPersistence.load(pg);
+        params.put(ParametrosGlobales.P_EMPRESA_DIR, (pg.getValue()== null?"":pg.getValue()));
         
-        pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_TEL);	
-		parametrosGoblalesPersistence.load(pg);
-        params.put(ParametrosGoblales.P_EMPRESA_TEL, (pg.getValue()== null?"":pg.getValue()));
+        pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_TEL);	
+		parametrosGlobalesPersistence.load(pg);
+        params.put(ParametrosGlobales.P_EMPRESA_TEL, (pg.getValue()== null?"":pg.getValue()));
         
-        pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_LOC);	
-		parametrosGoblalesPersistence.load(pg);
-        params.put(ParametrosGoblales.P_EMPRESA_LOC, (pg.getValue()== null?"":pg.getValue()));
+        pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_LOC);	
+		parametrosGlobalesPersistence.load(pg);
+        params.put(ParametrosGlobales.P_EMPRESA_LOC, (pg.getValue()== null?"":pg.getValue()));
         
-        pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_PROV);	
-		parametrosGoblalesPersistence.load(pg);
-        params.put(ParametrosGoblales.P_EMPRESA_PROV, (pg.getValue()== null?"":pg.getValue()));	               
+        pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_PROV);	
+		parametrosGlobalesPersistence.load(pg);
+        params.put(ParametrosGlobales.P_EMPRESA_PROV, (pg.getValue()== null?"":pg.getValue()));	               
         params.put("USUARIO", Usuarios.getUsuarioLogeado());
         
-        pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_IMG);	
-		parametrosGoblalesPersistence.load(pg);
+        pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_IMG);	
+		parametrosGlobalesPersistence.load(pg);
 		if(pg.getValueByte() != null) {
 			try {
 				byte[] img = new byte[new Long(pg.getValueByte().length()).intValue()];
 				Image image = ImageIO.read(new ByteArrayInputStream(img));
 	            
-	            params.put(ParametrosGoblales.P_EMPRESA_IMG, image);
+	            params.put(ParametrosGlobales.P_EMPRESA_IMG, image);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -370,7 +370,7 @@ public class InformesController {
 		this.procedenciasPersistence = new ProcedenciasPersistenceJdbc();
 		this.productosPersistence = new ProductosPersistenceJdbc();
 		this.transportesPersistence = new TransportesPersistenceJdbc();
-		this.parametrosGoblalesPersistence = new ParametrosGoblalesPersistenceJdbc();
+		this.parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
 		
         colTransaccion.setCellValueFactory(new PropertyValueFactory<>("transaccion"));
         colFecha.setCellValueFactory(cellData -> new ObservableValueBase<String>() {

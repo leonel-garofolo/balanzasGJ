@@ -1,11 +1,9 @@
 package com.balanzasgj.app;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 public class GargareCollection extends Thread {
-	private static final Logger logger = LogManager.getLogger(GargareCollection.class);
-	
+	final static Logger logger = Logger.getLogger(GargareCollection.class);
 	
 	@SuppressWarnings("static-access")
 	@Override

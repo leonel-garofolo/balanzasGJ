@@ -1,5 +1,7 @@
 package com.balanzasgj.app;
 
+
+import org.apache.log4j.Logger;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
@@ -10,26 +12,29 @@ import org.quartz.SchedulerFactory;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
-import com.balanzasgj.app.model.ParametrosGoblales;
-import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
-import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
+import com.balanzasgj.app.model.ParametrosGlobales;
+import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
+import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
 import com.balanzasgj.app.quartz.SimpleJob;
 import com.balanzasgj.app.utils.MiPrinterJob;
 
 public class App {
-	private ParametrosGoblalesPersistence parametrosGoblalesPersistence;
+	final static Logger logger = Logger.getLogger(App.class);
+	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
 	
 	public static final String PATH_ICONO = "images/icono/icono.jpg";
 	@SuppressWarnings("static-access")
-	private void iniciar(){
+	private void iniciar(){				
+		logger.debug("Debug Message Logged !!!");
+		logger.info("Info Message Logged !!!");
 		GargareCollection gargare = new GargareCollection();
 		gargare.start();
 		
 		String bkpAutmatico = "";
-		parametrosGoblalesPersistence = new ParametrosGoblalesPersistenceJdbc();
-		ParametrosGoblales pg = new ParametrosGoblales();
-		pg.setId(ParametrosGoblales.P_EMPRESA_AUTOMATICO);
-		parametrosGoblalesPersistence.load(pg);		
+		parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
+		ParametrosGlobales pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_AUTOMATICO);
+		parametrosGlobalesPersistence.load(pg);		
 		if(pg!= null) {
 			bkpAutmatico = pg.getValue();
 			
@@ -58,11 +63,11 @@ public class App {
 		}
 		
 		MiPrinterJob.preparedPrinter();
-		AppClient.iniciar();		
+		AppClient.iniciar();			
 	}
 	
 	public static void main(String[] args) throws Exception {
-		App app = new App();
+		App app = new App();		
 		app.iniciar();		
 	}
 }

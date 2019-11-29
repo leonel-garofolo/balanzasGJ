@@ -1,0 +1,6 @@
+2019-11-27 20:18:03 DEBUG App:15 - Debug Message Logged !!!
+2019-11-27 20:18:03 INFO  App:16 - Info Message Logged !!!
+2019-11-27 20:18:03 ERROR App:17 - Error Message Logged !!!
+java.lang.NullPointerException: NullError
+	at com.balanzasgj.app.App.iniciar(App.java:17)
+	at com.balanzasgj.app.App.main(App.java:61)

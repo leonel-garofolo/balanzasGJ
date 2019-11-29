@@ -7,22 +7,22 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobKey;
 
-import com.balanzasgj.app.model.ParametrosGoblales;
-import com.balanzasgj.app.persistence.ParametrosGoblalesPersistence;
-import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGoblalesPersistenceJdbc;
+import com.balanzasgj.app.model.ParametrosGlobales;
+import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
+import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
 import com.balanzasgj.app.utils.Utils;
 
 public class SimpleJob implements Job {
-	private ParametrosGoblalesPersistence parametrosGoblalesPersistence;
+	private ParametrosGlobalesPersistence parametrosGoblalesPersistence;
 	
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		 JobKey jobKey = context.getJobDetail().getKey();
 		 System.out.println("SimpleJob says: " + jobKey + " executing at " + new Date());
 		 
-		 parametrosGoblalesPersistence = new ParametrosGoblalesPersistenceJdbc();
-		 ParametrosGoblales pg = new ParametrosGoblales();
-		 pg.setId(ParametrosGoblales.P_EMPRESA_BACKUP);
+		 parametrosGoblalesPersistence = new ParametrosGlobalesPersistenceJdbc();
+		 ParametrosGlobales pg = new ParametrosGlobales();
+		 pg.setId(ParametrosGlobales.P_EMPRESA_BACKUP);
 		 parametrosGoblalesPersistence.load(pg);		
 		 if(pg!= null) {
 			 Utils.generarBackup(pg.getValue());

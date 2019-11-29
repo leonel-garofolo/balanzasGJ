@@ -16,7 +16,7 @@ import java.sql.Blob;
  * @author Telosys Tools Generator
  *
  */
-public class ParametrosGoblales implements Serializable
+public class ParametrosGlobales implements Serializable
 {
 	public static final String P_EMPRESA_RESTORE= "EMPRESA_RESTORE";
 	public static final String P_EMPRESA_NOMBRE= "EMPRESA_NOMBRE";
@@ -49,7 +49,7 @@ public class ParametrosGoblales implements Serializable
     /**
      * Default constructor
      */
-    public ParametrosGoblales() {
+    public ParametrosGlobales() {
         super();
     }
     

@@ -16,6 +16,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
+
 /**
  * Generic abstract class for basic JDBC DAO
  * 
@@ -24,6 +26,7 @@ import javax.sql.DataSource;
  * @param <T>
  */
 public abstract class GenericJdbcDAO<T> {
+	final static Logger logger = Logger.getLogger(GenericJdbcDAO.class);
 	
 	protected final static int INITIAL_POSITION = 1 ;
 	
@@ -138,7 +141,9 @@ public abstract class GenericJdbcDAO<T> {
 		if (conn != null) {
 			try {
 				conn.close();
-			} catch (SQLException e) {}
+			} catch (SQLException e) {
+				logger.error(e);
+			}
 		}
 	}
     //-----------------------------------------------------------------------------------------
@@ -170,6 +175,7 @@ public abstract class GenericJdbcDAO<T> {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
+			logger.error(e);
 			throw new RuntimeException(e);
 		} finally {
 			closeConnection(conn);
@@ -200,6 +206,7 @@ public abstract class GenericJdbcDAO<T> {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
+			logger.error(e);
 			throw new RuntimeException(e);
 		} finally {
 			closeConnection(conn);
@@ -224,6 +231,7 @@ public abstract class GenericJdbcDAO<T> {
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
+			logger.error(e);
 			throw new RuntimeException(e);
 		} finally {
 			closeConnection(conn);
@@ -254,6 +262,7 @@ public abstract class GenericJdbcDAO<T> {
 			//--- End
 			ps.close();
 		} catch (SQLException e) {
+			logger.error(e);
 			throw new RuntimeException(e);
 		} finally {
 			closeConnection(conn);
@@ -281,6 +290,7 @@ public abstract class GenericJdbcDAO<T> {
 			result = ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
+			logger.error(e);
 			throw new RuntimeException(e);
 		} finally {
 			closeConnection(conn);
@@ -306,6 +316,7 @@ public abstract class GenericJdbcDAO<T> {
 			result = ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
+			logger.error(e);
 			throw new RuntimeException(e);
 		} finally {
 			closeConnection(conn);
@@ -337,6 +348,7 @@ public abstract class GenericJdbcDAO<T> {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
+			logger.error(e);
 			throw new RuntimeException(e);
 		} finally {
 			closeConnection(conn);
@@ -363,6 +375,7 @@ public abstract class GenericJdbcDAO<T> {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
+			logger.error(e);
 			throw new RuntimeException(e);
 		} finally {
 			closeConnection(conn);
