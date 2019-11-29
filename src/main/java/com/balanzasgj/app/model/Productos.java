@@ -7,6 +7,8 @@
 package com.balanzasgj.app.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 
 /**
@@ -18,15 +20,16 @@ import java.io.Serializable;
 public class Productos extends Entidades implements Serializable
 {
     private static final long serialVersionUID = 1L;    
+    
 
     /**
      * Default constructor
      */
     public Productos() {
         super();
-    }        
+    }
 
-    //----------------------------------------------------------------------
+	//----------------------------------------------------------------------
     // toString METHOD
     //----------------------------------------------------------------------
     @Override

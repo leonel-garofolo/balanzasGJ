@@ -26,16 +26,16 @@ import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 public class TransportesPersistenceJdbc extends GenericJdbcDAO<Transportes> implements TransportesPersistence {
 
 	private final static String SQL_SELECT_ALL = 
-		"select codigo, nombre from transportes"; 
+		"select codigo, nombre, CUIT, ultimo_movimiento, acumulado from transportes"; 
 
 	private final static String SQL_SELECT = 
-		"select codigo, nombre from transportes where codigo = ?";
+		"select codigo, nombre, CUIT, ultimo_movimiento, acumulado from transportes where codigo = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into transportes ( nombre ) values ( ? )";
+		"insert into transportes ( nombre, CUIT, ultimo_movimiento, acumulado ) values ( ?, ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update transportes set nombre = ? where codigo = ?";
+		"update transportes set nombre = ?, CUIT = ?, ultimo_movimiento = ?, acumulado = ? where codigo = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from transportes where codigo = ?";
@@ -73,13 +73,18 @@ public class TransportesPersistenceJdbc extends GenericJdbcDAO<Transportes> impl
 		//--- Set PRIMARY KEY and DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		// "codigo" is auto-incremented => no set in insert		
 		setValue(ps, i++, transportes.getNombre() ) ; // "nombre" : java.lang.String
+		setValue(ps, i++, transportes.getCuit() ) ; // "CUIT" : java.lang.String
+		setValue(ps, i++, transportes.getUltimoMovimiento() ) ; // "ultimo_movimiento" : java.util.Date
+		setValue(ps, i++, transportes.getAcumulado() ) ; // "acumulado" : java.math.BigDecimal
 	}
 
     //----------------------------------------------------------------------
 	@Override
 	protected void setValuesForUpdate(PreparedStatement ps, int i, Transportes transportes) throws SQLException {
-		//--- Set DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		setValue(ps, i++, transportes.getNombre() ) ; // "nombre" : java.lang.String
+		setValue(ps, i++, transportes.getCuit() ) ; // "CUIT" : java.lang.String
+		setValue(ps, i++, transportes.getUltimoMovimiento() ) ; // "ultimo_movimiento" : java.util.Date
+		setValue(ps, i++, transportes.getAcumulado() ) ; // "acumulado" : java.math.BigDecimal
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, transportes.getCodigo() ) ; // "codigo" : java.lang.Integer
 	}
@@ -110,6 +115,10 @@ public class TransportesPersistenceJdbc extends GenericJdbcDAO<Transportes> impl
 		transportes.setCodigo(rs.getLong("codigo")); // java.lang.Integer
 		if ( rs.wasNull() ) { transportes.setCodigo(null); }; // not primitive number => keep null value if any
 		transportes.setNombre(rs.getString("nombre")); // java.lang.String
+		transportes.setCuit(rs.getString("CUIT")); // java.lang.String
+		transportes.setUltimoMovimiento(rs.getDate("ultimo_movimiento")); // java.util.Date
+		transportes.setAcumulado(rs.getBigDecimal("acumulado")); // java.math.BigDecimal
+		if ( rs.wasNull() ) { transportes.setAcumulado(null); }; // not primitive number => keep null value if any
 		return transportes ;
 	}
 

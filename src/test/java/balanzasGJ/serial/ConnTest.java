@@ -15,7 +15,8 @@ public class ConnTest implements SerialPortEventListener {
 		try {
 			socket.conectar("COM2", 9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE, 2000);
 			socket.addEventSocket(this);
-			socket.sendData("D004500");
+			//socket.sendData("D004500");
+			socket.sendData("+    1.5KG");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

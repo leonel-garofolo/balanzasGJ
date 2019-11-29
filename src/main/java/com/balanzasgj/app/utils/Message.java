@@ -2,6 +2,8 @@ package com.balanzasgj.app.utils;
 
 import java.util.Optional;
 
+import com.balanzasgj.app.model.Entidades;
+import com.balanzasgj.app.view.custom.AduanaDialog;
 import com.balanzasgj.app.view.custom.PasswordDialog;
 
 import javafx.scene.control.Alert;
@@ -53,9 +55,22 @@ public class Message {
     
     public static String addElement(String element){
     	TextInputDialog alert = new TextInputDialog("Ingrese el texto aqui...");
-        alert.setTitle("Seguridad");
+        alert.setTitle("Nuevo Elemento");
         alert.setHeaderText(null);
         alert.setContentText(element);
+        
+        // Traditional way to get the response value.
+        Optional<String> result = alert.showAndWait();
+        if (result.isPresent()){
+            return result.get().toUpperCase();
+        }
+        return "";
+    }
+    
+    public static String addElementAduana(String type){
+    	AduanaDialog alert = new AduanaDialog(type);
+        alert.setTitle("Nuevo Elemento");
+        alert.setHeaderText(null);
         
         // Traditional way to get the response value.
         Optional<String> result = alert.showAndWait();

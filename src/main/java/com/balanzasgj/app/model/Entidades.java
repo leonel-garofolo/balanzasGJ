@@ -1,10 +1,20 @@
 package com.balanzasgj.app.model;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 public class Entidades {
 	
 	protected Long    codigo       ; // Id or Primary Key
 
 	protected String     nombre       ;
+	protected String cuit ;  // String 
+	 
+	protected String alias ;  // String 
+
+	protected Date ultimoMovimiento ;  // Date 
+
+	protected BigDecimal acumulado ;  // BigDecimal 
   //----------------------------------------------------------------------
     // GETTER(S) & SETTER(S) FOR OTHER DATA FIELDS
     //----------------------------------------------------------------------
@@ -32,8 +42,50 @@ public class Entidades {
     public String getNombre() {
         return this.nombre;
     }
+    
 
-    //----------------------------------------------------------------------
+
+    public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
+
+
+	public Date getUltimoMovimiento() {
+		return ultimoMovimiento;
+	}
+
+
+
+	public void setUltimoMovimiento(Date ultimoMovimiento) {
+		this.ultimoMovimiento = ultimoMovimiento;
+	}
+
+
+
+	public BigDecimal getAcumulado() {
+		return acumulado;
+	}
+
+
+
+	public void setAcumulado(BigDecimal acumulado) {
+		this.acumulado = acumulado;
+	}
+	
+	
+
+    public String getCuit() {
+		return cuit;
+	}
+	public void setCuit(String cuit) {
+		this.cuit = cuit;
+	}
+	//----------------------------------------------------------------------
     // toString METHOD
     //----------------------------------------------------------------------
     @Override

@@ -20,71 +20,13 @@ import java.util.Date;
  */
 public class ImportadoresExportadores extends Entidades implements Serializable
 {
-    private static final long serialVersionUID = 1L;
-    private String cuit ;  // String 
-
-    private Date ultimoMovimiento ;  // Date 
-
-    private BigDecimal acumulado ;  // BigDecimal 
-
+    private static final long serialVersionUID = 1L;    
     /**
      * Default constructor
      */
     public ImportadoresExportadores() {
         super();
     }
-       
-    /**
-     * Set the "cuit" field value
-     * This field is mapped on the database column "CUIT" ( type "VARCHAR", NotNull : false ) 
-     * @param cuit
-     */
-    public void setCuit( String cuit ) {
-        this.cuit = cuit;
-    }
-    /**
-     * Get the "cuit" field value
-     * This field is mapped on the database column "CUIT" ( type "VARCHAR", NotNull : false ) 
-     * @return the field value
-     */
-    public String getCuit() {
-        return this.cuit;
-    }
-
-    /**
-     * Set the "ultimoMovimiento" field value
-     * This field is mapped on the database column "ultimo_movimiento" ( type "DATETIME", NotNull : false ) 
-     * @param ultimoMovimiento
-     */
-    public void setUltimoMovimiento( Date ultimoMovimiento ) {
-        this.ultimoMovimiento = ultimoMovimiento;
-    }
-    /**
-     * Get the "ultimoMovimiento" field value
-     * This field is mapped on the database column "ultimo_movimiento" ( type "DATETIME", NotNull : false ) 
-     * @return the field value
-     */
-    public Date getUltimoMovimiento() {
-        return this.ultimoMovimiento;
-    }
-
-    /**
-     * Set the "acumulado" field value
-     * This field is mapped on the database column "acumulado" ( type "DECIMAL", NotNull : false ) 
-     * @param acumulado
-     */
-    public void setAcumulado( BigDecimal acumulado ) {
-        this.acumulado = acumulado;
-    }
-    /**
-     * Get the "acumulado" field value
-     * This field is mapped on the database column "acumulado" ( type "DECIMAL", NotNull : false ) 
-     * @return the field value
-     */
-    public BigDecimal getAcumulado() {
-        return this.acumulado;
-    }
-
     //----------------------------------------------------------------------
     // toString METHOD
     //----------------------------------------------------------------------

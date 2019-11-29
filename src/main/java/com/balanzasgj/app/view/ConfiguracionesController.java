@@ -1,5 +1,6 @@
 package com.balanzasgj.app.view;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -48,11 +49,11 @@ import javafx.stage.Stage;
 
 public class ConfiguracionesController extends AnchorPane {
 	
-	private static final String CLIENTE = "CLIENTES";		
-	private static final String PROCEDENCIAS = "PROCEDENCIAS";
-	private static final String PRODUCTOS = "PRODUCTOS";
-	private static final String TRANSPORTES = "TRANSPORTES";
-	private static final String IMPORTADORES = "IMPORTADORES/EXPORTADORES";		
+	public static final String CLIENTE = "CLIENTES";		
+	public static final String PROCEDENCIAS = "PROCEDENCIAS";
+	public static final String PRODUCTOS = "PRODUCTOS";
+	public static final String TRANSPORTES = "TRANSPORTES";
+	public static final String IMPORTADORES = "IMPORTADORES/EXPORTADORES";		
 	
 	@FXML
 	private TableView<Entidades> tblEntidades;
@@ -150,6 +151,19 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private Label lblFechaValue;
 	
+	@FXML
+	private Label lblCuitAlias;
+	@FXML
+	private Label lblMov;
+	@FXML
+	private Label lblAcum;	
+	
+	@FXML
+	private TextField txtEntidadCuitAlias;
+	@FXML
+	private TextField txtEntidadUltMov;
+	@FXML
+	private TextField txtEntidadAcumulado;	
 		
 	private ClientesPersistence clientesPersistence;	
 	private ProcedenciasPersistence procedenciasPersistence;
@@ -170,7 +184,13 @@ public class ConfiguracionesController extends AnchorPane {
 
 	@FXML
 	private void handleSelectedEntidades(ActionEvent event) {
+		if(this.cbxEntidades.getSelectionModel().getSelectedItem().equals(PRODUCTOS)) {
+			lblCuitAlias.setText("Alias");
+		} else {
+			lblCuitAlias.setText("CUIT");
+		}
 		loadFormEntidades(this.cbxEntidades.getSelectionModel().getSelectedItem());
+		
 	}
 	
 	@FXML
@@ -227,7 +247,20 @@ public class ConfiguracionesController extends AnchorPane {
 	private void handleTblEntidadesSelected(MouseEvent event) {
 		if (!tblEntidades.getSelectionModel().isEmpty()) {
 			modoEditEntidades=true;
-			txtEntidadNombre.setText(tblEntidades.getSelectionModel().getSelectedItem().getNombre());			
+			txtEntidadNombre.setText(tblEntidades.getSelectionModel().getSelectedItem().getNombre());
+			if(this.cbxEntidades.getSelectionModel().getSelectedItem().equals(PRODUCTOS)) {
+				txtEntidadCuitAlias.setText(tblEntidades.getSelectionModel().getSelectedItem().getAlias());
+			} else {
+				txtEntidadCuitAlias.setText(tblEntidades.getSelectionModel().getSelectedItem().getCuit());
+			}
+			
+			if(tblEntidades.getSelectionModel().getSelectedItem().getUltimoMovimiento() != null) {
+				SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+				txtEntidadUltMov.setText(sd.format(tblEntidades.getSelectionModel().getSelectedItem().getUltimoMovimiento()));
+			}
+			if(tblEntidades.getSelectionModel().getSelectedItem().getAcumulado() != null) {
+				txtEntidadAcumulado.setText(tblEntidades.getSelectionModel().getSelectedItem().getAcumulado().toString());
+			}		
 		}
 	}
 	
@@ -259,9 +292,7 @@ public class ConfiguracionesController extends AnchorPane {
 	
 	@FXML
 	private void handleNuevoEntidades(ActionEvent event) {
-		this.modoEditEntidades=false;
-		txtEntidadNombre.setText("");
-		txtEntidadNombre.requestFocus();
+		cleanFormEntidades();
 	}
 	
 	@FXML
@@ -318,22 +349,38 @@ public class ConfiguracionesController extends AnchorPane {
 		switch (entidadType) {
 		case CLIENTE:
 			tblEntidades.getItems().addAll(clientesPersistence.findAll());
+			setVisibleAduana(false);
 			break;
 		case PROCEDENCIAS:
 			tblEntidades.getItems().addAll(procedenciasPersistence.findAll());
+			setVisibleAduana(false);
 			break;
 		case PRODUCTOS:
 			tblEntidades.getItems().addAll(productosPersistence.findAll());
+			setVisibleAduana(true);
 			break;
 		case TRANSPORTES:
 			tblEntidades.getItems().addAll(transportesPersistence.findAll());
+			setVisibleAduana(true);
 			break;
 		case IMPORTADORES:
 			tblEntidades.getItems().addAll(importadoresExportadoresPersistence.findAll());
+			setVisibleAduana(true);
 			break;
 		default:
 			break;
 		}
+	}
+	
+	private void setVisibleAduana(boolean isVisible) {
+		lblCuitAlias.setVisible(isVisible);		
+		lblMov.setVisible(isVisible);
+		lblAcum.setVisible(isVisible);
+		
+		txtEntidadCuitAlias.setVisible(isVisible);		
+		txtEntidadUltMov.setVisible(isVisible);
+		txtEntidadAcumulado.setVisible(isVisible);
+		
 	}
 	
 	private void loadFormIndicadores() {
@@ -347,7 +394,10 @@ public class ConfiguracionesController extends AnchorPane {
 	private void cleanFormEntidades() {
 		this.modoEditEntidades=false;
 		tblEntidades.getItems().clear();
-		txtEntidadNombre.setText("");		
+		txtEntidadNombre.setText("");
+		txtEntidadCuitAlias.setText("");
+		txtEntidadUltMov.setText("");
+		txtEntidadAcumulado.setText("");		
 	}
 	
 	private void cleanFormIndicadores() {
@@ -369,7 +419,7 @@ public class ConfiguracionesController extends AnchorPane {
 			switch (entidadType) {
 			case CLIENTE:
 				Clientes cli = new Clientes();
-				if(modoEditEntidades) {
+				if(modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
 					cli.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				}
 				cli.setNombre(nombre);
@@ -377,24 +427,39 @@ public class ConfiguracionesController extends AnchorPane {
 				this.loadFormEntidades(entidadType);
 				break;
 			case PROCEDENCIAS:
-				Procedencias pro  = new Procedencias();
+				Procedencias pro  = new Procedencias();				
+				if(modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
+					pro.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				}
 				pro.setNombre(nombre);
 				procedenciasPersistence.save(pro);			
 				break;
 			case PRODUCTOS:
 				Productos producto = new Productos();
-				producto.setNombre(nombre);				
+				if(modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
+					producto.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				}
+				
+				producto.setNombre(nombre);			
+				producto.setAlias(txtEntidadCuitAlias.getText());	
 				productosPersistence.save(producto);
 				break;
 			case TRANSPORTES:			
 				Transportes tras = new Transportes();
+				if(modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
+					tras.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				}
 				tras.setNombre(nombre);
+				tras.setCuit(txtEntidadCuitAlias.getText());				
 				transportesPersistence.save(tras);
 				break;
 			case IMPORTADORES:			
 				ImportadoresExportadores ie = new ImportadoresExportadores();
+				if(modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
+					ie.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				}
 				ie.setNombre(nombre);
-				ie.setUltimoMovimiento(new Date());
+				ie.setCuit(txtEntidadCuitAlias.getText());	
 				importadoresExportadoresPersistence.save(ie);
 				break;
 				

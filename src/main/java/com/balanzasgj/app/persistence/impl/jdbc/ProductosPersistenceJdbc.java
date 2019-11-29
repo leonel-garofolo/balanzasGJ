@@ -26,16 +26,16 @@ import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implements ProductosPersistence{
 
 	private final static String SQL_SELECT_ALL = 
-		"select codigo, nombre from productos"; 
+		"select codigo, nombre, alias, ultimo_movimiento, acumulado from productos"; 
 
 	private final static String SQL_SELECT = 
-		"select codigo, nombre from productos where codigo = ?";
+		"select codigo, nombre, alias, ultimo_movimiento, acumulado from productos where codigo = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into productos ( nombre ) values ( ? )";
+		"insert into productos ( nombre, alias, ultimo_movimiento, acumulado ) values ( ?, ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update productos set nombre = ? where codigo = ?";
+		"update productos set nombre = ?, alias = ?, ultimo_movimiento = ?, acumulado = ? where codigo = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from productos where codigo = ?";
@@ -73,6 +73,9 @@ public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implemen
 		//--- Set PRIMARY KEY and DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		// "codigo" is auto-incremented => no set in insert		
 		setValue(ps, i++, productos.getNombre() ) ; // "nombre" : java.lang.String
+		setValue(ps, i++, productos.getAlias() ) ; // "CUIT" : java.lang.String
+		setValue(ps, i++, productos.getUltimoMovimiento() ) ; // "ultimo_movimiento" : java.util.Date
+		setValue(ps, i++, productos.getAcumulado() ) ; // "acumulado" : java.math.BigDecimal
 	}
 
     //----------------------------------------------------------------------
@@ -80,6 +83,9 @@ public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implemen
 	protected void setValuesForUpdate(PreparedStatement ps, int i, Productos productos) throws SQLException {
 		//--- Set DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		setValue(ps, i++, productos.getNombre() ) ; // "nombre" : java.lang.String
+		setValue(ps, i++, productos.getAlias() ) ; // "CUIT" : java.lang.String
+		setValue(ps, i++, productos.getUltimoMovimiento() ) ; // "ultimo_movimiento" : java.util.Date
+		setValue(ps, i++, productos.getAcumulado() ) ; // "acumulado" : java.math.BigDecimal
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, productos.getCodigo() ) ; // "codigo" : java.lang.Integer
 	}
@@ -110,6 +116,9 @@ public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implemen
 		productos.setCodigo(rs.getLong("codigo")); // java.lang.Integer
 		if ( rs.wasNull() ) { productos.setCodigo(null); }; // not primitive number => keep null value if any
 		productos.setNombre(rs.getString("nombre")); // java.lang.String
+		productos.setAlias(rs.getString("alias")); // java.lang.String
+		productos.setUltimoMovimiento(rs.getDate("ultimo_movimiento")); // java.util.Date
+		productos.setAcumulado(rs.getBigDecimal("acumulado")); // java.math.BigDecimal
 		return productos ;
 	}
 

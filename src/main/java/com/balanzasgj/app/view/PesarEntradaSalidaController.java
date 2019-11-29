@@ -16,12 +16,15 @@ import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
+import org.apache.log4j.Logger;
 import org.javafx.controls.customs.ComboBoxAutoComplete;
 
 import com.balanzasgj.app.conn.serial.SocketConnection;
 import com.balanzasgj.app.model.Clientes;
 import com.balanzasgj.app.model.Comunicaciones;
 import com.balanzasgj.app.model.Ejes;
+import com.balanzasgj.app.model.Entidades;
+import com.balanzasgj.app.model.ImportadoresExportadores;
 import com.balanzasgj.app.model.Indicadores;
 import com.balanzasgj.app.model.ParametrosGlobales;
 import com.balanzasgj.app.model.Patentes;
@@ -56,6 +59,7 @@ import com.balanzasgj.app.view.columns.ClientesTableCell;
 import com.balanzasgj.app.view.columns.ProcedenciasTableCell;
 import com.balanzasgj.app.view.columns.ProductosTableCell;
 import com.balanzasgj.app.view.columns.TransportesTableCell;
+import com.balanzasgj.app.view.custom.AduanaDialog;
 
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
@@ -90,7 +94,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public class PesarEntradaSalidaController extends AnchorPane implements IView, Initializable, SerialPortEventListener, EventHandler<KeyEvent> {		
-	
+	final static Logger logger = Logger.getLogger(PesarEntradaSalidaController.class);
 	private static final String T_NORMAL = "NORMAL";
 	private static final String T_CON_TARA = "CON TARA";
 	private static final String T_TOMAR_TARA = "TOMAR TARA";
@@ -734,10 +738,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 
 	@FXML
 	private void handleEditProducto(ActionEvent event) {
-		String value = Message.addElement("Ingrese el nombre del nuevo Producto:");
+		String value = Message.addElementAduana(ConfiguracionesController.PRODUCTOS);
 		if(!value.equals("")) {
-			Productos prod = new Productos();
-			prod.setNombre(value);
+			Productos prod = (Productos)buildObject(ConfiguracionesController.PRODUCTOS, value);			
 			productosPersistence.save(prod );
 			cbxProducto.getItems().clear();
 			cbxProducto.getItems().addAll(productosPersistence.findAll());	
@@ -748,10 +751,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 
 	@FXML
 	private void handleEditCliente(ActionEvent event) {
-		String value = Message.addElement("Ingrese el nombre del nuevo Cliente:");
+		String value = Message.addElementAduana(ConfiguracionesController.CLIENTE);
 		if(!value.equals("")) {
-			Clientes cli = new Clientes();
-			cli.setNombre(value);
+			Clientes cli = (Clientes)buildObject(ConfiguracionesController.CLIENTE, value);			
 			clientesPersistence.save(cli );
 			cbxCliente.getItems().clear();
 			cbxCliente.getItems().addAll(clientesPersistence.findAll());
@@ -759,13 +761,45 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			cbxCliente.setValue(cli);
 		}
 	}
+	
+	private Entidades buildObject(String type, String values) {
+		String[] result = values.split(AduanaDialog.SPLIT);
+		switch (type) {
+		case ConfiguracionesController.CLIENTE:
+			Clientes c = new Clientes();
+			c.setNombre(result[0]);
+			return c;
+		case ConfiguracionesController.IMPORTADORES:
+			ImportadoresExportadores ie = new ImportadoresExportadores();
+			ie.setNombre(result[0]);
+			ie.setCuit(result[1]);
+			return ie;
+		case ConfiguracionesController.PROCEDENCIAS:
+			Procedencias pro = new Procedencias();
+			pro.setNombre(result[0]);
+			return pro;
+		case ConfiguracionesController.PRODUCTOS:
+			Productos p = new Productos();
+			p.setNombre(result[0]);
+			p.setAlias(result[1]);
+			return p;
+		case ConfiguracionesController.TRANSPORTES:
+			Transportes t = new Transportes();
+			t.setNombre(result[0]);
+			t.setCuit(result[1]);
+			return t;
+
+		default:
+			break;
+		}
+		return null;
+	}
 
 	@FXML
 	private void handleEditTransporte(ActionEvent event) {
-		String value = Message.addElement("Ingrese el nombre del nuevo Transporte:");
+		String value = Message.addElementAduana(ConfiguracionesController.TRANSPORTES);
 		if(!value.equals("")) {
-			Transportes tra = new Transportes();
-			tra.setNombre(value);
+			Transportes tra = (Transportes)buildObject(ConfiguracionesController.TRANSPORTES, value);
 			transportesPersistence.save(tra );
 			cbxTransporte.getItems().clear();
 			cbxTransporte.getItems().addAll(transportesPersistence.findAll());	
@@ -776,10 +810,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 
 	@FXML
 	private void handleEditProcedencia(ActionEvent event) {
-		String value = Message.addElement("Ingrese el nombre de la nueva Procedencia:");
+		String value  = Message.addElementAduana(ConfiguracionesController.PROCEDENCIAS);
 		if(!value.equals("")) {
-			Procedencias pro = new Procedencias();
-			pro.setNombre(value);
+			Procedencias pro = (Procedencias)buildObject(ConfiguracionesController.PROCEDENCIAS, value);			
 			procedenciasPersistence.save(pro );
 			cbxProcedencia.getItems().clear();
 			cbxProcedencia.getItems().addAll(procedenciasPersistence.findAll());	
@@ -1271,17 +1304,17 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					if((this.longitudDato -1) < sBufferConnection.length()) {
 						sBufferConnection = sBufferConnection.substring(sBufferConnection.length() - this.longitudDato, sBufferConnection.length());
 					}
-					if(!txtNumberSerial.getText().equals(sBufferConnection)) {
+					if(!sBufferConnection.isEmpty() && 
+							!txtNumberSerial.getText().equals(sBufferConnection)) {
 						try {
 							Double.valueOf(sBufferConnection);
 							txtNumberSerial.setText(sBufferConnection);
 						}catch ( NumberFormatException e) {													
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							logger.error("ERROR DE CONVERSION. ", e);
 						}
 					}
 				} catch (IOException e) {
-					System.out.println("IO Error Occurred: " + e.toString());
+					logger.error("IO Error Occurred: ", e);
 				}
 			}
 		}		

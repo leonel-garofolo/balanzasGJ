@@ -12,7 +12,7 @@ import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
 public class SocketConnection implements SerialPortEventListener {
-	SerialPort serialPort;
+	private SerialPort serialPort;
 	public static String st;
 	public char[] c;
 
@@ -24,12 +24,12 @@ public class SocketConnection implements SerialPortEventListener {
 	private OutputStream output;
 	private static final int TIME_OUT = 2000;
 	private static final int DATA_RATE = 9600;
-    private static final char STX = 0x02;
+	private static final char STX = 0x02;
 	private static final char ETX = 0x03;
 	private static final char EOT = 0x04;
 	private static final char ENQ = 0x05;
 	private static final char ACK = 0x06;
-	
+
 	public SocketConnection() {
 		super();
 	}
@@ -49,7 +49,7 @@ public class SocketConnection implements SerialPortEventListener {
 		serialPort = (SerialPort) portId.open(this.getClass().getName(), timeOut);
 		serialPort.setSerialPortParams(dataRate, dataBits, stopBits, parity);
 		input = serialPort.getInputStream();
-		output = serialPort.getOutputStream();		
+		output = serialPort.getOutputStream();
 	}
 
 	public synchronized void close() {
@@ -57,12 +57,12 @@ public class SocketConnection implements SerialPortEventListener {
 			serialPort.removeEventListener();
 			serialPort.close();
 		}
-	}	
+	}
 
-	
 	public void sendData(String data) {
 		(new Thread(new SerialWriter(output, data))).start();
 	}
+
 	public synchronized void serialEvent(SerialPortEvent oEvent) {
 		if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			try {
@@ -95,14 +95,22 @@ public class SocketConnection implements SerialPortEventListener {
 		}
 
 		public void run() {
-			try {
-				if (data != null) {
-					data = data + "\r\n";
-					byte[] b = data.getBytes();
-					while (true) {
-						this.out.write(b);
+			if (data != null) {
+				data = data + "\r\n";
+				while(true) {
+					try {				
+						out.write(data.getBytes());			
+						out.write(ENQ);		
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
 				}
+			}
+		}
+
+		public void writetoport(String send) {
+			try {				
+				out.write(send.getBytes());				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
