@@ -24,11 +24,11 @@ public class SocketConnection implements SerialPortEventListener {
 	private OutputStream output;
 	private static final int TIME_OUT = 2000;
 	private static final int DATA_RATE = 9600;
-	private static final char STX = 0x02;
-	private static final char ETX = 0x03;
-	private static final char EOT = 0x04;
-	private static final char ENQ = 0x05;
-	private static final char ACK = 0x06;
+	public static final char STX = 0x02;
+	public static final char ETX = 0x03;
+	public static final char EOT = 0x04;
+	public static final char ENQ = 0x05;
+	public static final char ACK = 0x06;
 
 	public SocketConnection() {
 		super();

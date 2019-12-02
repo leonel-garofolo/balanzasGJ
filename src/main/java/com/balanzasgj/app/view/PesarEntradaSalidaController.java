@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 import org.javafx.controls.customs.ComboBoxAutoComplete;
+import org.jfree.util.Log;
 
 import com.balanzasgj.app.conn.serial.SocketConnection;
 import com.balanzasgj.app.model.Clientes;
@@ -129,6 +130,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private Label lblUltima;	
 	@FXML
+	private Label lblImpExp;	
+	@FXML
 	private TextField txtUltima;	
 	@FXML
 	private Button btnTomar;	
@@ -157,6 +160,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private ComboBoxAutoComplete<Procedencias> cbxProcedencia;
 	@FXML
+	private ComboBoxAutoComplete<Procedencias> cbxImpExp;
+	@FXML
 	private Button btnAccesoProducto;
 	@FXML
 	private Button btnAccesoCliente;
@@ -164,6 +169,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private Button btnAccesoTransporte;
 	@FXML
 	private Button btnAccesoProcedencia;
+	@FXML
+	private Button btnAccesoImpExp;		
 	@FXML
 	private Button btnNuevoPesaje;	
 	@FXML
@@ -849,6 +856,22 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			modoNormal();
 		}
 	}
+	@FXML
+	private void handleModalidad(ActionEvent event) {
+		if(cbxModalidad.getSelectionModel().getSelectedItem() != null && 
+				cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
+			modoAduana(true);
+		}else { 
+			modoAduana(false);
+		} 
+	}
+	
+	private void modoAduana(boolean isVisible) {
+		lblImpExp.setVisible(isVisible);
+		cbxImpExp.setVisible(isVisible);
+		btnAccesoImpExp.setVisible(isVisible);
+	}
+	
 	private void addPatente() {
 		String pantente = txtPatente.getText();
 		if(!pantente.isEmpty()) {
@@ -1275,6 +1298,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		btnAplicar.setDisable(false);
 		btnTomar.setDisable(false);
 		btnIngresoManual.setDisable(false);
+		modoAduana(false);
 	}
 
 	@Override
@@ -1288,24 +1312,26 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		socket.close();
 	}
 
+	private String data;
+	private int indexInit = 0;
 	@Override
 	public void serialEvent(SerialPortEvent event) {
 		if(!ingManual) {
 			if (event.getEventType() == SerialPortEvent.DATA_AVAILABLE) {		
 				try {
 					int available = socket.getInput().available();
-					byte[] chunk = new byte[available];
+					byte[] chunk = new byte[available];					
 					socket.getInput().read(chunk, 0, available);
-					sBufferConnection = new String(chunk).trim().replaceAll("[^\\d.]", "");
-					System.out.println(sBufferConnection);
-					if(this.posicionInicioDato < sBufferConnection.length()) {
-						sBufferConnection = sBufferConnection.substring(this.posicionInicioDato);
-					}
-					if((this.longitudDato -1) < sBufferConnection.length()) {
-						sBufferConnection = sBufferConnection.substring(sBufferConnection.length() - this.longitudDato, sBufferConnection.length());
-					}
+					data = new String(chunk);
+					Log.info("Rx ->" + data);
+					System.out.println("Rx ->" + data);
+					data = data.trim();
+					data = data.substring(this.posicionInicioDato, this.longitudDato);
+					sBufferConnection = data.trim().replaceAll("[^\\d.]", "");		
+					Log.info("Transfor ->" + sBufferConnection);
+					System.out.println("Transfor ->" + sBufferConnection);
 					if(!sBufferConnection.isEmpty() && 
-							!txtNumberSerial.getText().equals(sBufferConnection)) {
+							!txtNumberSerial.getText().trim().equals(sBufferConnection.trim())) {
 						try {
 							Double.valueOf(sBufferConnection);
 							txtNumberSerial.setText(sBufferConnection);

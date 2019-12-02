@@ -27,11 +27,11 @@
 <?import javafx.scene.text.Font?>
 <?import org.javafx.controls.customs.ComboBoxAutoComplete?>
 
-<AnchorPane prefHeight="714.0" prefWidth="1088.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.PesarEntradaSalidaController">
+<AnchorPane prefHeight="646.0" prefWidth="1088.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.PesarEntradaSalidaController">
    <children>
-      <SplitPane dividerPositions="0.25885558583106266" layoutX="298.0" layoutY="135.0" orientation="VERTICAL" prefHeight="561.0" prefWidth="756.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.3122977346278317" layoutX="298.0" layoutY="135.0" orientation="VERTICAL" prefHeight="620.0" prefWidth="1088.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="159.0" prefWidth="971.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="1086.0">
                <children>
                   <VBox prefHeight="139.0" prefWidth="971.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -43,7 +43,7 @@
                                  </font>
                               </Label>
                               <ComboBox fx:id="cbxModoTara" onAction="#handleModoTara" prefHeight="25.0" prefWidth="130.0" />
-                              <ComboBox fx:id="cbxModalidad" prefWidth="130.0" />
+                              <ComboBox fx:id="cbxModalidad" onAction="#handleModalidad" prefWidth="130.0" />
                               <ComboBox fx:id="cbxModoChasis" prefWidth="130.0" />
                               <Label prefHeight="17.0" prefWidth="66.0" text="Transacción" />
                               <TextField fx:id="txtTransaccion" editable="false" prefHeight="25.0" prefWidth="99.0" />
@@ -202,43 +202,40 @@
                   </VBox>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="525.0" prefWidth="971.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="1086.0">
                <children>
-                  <VBox layoutX="347.0" layoutY="91.0" prefHeight="525.0" prefWidth="971.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox layoutX="347.0" layoutY="91.0" prefHeight="455.0" prefWidth="1086.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox fx:id="layout2" prefHeight="227.0" prefWidth="1086.0">
+                        <HBox fx:id="layout2" prefHeight="148.0" prefWidth="1086.0">
                            <children>
                               <GridPane focusTraversable="true" prefHeight="209.0" prefWidth="1060.0">
                                 <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="76.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="171.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="130.0" minWidth="4.0" prefWidth="45.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="91.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="79.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="75.0" />
-                                    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="220.0" minWidth="10.0" prefWidth="76.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="301.0" minWidth="10.0" prefWidth="170.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="227.0" minWidth="10.0" prefWidth="93.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="222.0" minWidth="10.0" prefWidth="185.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="82.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="155.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="92.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="78.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="6.0" prefWidth="103.0" />
+                                    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="220.0" minWidth="10.0" prefWidth="172.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="301.0" minWidth="10.0" prefWidth="55.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="227.0" minWidth="10.0" prefWidth="104.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="284.0" minWidth="10.0" prefWidth="172.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="222.0" minWidth="10.0" prefWidth="44.0" />
                                 </columnConstraints>
                                 <rowConstraints>
                                     <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                   <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
                                     <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label fx:id="lblProducto" focusTraversable="false" prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Producto" GridPane.rowIndex="1" />
-                                    <Label fx:id="lblCliente" focusTraversable="false" prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Cliente" GridPane.rowIndex="2" />
-                                    <Label fx:id="lblTransporte" focusTraversable="false" prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Transporte" GridPane.rowIndex="3" />
-                                    <Label fx:id="lblProcedencia" focusTraversable="false" prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Procedencia" GridPane.rowIndex="4" />
-                                    <ComboBoxAutoComplete fx:id="cbxProducto" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <ComboBoxAutoComplete fx:id="cbxCliente" prefHeight="25.0" prefWidth="239.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <ComboBoxAutoComplete fx:id="cbxTransporte" prefHeight="25.0" prefWidth="241.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <ComboBoxAutoComplete fx:id="cbxProcedencia" prefHeight="25.0" prefWidth="272.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                    <Button fx:id="btnAccesoProducto" mnemonicParsing="false" onAction="#handleEditProducto" prefHeight="26.0" prefWidth="26.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <Label fx:id="lblProducto" focusTraversable="false" prefHeight="17.0" prefWidth="54.0" style="-fx-font-weight: bold;" text="Producto" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblCliente" focusTraversable="false" prefHeight="17.0" prefWidth="47.0" style="-fx-font-weight: bold;" text="Cliente" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                    <Label fx:id="lblTransporte" focusTraversable="false" prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Transporte" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblProcedencia" focusTraversable="false" prefHeight="17.0" prefWidth="72.0" style="-fx-font-weight: bold;" text="Procedencia" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+                                    <ComboBoxAutoComplete fx:id="cbxProducto" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                    <ComboBoxAutoComplete fx:id="cbxCliente" prefHeight="25.0" prefWidth="239.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <ComboBoxAutoComplete fx:id="cbxTransporte" prefHeight="25.0" prefWidth="241.0" GridPane.columnIndex="8" GridPane.rowIndex="1" />
+                                    <Button fx:id="btnAccesoProducto" mnemonicParsing="false" onAction="#handleEditProducto" prefHeight="26.0" prefWidth="26.0" GridPane.columnIndex="6" GridPane.rowIndex="1">
                                     	<graphic>
 	                                    	<ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
 		                                       <image>
@@ -247,7 +244,7 @@
 		                                    </ImageView>
                                     	</graphic>
                                     </Button>
-                                    <Button fx:id="btnAccesoCliente" mnemonicParsing="false" onAction="#handleEditCliente" prefHeight="26.0" prefWidth="28.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                    <Button fx:id="btnAccesoCliente" mnemonicParsing="false" onAction="#handleEditCliente" prefHeight="26.0" prefWidth="28.0" GridPane.columnIndex="6" GridPane.rowIndex="2">
                                     	<graphic>
 	                                    	<ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
 		                                       <image>
@@ -256,7 +253,7 @@
 		                                    </ImageView>
                                     	</graphic>
                                     </Button>
-                                    <Button fx:id="btnAccesoTransporte" mnemonicParsing="false" onAction="#handleEditTransporte" prefHeight="26.0" prefWidth="29.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                    <Button fx:id="btnAccesoTransporte" mnemonicParsing="false" onAction="#handleEditTransporte" prefHeight="26.0" prefWidth="29.0" GridPane.columnIndex="9" GridPane.rowIndex="1">
                                     	<graphic>
 	                                    	<ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
 		                                       <image>
@@ -265,7 +262,7 @@
 		                                    </ImageView>
                                     	</graphic>
                                     </Button>
-                                    <Button fx:id="btnAccesoProcedencia" mnemonicParsing="false" onAction="#handleEditProcedencia" prefHeight="26.0" prefWidth="29.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                    <Button fx:id="btnAccesoProcedencia" mnemonicParsing="false" onAction="#handleEditProcedencia" prefHeight="26.0" prefWidth="29.0" GridPane.columnIndex="9" GridPane.rowIndex="2">
                                     	<graphic>
 	                                    	<ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
 		                                       <image>
@@ -274,28 +271,42 @@
 		                                    </ImageView>
                                     	</graphic>
                                     </Button>
-                                    <Label prefHeight="17.0" prefWidth="72.0" text="Conductor" visible="false" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                                    <Label fx:id="lblDocumento" focusTraversable="false" prefHeight="17.0" prefWidth="69.0" text="Documento" GridPane.columnIndex="8" />
+                                    <Label prefHeight="17.0" prefWidth="72.0" text="Conductor" visible="false" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblDocumento" focusTraversable="false" prefHeight="17.0" prefWidth="69.0" text="Documento" GridPane.columnIndex="7" />
                                     <Label focusTraversable="false" prefHeight="17.0" prefWidth="109.0" style="-fx-font-weight: bold;" text="Patente" />
-                                    <TextField fx:id="txtConductor" visible="false" GridPane.columnIndex="7" GridPane.rowIndex="1" />
-                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="7" GridPane.rowIndex="2" />
-                                    <Label fx:id="lblObservaciones" focusTraversable="false" prefHeight="17.0" prefWidth="109.0" text="Observaciones" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-                                    <TextArea fx:id="txtObservaciones" prefHeight="71.0" prefWidth="196.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="5" />                                    
-                                    <TextField fx:id="txtNumDoc" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="9" />
-                                    <TextField fx:id="txtFactura" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                    <Label fx:id="lblFactura" focusTraversable="false" prefHeight="17.0" prefWidth="109.0" text="Factura" GridPane.rowIndex="5" />
+                                    <TextField fx:id="txtConductor" visible="false" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="8" GridPane.rowIndex="2">
+                                       <children>
+                                          <ComboBoxAutoComplete fx:id="cbxProcedencia" prefHeight="25.0" prefWidth="272.0" />
+                                       </children></HBox>
+                                    <Label fx:id="lblObservaciones" focusTraversable="false" prefHeight="17.0" prefWidth="109.0" text="Observaciones" GridPane.rowIndex="2" />
+                                    <TextArea fx:id="txtObservaciones" prefHeight="71.0" prefWidth="196.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2" />                                    
+                                    <TextField fx:id="txtNumDoc" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="8" />
+                                    <TextField fx:id="txtFactura" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblFactura" focusTraversable="false" prefHeight="17.0" prefWidth="109.0" text="Factura" GridPane.rowIndex="1" />
                                     <TextField fx:id="txtPatente" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" />
-                                    <Label fx:id="lblTara" prefHeight="17.0" prefWidth="29.0" style="-fx-font-weight: bold;" text="Tara" GridPane.columnIndex="3" />
-                                    <TextField fx:id="txtTara" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="4" />
-                                    <Label fx:id="lblConductor" focusTraversable="false" prefHeight="17.0" prefWidth="64.0" text="Conductor" GridPane.columnIndex="6">
+                                    <Label fx:id="lblTara" prefHeight="17.0" prefWidth="29.0" style="-fx-font-weight: bold;" text="Tara" GridPane.columnIndex="2" />
+                                    <TextField fx:id="txtTara" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="3" />
+                                    <Label fx:id="lblConductor" focusTraversable="false" prefHeight="17.0" prefWidth="64.0" text="Conductor" GridPane.columnIndex="4">
                                        <GridPane.margin>
                                           <Insets left="10.0" />
                                        </GridPane.margin></Label>
-                                    <TextField fx:id="txtConductor" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="7" />
-                                    <Label fx:id="lblDias" prefHeight="17.0" prefWidth="29.0" style="-fx-font-weight: bold;" text="Días" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                    <TextField fx:id="txtDiasVenc" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                                    <Label fx:id="lblUltima" prefHeight="17.0" prefWidth="74.0" style="-fx-font-weight: bold;" text="Ultima Toma" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                    <TextField fx:id="txtUltima" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtConductor" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="5" />
+                                    <Label fx:id="lblDias" prefHeight="17.0" prefWidth="29.0" style="-fx-font-weight: bold;" text="Días" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtDiasVenc" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblUltima" prefHeight="17.0" prefWidth="74.0" style="-fx-font-weight: bold;" text="Ultima Toma" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtUltima" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <Label fx:id="lblCliente1" focusTraversable="false" prefHeight="17.0" prefWidth="173.0" style="-fx-font-weight: bold;" text="Importadores / Exportadores" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                                    <ComboBoxAutoComplete fx:id="cbxImpExp" prefHeight="25.0" prefWidth="239.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                    <Button fx:id="btnAccesoImpExp" mnemonicParsing="false" onAction="#handleEditCliente" prefHeight="26.0" prefWidth="28.0" GridPane.columnIndex="6" GridPane.rowIndex="3">
+                                       <graphic>
+                                          <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/anadir.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
                                  </children>
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />

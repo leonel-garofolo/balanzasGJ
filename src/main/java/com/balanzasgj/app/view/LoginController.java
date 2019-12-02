@@ -87,9 +87,11 @@ public class LoginController implements Initializable, IView, EventHandler<Windo
 				scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
 				
 				stage.setScene(scene);
-				stage.resizableProperty().set(false);				
+				stage.resizableProperty().set(false);
+				/*
 				Image ico = new Image(App.PATH_ICONO); 
-				stage.getIcons().add(ico); 
+				stage.getIcons().add(ico);
+				*/ 
 				stage.show();
 				
 				stage.setOnHiding(new EventHandler<WindowEvent>() {

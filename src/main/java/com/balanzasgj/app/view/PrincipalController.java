@@ -88,9 +88,11 @@ public class PrincipalController implements Initializable, IView{
 			Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
 			stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
 			stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
-			stage.resizableProperty().set(false);				
+			stage.resizableProperty().set(false);		
+			/*
 			Image ico = new Image(App.PATH_ICONO); 
-			stage.getIcons().add(ico); 
+			stage.getIcons().add(ico);
+			*/ 
 			controller.setStage(stage);	
 			stage.show();
 			

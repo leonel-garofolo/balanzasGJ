@@ -37,8 +37,10 @@ public class AppClient extends Application {
 	    }
 		
 		primaryStage.setScene(scene);		
+		/*
 		Image ico = new Image(App.PATH_ICONO); 
-		primaryStage.getIcons().add(ico); 
+		primaryStage.getIcons().add(ico);
+		*/ 
 		primaryStage.resizableProperty().set(false);		
 		primaryStage.show();
 		primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
