@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLType;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -17,12 +18,16 @@ import java.util.List;
 import javax.inject.Named;
 
 import com.balanzasgj.app.model.Clientes;
+import com.balanzasgj.app.model.ImportadoresExportadores;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
 import com.balanzasgj.app.model.Taras;
 import com.balanzasgj.app.model.Transportes;
 import com.balanzasgj.app.persistence.TarasPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
+import java.sql.Types;
+
+import javafx.animation.KeyValue.Type;
 
 /**
  * Taras persistence implementation 
@@ -34,28 +39,30 @@ import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements TarasPersistence {
 
 	private final static String SQL_SELECT_ALL = 
-		"select idtaras, transaccion, fecha_entrada, fecha_salida, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis " +
+		"select idtaras, transaccion, fecha_entrada, fecha_salida, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, ie.codigo as codigoIE, ie.nombre as nombreIE, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis " +
 				"from taras t " +
 				"inner join clientes c on c.codigo = t.id_cliente " +
 				"inner join productos p on p.codigo = t.id_producto " +
 				"inner join transportes tra on tra.codigo = t.id_transporte " +
-				"inner join procedencias pro on pro.codigo = t.id_procedencia";
+				"inner join procedencias pro on pro.codigo = t.id_procedencia " +
+				"left join importadores_exportadores ie on ie.codigo = t.id_imp_exp ";
 
 
 	private final static String SQL_SELECT =
-			"select idtaras, transaccion, fecha_entrada, fecha_salida, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis " +
+			"select idtaras, transaccion, fecha_entrada, fecha_salida, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, ie.codigo as codigoIE, ie.nombre as nombreIE, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis " +
 					"from taras t " +
 					"inner join clientes c on c.codigo = t.id_cliente " +
 					"inner join productos p on p.codigo = t.id_producto " +
 					"inner join transportes tra on tra.codigo = t.id_transporte " +
 					"inner join procedencias pro on pro.codigo = t.id_procedencia " +
+					"left join importadores_exportadores ie on ie.codigo = t.id_imp_exp " +
 					"where idtaras = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into taras ( transaccion, fecha_entrada, fecha_salida, balanza, id_producto, id_cliente, id_transporte, id_procedencia, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+		"insert into taras ( transaccion, fecha_entrada, fecha_salida, balanza, id_producto, id_cliente, id_transporte, id_procedencia, id_imp_exp, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update taras set transaccion = ?, fecha_entrada = ?, fecha_salida = ?, balanza = ?, id_producto = ?, id_cliente = ?, id_transporte = ?, id_procedencia = ?, modalidad = ?, comprobante_nun1 = ?, modoTara = ?, destino = ?, conductor = ?, tipo_doc = ?, num_doc = ?, patente = ?, patente_aceptado = ?, observacion = ?, contenedor_num = ?, peso_entrada = ?, peso_salida = ?, modoChasis = ? where idtaras = ?";
+		"update taras set transaccion = ?, fecha_entrada = ?, fecha_salida = ?, balanza = ?, id_producto = ?, id_cliente = ?, id_transporte = ?, id_procedencia = ?, id_imp_exp = ?, modalidad = ?, comprobante_nun1 = ?, modoTara = ?, destino = ?, conductor = ?, tipo_doc = ?, num_doc = ?, patente = ?, patente_aceptado = ?, observacion = ?, contenedor_num = ?, peso_entrada = ?, peso_salida = ?, modoChasis = ? where idtaras = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from taras where idtaras = ?";
@@ -103,6 +110,12 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		setValue(ps, i++, taras.getCliente().getCodigo()) ; // "id_cliente" : java.lang.Integer
 		setValue(ps, i++, taras.getTransporte().getCodigo() ) ; // "id_transporte" : java.lang.Integer
 		setValue(ps, i++, taras.getProcedencias().getCodigo() ) ; // "id_procedencia" : java.lang.Integer
+		if (taras.getImpExp() != null) {
+			setValue(ps, i++, taras.getImpExp().getCodigo() ) ; // "id_procedencia" : java.lang.Integer
+		} else {
+			ps.setNull(i++, Types.INTEGER);
+		}
+				
 		setValue(ps, i++, taras.getModalidad() ) ; // "modalidad" : java.lang.String
 		setValue(ps, i++, taras.getComprobanteNun1() ) ; // "comprobante_nun1" : java.lang.String
 		setValue(ps, i++, taras.getModoTara() ) ; // "modoTara" : java.lang.String
@@ -131,6 +144,7 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		setValue(ps, i++, taras.getCliente().getCodigo()) ; // "id_cliente" : java.lang.Integer
 		setValue(ps, i++, taras.getTransporte().getCodigo() ) ; // "id_transporte" : java.lang.Integer
 		setValue(ps, i++, taras.getProcedencias().getCodigo() ) ; // "id_procedencia" : java.lang.Integer
+		setValue(ps, i++, taras.getImpExp().getCodigo() ) ; // "id_procedencia" : java.lang.Integer
 		setValue(ps, i++, taras.getModalidad() ) ; // "modalidad" : java.lang.String
 		setValue(ps, i++, taras.getComprobanteNun1() ) ; // "comprobante_nun1" : java.lang.String
 		setValue(ps, i++, taras.getModoTara() ) ; // "modoTara" : java.lang.String
@@ -198,7 +212,14 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		productos.setCodigo(rs.getLong("id_producto"));
 		productos.setNombre(rs.getString("nombreProducto"));
 		taras.setProducto(productos);
-
+		
+		if(rs.getString("nombreIE") != null) {
+			ImportadoresExportadores ie = new ImportadoresExportadores();
+			ie.setCodigo(rs.getLong("codigoIE"));
+			ie.setNombre(rs.getString("nombreIE"));
+			taras.setImpExp(ie);
+		}
+		
 		taras.setModalidad(rs.getString("modalidad")); // java.lang.String
 		taras.setComprobanteNun1(rs.getString("comprobante_nun1")); // java.lang.String
 		taras.setModoTara(rs.getString("modoTara")); // java.lang.String

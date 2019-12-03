@@ -81,6 +81,9 @@
 	<field name="fechaSalida" class="java.util.Date">
 		<fieldDescription><![CDATA[fechaSalida]]></fieldDescription>
 	</field>
+	<field name="impExp" class="com.balanzasgj.app.model.ImportadoresExportadores">
+		<fieldDescription><![CDATA[impExp]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -231,28 +234,28 @@
 				<text><![CDATA[Producto:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="382" y="44" width="100" height="23" uuid="96aa3b28-9c3c-47e1-9183-b3731afa15ac"/>
+				<reportElement x="382" y="44" width="100" height="16" uuid="96aa3b28-9c3c-47e1-9183-b3731afa15ac"/>
 				<textElement>
 					<font fontName="Arial" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{transporte}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="300" y="44" width="80" height="23" uuid="9717eabf-62b3-4dd8-a14b-2e15288e3b0d"/>
+				<reportElement x="300" y="44" width="80" height="16" uuid="9717eabf-62b3-4dd8-a14b-2e15288e3b0d"/>
 				<textElement>
 					<font fontName="Arial" size="11"/>
 				</textElement>
 				<text><![CDATA[Transporte:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="382" y="68" width="100" height="16" uuid="bab860e1-ba51-4c08-9d43-d59bfb5390a0"/>
+				<reportElement x="382" y="62" width="100" height="16" uuid="bab860e1-ba51-4c08-9d43-d59bfb5390a0"/>
 				<textElement>
 					<font fontName="Arial" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{procedencias}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="300" y="68" width="80" height="16" uuid="4560f94e-c9eb-4c0f-b156-fdfe4140235f"/>
+				<reportElement x="300" y="62" width="80" height="16" uuid="4560f94e-c9eb-4c0f-b156-fdfe4140235f"/>
 				<textElement>
 					<font fontName="Arial" size="11"/>
 				</textElement>
@@ -293,6 +296,22 @@
 			<textField>
 				<reportElement x="80" y="17" width="100" height="15" uuid="0ee9b8ae-8846-4099-b96f-18d3ba3825a2"/>
 				<textFieldExpression><![CDATA[($F{fechaSalida}==null?"": $F{fechaSalida})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="300" y="80" width="80" height="16" uuid="4208772a-86a6-4e05-9152-f7651f35b904">
+					<printWhenExpression><![CDATA[$F{impExp}!= null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Imp / Exp:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="382" y="80" width="100" height="16" uuid="9c4633b1-622a-4df8-a30e-999e0d520b5f"/>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{impExp}!= null ? $F{impExp}: "")]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

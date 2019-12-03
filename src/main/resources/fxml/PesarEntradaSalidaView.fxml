@@ -296,9 +296,9 @@
                                     <TextField fx:id="txtDiasVenc" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                     <Label fx:id="lblUltima" prefHeight="17.0" prefWidth="74.0" style="-fx-font-weight: bold;" text="Ultima Toma" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                     <TextField fx:id="txtUltima" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                    <Label fx:id="lblCliente1" focusTraversable="false" prefHeight="17.0" prefWidth="173.0" style="-fx-font-weight: bold;" text="Importadores / Exportadores" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                                    <Label fx:id="lblImpExp" focusTraversable="false" prefHeight="17.0" prefWidth="173.0" style="-fx-font-weight: bold;" text="Importadores / Exportadores" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3" />
                                     <ComboBoxAutoComplete fx:id="cbxImpExp" prefHeight="25.0" prefWidth="239.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-                                    <Button fx:id="btnAccesoImpExp" mnemonicParsing="false" onAction="#handleEditCliente" prefHeight="26.0" prefWidth="28.0" GridPane.columnIndex="6" GridPane.rowIndex="3">
+                                    <Button fx:id="btnAccesoImpExp" mnemonicParsing="false" onAction="#handleEditImpExp" prefHeight="26.0" prefWidth="28.0" GridPane.columnIndex="6" GridPane.rowIndex="3">
                                        <graphic>
                                           <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                              <image>

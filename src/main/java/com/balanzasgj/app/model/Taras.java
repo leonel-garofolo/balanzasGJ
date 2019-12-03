@@ -31,6 +31,7 @@ public class Taras implements Serializable
     private Clientes    cliente    ;
     private Transportes    transporte ;
     private Procedencias procedencias;
+    private ImportadoresExportadores impExp;
     private String     modalidad ;
     private String     comprobanteNun1 ;
     private String     modoTara ;
@@ -46,7 +47,7 @@ public class Taras implements Serializable
     private BigDecimal pesoEntrada  ;
     private BigDecimal pesoSalida   ;
     private BigDecimal pesoNeto   ;
-    private String     modoChasis ;
+    private String     modoChasis ;    
 
     /**
      * Default constructor
@@ -397,6 +398,14 @@ public class Taras implements Serializable
 
 	public void setModoChasis(String modoChasis) {
 		this.modoChasis = modoChasis;
+	}		
+
+	public ImportadoresExportadores getImpExp() {
+		return impExp;
+	}
+
+	public void setImpExp(ImportadoresExportadores impExp) {
+		this.impExp = impExp;
 	}
 
 	//----------------------------------------------------------------------

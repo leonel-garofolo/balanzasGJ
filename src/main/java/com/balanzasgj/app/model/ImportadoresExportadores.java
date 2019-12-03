@@ -33,15 +33,7 @@ public class ImportadoresExportadores extends Entidades implements Serializable
     @Override
     public String toString() { 
         StringBuffer sb = new StringBuffer(); 
-        sb.append(codigo);
-        sb.append("|");
-        sb.append(nombre);
-        sb.append("|");
-        sb.append(cuit);
-        sb.append("|");
-        sb.append(ultimoMovimiento);
-        sb.append("|");
-        sb.append(acumulado);
+        sb.append(nombre);        
         return sb.toString(); 
     } 
 

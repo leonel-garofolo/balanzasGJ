@@ -37,6 +37,7 @@ import com.balanzasgj.app.model.Usuarios;
 import com.balanzasgj.app.persistence.ClientesPersistence;
 import com.balanzasgj.app.persistence.ComunicacionesPersistence;
 import com.balanzasgj.app.persistence.EjesPersistence;
+import com.balanzasgj.app.persistence.ImportadoresExportadoresPersistence;
 import com.balanzasgj.app.persistence.IndicadoresPersistence;
 import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
 import com.balanzasgj.app.persistence.PatentesPersistence;
@@ -47,6 +48,7 @@ import com.balanzasgj.app.persistence.TransportesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ClientesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ComunicacionesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.EjesPersistenceJdbc;
+import com.balanzasgj.app.persistence.impl.jdbc.ImportadoresExportadoresPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.IndicadoresPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.PatentesPersistenceJdbc;
@@ -160,7 +162,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private ComboBoxAutoComplete<Procedencias> cbxProcedencia;
 	@FXML
-	private ComboBoxAutoComplete<Procedencias> cbxImpExp;
+	private ComboBoxAutoComplete<ImportadoresExportadores> cbxImpExp;
 	@FXML
 	private Button btnAccesoProducto;
 	@FXML
@@ -268,6 +270,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private TransportesPersistence transportesPersistence;
 	private IndicadoresPersistence indicadoresPersistence;
 	private ComunicacionesPersistence comunicacionesPersistence;
+	private ImportadoresExportadoresPersistence impExpPersistence;
 	private EjesPersistence ejesPersistence;
 	private TarasPersistence tarasPersistence;
 	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
@@ -514,6 +517,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					tara.setCliente(cbxCliente.getValue());
 					tara.setTransporte(cbxTransporte.getValue());
 					tara.setProcedencias(cbxProcedencia.getValue());
+					if(cbxImpExp.isVisible()) {
+						tara.setImpExp(cbxImpExp.getValue());
+					}
 					tara.setPatente(txtPatente.getText());
 					tara.setNumDoc(txtNumDoc.getText());
 					tara.setConductor(txtConductor.getText());
@@ -624,6 +630,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxProcedencia.setDisable(!edit);
 		cbxCliente.setDisable(!edit);
 		cbxProducto.setDisable(!edit);
+		cbxImpExp.setDisable(!edit);
 	}
 
 	private void loadTara() {
@@ -645,7 +652,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxTransporte.setValue(taraEdit.getTransporte());
 		cbxProcedencia.setValue(taraEdit.getProcedencias());
 		cbxCliente.setValue(taraEdit.getCliente());
-		cbxProducto.setValue(taraEdit.getProducto());			
+		cbxProducto.setValue(taraEdit.getProducto());	
+		cbxImpExp.setValue(taraEdit.getImpExp());
 		
 		cbxModoTara.setValue(taraEdit.getModoTara());
 		cbxModalidad.setValue(taraEdit.getModalidad());
@@ -704,6 +712,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		} else {
 			if(taraEdit.getIdtaras() != null) {
 				enabledTara(cbxModoTara.getValue());
+				enabledAduana(cbxModalidad.getValue());
 				enabledTableEjes(cbxModoChasis.getValue());
 				layout1.setDisable(true);
 			}			
@@ -769,6 +778,19 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		}
 	}
 	
+	@FXML
+	private void handleEditImpExp(ActionEvent event) {
+		String value = Message.addElementAduana(ConfiguracionesController.IMPORTADORES);
+		if(!value.equals("")) {
+			ImportadoresExportadores ie = (ImportadoresExportadores)buildObject(ConfiguracionesController.IMPORTADORES, value);			
+			impExpPersistence.save(ie);
+			cbxImpExp.getItems().clear();
+			cbxImpExp.getItems().addAll(impExpPersistence.findAll());
+			cbxImpExp.reload();
+			cbxImpExp.setValue(ie);
+		}
+	}
+	
 	private Entidades buildObject(String type, String values) {
 		String[] result = values.split(AduanaDialog.SPLIT);
 		switch (type) {
@@ -794,8 +816,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			Transportes t = new Transportes();
 			t.setNombre(result[0]);
 			t.setCuit(result[1]);
-			return t;
-
+			return t;	
 		default:
 			break;
 		}
@@ -917,6 +938,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxTransporte.getEditor().setStyle("-fx-opacity: 1");
 		cbxProcedencia.setStyle("-fx-opacity: 1");
 		cbxProcedencia.getEditor().setStyle("-fx-opacity: 1");
+		cbxImpExp.setStyle("-fx-opacity: 1");
+		cbxImpExp.getEditor().setStyle("-fx-opacity: 1");
 		
 		tblEjes.setVisible(false);
 		btnEliminarEje.setVisible(false);
@@ -1039,6 +1062,13 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		        }
 		    }
 		});
+	}
+	
+	private void enabledAduana(String newValue) {
+		if(newValue != null && newValue.equals(M_ADUANA)) {
+			modoAduana(true);
+		}
+		modoAduana(false);
 	}
 	
 	private void enabledTara(String newValue) {
@@ -1206,6 +1236,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		this.transportesPersistence = new TransportesPersistenceJdbc();
 		this.indicadoresPersistence = new IndicadoresPersistenceJdbc();
 		this.comunicacionesPersistence = new ComunicacionesPersistenceJdbc();
+		this.impExpPersistence = new ImportadoresExportadoresPersistenceJdbc();
 		this.ejesPersistence = new EjesPersistenceJdbc();
 		this.tarasPersistence = new TarasPersistenceJdbc();
 		this.parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
@@ -1219,6 +1250,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxTransporte.reload();
 		cbxProcedencia.getItems().addAll(procedenciasPersistence.findAll());
 		cbxProcedencia.reload();
+		cbxImpExp.getItems().addAll(impExpPersistence.findAll());
+		cbxImpExp.reload();
 		
 		colTransaccion.setCellValueFactory(new PropertyValueFactory<>("transaccion"));
 		colFecha.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
@@ -1283,6 +1316,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxCliente.setValue(null);
 		cbxTransporte.setValue(null);
 		cbxProcedencia.setValue(null);		
+		cbxImpExp.setValue(null);
+		
 		txtNumDoc.setText("");
 		txtConductor.setText("");
 		txtPatente.setText("");
@@ -1313,7 +1348,6 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	}
 
 	private String data;
-	private int indexInit = 0;
 	@Override
 	public void serialEvent(SerialPortEvent event) {
 		if(!ingManual) {
@@ -1324,7 +1358,6 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					socket.getInput().read(chunk, 0, available);
 					data = new String(chunk);
 					Log.info("Rx ->" + data);
-					System.out.println("Rx ->" + data);
 					data = data.trim();
 					data = data.substring(this.posicionInicioDato, this.longitudDato);
 					sBufferConnection = data.trim().replaceAll("[^\\d.]", "");		
@@ -1369,39 +1402,37 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		if(event.getCode().equals(KeyCode.ENTER) 
 				|| event.getCode().equals(KeyCode.TAB)) {
 			if(event.getSource() == txtPatente) {
-				cbxProducto.requestFocus();
-				return;
-			}
-			if(event.getSource() == cbxProducto) {
-				cbxCliente.requestFocus();
-				return;
-			}
-			if(event.getSource() == cbxCliente) {
-				cbxTransporte.requestFocus();
-				return;
-			}
-			if(event.getSource() == cbxTransporte) {
-				cbxProcedencia.requestFocus();
-				return;
-			}
-			if(event.getSource() == cbxProcedencia) {
-				txtNumDoc.requestFocus();
-				return;
-			}
-			if(event.getSource() == txtNumDoc) {
 				txtConductor.requestFocus();
 				return;
 			}
 			if(event.getSource() == txtConductor) {
+				txtNumDoc.requestFocus();
+				return;
+			}
+			if(event.getSource() == txtNumDoc) {
 				txtFactura.requestFocus();
 				return;
 			}
-			if(event.getSource() == txtFactura) {
+			
+			if(event.getSource() == cbxProducto) {
+				cbxTransporte.requestFocus();
+				return;
+			}
+			if(event.getSource() == cbxTransporte) {
 				txtObservaciones.requestFocus();
 				return;
 			}
 			if(event.getSource() == txtObservaciones) {
-				btnAplicar.requestFocus();
+				cbxCliente.requestFocus();
+				return;
+			}
+			if(event.getSource() == cbxCliente) {
+				cbxProcedencia.requestFocus();
+				return;
+			}
+			
+			if(event.getSource() == cbxProcedencia) {
+				btnBuscar.requestFocus();
 				return;
 			}
 		}		
