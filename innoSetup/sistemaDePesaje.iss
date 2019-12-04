@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Sistema de Pesaje"
-#define MyAppVersion "1.6"
+#define MyAppVersion "1.7"
 #define MyAppPublisher "LG, Inc."
 #define MyAppURL "http://www.example.com/"
 #define MyAppExeName "SistemaDePesaje.exe"
@@ -41,7 +41,7 @@ Source: "D:\innoSetup\SistemaDePesaje\jre\*"; DestDir: "{app}\jre"; Flags: ignor
 Source: "D:\innoSetup\SistemaDePesaje\SistemaDePesaje.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "D:\innoSetup\SistemaDePesaje\mysql-5.5.62-win32.msi"; DestDir: "{tmp}"; Flags: nocompression dontcopy
 Source: "D:\innoSetup\SistemaDePesaje\bk_inicial.sql"; DestDir: "{app}\mysql"; Flags: ignoreversion
-Source: "D:\innoSetup\SistemaDePesaje\script_restore.bat"; DestDir: "{app}\bin"; Flags: ignoreversion
+Source: "D:\innoSetup\SistemaDePesaje\script_restore.bat"; DestDir: "{app}\mysql\bin"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
