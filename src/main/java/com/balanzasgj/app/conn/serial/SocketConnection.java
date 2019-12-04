@@ -6,12 +6,17 @@ import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.TooManyListenersException;
 
+import org.apache.log4j.Logger;
+
+import com.balanzasgj.app.informes.TransaccionesDetalleInforme;
+
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
 public class SocketConnection implements SerialPortEventListener {
+	final static Logger logger = Logger.getLogger(SocketConnection.class);
 	private SerialPort serialPort;
 	public static String st;
 	public char[] c;
@@ -102,7 +107,7 @@ public class SocketConnection implements SerialPortEventListener {
 						out.write(data.getBytes());			
 						out.write(ENQ);		
 					} catch (IOException e) {
-						e.printStackTrace();
+						logger.error(e);
 					}
 				}
 			}
@@ -112,7 +117,7 @@ public class SocketConnection implements SerialPortEventListener {
 			try {				
 				out.write(send.getBytes());				
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 	}
@@ -126,7 +131,7 @@ public class SocketConnection implements SerialPortEventListener {
 			serialPort.addEventListener(event);
 			serialPort.notifyOnDataAvailable(true);
 		} catch (TooManyListenersException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 }

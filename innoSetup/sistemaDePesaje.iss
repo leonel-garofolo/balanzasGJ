@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Sistema de Pesaje"
-#define MyAppVersion "1.5"
+#define MyAppVersion "1.6"
 #define MyAppPublisher "LG, Inc."
 #define MyAppURL "http://www.example.com/"
 #define MyAppExeName "SistemaDePesaje.exe"
@@ -23,10 +23,11 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName=c:\SistemaDePesaje
 DisableProgramGroupPage=yes
 OutputDir=D:\innoSetup
-OutputBaseFilename=setup
+OutputBaseFilename=setupSistemaDePesaje_{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 DisableDirPage=yes
+PrivilegesRequired=admin
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

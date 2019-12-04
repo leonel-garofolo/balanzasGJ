@@ -56,7 +56,7 @@ public class App {
 					sched.start();
 				} catch (SchedulerException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error(e);
 				}
 				
 			}								

@@ -1,34 +1,21 @@
 package com.balanzasgj.app.informes;
 
-import ar.com.fdvs.dj.core.DJConstants;
-import ar.com.fdvs.dj.core.DynamicJasperHelper;
-import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
-import ar.com.fdvs.dj.domain.AutoText;
-import ar.com.fdvs.dj.domain.DJCalculation;
-import ar.com.fdvs.dj.domain.DynamicReport;
-import ar.com.fdvs.dj.domain.Style;
-import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
-import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
-import ar.com.fdvs.dj.domain.builders.SubReportBuilder;
-import ar.com.fdvs.dj.domain.constants.Font;
-import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
-import ar.com.fdvs.dj.domain.constants.VerticalAlign;
-import ar.com.fdvs.dj.domain.entities.Subreport;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import com.balanzasgj.app.model.Taras;
 import com.balanzasgj.app.persistence.TarasPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.TarasPersistenceJdbc;
+
+import ar.com.fdvs.dj.domain.DynamicReport;
+import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
 import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
-import java.awt.*;
-import java.math.BigDecimal;
-import java.util.List;
-
 public class TransaccionesDetalleInforme extends ReportBase{
+	final static Logger logger = Logger.getLogger(TransaccionesDetalleInforme.class);
     private List<Taras> taras;
     public TransaccionesDetalleInforme(List<Taras> taras){
         this.taras = taras;
@@ -40,7 +27,7 @@ public class TransaccionesDetalleInforme extends ReportBase{
         try {
             inf.generateReport();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         inf.show();
 
@@ -75,7 +62,7 @@ public class TransaccionesDetalleInforme extends ReportBase{
                 drb.addConcatenatedReport(subreport);
 
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e);
             }
 
         }

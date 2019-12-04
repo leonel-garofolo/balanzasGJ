@@ -34,7 +34,7 @@ public class MiPrinterJob {
 			job.setPrintService(PrintServiceLookup.lookupDefaultPrintService());
 		} catch (PrinterException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 	
@@ -53,7 +53,7 @@ public class MiPrinterJob {
 	        document.close();
 		} catch (IOException|JRException | PrinterException e) {
 			logger.error("Ops!", e);
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 }

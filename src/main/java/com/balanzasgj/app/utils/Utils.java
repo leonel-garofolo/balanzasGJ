@@ -8,7 +8,10 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
 public class Utils {
+	final static Logger logger = Logger.getLogger(Utils.class);
 	public static String PATH_MYSQL_INSTALLER = "C:\\mysql\\bin\\";
 	
 	public static Date convertToDate(LocalDate dateToConvert) {
@@ -46,7 +49,7 @@ public class Utils {
 		      fos.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e);
 		} 
 	}
 	
@@ -57,7 +60,7 @@ public class Utils {
 			Runtime.getRuntime().exec(command);				
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e);
 		} 
 	}
 }
