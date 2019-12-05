@@ -18,10 +18,8 @@ public class ConnTest implements SerialPortEventListener {
 			//socket.sendData("D004500");
 			socket.sendData("+   35.0KG ");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			logger.error(e);
-		}
-			
+			e.printStackTrace();
+		}	
 	}
 	
 	public static void main(String[] ars) {
@@ -40,8 +38,7 @@ public class ConnTest implements SerialPortEventListener {
 				String sBufferConnection = new String(chunk);
 				System.out.println(sBufferConnection);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				logger.error(e);
+				e.printStackTrace();
 			}
 			
 		}
