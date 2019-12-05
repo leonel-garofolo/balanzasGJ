@@ -17,6 +17,7 @@ import com.balanzasgj.app.model.ParametrosGlobales;
 import com.balanzasgj.app.model.Usuarios;
 import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
+import com.balanzasgj.app.utils.Message;
 import com.ibm.icu.text.SimpleDateFormat;
 
 import javafx.embed.swing.SwingFXUtils;
@@ -73,7 +74,12 @@ public class PrincipalController implements Initializable, IView{
 	
 	@FXML
     private void handleTara(ActionEvent event) {
-		this.openWindows("PesarEntradaSalidaView", "Tara");
+		ParametrosGlobales transact = parametrosGlobalesPersistence.findById(ParametrosGlobales.P_EMPRESA_TRANSACCION);
+		if(transact != null) {
+			this.openWindows("PesarEntradaSalidaView", "Tara");
+		} else {
+			Message.error("Para ingresar a la pantalla de Pesaje es requerido el campo 'Transaccion' en la pantalla de Sistemas.");
+		}
     }
 	
 	@FXML

@@ -185,7 +185,7 @@ public class ProcedenciasPersistenceJdbc extends GenericJdbcDAO<Procedencias> im
 			super.doUpdate(procedencias);
 		}
 		else {
-			super.doInsert(procedencias);
+			procedencias.setCodigo(super.doInsertAutoIncr(procedencias));
 		}
 		return procedencias ;
 	}	

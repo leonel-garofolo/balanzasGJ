@@ -219,8 +219,7 @@ public abstract class GenericJdbcDAO<T> {
 	 * Inserts the given bean in the database (SQL INSERT)
 	 * @param bean
 	 */
-	protected void doInsert(T bean) {
-		 
+	protected void doInsert(T bean) {		
 		Connection conn = null;
 		try {
 			conn = getConnection();
@@ -228,7 +227,7 @@ public abstract class GenericJdbcDAO<T> {
 			//--- Call specific method to set the values to be inserted
 			setValuesForInsert(ps, INITIAL_POSITION, bean); 
 			//--- Execute SQL INSERT
-			ps.executeUpdate();
+			ps.executeUpdate();			
 			ps.close();
 		} catch (SQLException e) {
 			logger.error(e);

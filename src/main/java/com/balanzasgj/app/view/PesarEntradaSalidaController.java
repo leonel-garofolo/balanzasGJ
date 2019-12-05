@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
+import javafx.application.Platform;
 import org.javafx.controls.customs.ComboBoxAutoComplete;
 import org.jfree.util.Log;
 
@@ -287,7 +288,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private int posicionInicioDato;
 	private int longitudDato;
 	
-	private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		
 	@FXML
 	private TextField txtTara;
@@ -755,7 +756,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		String value = Message.addElementAduana(ConfiguracionesController.PRODUCTOS);
 		if(!value.equals("")) {
 			Productos prod = (Productos)buildObject(ConfiguracionesController.PRODUCTOS, value);			
-			productosPersistence.save(prod );
+			prod = productosPersistence.save(prod );
 			cbxProducto.getItems().clear();
 			cbxProducto.getItems().addAll(productosPersistence.findAll());	
 			cbxProducto.reload();
@@ -768,7 +769,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		String value = Message.addElementAduana(ConfiguracionesController.CLIENTE);
 		if(!value.equals("")) {
 			Clientes cli = (Clientes)buildObject(ConfiguracionesController.CLIENTE, value);			
-			clientesPersistence.save(cli );
+			cli = clientesPersistence.save(cli );
 			cbxCliente.getItems().clear();
 			cbxCliente.getItems().addAll(clientesPersistence.findAll());
 			cbxCliente.reload();
@@ -781,7 +782,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		String value = Message.addElementAduana(ConfiguracionesController.IMPORTADORES);
 		if(!value.equals("")) {
 			ImportadoresExportadores ie = (ImportadoresExportadores)buildObject(ConfiguracionesController.IMPORTADORES, value);			
-			impExpPersistence.save(ie);
+			ie = impExpPersistence.save(ie);
 			cbxImpExp.getItems().clear();
 			cbxImpExp.getItems().addAll(impExpPersistence.findAll());
 			cbxImpExp.reload();
@@ -799,7 +800,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		case ConfiguracionesController.IMPORTADORES:
 			ImportadoresExportadores ie = new ImportadoresExportadores();
 			ie.setNombre(result[0]);
-			ie.setCuit(result[1]);
+			if(result.length > 1) {
+				ie.setCuit(result[1]);
+			}
 			return ie;
 		case ConfiguracionesController.PROCEDENCIAS:
 			Procedencias pro = new Procedencias();
@@ -808,12 +811,16 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		case ConfiguracionesController.PRODUCTOS:
 			Productos p = new Productos();
 			p.setNombre(result[0]);
-			p.setAlias(result[1]);
+			if(result.length > 1) {
+				p.setAlias(result[1]);
+			}
 			return p;
 		case ConfiguracionesController.TRANSPORTES:
 			Transportes t = new Transportes();
 			t.setNombre(result[0]);
-			t.setCuit(result[1]);
+			if(result.length > 1) {
+				t.setCuit(result[1]);
+			}
 			return t;	
 		default:
 			break;
@@ -826,7 +833,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		String value = Message.addElementAduana(ConfiguracionesController.TRANSPORTES);
 		if(!value.equals("")) {
 			Transportes tra = (Transportes)buildObject(ConfiguracionesController.TRANSPORTES, value);
-			transportesPersistence.save(tra );
+			tra =transportesPersistence.save(tra );
 			cbxTransporte.getItems().clear();
 			cbxTransporte.getItems().addAll(transportesPersistence.findAll());	
 			cbxTransporte.reload();
@@ -839,7 +846,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		String value  = Message.addElementAduana(ConfiguracionesController.PROCEDENCIAS);
 		if(!value.equals("")) {
 			Procedencias pro = (Procedencias)buildObject(ConfiguracionesController.PROCEDENCIAS, value);			
-			procedenciasPersistence.save(pro );
+			pro = procedenciasPersistence.save(pro );
 			cbxProcedencia.getItems().clear();
 			cbxProcedencia.getItems().addAll(procedenciasPersistence.findAll());	
 			cbxProcedencia.reload();
@@ -1339,6 +1346,37 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		initValues();
 		initPersistence();		
 		clearForm();
+		
+		// longrunning operation runs on different thread
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                Runnable updater = new Runnable() {
+
+                    @Override
+                    public void run() {
+                    	if(statusTara == 'E') {
+                    		txtFecha.setText(format.format(new Date()));
+                    	}
+                    }
+                };
+
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                    }
+
+                    // UI update is run on the Application thread
+                    Platform.runLater(updater);
+                }
+            }
+
+        });
+        // don't let thread prevent JVM shutdown
+        thread.setDaemon(true);
+        thread.start();
 	}
 	
 	public void closeSocket() {

@@ -194,7 +194,7 @@ public class TransportesPersistenceJdbc extends GenericJdbcDAO<Transportes> impl
 			super.doUpdate(transportes);
 		}
 		else {
-			super.doInsert(transportes);
+			transportes.setCodigo(super.doInsertAutoIncr(transportes));
 		}
 		return transportes ;
 	}	

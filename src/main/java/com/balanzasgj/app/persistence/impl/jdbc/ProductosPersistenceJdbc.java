@@ -197,7 +197,7 @@ public class ProductosPersistenceJdbc extends GenericJdbcDAO<Productos> implemen
 			super.doUpdate(productos);
 		}
 		else {
-			super.doInsert(productos);
+			productos.setCodigo(super.doInsertAutoIncr(productos));
 		}
 		return productos ;
 	}	

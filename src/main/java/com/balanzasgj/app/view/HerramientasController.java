@@ -136,87 +136,115 @@ public class HerramientasController extends AnchorPane implements IView {
 	@FXML
     private void handleGuardar(ActionEvent event) {
 		ParametrosGlobales pg = new ParametrosGlobales();		
-		if(txtTransaccion != null && !txtTransaccion.getText().isEmpty()) {			
+		if(txtTransaccion != null
+				&& txtTransaccion.getText() != null
+				&& !txtTransaccion.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_TRANSACCION);
 			pg.setValue(txtTransaccion.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
 				
-		if(txtTransaccion != null &&  !txtBkpAuto.getText().isEmpty()) {			
+		if(txtBkpAuto != null 
+				&& txtBkpAuto.getText() != null
+				&& !txtBkpAuto.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_AUTOMATICO);
 			pg.setValue(txtBkpAuto.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
 		
-		if(txtTransaccion != null &&  !txtPathBkp.getText().isEmpty()) {			
+		if(txtTransaccion != null 
+				&& txtPathBkp.getText() != null
+				&&  !txtPathBkp.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_BACKUP);
 			pg.setValue(txtPathBkp.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
 		
-		if(txtPathRst.getText() != null && !txtPathRst.getText().isEmpty()) {			
+		if(txtPathRst != null 
+				&& txtPathRst.getText() != null 
+				&& !txtPathRst.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_RESTORE);
 			pg.setValue(txtPathRst.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		/* PROPIETARIO DE LA BALANZA*/
-		if(txtNombreBalanza != null &&  !txtNombreBalanza.getText().isEmpty()) {			
+		if(txtNombreBalanza != null 
+				&& txtNombreBalanza.getText() != null 
+				&&  !txtNombreBalanza.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL);
 			pg.setValue(txtNombreBalanza.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
 		
-		if(txtDireccionBalanza != null &&  !txtDireccionBalanza.getText().isEmpty()) {			
+		if(txtDireccionBalanza != null 
+				&& txtDireccionBalanza.getText() != null 
+				&&  !txtDireccionBalanza.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_DIR_BAL);
 			pg.setValue(txtDireccionBalanza.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
 		
-		if(txtLocalidadBalanza != null && !txtLocalidadBalanza.getText().isEmpty()) {			
+		if(txtLocalidadBalanza != null 
+				&& txtLocalidadBalanza.getText() != null 
+				&& !txtLocalidadBalanza.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_LOC_BAL);
 			pg.setValue(txtLocalidadBalanza.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
 		
-		if(txtProvBalanza != null &&  !txtProvBalanza.getText().isEmpty()) {			
+		if(txtProvBalanza != null 
+				&& txtProvBalanza.getText() != null 
+				&&  !txtProvBalanza.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_PROV_BAL);
 			pg.setValue(txtProvBalanza.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
 		
-		if(txtTelBalanza != null &&  !txtTelBalanza.getText().isEmpty()) {			
+		if(txtTelBalanza != null 
+				&& txtTelBalanza.getText() != null 
+				&& !txtTelBalanza.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_TEL_BAL);
 			pg.setValue(txtTelBalanza.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
 		
 		/* DATOS DE LA EMPRESA*/
-		if(txtNombreEmpresa != null &&  !txtNombreEmpresa.getText().isEmpty()) {			
+		if(txtNombreEmpresa != null 
+				&& txtNombreEmpresa.getText() != null 
+				&&  !txtNombreEmpresa.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);
 			pg.setValue(txtNombreEmpresa.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
 		
-		if(txtDireccion != null &&  !txtDireccion.getText().isEmpty()) {			
+		if(txtDireccion != null 
+				&& txtDireccion.getText() != null 
+				&&  !txtDireccion.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_DIR);
 			pg.setValue(txtDireccion.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
 		
-		if(txtLocalidad != null && !txtLocalidad.getText().isEmpty()) {			
+		if(txtLocalidad != null 
+				&& txtLocalidad.getText() != null 
+				&& !txtLocalidad.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_LOC);
 			pg.setValue(txtLocalidad.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
 		
-		if(txtProv != null &&  !txtProv.getText().isEmpty()) {			
+		if(txtProv != null 
+				&& txtProv.getText() != null 
+				&&  !txtProv.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_PROV);
 			pg.setValue(txtProv.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
 		
-		if(txtTel != null &&  !txtTel.getText().isEmpty()) {			
+		if(txtTel != null 
+				&& txtTel.getText() != null 
+				&&  !txtTel.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_TEL);
 			pg.setValue(txtTel.getText());
 			parametrosGlobalesPersistence.save(pg);
@@ -244,7 +272,9 @@ public class HerramientasController extends AnchorPane implements IView {
 			}
 		}
 		
-		if(!txtClaveIngManual.getText().isEmpty()) {			
+		if(txtClaveIngManual != null 
+				&& txtClaveIngManual.getText() != null 
+				&& !txtClaveIngManual.getText().isEmpty()) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_ING_MANUAL);
 			pg.setValue(txtClaveIngManual.getText());
 			parametrosGlobalesPersistence.save(pg);
@@ -296,39 +326,61 @@ public class HerramientasController extends AnchorPane implements IView {
 				"}");
 		parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
 		txtNombreEmpresa.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtNombreEmpresa.setValue(newValue.toUpperCase());
+			if(newValue != null) {
+				txtNombreEmpresa.setValue(newValue.toUpperCase());
+			}
 		});
 		txtDireccion.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtDireccion.setText(newValue.toUpperCase());
+			if(newValue != null) {
+				txtDireccion.setText(newValue.toUpperCase());
+			}			
 		});
 		txtLocalidad.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtLocalidad.setText(newValue.toUpperCase());
+			if(newValue != null) {
+				txtLocalidad.setText(newValue.toUpperCase());
+			}
 		});
 		txtProv.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtProv.setText(newValue.toUpperCase());
+			if(newValue != null) {
+				txtProv.setText(newValue.toUpperCase());
+			}
 		});
 		txtTel.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtTel.setText(newValue.toUpperCase());
+			if(newValue != null) {
+				txtTel.setText(newValue.toUpperCase());
+			}
 		});
 		
 		txtNombreBalanza.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtNombreBalanza.setText(newValue.toUpperCase());
+			if(newValue != null) {
+				txtNombreBalanza.setText(newValue.toUpperCase());
+			}
 		});
 		txtDireccionBalanza.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtDireccionBalanza.setText(newValue.toUpperCase());
+			if(newValue != null) {
+				txtDireccionBalanza.setText(newValue.toUpperCase());
+			}			
 		});
 		txtLocalidadBalanza.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtLocalidadBalanza.setText(newValue.toUpperCase());
+			if(newValue != null) {
+				txtLocalidadBalanza.setText(newValue.toUpperCase());
+			}
 		});
 		txtProvBalanza.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtProvBalanza.setText(newValue.toUpperCase());
+			if(newValue != null) {
+				txtProvBalanza.setText(newValue.toUpperCase());
+			}
 		});
 		txtTelBalanza.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtTelBalanza.setText(newValue.toUpperCase());
+			if(newValue != null) {
+				txtTelBalanza.setText(newValue.toUpperCase());
+			}
 		});
 		
 		txtTransaccion.textProperty().addListener((ov, oldValue, newValue) -> {
-			txtTransaccion.setValue(newValue.toUpperCase());
+			if(newValue != null) {
+				txtTransaccion.setValue(newValue.toUpperCase());
+			}
 		});		
 		
 		ParametrosGlobales pg = new ParametrosGlobales();

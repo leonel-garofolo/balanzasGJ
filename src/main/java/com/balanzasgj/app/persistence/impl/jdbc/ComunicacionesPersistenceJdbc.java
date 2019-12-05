@@ -192,7 +192,7 @@ public class ComunicacionesPersistenceJdbc extends GenericJdbcDAO<Comunicaciones
 			super.doUpdate(comunicaciones);
 		}
 		else {
-			super.doInsert(comunicaciones);
+			comunicaciones.setIdcomunicaciones(super.doInsertAutoIncr(comunicaciones));
 		}
 		return comunicaciones ;
 	}	

@@ -188,7 +188,7 @@ public class ClientesPersistenceJdbc extends GenericJdbcDAO<Clientes> implements
 			super.doUpdate(clientes);
 		}
 		else {
-			super.doInsert(clientes);
+			clientes.setCodigo(super.doInsertAutoIncr(clientes));
 		}
 		return clientes ;
 	}	
