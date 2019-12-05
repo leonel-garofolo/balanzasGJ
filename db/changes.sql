@@ -11,6 +11,9 @@ TRUNCATE TABLE transportes;
 /* seteo de pass */
 mysqladmin -u root -p password newpass
 
+/* USUARIO ADMIN*/
+INSERT INTO `usuarios` (`id`, `nombre`, `clave`, `id_perfil`) VALUES (1, 'admin', '123456', 1);
+
 
 /*0.0.2*/
 alter table parametros_goblales add valueByte LONGBLOB default null;

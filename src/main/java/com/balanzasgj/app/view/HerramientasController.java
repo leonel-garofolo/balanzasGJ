@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
 
+import org.apache.log4j.Logger;
 import org.javafx.controls.customs.StringField;
 
 import com.balanzasgj.app.model.ParametrosGlobales;
@@ -40,6 +41,7 @@ import javafx.stage.Stage;
 import javafx.util.converter.DateTimeStringConverter;
 
 public class HerramientasController extends AnchorPane implements IView {
+	final static Logger logger = Logger.getLogger(HerramientasController.class);
 	@FXML
 	private StringField txtNombreEmpresa;
 	@FXML
@@ -234,14 +236,11 @@ public class HerramientasController extends AnchorPane implements IView {
 				pg.setValueByte(blob);
 				parametrosGlobalesPersistence.save(pg);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			} catch (SerialException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 		
@@ -396,10 +395,10 @@ public class HerramientasController extends AnchorPane implements IView {
 	            imgEmpresa.setImage(image);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			}
             
 		}

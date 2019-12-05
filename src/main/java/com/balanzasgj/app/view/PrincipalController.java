@@ -10,6 +10,8 @@ import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
+import org.apache.log4j.Logger;
+
 import com.balanzasgj.app.App;
 import com.balanzasgj.app.model.ParametrosGlobales;
 import com.balanzasgj.app.model.Usuarios;
@@ -37,6 +39,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class PrincipalController implements Initializable, IView{	
+	final static Logger logger = Logger.getLogger(PrincipalController.class);
 	private SimpleDateFormat sf;
 	@FXML
 	private ImageView imgEmpresa;
@@ -137,8 +140,10 @@ public class PrincipalController implements Initializable, IView{
 		    stage.initModality(Modality.APPLICATION_MODAL);
 		    stage.resizableProperty().setValue(Boolean.FALSE);
 		    stage.setTitle(title);
+		    /*
 		    Image ico = new Image(App.PATH_ICONO); 
-			stage.getIcons().add(ico); 
+			stage.getIcons().add(ico);
+			*/ 
 		    Scene scene = new Scene(rootHerramientas);
 		    scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
 		    stage.setScene(scene);  
@@ -156,7 +161,7 @@ public class PrincipalController implements Initializable, IView{
 		    }		    
 		    stage.show();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}	
 
@@ -187,11 +192,9 @@ public class PrincipalController implements Initializable, IView{
 	            Image image = SwingFXUtils.toFXImage(buffer, null);
 	            imgEmpresa.setImage(image);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			}
             
 		}

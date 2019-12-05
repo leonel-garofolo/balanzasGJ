@@ -14,7 +14,7 @@ public class GargareCollection extends Thread {
 			} catch (InterruptedException e) {
 				logger.error("error thead", e);
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			}
 			logger.info("********** INICIO: 'LIMPIEZA GARBAGE COLECTOR' **********");
 			Runtime basurero = Runtime.getRuntime();

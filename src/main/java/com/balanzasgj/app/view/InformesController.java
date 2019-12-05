@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import org.apache.log4j.Logger;
 import org.javafx.controls.customs.ComboBoxAutoComplete;
 
 import com.balanzasgj.app.informes.TransaccionesInforme;
@@ -60,6 +61,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public class InformesController {
+	final static Logger logger = Logger.getLogger(InformesController.class);
 	private static final String B_TODO = "TODO";
 	private static final String B_NUMERO = "Número de Transacción";
 	private static final String B_PATENTE = "Patente";
@@ -220,7 +222,7 @@ public class InformesController {
             informe.generateReport();
             informe.show();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
 
     }
@@ -292,10 +294,10 @@ public class InformesController {
 	            params.put(ParametrosGlobales.P_EMPRESA_IMG, image);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			}
 			
 		}
@@ -304,7 +306,7 @@ public class InformesController {
 			ShowJasper.openBeanDataSource("transaccionesDetalles", params, new JRBeanCollectionDataSource(tblPesajes.getItems()) );
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e);
 		}
     }
 

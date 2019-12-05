@@ -7,6 +7,8 @@ import java.util.HashMap;
 
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
+
 import com.balanzasgj.app.persistence.impl.jdbc.commons.DataSourceProvider;
 
 import net.sf.jasperreports.engine.JRException;
@@ -18,6 +20,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class ShowJasper {
+	final static Logger logger = Logger.getLogger(ShowJasper.class);
 
     public static void open(String document, HashMap<String, Object>  params) throws JRException {
         DataSource dataSource = DataSourceProvider.getDataSource() ;
@@ -25,7 +28,7 @@ public class ShowJasper {
         try {
             connection = dataSource.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
 
         if(connection != null){
@@ -47,7 +50,7 @@ public class ShowJasper {
         try {
             connection = dataSource.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
 
         if(connection != null){
@@ -67,7 +70,7 @@ public class ShowJasper {
         try {
             ShowJasper.open("transacciones", null);
         } catch (JRException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 }

@@ -426,11 +426,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		            
 		            params.put(ParametrosGlobales.P_EMPRESA_IMG, image);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error(e);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error(e);
 				}
 				
 			}
@@ -438,7 +436,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 				ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
 			} catch (JRException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 	}

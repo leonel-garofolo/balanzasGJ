@@ -62,7 +62,7 @@ public class FirstSteps {
                     System.out.print(new String(buffer,0,len));
                 }
             } catch ( IOException e ) {
-                e.printStackTrace();
+                logger.error(e);
             }            
         }
     }
@@ -83,7 +83,7 @@ public class FirstSteps {
                     Thread.sleep(1000);  
                 }                
             } catch ( IOException | InterruptedException e ) {
-                e.printStackTrace();
+                logger.error(e);
             }            
         }
     }
@@ -93,7 +93,7 @@ public class FirstSteps {
             (new FirstSteps()).connect("COM1");
         } catch ( Exception e ) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 }
