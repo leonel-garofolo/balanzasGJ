@@ -27,6 +27,7 @@ import com.balanzasgj.app.persistence.impl.jdbc.IndicadoresPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProcedenciasPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.TransportesPersistenceJdbc;
+import com.balanzasgj.app.utils.Message;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -77,9 +78,7 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private Button btnAplicarEntidad;
 	@FXML
-	private ComboBox<String> cbxEntidades;
-	@FXML
-	private ComboBox<Comunicaciones> cbxIndicadores;
+	private ComboBox<String> cbxEntidades;	
 	@FXML
 	private TextField txtPuerto;
 	@FXML
@@ -191,20 +190,7 @@ public class ConfiguracionesController extends AnchorPane {
 		}
 		loadFormEntidades(this.cbxEntidades.getSelectionModel().getSelectedItem());
 		
-	}
-	
-	@FXML
-	private void handleComunicaciones(ActionEvent event) {
-		if(!cbxIndicadores.getSelectionModel().isEmpty()) {
-			Comunicaciones comun = cbxIndicadores.getSelectionModel().getSelectedItem();
-			if(comun.getIdindicadores() != null) {
-				Indicadores indicador = indicadoresPersistence.findById(Long.valueOf(comun.getIdindicadores()));
-				cbxIndicadorConfig.setValue(indicador);
-			}else {
-				cbxIndicadorConfig.setValue(null);
-			}
-		}
-	}
+	}		
 	
 	@FXML
 	private void handleSelectedIndicador(ActionEvent event) {
@@ -226,21 +212,16 @@ public class ConfiguracionesController extends AnchorPane {
 	
 	@FXML
 	private void handleAplicarComunicaciones(ActionEvent event) {		
-		if(cbxIndicadores.getValue() != null
-				&& cbxIndicadorConfig.getValue() != null) {			
-			Comunicaciones comun = cbxIndicadores.getSelectionModel().getSelectedItem();
+		if(cbxIndicadorConfig.getValue() != null) {			
+			Comunicaciones comun = new Comunicaciones();
+			comun.setIdcomunicaciones((long)1);
+			comun.setNombre("INDICADOR #1");
 			comun.setIdindicadores(cbxIndicadorConfig.getSelectionModel().getSelectedItem().getIdindicadores().intValue());
 			comunicacionesPersistence.save(comun);
-			cleanComnunicaciones();
+			Message.info("Se guardo correctamente.");
 		}else {
 			System.out.println("es necesario seleccionar indicodpres");
 		}
-	}
-	
-	private void cleanComnunicaciones() {
-		cbxIndicadores.setValue(null);
-		cbxIndicadorConfig.setValue(null);
-		txtIndicadorInfo.setText("");
 	}
 
 	@FXML
@@ -382,13 +363,23 @@ public class ConfiguracionesController extends AnchorPane {
 		txtEntidadAcumulado.setVisible(isVisible);
 		
 	}
-	
+		
 	private void loadFormIndicadores() {
 		cleanFormIndicadores();
 		List<Indicadores> indicadores = indicadoresPersistence.findAll();
 		tblIndicadores.getItems().addAll(indicadores);
 		cbxIndicadorConfig.getItems().clear();
 		cbxIndicadorConfig.getItems().addAll(indicadores);
+		
+		List<Comunicaciones> all =comunicacionesPersistence.findAll();
+		for(Comunicaciones c: all) {
+			Indicadores i = indicadoresPersistence.findById((long)c.getIdindicadores());
+			if(i != null) {
+				cbxIndicadorConfig.setValue(i);
+				handleSelectedIndicador(null);
+			}
+			break;
+		}
 	}
 
 	private void cleanFormEntidades() {
@@ -521,8 +512,7 @@ public class ConfiguracionesController extends AnchorPane {
 				TRANSPORTES,
 				IMPORTADORES});
 		initTextUpperCase();
-		
-
+				
 		// cargo los datos de los indicadores del sistema
 		loadFormIndicadores();
 	}
@@ -616,8 +606,7 @@ public class ConfiguracionesController extends AnchorPane {
 		this.importadoresExportadoresPersistence = new ImportadoresExportadoresPersistenceJdbc();			
 	}
 
-	private void initComunicaciones() {		
-		this.cbxIndicadores.getItems().addAll(comunicacionesPersistence.findAll());		
+	private void initComunicaciones() {					
 		cbxVelocidad.getItems().addAll(new Integer[] {1200,2400,4800,9600,19200});		
 		cbxBitsDeDatos.getItems().addAll(new Integer[] {7,8});
 		cbxParidad.getItems().addAll(new String[] {"n","e","o"});

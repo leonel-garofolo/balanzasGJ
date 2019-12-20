@@ -381,9 +381,45 @@ public class HerramientasController extends AnchorPane implements IView {
 			if(newValue != null) {
 				txtTransaccion.setValue(newValue.toUpperCase());
 			}
-		});		
+		});	
+		
 		
 		ParametrosGlobales pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL);
+		parametrosGlobalesPersistence.load(pg);
+		if(pg!= null) {
+			txtNombreBalanza.setValue(pg.getValue());
+		}			
+		
+		pg = new ParametrosGlobales();	
+		pg.setId(ParametrosGlobales.P_EMPRESA_DIR_BAL);
+		parametrosGlobalesPersistence.load(pg);
+		if(pg!= null) {
+			txtDireccionBalanza.setValue(pg.getValue());
+		}
+		
+		pg = new ParametrosGlobales();	
+		pg.setId(ParametrosGlobales.P_EMPRESA_LOC_BAL);
+		parametrosGlobalesPersistence.load(pg);
+		if(pg!= null) {
+			txtLocalidadBalanza.setValue(pg.getValue());
+		}
+				
+		pg = new ParametrosGlobales();	
+		pg.setId(ParametrosGlobales.P_EMPRESA_PROV_BAL);
+		parametrosGlobalesPersistence.load(pg);
+		if(pg!= null) {
+			txtProvBalanza.setValue(pg.getValue());
+		}
+		
+		pg = new ParametrosGlobales();	
+		pg.setId(ParametrosGlobales.P_EMPRESA_TEL_BAL);
+		parametrosGlobalesPersistence.load(pg);
+		if(pg!= null) {
+			txtTelBalanza.setValue(pg.getValue());
+		}				
+		
+		pg = new ParametrosGlobales();	
 		pg.setId(ParametrosGlobales.P_EMPRESA_TICKET);
 		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {

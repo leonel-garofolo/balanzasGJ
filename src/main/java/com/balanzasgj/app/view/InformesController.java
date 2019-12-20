@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -121,6 +123,9 @@ public class InformesController {
     @FXML
     private ComboBox<String> cbxFiltroBuscar;
 
+    
+    @FXML
+    private Button btnTicket;
     @FXML
     private Button btnImprimir;
     @FXML
@@ -213,6 +218,94 @@ public class InformesController {
     	cHasta.set(Calendar.HOUR_OF_DAY, 23);
     	cHasta.set(Calendar.MINUTE, 59);
     	timeFechaHasta.setValue(Utils.convertoToLocalDate(cHasta.getTime()));
+    }
+    
+    @FXML
+    private void handleImprimirTicket(ActionEvent event) {
+    	if(tblPesajes.getSelectionModel().getSelectedItem() != null) {
+    		List<Taras> taras = new ArrayList<>();
+    		taras.add(tblPesajes.getSelectionModel().getSelectedItem());
+        	HashMap<String, Object> params = new HashMap<>();
+    		
+    		/*PROPIETARIO DE LA BALANZA*/
+    		ParametrosGlobales pg = new ParametrosGlobales();
+    		pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL);	
+    		parametrosGlobalesPersistence.load(pg);
+            params.put(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL, (pg.getValue()== null?"":pg.getValue()));
+            	        
+            pg = new ParametrosGlobales();
+    		pg.setId(ParametrosGlobales.P_EMPRESA_DIR_BAL);	
+    		parametrosGlobalesPersistence.load(pg);
+            params.put(ParametrosGlobales.P_EMPRESA_DIR_BAL, (pg.getValue()== null?"":pg.getValue()));
+            
+            pg = new ParametrosGlobales();
+    		pg.setId(ParametrosGlobales.P_EMPRESA_TEL_BAL);	
+    		parametrosGlobalesPersistence.load(pg);
+            params.put(ParametrosGlobales.P_EMPRESA_TEL_BAL, (pg.getValue()== null?"":pg.getValue()));
+            
+            pg = new ParametrosGlobales();
+    		pg.setId(ParametrosGlobales.P_EMPRESA_LOC_BAL);	
+    		parametrosGlobalesPersistence.load(pg);
+            params.put(ParametrosGlobales.P_EMPRESA_LOC_BAL, (pg.getValue()== null?"":pg.getValue()));
+            
+            pg = new ParametrosGlobales();
+    		pg.setId(ParametrosGlobales.P_EMPRESA_PROV_BAL);	
+    		parametrosGlobalesPersistence.load(pg);
+            params.put(ParametrosGlobales.P_EMPRESA_PROV_BAL, (pg.getValue()== null?"":pg.getValue()));	
+            
+            /* EMPRESA*/
+            pg = new ParametrosGlobales();
+    		pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);	
+    		parametrosGlobalesPersistence.load(pg);
+            params.put(ParametrosGlobales.P_EMPRESA_NOMBRE, (pg.getValue()== null?"":pg.getValue()));
+            
+            pg = new ParametrosGlobales();
+    		pg.setId(ParametrosGlobales.P_EMPRESA_DIR);	
+    		parametrosGlobalesPersistence.load(pg);
+            params.put(ParametrosGlobales.P_EMPRESA_DIR, (pg.getValue()== null?"":pg.getValue()));
+            
+            pg = new ParametrosGlobales();
+    		pg.setId(ParametrosGlobales.P_EMPRESA_TEL);	
+    		parametrosGlobalesPersistence.load(pg);
+            params.put(ParametrosGlobales.P_EMPRESA_TEL, (pg.getValue()== null?"":pg.getValue()));
+            
+            pg = new ParametrosGlobales();
+    		pg.setId(ParametrosGlobales.P_EMPRESA_LOC);	
+    		parametrosGlobalesPersistence.load(pg);
+            params.put(ParametrosGlobales.P_EMPRESA_LOC, (pg.getValue()== null?"":pg.getValue()));
+            
+            pg = new ParametrosGlobales();
+    		pg.setId(ParametrosGlobales.P_EMPRESA_PROV);	
+    		parametrosGlobalesPersistence.load(pg);
+            params.put(ParametrosGlobales.P_EMPRESA_PROV, (pg.getValue()== null?"":pg.getValue()));	               
+            params.put("USUARIO", Usuarios.getUsuarioLogeado());
+            
+            pg = new ParametrosGlobales();
+    		pg.setId(ParametrosGlobales.P_EMPRESA_IMG);	
+    		parametrosGlobalesPersistence.load(pg);
+    		if(pg.getValueByte() != null) {
+    			try {
+    				byte[] img = new byte[new Long(pg.getValueByte().length()).intValue()];
+    				Image image = ImageIO.read(new ByteArrayInputStream(img));
+    	            
+    	            params.put(ParametrosGlobales.P_EMPRESA_IMG, image);
+    			} catch (SQLException e) {
+    				logger.error(e);
+    			} catch (IOException e) {
+    				logger.error(e);
+    			}				
+    		} else {
+    			 params.put(ParametrosGlobales.P_EMPRESA_IMG, null);
+    		}
+    		try {
+    			ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
+    		} catch (JRException e) {
+    			// TODO Auto-generated catch block
+    			logger.error(e);
+    		}
+    	} else {
+    		Message.error("Debe seleccionar un Pesaje.");
+    	}
     }
 
     @FXML

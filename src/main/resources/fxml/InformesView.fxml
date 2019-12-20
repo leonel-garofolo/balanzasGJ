@@ -67,6 +67,15 @@
              </TableView>
             <HBox prefHeight="29.0" prefWidth="758.0" spacing="20.0">
                <children>
+              	  <Button fx:id="btnTicket" mnemonicParsing="false" onAction="#handleImprimirTicket" text="Ticket">
+                  	<graphic>
+                        <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/impresora.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Button fx:id="btnImprimir" mnemonicParsing="false" onAction="#handleImprimir" text="Imprimir">
                   	<graphic>
                         <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">

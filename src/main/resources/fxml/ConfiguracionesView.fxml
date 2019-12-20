@@ -154,14 +154,12 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" prefHeight="58.0" prefWidth="737.0" spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <Label text="Configuración Indicador de Peso:">
+                                                <Label text="Seleccionar Indicador de Peso a utilizar:">
                                                    <HBox.margin>
                                                       <Insets left="10.0" />
                                                    </HBox.margin>
                                                 </Label>
-                                                <ComboBox fx:id="cbxIndicadores" onAction="#handleComunicaciones" prefWidth="150.0" />
-                                                <Label text="Indicador" />
-                                                <ComboBox fx:id="cbxIndicadorConfig" onAction="#handleSelectedIndicador" prefWidth="150.0" />
+                                                <ComboBox fx:id="cbxIndicadorConfig" onAction="#handleSelectedIndicador" prefHeight="25.0" prefWidth="229.0" />
                                                 <Button fx:id="btnAplicarConecciones" mnemonicParsing="false" onAction="#handleAplicarComunicaciones" text="Aplicar">
                                                    <graphic>
                                                       <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">

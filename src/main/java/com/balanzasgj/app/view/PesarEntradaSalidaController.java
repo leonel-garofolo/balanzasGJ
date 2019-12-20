@@ -430,8 +430,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					logger.error(e);
 				} catch (IOException e) {
 					logger.error(e);
-				}
-				
+				}				
+			} else {
+				 params.put(ParametrosGlobales.P_EMPRESA_IMG, null);
 			}
 			try {
 				ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
@@ -1145,7 +1146,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
   		}
 	}
 
-	private void initSerialConnector() {		
+	private void initSerialConnector() {	
+		stage.setTitle("Tomar Pesajes");
 		socket= new SocketConnection();
 		List<Comunicaciones> comunicaciones= comunicacionesPersistence.findAll();
 		for(Comunicaciones comunicacion: comunicaciones) {
