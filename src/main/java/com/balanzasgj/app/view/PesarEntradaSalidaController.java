@@ -1027,6 +1027,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	    });
 		txtNumberSerial.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtNumberSerial.setText(newValue.toUpperCase());
+			if(cbxModoTara!= null 
+					&& cbxModoTara.getSelectionModel() != null
+					&& cbxModoTara.getSelectionModel().getSelectedItem() != null
+					&& cbxModoTara.getSelectionModel().getSelectedItem().equals(T_TOMAR_TARA)) {
+				txtTara.setText(newValue.toUpperCase());
+			}
 		});
 		txtEntrada.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtEntrada.setText(newValue.toUpperCase());
@@ -1384,7 +1390,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	public void closeSocket() {
 		socket.close();
 	}
-
+	private int longitud;
 	private String data;
 	@Override
 	public void serialEvent(SerialPortEvent event) {
@@ -1395,17 +1401,20 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					byte[] chunk = new byte[available];					
 					socket.getInput().read(chunk, 0, available);
 					data = new String(chunk);
-					Log.info("Rx ->" + data);
 					data = data.trim();
-					data = data.substring(this.posicionInicioDato, this.longitudDato);
-					sBufferConnection = data.trim().replaceAll("[^\\d.]", "");		
-					Log.info("Transfor ->" + sBufferConnection);
+					logger.info("Rx ->" + data);
+					longitud = this.posicionInicioDato + this.longitudDato;
+					if(longitud > data.length()) {
+						longitud = data.length();
+					}
+					data = data.substring(this.posicionInicioDato, longitud);
+					sBufferConnection = data.trim().replaceAll("[^\\d.]", "");
 					System.out.println("Transfor ->" + sBufferConnection);
 					if(!sBufferConnection.isEmpty() && 
 							!txtNumberSerial.getText().trim().equals(sBufferConnection.trim())) {
 						try {
 							Double.valueOf(sBufferConnection);
-							txtNumberSerial.setText(sBufferConnection);
+							txtNumberSerial.setText(sBufferConnection);							
 						}catch ( NumberFormatException e) {													
 							logger.error("ERROR DE CONVERSION. ", e);
 						}
