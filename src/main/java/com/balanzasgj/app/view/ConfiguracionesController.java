@@ -1,7 +1,6 @@
 package com.balanzasgj.app.view;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import com.balanzasgj.app.model.Clientes;
@@ -9,6 +8,7 @@ import com.balanzasgj.app.model.Comunicaciones;
 import com.balanzasgj.app.model.Entidades;
 import com.balanzasgj.app.model.ImportadoresExportadores;
 import com.balanzasgj.app.model.Indicadores;
+import com.balanzasgj.app.model.Patentes;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
 import com.balanzasgj.app.model.Transportes;
@@ -17,6 +17,7 @@ import com.balanzasgj.app.persistence.ClientesPersistence;
 import com.balanzasgj.app.persistence.ComunicacionesPersistence;
 import com.balanzasgj.app.persistence.ImportadoresExportadoresPersistence;
 import com.balanzasgj.app.persistence.IndicadoresPersistence;
+import com.balanzasgj.app.persistence.PatentesPersistence;
 import com.balanzasgj.app.persistence.ProcedenciasPersistence;
 import com.balanzasgj.app.persistence.ProductosPersistence;
 import com.balanzasgj.app.persistence.TransportesPersistence;
@@ -24,6 +25,7 @@ import com.balanzasgj.app.persistence.impl.jdbc.ClientesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ComunicacionesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ImportadoresExportadoresPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.IndicadoresPersistenceJdbc;
+import com.balanzasgj.app.persistence.impl.jdbc.PatentesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProcedenciasPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.TransportesPersistenceJdbc;
@@ -54,7 +56,8 @@ public class ConfiguracionesController extends AnchorPane {
 	public static final String PROCEDENCIAS = "PROCEDENCIAS";
 	public static final String PRODUCTOS = "PRODUCTOS";
 	public static final String TRANSPORTES = "TRANSPORTES";
-	public static final String IMPORTADORES = "IMPORTADORES/EXPORTADORES";		
+	public static final String IMPORTADORES = "IMPORTADORES/EXPORTADORES";
+	public static final String PATENTES = "PATENTES";		
 	
 	@FXML
 	private TableView<Entidades> tblEntidades;
@@ -170,7 +173,8 @@ public class ConfiguracionesController extends AnchorPane {
 	private TransportesPersistence transportesPersistence;
 	private IndicadoresPersistence indicadoresPersistence;
 	private ComunicacionesPersistence comunicacionesPersistence;
-	private ImportadoresExportadoresPersistence importadoresExportadoresPersistence;		
+	private ImportadoresExportadoresPersistence importadoresExportadoresPersistence;
+	private PatentesPersistence patentesPersistence;		
 	private boolean modoEditEntidades = false;
 	private boolean modoEditIndicadores = false;
 
@@ -228,19 +232,29 @@ public class ConfiguracionesController extends AnchorPane {
 	private void handleTblEntidadesSelected(MouseEvent event) {
 		if (!tblEntidades.getSelectionModel().isEmpty()) {
 			modoEditEntidades=true;
-			txtEntidadNombre.setText(tblEntidades.getSelectionModel().getSelectedItem().getNombre());
-			if(this.cbxEntidades.getSelectionModel().getSelectedItem().equals(PRODUCTOS)) {
-				txtEntidadCuitAlias.setText(tblEntidades.getSelectionModel().getSelectedItem().getAlias());
-			} else {
-				txtEntidadCuitAlias.setText(tblEntidades.getSelectionModel().getSelectedItem().getCuit());
-			}
-			
-			if(tblEntidades.getSelectionModel().getSelectedItem().getUltimoMovimiento() != null) {
+			if(tblEntidades.getSelectionModel().getSelectedItem() instanceof Patentes) {
+				Patentes p = (Patentes)tblEntidades.getSelectionModel().getSelectedItem();
+				txtEntidadNombre.setText(p.getPatente());
 				SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-				txtEntidadUltMov.setText(sd.format(tblEntidades.getSelectionModel().getSelectedItem().getUltimoMovimiento()));
-			}
-			if(tblEntidades.getSelectionModel().getSelectedItem().getAcumulado() != null) {
-				txtEntidadAcumulado.setText(tblEntidades.getSelectionModel().getSelectedItem().getAcumulado().toString());
+				txtEntidadCuitAlias.setText(String.valueOf(p.getTara()));
+				txtEntidadUltMov.setText(sd.format(p.getUpdate()));
+				txtEntidadAcumulado.setText(String.valueOf(p.getDiasVenc()));
+				
+			}else {
+				txtEntidadNombre.setText(tblEntidades.getSelectionModel().getSelectedItem().getNombre());
+				if(this.cbxEntidades.getSelectionModel().getSelectedItem().equals(PRODUCTOS)) {
+					txtEntidadCuitAlias.setText(tblEntidades.getSelectionModel().getSelectedItem().getAlias());
+				} else {
+					txtEntidadCuitAlias.setText(tblEntidades.getSelectionModel().getSelectedItem().getCuit());
+				}
+				
+				if(tblEntidades.getSelectionModel().getSelectedItem().getUltimoMovimiento() != null) {
+					SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+					txtEntidadUltMov.setText(sd.format(tblEntidades.getSelectionModel().getSelectedItem().getUltimoMovimiento()));
+				}
+				if(tblEntidades.getSelectionModel().getSelectedItem().getAcumulado() != null) {
+					txtEntidadAcumulado.setText(tblEntidades.getSelectionModel().getSelectedItem().getAcumulado().toString());
+				}
 			}		
 		}
 	}
@@ -297,6 +311,9 @@ public class ConfiguracionesController extends AnchorPane {
 			case IMPORTADORES:
 				importadoresExportadoresPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				break;	
+			case PATENTES:
+				patentesPersistence.deleteById(((Patentes)tblEntidades.getSelectionModel().getSelectedItem()).getPatente());
+				break;
 			default:
 				break;
 			}
@@ -327,6 +344,7 @@ public class ConfiguracionesController extends AnchorPane {
 
 	private void loadFormEntidades(String entidadType) {
 		cleanFormEntidades();
+		colNombre.setText("Nombre");
 		switch (entidadType) {
 		case CLIENTE:
 			tblEntidades.getItems().addAll(clientesPersistence.findAll());
@@ -347,20 +365,48 @@ public class ConfiguracionesController extends AnchorPane {
 		case IMPORTADORES:
 			tblEntidades.getItems().addAll(importadoresExportadoresPersistence.findAll());
 			setVisibleAduana(true);
+			break;			
+		case PATENTES:
+			tblEntidades.getItems().addAll(patentesPersistence.findAll());
+			setVisiblePatente(true);
+			colNombre.setText("Patentes");
 			break;
 		default:
 			break;
 		}
 	}
 	
-	private void setVisibleAduana(boolean isVisible) {
-		lblCuitAlias.setVisible(isVisible);		
+	private void setVisiblePatente(boolean isVisible) {
+		lblNombre.setText("Patente");
+		txtEntidadNombre.setDisable(true);
+		lblCuitAlias.setVisible(isVisible);
+		lblCuitAlias.setText("Tara");
 		lblMov.setVisible(isVisible);
+		lblMov.setText("Ultima Toma");
 		lblAcum.setVisible(isVisible);
+		lblAcum.setText("Días");
 		
 		txtEntidadCuitAlias.setVisible(isVisible);		
 		txtEntidadUltMov.setVisible(isVisible);
 		txtEntidadAcumulado.setVisible(isVisible);
+		txtEntidadAcumulado.setDisable(false);
+		
+	}
+	
+	private void setVisibleAduana(boolean isVisible) {
+		lblNombre.setText("Nombre");
+		txtEntidadNombre.setDisable(false);
+		lblCuitAlias.setVisible(isVisible);		
+		lblCuitAlias.setText("Cuit");
+		lblMov.setVisible(isVisible);
+		lblMov.setText("Ultimo Movimiento");
+		lblAcum.setVisible(isVisible);
+		lblAcum.setText("Acumulado");
+		
+		txtEntidadCuitAlias.setVisible(isVisible);		
+		txtEntidadUltMov.setVisible(isVisible);
+		txtEntidadAcumulado.setVisible(isVisible);
+		txtEntidadAcumulado.setDisable(true);
 		
 	}
 		
@@ -453,6 +499,15 @@ public class ConfiguracionesController extends AnchorPane {
 				ie.setCuit(txtEntidadCuitAlias.getText());	
 				importadoresExportadoresPersistence.save(ie);
 				break;
+			case PATENTES:			
+				Patentes p = new Patentes();				
+				if(modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
+					p.setPatente(((Patentes)tblEntidades.getSelectionModel().getSelectedItem()).getPatente());
+				}
+				p.setTara(Double.valueOf(txtEntidadCuitAlias.getText()));
+				p.setDiasVenc(Integer.valueOf(txtEntidadAcumulado.getText()));
+				patentesPersistence.save(p);
+				break;
 				
 			default:
 				break;
@@ -510,7 +565,8 @@ public class ConfiguracionesController extends AnchorPane {
 				PROCEDENCIAS, 
 				PRODUCTOS, 
 				TRANSPORTES,
-				IMPORTADORES});
+				IMPORTADORES,
+				PATENTES});
 		initTextUpperCase();
 				
 		// cargo los datos de los indicadores del sistema
@@ -603,7 +659,8 @@ public class ConfiguracionesController extends AnchorPane {
 		this.transportesPersistence = new TransportesPersistenceJdbc();
 		this.indicadoresPersistence = new IndicadoresPersistenceJdbc();
 		this.comunicacionesPersistence = new ComunicacionesPersistenceJdbc();
-		this.importadoresExportadoresPersistence = new ImportadoresExportadoresPersistenceJdbc();			
+		this.importadoresExportadoresPersistence = new ImportadoresExportadoresPersistenceJdbc();	
+		this.patentesPersistence = new PatentesPersistenceJdbc();
 	}
 
 	private void initComunicaciones() {					
@@ -632,7 +689,12 @@ public class ConfiguracionesController extends AnchorPane {
 
 			@Override
 			public String getValue() {
-				return cellData.getValue().getNombre().toString();
+				if(cellData.getValue() instanceof Patentes) {
+					return ((Patentes)cellData.getValue()).getPatente();
+				} else {
+					return cellData.getValue().getNombre().toString();
+				}
+				
 			}
 
 		});				

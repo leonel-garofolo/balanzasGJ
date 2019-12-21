@@ -16,13 +16,8 @@ public class GargareCollection extends Thread {
 				// TODO Auto-generated catch block
 				logger.error(e);
 			}
-			logger.info("********** INICIO: 'LIMPIEZA GARBAGE COLECTOR' **********");
 			Runtime basurero = Runtime.getRuntime();
-			logger.info("MEMORIA TOTAL 'JVM': " + basurero.totalMemory());
-			logger.info("MEMORIA [FREE] 'JVM' [ANTES]: " + basurero.freeMemory());
-			basurero.gc(); // Solicitando ...
-			logger.info("MEMORIA [FREE] 'JVM' [DESPUES]: " + basurero.freeMemory());
-			logger.info("********** FIN: 'LIMPIEZA GARBAGE COLECTOR' **********");
+			basurero.gc(); // Solicitando ...			
 		}while(true);
 	}
 }

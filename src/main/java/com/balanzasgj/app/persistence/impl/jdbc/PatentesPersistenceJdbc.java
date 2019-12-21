@@ -65,14 +65,14 @@ public class PatentesPersistenceJdbc extends GenericJdbcDAO<Patentes> implements
 	@Override
 	protected void setValuesForPrimaryKey(PreparedStatement ps, int i, Patentes patentes) throws SQLException {
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
-		setValue(ps, i++, patentes.getCodigo() ) ; // "codigo" : java.lang.String
+		setValue(ps, i++, patentes.getPatente() ) ; // "codigo" : java.lang.String
 	}
 
     //----------------------------------------------------------------------
 	@Override
 	protected void setValuesForInsert(PreparedStatement ps, int i, Patentes patentes) throws SQLException {
 		//--- Set PRIMARY KEY and DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
-		setValue(ps, i++, patentes.getCodigo() ) ; // "codigo" : java.lang.String
+		setValue(ps, i++, patentes.getPatente() ) ; // "codigo" : java.lang.String
 		setValue(ps, i++, patentes.getTara() ) ; // "tara" : java.lang.Double
 		setValue(ps, i++, patentes.getDiasVenc()) ; // "tara" : java.lang.Double
 		setValue(ps, i++, patentes.getUpdate() ) ; // "update" : java.util.Date
@@ -86,7 +86,7 @@ public class PatentesPersistenceJdbc extends GenericJdbcDAO<Patentes> implements
 		setValue(ps, i++, patentes.getDiasVenc()) ; // "tara" : java.lang.Double
 		setValue(ps, i++, patentes.getUpdate() ) ; // "update" : java.util.Date
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
-		setValue(ps, i++, patentes.getCodigo() ) ; // "codigo" : java.lang.String
+		setValue(ps, i++, patentes.getPatente() ) ; // "codigo" : java.lang.String
 	}
 
 	//----------------------------------------------------------------------
@@ -97,7 +97,7 @@ public class PatentesPersistenceJdbc extends GenericJdbcDAO<Patentes> implements
 	 */
 	private Patentes newInstanceWithPrimaryKey( String codigo ) {
 		Patentes patentes = new Patentes();
-		patentes.setCodigo( codigo );
+		patentes.setPatente( codigo );
 		return patentes ;
 	}
 
@@ -112,7 +112,7 @@ public class PatentesPersistenceJdbc extends GenericJdbcDAO<Patentes> implements
 	protected Patentes populateBean(ResultSet rs, Patentes patentes) throws SQLException {
 
 		//--- Set data from ResultSet to Bean attributes
-		patentes.setCodigo(rs.getString("codigo")); // java.lang.String
+		patentes.setPatente(rs.getString("codigo")); // java.lang.String
 		patentes.setTara(rs.getDouble("tara")); // java.lang.Double
 		patentes.setDiasVenc(rs.getInt("dias")); // java.lang.Double
 		if ( rs.wasNull() ) { patentes.setTara(null); }; // not primitive number => keep null value if any

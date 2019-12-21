@@ -17,10 +17,10 @@ import java.util.Date;
  * @author Telosys Tools Generator
  *
  */
-public class Patentes implements Serializable
+public class Patentes extends Entidades implements Serializable
 {
     private static final long serialVersionUID = 1L;
-    private String codigo ; // String // Id or Primary Key
+    private String patente ; // String // Id or Primary Key
     private Double tara ;  // Double
     private int diasVenc ;  // Double 
     private Date update ;  // Date 
@@ -31,25 +31,17 @@ public class Patentes implements Serializable
     public Patentes() {
         super();
     }
-    
-    //----------------------------------------------------------------------
-    // GETTER(S) & SETTER(S) FOR ID OR PRIMARY KEY 
-    //----------------------------------------------------------------------
-    /**
-     * Set the "codigo" field value
-     * This field is mapped on the database column "codigo" ( type "VARCHAR", NotNull : true ) 
-     * @param codigo
-     */
-	public void setCodigo( String codigo ) {
-        this.codigo = codigo ;
+       
+	public void setPatente( String patente ) {
+        this.patente = patente ;
     }
     /**
      * Get the "codigo" field value
      * This field is mapped on the database column "codigo" ( type "VARCHAR", NotNull : true ) 
      * @return the field value
      */
-	public String getCodigo() {
-        return this.codigo;
+	public String getPatente() {
+        return this.patente;
     }
 
     //----------------------------------------------------------------------

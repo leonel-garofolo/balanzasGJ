@@ -144,7 +144,12 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		setValue(ps, i++, taras.getCliente().getCodigo()) ; // "id_cliente" : java.lang.Integer
 		setValue(ps, i++, taras.getTransporte().getCodigo() ) ; // "id_transporte" : java.lang.Integer
 		setValue(ps, i++, taras.getProcedencias().getCodigo() ) ; // "id_procedencia" : java.lang.Integer
-		setValue(ps, i++, taras.getImpExp().getCodigo() ) ; // "id_procedencia" : java.lang.Integer
+		if(taras.getImpExp() != null) {
+			setValue(ps, i++, taras.getImpExp().getCodigo() ) ; // "id_procedencia" : java.lang.Integer	
+		} else {
+			ps.setNull(i++, java.sql.Types.BIGINT);
+		}
+		
 		setValue(ps, i++, taras.getModalidad() ) ; // "modalidad" : java.lang.String
 		setValue(ps, i++, taras.getComprobanteNun1() ) ; // "comprobante_nun1" : java.lang.String
 		setValue(ps, i++, taras.getModoTara() ) ; // "modoTara" : java.lang.String

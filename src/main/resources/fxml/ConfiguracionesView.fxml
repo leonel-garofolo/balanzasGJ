@@ -110,7 +110,7 @@
                                                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                                     </rowConstraints>
                                                                      <children>
-                                                                        <Label text="Nombre" />
+                                                                        <Label fx:id="lblNombre" text="Nombre" />
                                                                         <TextField fx:id="txtEntidadNombre" GridPane.columnIndex="1" />
                                                                         <Label fx:id="lblCuitAlias" text="Cuit" GridPane.rowIndex="1" />
                                                                         <Label fx:id="lblMov" text="Ultimo Movimiento" GridPane.rowIndex="2" />

@@ -285,6 +285,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private String sBufferConnection;	
 	private Stage stage;
 	
+	private char caracterControl;
 	private int posicionInicioDato;
 	private int longitudDato;
 	
@@ -475,7 +476,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		if(cbxModoTara.getSelectionModel().getSelectedItem().equals(T_TOMAR_TARA)) {
 			if (!txtTara.getText().isEmpty() && !txtDiasVenc.getText().isEmpty() ) {
 				Patentes p = new Patentes();
-				p.setCodigo(txtPatente.getText());
+				p.setPatente(txtPatente.getText());
 				p.setTara(Double.valueOf(txtTara.getText()));
 				p.setDiasVenc(Integer.valueOf(txtDiasVenc.getText()));
 				this.patentesPersistence.save(p);					
@@ -641,7 +642,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		idTaraEdit = taraEdit.getIdtaras();
 		txtTransaccion.setText(taraEdit.getTransaccion());
 		txtFecha.setText(format.format(taraEdit.getFechaEntrada()));
-		txtPatente.setText(this.patentesPersistence.findById(taraEdit.getPatente()).getCodigo());
+		txtPatente.setText(this.patentesPersistence.findById(taraEdit.getPatente()).getPatente());
 		txtEntrada.setText(taraEdit.getPesoEntrada().toString());
 		
 		txtNumDoc.setText(taraEdit.getNumDoc());
@@ -745,7 +746,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		String value = Message.addElement("Ingrese la nueva patente:");
 		if(!value.equals("")) {
 			Patentes pat = new Patentes();
-			pat.setCodigo(value);
+			pat.setPatente(value);
 			pat.setTara(0d);
 			pat.setUpdate(new Date());
 			patentesPersistence.save(pat );
@@ -907,7 +908,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 				boolean desicion= Message.option("La patente no existe, desea agregarla?");
 				if(desicion) {
 					Patentes newPatente = new Patentes();
-					newPatente.setCodigo(pantente);
+					newPatente.setPatente(pantente);
 					newPatente.setTara(Double.valueOf(txtTara.getText()));
 					patentesPersistence.save(newPatente);
 				} else {					
@@ -1105,7 +1106,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			}
   		} if(newValue != null && newValue.equals(T_CON_TARA)) {
   			Patentes p = new Patentes();
-  			p.setCodigo(taraEdit.getPatente());
+  			p.setPatente(taraEdit.getPatente());
   			this.patentesPersistence.load(p);
   			if(p.getTara() != null) {
   				lblTara.setVisible(true);
@@ -1158,6 +1159,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		List<Comunicaciones> comunicaciones= comunicacionesPersistence.findAll();
 		for(Comunicaciones comunicacion: comunicaciones) {
 			indicadorConfig= indicadoresPersistence.findById(comunicacion.getIdindicadores().longValue());
+			this.caracterControl = indicadorConfig.getCaracterControl().charAt(0);
 			this.posicionInicioDato = indicadorConfig.getPosicionInicioDato();
 			this.longitudDato = indicadorConfig.getLongitudDato();
 			int paridad = 0;
@@ -1392,33 +1394,40 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	}
 	private int longitud;
 	private String data;
+	
+	private String inputBuffer="";
 	@Override
 	public void serialEvent(SerialPortEvent event) {
 		if(!ingManual) {
 			if (event.getEventType() == SerialPortEvent.DATA_AVAILABLE) {		
 				try {
 					int available = socket.getInput().available();
-					byte[] chunk = new byte[available];					
-					socket.getInput().read(chunk, 0, available);
-					data = new String(chunk);
-					data = data.trim();
-					logger.info("Rx ->" + data);
-					longitud = this.posicionInicioDato + this.longitudDato;
-					if(longitud > data.length()) {
-						longitud = data.length();
-					}
-					data = data.substring(this.posicionInicioDato, longitud);
-					sBufferConnection = data.trim().replaceAll("[^\\d.]", "");
-					System.out.println("Transfor ->" + sBufferConnection);
-					if(!sBufferConnection.isEmpty() && 
-							!txtNumberSerial.getText().trim().equals(sBufferConnection.trim())) {
-						try {
-							Double.valueOf(sBufferConnection);
-							txtNumberSerial.setText(sBufferConnection);							
-						}catch ( NumberFormatException e) {													
-							logger.error("ERROR DE CONVERSION. ", e);
-						}
-					}
+                    for(int i=0;i<available;i++){//read all incoming characters
+                        int receivedVal=socket.getInput().read();//store it into an int (because of the input.read method
+                        if(receivedVal!=10 && receivedVal!=13 && receivedVal != (int)this.caracterControl){//if the character is not a new line "\n" and not a carriage return
+                            inputBuffer+=(char)receivedVal;//store the new character into a buffer
+                        }else if(receivedVal==10 || receivedVal == (int)this.caracterControl){//if it's a new line character
+                            data = "";
+                            data = inputBuffer;
+                            
+                            longitud = this.posicionInicioDato + this.longitudDato;
+    						if(longitud > data.length()) {
+    							longitud = data.length();
+    						}
+    						data = data.substring(this.posicionInicioDato, longitud);		
+    						sBufferConnection = data.trim().replaceAll("[^\\d.]", "");
+    						if(!sBufferConnection.isEmpty() && 
+    								!txtNumberSerial.getText().trim().equals(sBufferConnection.trim())) {
+    							try {
+    								Double.valueOf(sBufferConnection);
+    								txtNumberSerial.setText(sBufferConnection);							
+    							}catch ( NumberFormatException e) {													
+    								logger.error("ERROR DE CONVERSION. ", e);
+    							}
+    						}    						
+                            inputBuffer="";//clear the buffer
+                        }
+                    }
 				} catch (IOException e) {
 					logger.error("IO Error Occurred: ", e);
 				}
