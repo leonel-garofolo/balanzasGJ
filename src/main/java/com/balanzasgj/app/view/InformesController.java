@@ -181,19 +181,19 @@ public class InformesController {
     		filtro = this.txtFiltroBuscar.getText();
     	}
     	
-    	if(filtroTipo.equals(B_PRODUCTO)) {
+    	if(filtroTipo.equals(B_PRODUCTO) && this.cbxProducto.getSelectionModel().getSelectedItem() != null) {
     		filtro = this.cbxProducto.getSelectionModel().getSelectedItem().getNombre();
     	}
     	
-    	if(filtroTipo.equals(B_CLIENTE)) {
+    	if(filtroTipo.equals(B_CLIENTE) && this.cbxCliente.getSelectionModel().getSelectedItem() != null) {
     		filtro = this.cbxCliente.getSelectionModel().getSelectedItem().getNombre();
     	}
     	
-    	if(filtroTipo.equals(B_PROCEDENCIA)) {
+    	if(filtroTipo.equals(B_PROCEDENCIA) && this.cbxProcedencia.getSelectionModel().getSelectedItem() != null) {
     		filtro = this.cbxProcedencia.getSelectionModel().getSelectedItem().getNombre();
     	}
     	
-    	if(filtroTipo.equals(B_TRANSPORTE)) {
+    	if(filtroTipo.equals(B_TRANSPORTE) && this.cbxTransporte.getSelectionModel().getSelectedItem() != null) {
     		filtro = this.cbxTransporte.getSelectionModel().getSelectedItem().getNombre();
     	}    	
     	return filtro;
