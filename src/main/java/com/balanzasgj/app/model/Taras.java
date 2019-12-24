@@ -361,7 +361,7 @@ public class Taras implements Serializable
 
     public BigDecimal getPesoNeto() {
         if(pesoEntrada == null || pesoSalida == null){
-            pesoNeto = new BigDecimal(0);
+            pesoNeto = null;
         }else{
             pesoNeto = new BigDecimal(pesoEntrada.doubleValue() - pesoSalida.doubleValue());
         }

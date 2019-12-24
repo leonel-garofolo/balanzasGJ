@@ -333,14 +333,16 @@
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{pesoSalida}==null?"": $F{pesoSalida})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{pesoSalida}==null?"": $F{pesoSalida})
+]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="455" y="190" width="80" height="16" uuid="fadc885d-73de-42c4-af31-54e0b7ff7cae"/>
 				<textElement>
 					<font fontName="Arial" size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{pesoNeto}==null ? "": $F{pesoNeto})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{pesoNeto}==null ? "": new java.text.DecimalFormat("#.###").format($F{pesoNeto}))
+ ]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="455" y="150" width="80" height="16" uuid="ce590aab-80c2-417c-9bf9-d0209758b25e"/>

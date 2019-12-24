@@ -154,7 +154,8 @@
 				<textElement>
 					<font fontName="Arial" size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{pesoNeto}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{pesoNeto}==null ? "": new java.text.DecimalFormat("#.###").format($F{pesoNeto}))
+ ]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="67" width="80" height="16" uuid="6a3721d3-fb9e-4bda-a8fa-fe371b6eb23f"/>

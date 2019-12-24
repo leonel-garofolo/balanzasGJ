@@ -39,7 +39,7 @@ import javafx.animation.KeyValue.Type;
 public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements TarasPersistence {
 
 	private final static String SQL_SELECT_ALL = 
-		"select idtaras, transaccion, fecha_entrada, fecha_salida, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, ie.codigo as codigoIE, ie.nombre as nombreIE, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis " +
+		"select idtaras, transaccion, fecha_entrada, fecha_salida, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, ie.codigo as codigoIE, ie.nombre as nombreIE, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, TRIM(peso_entrada) + 0 as peso_entrada, TRIM(peso_salida) + 0 as peso_salida, modoChasis " +
 				"from taras t " +
 				"inner join clientes c on c.codigo = t.id_cliente " +
 				"inner join productos p on p.codigo = t.id_producto " +
@@ -49,7 +49,7 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 
 
 	private final static String SQL_SELECT =
-			"select idtaras, transaccion, fecha_entrada, fecha_salida, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, ie.codigo as codigoIE, ie.nombre as nombreIE, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, peso_entrada, peso_salida, modoChasis " +
+			"select idtaras, transaccion, fecha_entrada, fecha_salida, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, t.id_procedencia, pro.nombre as nombrePro, ie.codigo as codigoIE, ie.nombre as nombreIE, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, contenedor_num, TRIM(peso_entrada) + 0 as peso_entrada, TRIM(peso_salida) + 0 as peso_salida, modoChasis " +
 					"from taras t " +
 					"inner join clientes c on c.codigo = t.id_cliente " +
 					"inner join productos p on p.codigo = t.id_producto " +

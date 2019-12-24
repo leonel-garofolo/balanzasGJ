@@ -27,7 +27,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.javafx.controls.customs.ComboBoxAutoComplete?>
 
-<AnchorPane prefHeight="646.0" prefWidth="1088.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.PesarEntradaSalidaController">
+<AnchorPane prefHeight="646.0" prefWidth="1207.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.PesarEntradaSalidaController">
    <children>
       <SplitPane dividerPositions="0.3122977346278317" layoutX="298.0" layoutY="135.0" orientation="VERTICAL" prefHeight="620.0" prefWidth="1088.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -352,6 +352,7 @@
                               <TableColumn fx:id="colCliente" prefWidth="121.0" text="Cliente" />
                               <TableColumn fx:id="colTransporte" prefWidth="121.0" text="Transporte" />
                               <TableColumn fx:id="colProcedencia" prefWidth="121.0" text="Procedencia" />
+                              <TableColumn fx:id="colImpExp" prefWidth="121.0" text="Imp / Exp" />
                           </columns>
                         </TableView>
                      </children>

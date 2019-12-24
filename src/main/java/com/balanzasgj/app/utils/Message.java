@@ -2,11 +2,11 @@ package com.balanzasgj.app.utils;
 
 import java.util.Optional;
 
-import com.balanzasgj.app.model.Entidades;
 import com.balanzasgj.app.view.custom.AduanaDialog;
 import com.balanzasgj.app.view.custom.PasswordDialog;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 
@@ -34,6 +34,21 @@ public class Message {
         alert.setTitle("Confirmar");
         alert.setHeaderText(null);
         alert.setContentText(message);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            return true;
+        } else {
+           return false;
+        }
+    }
+    
+    public static boolean optionYesNo(String message){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmar");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Sí");
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL)).setText("No");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             return true;
