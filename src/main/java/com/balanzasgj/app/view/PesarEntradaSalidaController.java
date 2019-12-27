@@ -1171,7 +1171,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		List<Comunicaciones> comunicaciones= comunicacionesPersistence.findAll();
 		for(Comunicaciones comunicacion: comunicaciones) {
 			indicadorConfig= indicadoresPersistence.findById(comunicacion.getIdindicadores().longValue());
-			this.caracterControl = indicadorConfig.getCaracterControl().charAt(0);
+			if(indicadorConfig.getCaracterControl() != null
+					&& indicadorConfig.getCaracterControl().length() > 0) {
+				this.caracterControl = indicadorConfig.getCaracterControl().charAt(0);
+			} else 
+				this.caracterControl = '\0';
+			
 			this.posicionInicioDato = indicadorConfig.getPosicionInicioDato();
 			this.longitudDato = indicadorConfig.getLongitudDato();
 			int paridad = 0;
@@ -1414,34 +1419,37 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private String inputBuffer="";
 	@Override
 	public void serialEvent(SerialPortEvent event) {
+		System.out.println("aaa");
 		if(!ingManual) {
 			if (event.getEventType() == SerialPortEvent.DATA_AVAILABLE) {		
 				try {
+					longitud = this.posicionInicioDato + this.longitudDato;
+					if(longitud > data.length()) {
+						longitud = data.length();
+					}
 					int available = socket.getInput().available();
                     for(int i=0;i<available;i++){//read all incoming characters
                         int receivedVal=socket.getInput().read();//store it into an int (because of the input.read method
-                        if(receivedVal!=10 && receivedVal!=13 && receivedVal != (int)this.caracterControl){//if the character is not a new line "\n" and not a carriage return
-                            inputBuffer+=(char)receivedVal;//store the new character into a buffer
+                        if(receivedVal!=10 && receivedVal!=13 
+                        		&& inputBuffer.length() <= longitud ){//if the character is not a new line "\n" and not a carriage return
+                            inputBuffer+=(char)receivedVal; //store the new character into a buffer                            
                         }else if(receivedVal==10 || receivedVal == (int)this.caracterControl){//if it's a new line character
                             data = "";
                             data = inputBuffer;
                             
-                            longitud = this.posicionInicioDato + this.longitudDato;
-    						if(longitud > data.length()) {
-    							longitud = data.length();
-    						}
     						data = data.substring(this.posicionInicioDato, longitud);		
     						sBufferConnection = data.trim().replaceAll("[^\\d.]", "");
     						if(!sBufferConnection.isEmpty() && 
     								!txtNumberSerial.getText().trim().equals(sBufferConnection.trim())) {
     							try {
     								Double.valueOf(sBufferConnection);
+    								 System.out.println("----" + sBufferConnection);
     								txtNumberSerial.setText(sBufferConnection);							
     							}catch ( NumberFormatException e) {													
     								logger.error("ERROR DE CONVERSION. ", e);
     							}
     						}    						
-                            inputBuffer="";//clear the buffer
+                            inputBuffer="";//clear the buffer                            
                         }
                     }
 				} catch (IOException e) {
