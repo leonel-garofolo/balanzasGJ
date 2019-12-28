@@ -420,6 +420,31 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	        params.put(ParametrosGlobales.P_EMPRESA_PROV, (pg.getValue()== null?"":pg.getValue()));	               
 	        params.put("USUARIO", Usuarios.getUsuarioLogeado());
 	        
+	        /*Aduana */
+	        if(cbxModalidad.getSelectionModel().getSelectedItem() != null && 
+					cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
+	        	pg = new ParametrosGlobales();
+				pg.setId(ParametrosGlobales.A_CODIGO_ADUANA);	
+				parametrosGlobalesPersistence.load(pg);
+		        params.put(ParametrosGlobales.A_CODIGO_ADUANA, (pg.getValue()== null?"":pg.getValue()));	               
+		        
+		        pg = new ParametrosGlobales();
+				pg.setId(ParametrosGlobales.A_CODIGO_LOG);	
+				parametrosGlobalesPersistence.load(pg);
+		        params.put(ParametrosGlobales.A_CODIGO_LOG, (pg.getValue()== null?"":pg.getValue()));	               
+		        
+		        pg = new ParametrosGlobales();
+				pg.setId(ParametrosGlobales.A_CERTIFICADO);	
+				parametrosGlobalesPersistence.load(pg);
+		        params.put(ParametrosGlobales.A_CERTIFICADO, (pg.getValue()== null?"":pg.getValue()));	               
+		        
+		        pg = new ParametrosGlobales();
+				pg.setId(ParametrosGlobales.A_VENCIMIENTO);	
+				parametrosGlobalesPersistence.load(pg);
+		        params.put(ParametrosGlobales.A_VENCIMIENTO, (pg.getValue()== null?"":pg.getValue()));	               		        
+	        }
+	        
+	        
 	        pg = new ParametrosGlobales();
 			pg.setId(ParametrosGlobales.P_EMPRESA_IMG);	
 			parametrosGlobalesPersistence.load(pg);
@@ -438,7 +463,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 				 params.put(ParametrosGlobales.P_EMPRESA_IMG, null);
 			}
 			try {
-				ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
+				if(cbxModalidad.getSelectionModel().getSelectedItem() != null && 
+						cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
+					ShowJasper.openBeanDataSource("ticketAduana", params, new JRBeanCollectionDataSource(taras));
+				} else {
+					ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
+				}
 			} catch (JRException e) {
 				// TODO Auto-generated catch block
 				logger.error(e);
@@ -1418,25 +1448,25 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	
 	private String inputBuffer="";
 	@Override
-	public void serialEvent(SerialPortEvent event) {
-		System.out.println("aaa");
+	public void serialEvent(SerialPortEvent event) {		
 		if(!ingManual) {
 			if (event.getEventType() == SerialPortEvent.DATA_AVAILABLE) {		
 				try {
-					longitud = this.posicionInicioDato + this.longitudDato;
-					if(longitud > data.length()) {
-						longitud = data.length();
-					}
+					
 					int available = socket.getInput().available();
                     for(int i=0;i<available;i++){//read all incoming characters
-                        int receivedVal=socket.getInput().read();//store it into an int (because of the input.read method
-                        if(receivedVal!=10 && receivedVal!=13 
-                        		&& inputBuffer.length() <= longitud ){//if the character is not a new line "\n" and not a carriage return
-                            inputBuffer+=(char)receivedVal; //store the new character into a buffer                            
-                        }else if(receivedVal==10 || receivedVal == (int)this.caracterControl){//if it's a new line character
+                        int receivedVal=socket.getInput().read();//store it into an int (because of the input.read method                       
+                        longitud = this.posicionInicioDato + this.longitudDato;
+                        if(receivedVal!=10 && receivedVal!=13 && inputBuffer.length() <= longitud ){//if the character is not a new line "\n" and not a carriage return
+                            inputBuffer+=(char)receivedVal; //store the new character into a buffer                      
+                            System.out.println(inputBuffer);
+                        }else {//if it's a new line character
                             data = "";
-                            data = inputBuffer;
-                            
+                            data = inputBuffer;                            
+                            longitud = this.posicionInicioDato + this.longitudDato;
+        					if(data != null && longitud > data.length()) {
+        						longitud = data.length();
+        					}
     						data = data.substring(this.posicionInicioDato, longitud);		
     						sBufferConnection = data.trim().replaceAll("[^\\d.]", "");
     						if(!sBufferConnection.isEmpty() && 
@@ -1452,8 +1482,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
                             inputBuffer="";//clear the buffer                            
                         }
                     }
-				} catch (IOException e) {
-					logger.error("IO Error Occurred: ", e);
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error("IO Error Occurred: ", e);					
 				}
 			}
 		}		

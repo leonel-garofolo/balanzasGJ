@@ -38,6 +38,11 @@ public class ParametrosGlobales implements Serializable
 	public static final String P_EMPRESA_BACKUP= "EMPRESA_BACKUP";
 	public static final String P_EMPRESA_AUTOMATICO= "EMPRESA_AUTOMATICO";
 	
+	public static final String A_CODIGO_ADUANA= "CODIGO_ADUANA";	                           
+	public static final String A_CODIGO_LOG= "CODIGO_LOG";
+	public static final String A_CERTIFICADO= "CERTIFICADO";
+	public static final String A_VENCIMIENTO= "VENCIMIENTO";
+	
     private static final long serialVersionUID = 1L;
 
     private String    id           ; // Id or Primary Key

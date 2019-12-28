@@ -5,9 +5,11 @@
 
 package com.balanzasgj.app.persistence.impl.jdbc;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import javax.inject.Named;
@@ -33,6 +35,8 @@ public class ComunicacionesPersistenceJdbc extends GenericJdbcDAO<Comunicaciones
 
 	private final static String SQL_INSERT = 
 		"insert into comunicaciones ( nombre, idindicadores ) values ( ?, ? )";
+	private final static String SQL_INSERT_2 = 
+			"insert into comunicaciones ( idcomunicaciones, nombre, idindicadores ) values ( ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
 		"update comunicaciones set nombre = ?, idindicadores = ? where idcomunicaciones = ?";
@@ -191,10 +195,38 @@ public class ComunicacionesPersistenceJdbc extends GenericJdbcDAO<Comunicaciones
 		if ( super.doExists(comunicaciones) ) {
 			super.doUpdate(comunicaciones);
 		}
-		else {
-			comunicaciones.setIdcomunicaciones(super.doInsertAutoIncr(comunicaciones));
+		else {			
+			comunicaciones.setIdcomunicaciones(doInsertAutoIncr(comunicaciones));
 		}
 		return comunicaciones ;
+	}	
+	
+	protected Long doInsertAutoIncr(Comunicaciones com) {
+		Long generatedKey = 0L ;
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			PreparedStatement ps = conn.prepareStatement( SQL_INSERT_2, PreparedStatement.RETURN_GENERATED_KEYS );
+			//--- Call specific method to set the values to be inserted
+			
+			setValue(ps, 1, com.getIdcomunicaciones() ) ;
+			setValuesForInsert(ps, 2, com); 
+			//--- Execute SQL INSERT
+			ps.executeUpdate();
+			//--- Retrieve the generated key 
+			ResultSet rs = ps.getGeneratedKeys();
+			if ( rs.next() ) {
+				generatedKey = rs.getLong(1);
+			}
+			rs.close();
+			//--- End
+			ps.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(conn);
+		}
+		return generatedKey ;
 	}	
 
     //----------------------------------------------------------------------

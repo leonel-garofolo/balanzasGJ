@@ -305,6 +305,45 @@
                   		<fx:include fx:id="usuariosView" source="UsuariosView.fxml" />
                   	</content>
                   </Tab>
+                  <Tab fx:id="tabAduana" text="Aduana">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <GridPane layoutX="48.0" layoutY="61.0" prefHeight="107.0" prefWidth="333.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.0" minWidth="10.0" prefWidth="181.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.0" minWidth="10.0" prefWidth="152.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label text="Código de Aduana:" />
+                                    <Label text="Número Certificado Habilitación:" GridPane.rowIndex="2" />
+                                    <Label text="Código LOT:" GridPane.rowIndex="1" />
+                                    <Label text="Vencimiento:" GridPane.rowIndex="3" />
+                                    <TextField fx:id="txtCodAduana" GridPane.columnIndex="1" />
+                                    <TextField fx:id="txtCodLOT" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtCertHab" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtVenc" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                 </children>
+                              </GridPane>
+                              <Button fx:id="btnAplicarAduana" layoutX="306.0" layoutY="174.0" mnemonicParsing="false" onAction="#handleAplicarAduana" text="Aplicar">
+                                 <graphic>
+                                    <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/guardar.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
               </tabs>
             </TabPane>
          </children>

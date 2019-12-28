@@ -8,6 +8,7 @@ import com.balanzasgj.app.model.Comunicaciones;
 import com.balanzasgj.app.model.Entidades;
 import com.balanzasgj.app.model.ImportadoresExportadores;
 import com.balanzasgj.app.model.Indicadores;
+import com.balanzasgj.app.model.ParametrosGlobales;
 import com.balanzasgj.app.model.Patentes;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
@@ -17,6 +18,7 @@ import com.balanzasgj.app.persistence.ClientesPersistence;
 import com.balanzasgj.app.persistence.ComunicacionesPersistence;
 import com.balanzasgj.app.persistence.ImportadoresExportadoresPersistence;
 import com.balanzasgj.app.persistence.IndicadoresPersistence;
+import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
 import com.balanzasgj.app.persistence.PatentesPersistence;
 import com.balanzasgj.app.persistence.ProcedenciasPersistence;
 import com.balanzasgj.app.persistence.ProductosPersistence;
@@ -25,6 +27,7 @@ import com.balanzasgj.app.persistence.impl.jdbc.ClientesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ComunicacionesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ImportadoresExportadoresPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.IndicadoresPersistenceJdbc;
+import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.PatentesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProcedenciasPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
@@ -136,6 +139,8 @@ public class ConfiguracionesController extends AnchorPane {
 	
 	@FXML
 	private Tab tabUsuarios;
+	@FXML
+	private Tab tabAduana;
 	
 	@FXML
 	private TabPane tabPane;
@@ -166,6 +171,16 @@ public class ConfiguracionesController extends AnchorPane {
 	private TextField txtEntidadUltMov;
 	@FXML
 	private TextField txtEntidadAcumulado;	
+	
+	@FXML
+	private TextField txtCodAduana;
+	@FXML
+	private TextField txtCodLOT;	
+	@FXML
+	private TextField txtCertHab;	
+	@FXML
+	private TextField txtVenc;	
+	
 		
 	private ClientesPersistence clientesPersistence;	
 	private ProcedenciasPersistence procedenciasPersistence;
@@ -174,10 +189,53 @@ public class ConfiguracionesController extends AnchorPane {
 	private IndicadoresPersistence indicadoresPersistence;
 	private ComunicacionesPersistence comunicacionesPersistence;
 	private ImportadoresExportadoresPersistence importadoresExportadoresPersistence;
-	private PatentesPersistence patentesPersistence;		
+	private PatentesPersistence patentesPersistence;	
+	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
 	private boolean modoEditEntidades = false;
 	private boolean modoEditIndicadores = false;
 
+	
+	
+	@FXML
+	private void handleAplicarAduana(ActionEvent event) {
+		ParametrosGlobales pg = new ParametrosGlobales();		
+		if(txtCodAduana != null
+				&& txtCodAduana.getText() != null
+				&& !txtCodAduana.getText().isEmpty()) {			
+			pg.setId(ParametrosGlobales.A_CODIGO_ADUANA);
+			pg.setValue(txtCodAduana.getText());
+			parametrosGlobalesPersistence.save(pg);
+		}
+		
+		pg = new ParametrosGlobales();		
+		if(txtCodLOT != null
+				&& txtCodLOT.getText() != null
+				&& !txtCodLOT.getText().isEmpty()) {			
+			pg.setId(ParametrosGlobales.A_CODIGO_LOG);
+			pg.setValue(txtCodLOT.getText());
+			parametrosGlobalesPersistence.save(pg);
+		}
+		
+		pg = new ParametrosGlobales();		
+		if(txtCertHab != null
+				&& txtCertHab.getText() != null
+				&& !txtCertHab.getText().isEmpty()) {			
+			pg.setId(ParametrosGlobales.A_CERTIFICADO);
+			pg.setValue(txtCertHab.getText());
+			parametrosGlobalesPersistence.save(pg);
+		}
+		
+		pg = new ParametrosGlobales();		
+		if(txtVenc != null
+				&& txtVenc.getText() != null
+				&& !txtVenc.getText().isEmpty()) {			
+			pg.setId(ParametrosGlobales.A_VENCIMIENTO);
+			pg.setValue(txtVenc.getText());
+			parametrosGlobalesPersistence.save(pg);
+		}
+		
+		Message.info("Los datos se guardaron correctamente.");
+	}
 
 	@FXML
 	private void handleCerrar(ActionEvent event) {
@@ -520,9 +578,18 @@ public class ConfiguracionesController extends AnchorPane {
 	private void saveIndicadores() {
 		Indicadores indicadores = new Indicadores();
 		indicadores.setNombre(txtNombreIndicadores.getText());
-		indicadores.setPosicionCaracterControl(Integer.valueOf(txtEditPosicionControl.getText()));
-		indicadores.setLongitudCaracterControl(Integer.valueOf(txtEditLongCaracterControl.getText()));
-		indicadores.setCaracterControl(txtEditCaracterControl.getText());
+		if(txtEditPosicionControl.getText() != null) {
+			indicadores.setPosicionCaracterControl(Integer.valueOf(txtEditPosicionControl.getText()));
+		}
+		
+		if(txtEditLongCaracterControl.getText() != null) {
+			indicadores.setLongitudCaracterControl(Integer.valueOf(txtEditLongCaracterControl.getText()));
+		}
+		
+		if(txtEditCaracterControl.getText() != null) {
+			indicadores.setCaracterControl(txtEditCaracterControl.getText());
+		}
+		
 		indicadores.setPosicionInicioDato(Integer.valueOf(txtEditPosInicioDato.getText()));
 		indicadores.setLongitudDato(Integer.valueOf(txtEditLongitudDato.getText()));
 		indicadores.setPuerto(Integer.valueOf(txtPuerto.getText()));
@@ -546,11 +613,13 @@ public class ConfiguracionesController extends AnchorPane {
 		case Usuarios.P_SUPERVISOR:
 			tabCom.setDisable(true);
 			tabInd.setDisable(true);
+			tabAduana.setDisable(false);
 			break;
 		case Usuarios.P_OPERADOR:			
 			tabCom.setDisable(true);
 			tabInd.setDisable(true);
 			tabUsuarios.setDisable(true);
+			tabAduana.setDisable(true);
 			break;
 		default:
 			break;
@@ -650,9 +719,61 @@ public class ConfiguracionesController extends AnchorPane {
 		    }
 		});
 		
+		txtCodAduana.textProperty().addListener((ov, oldValue, newValue) -> {
+			if(newValue != null) {
+				txtCodAduana.setText(newValue.toUpperCase());
+			}
+		});
+				
+		txtCodLOT.textProperty().addListener((ov, oldValue, newValue) -> {
+			if(newValue != null) {
+				txtCodLOT.setText(newValue.toUpperCase());
+			}
+		});		
+		
+		txtCertHab.textProperty().addListener((ov, oldValue, newValue) -> {
+			if(newValue != null) {
+				txtCertHab.setText(newValue.toUpperCase());
+			}
+		});		
+			
+		txtVenc.textProperty().addListener((ov, oldValue, newValue) -> {
+			if(newValue != null) {
+				txtVenc.setText(newValue.toUpperCase());
+			}
+		});
+		
+		ParametrosGlobales pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.A_CODIGO_ADUANA);
+		parametrosGlobalesPersistence.load(pg);
+		if(pg!= null) {
+			txtCodAduana.setText(pg.getValue());
+		}
+		
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.A_CODIGO_LOG);
+		parametrosGlobalesPersistence.load(pg);
+		if(pg!= null) {
+			txtCodLOT.setText(pg.getValue());
+		}
+		
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.A_CERTIFICADO);
+		parametrosGlobalesPersistence.load(pg);
+		if(pg!= null) {
+			txtCertHab.setText(pg.getValue());
+		}
+		
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.A_VENCIMIENTO);
+		parametrosGlobalesPersistence.load(pg);
+		if(pg!= null) {
+			txtVenc.setText(pg.getValue());
+		}
 	}
 
 	private void initPersistence() {
+		this.parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
 		this.clientesPersistence = new ClientesPersistenceJdbc();
 		this.procedenciasPersistence = new ProcedenciasPersistenceJdbc();
 		this.productosPersistence = new ProductosPersistenceJdbc();
