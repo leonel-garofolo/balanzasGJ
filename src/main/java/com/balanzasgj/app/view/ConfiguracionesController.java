@@ -612,8 +612,7 @@ public class ConfiguracionesController extends AnchorPane {
 		switch (Usuarios.getPerfilLogeado()) {
 		case Usuarios.P_SUPERVISOR:
 			tabCom.setDisable(true);
-			tabInd.setDisable(true);
-			tabAduana.setDisable(false);
+			tabInd.setDisable(true);			
 			break;
 		case Usuarios.P_OPERADOR:			
 			tabCom.setDisable(true);
