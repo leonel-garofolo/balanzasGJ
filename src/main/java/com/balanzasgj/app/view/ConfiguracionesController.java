@@ -3,6 +3,7 @@ package com.balanzasgj.app.view;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import com.balanzasgj.app.model.Ata;
 import com.balanzasgj.app.model.Clientes;
 import com.balanzasgj.app.model.Comunicaciones;
 import com.balanzasgj.app.model.Entidades;
@@ -14,6 +15,7 @@ import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
 import com.balanzasgj.app.model.Transportes;
 import com.balanzasgj.app.model.Usuarios;
+import com.balanzasgj.app.persistence.AtaPersistence;
 import com.balanzasgj.app.persistence.ClientesPersistence;
 import com.balanzasgj.app.persistence.ComunicacionesPersistence;
 import com.balanzasgj.app.persistence.ImportadoresExportadoresPersistence;
@@ -23,6 +25,7 @@ import com.balanzasgj.app.persistence.PatentesPersistence;
 import com.balanzasgj.app.persistence.ProcedenciasPersistence;
 import com.balanzasgj.app.persistence.ProductosPersistence;
 import com.balanzasgj.app.persistence.TransportesPersistence;
+import com.balanzasgj.app.persistence.impl.jdbc.AtaPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ClientesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ComunicacionesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ImportadoresExportadoresPersistenceJdbc;
@@ -190,6 +193,7 @@ public class ConfiguracionesController extends AnchorPane {
 	private IndicadoresPersistence indicadoresPersistence;
 	private ComunicacionesPersistence comunicacionesPersistence;
 	private ImportadoresExportadoresPersistence importadoresExportadoresPersistence;
+	private AtaPersistence ataPersistence;	
 	private PatentesPersistence patentesPersistence;	
 	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
 	private boolean modoEditEntidades = false;
@@ -369,7 +373,11 @@ public class ConfiguracionesController extends AnchorPane {
 				break;
 			case IMPORTADORES:
 				importadoresExportadoresPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
-				break;	
+				break;
+			case ATA_TRANSPORTISTA:
+				ataPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				break;
+				
 			case PATENTES:
 				patentesPersistence.deleteById(((Patentes)tblEntidades.getSelectionModel().getSelectedItem()).getPatente());
 				break;
@@ -424,7 +432,11 @@ public class ConfiguracionesController extends AnchorPane {
 		case IMPORTADORES:
 			tblEntidades.getItems().addAll(importadoresExportadoresPersistence.findAll());
 			setVisibleAduana(true);
-			break;			
+			break;	
+		case ATA_TRANSPORTISTA:
+			tblEntidades.getItems().addAll(ataPersistence.findAll());
+			setVisibleAduana(true);
+			break;
 		case PATENTES:
 			tblEntidades.getItems().addAll(patentesPersistence.findAll());
 			setVisiblePatente(true);
@@ -558,6 +570,15 @@ public class ConfiguracionesController extends AnchorPane {
 				ie.setCuit(txtEntidadCuitAlias.getText());	
 				importadoresExportadoresPersistence.save(ie);
 				break;
+			case ATA_TRANSPORTISTA:			
+				Ata ata = new Ata();
+				if(modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
+					ata.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				}
+				ata.setNombre(nombre);
+				ata.setCuit(txtEntidadCuitAlias.getText());	
+				ataPersistence.save(ata);
+				break;
 			case PATENTES:			
 				Patentes p = new Patentes();				
 				if(modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
@@ -635,6 +656,7 @@ public class ConfiguracionesController extends AnchorPane {
 				PRODUCTOS, 
 				TRANSPORTES,
 				IMPORTADORES,
+				ATA_TRANSPORTISTA,
 				PATENTES});
 		initTextUpperCase();
 				
@@ -782,6 +804,7 @@ public class ConfiguracionesController extends AnchorPane {
 		this.comunicacionesPersistence = new ComunicacionesPersistenceJdbc();
 		this.importadoresExportadoresPersistence = new ImportadoresExportadoresPersistenceJdbc();	
 		this.patentesPersistence = new PatentesPersistenceJdbc();
+		this.ataPersistence = new AtaPersistenceJdbc();
 	}
 
 	private void initComunicaciones() {					

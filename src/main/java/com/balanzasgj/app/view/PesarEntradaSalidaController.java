@@ -276,11 +276,22 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private Label lblManifiesto;	
 	@FXML
+	private Label lblDestinatario;	
+	@FXML
+	private Label lblMercaderia;	
+	@FXML
 	private ComboBoxAutoComplete<Ata> cbxATA;	
 	@FXML
 	private TextField txtContenedor;	
 	@FXML
-	private TextField txtManifiesto;					
+	private TextField txtManifiesto;
+	@FXML
+	private TextField txtDestinatario;	
+	@FXML
+	private TextField txtMercaderia;
+	@FXML
+	private Button btnAccesoATA;
+	
 	
 	private char statusTara;
 
@@ -595,6 +606,14 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 						tara.setManifiesto(txtManifiesto.getText());
 					}
 					
+					if(txtDestinatario.isVisible()) {
+						tara.setDestino(txtDestinatario.getText());
+					}
+					
+					if(txtMercaderia.isVisible()) {
+						tara.setMercaderia(txtMercaderia.getText());
+					}
+					
 					Patentes p = new Patentes();
 					p.setPatente(txtPatente.getText());		
 					tara.setPatente(p);
@@ -742,6 +761,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxATA.setValue(taraEdit.getAta());
 		txtContenedor.setText(taraEdit.getContenedor());
 		txtManifiesto.setText(taraEdit.getManifiesto());
+		txtDestinatario.setText(taraEdit.getDestino());
+		txtMercaderia.setText(taraEdit.getMercaderia());
+		
 		
 		cbxModoTara.setValue(taraEdit.getModoTara());
 		cbxModalidad.setValue(taraEdit.getModalidad());
@@ -998,9 +1020,27 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	}
 	
 	private void modoAduana(boolean isVisible) {
+		//Importacion exportacion
 		lblImpExp.setVisible(isVisible);
 		cbxImpExp.setVisible(isVisible);
 		btnAccesoImpExp.setVisible(isVisible);
+		
+		// ATA
+		lbllATA.setVisible(isVisible);
+		cbxATA.setVisible(isVisible);
+		btnAccesoATA.setVisible(isVisible);
+		
+		lblContenedor.setVisible(isVisible);
+		txtContenedor.setVisible(isVisible);
+		
+		lblManifiesto.setVisible(isVisible);
+		txtManifiesto.setVisible(isVisible);
+		
+		lblDestinatario.setVisible(isVisible);
+		txtDestinatario.setVisible(isVisible);
+		
+		lblMercaderia.setVisible(isVisible);
+		txtMercaderia.setVisible(isVisible);		
 	}
 	
 	private void addPatente() {
@@ -1195,6 +1235,18 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 				txtManifiesto.setText(newValue.toUpperCase());
 			}
 		});
+		
+		txtDestinatario.textProperty().addListener((ov, oldValue, newValue) -> {
+			if(newValue != null) {
+				txtDestinatario.setText(newValue.toUpperCase());
+			}
+		});
+		
+		txtMercaderia.textProperty().addListener((ov, oldValue, newValue) -> {
+			if(newValue != null) {
+				txtMercaderia.setText(newValue.toUpperCase());
+			}
+		});
 	}
 	
 	private void enabledAduana(String newValue) {
@@ -1291,6 +1343,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			if(indicadorConfig.getParidad().equals("n")) {
 				paridad = SerialPort.PARITY_NONE;
 			}
+			/*
 			try {
 				socket.conectar("COM" + indicadorConfig.getPuerto(), 
 						indicadorConfig.getVelocidad(), 
@@ -1303,6 +1356,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			}catch (Exception e) {
 				stage.setTitle("Tomar Pesajes: ERROR DE CONEXION CON EL INDICADOR ");
 			}
+			*/
 			break;
 		}	
 	}
@@ -1465,6 +1519,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxTransporte.setValue(null);
 		cbxProcedencia.setValue(null);		
 		cbxImpExp.setValue(null);
+		cbxATA.setValue(null);
 		
 		txtNumDoc.setText("");
 		txtConductor.setText("");
@@ -1474,6 +1529,11 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		txtUltima.setText("");	
 		txtFactura.setText("");
 		txtObservaciones.setText("");
+		
+		txtContenedor.setText("");
+		txtManifiesto.setText("");
+		txtDestinatario.setText("");
+		txtMercaderia.setText("");
 		
 		cbxModoTara.setValue(null);
 		cbxModalidad.setValue(null);

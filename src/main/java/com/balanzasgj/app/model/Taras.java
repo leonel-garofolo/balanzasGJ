@@ -50,6 +50,7 @@ public class Taras implements Serializable
     private Ata ata;
     private String contenedor;
     private String manifiesto;
+    private String mercaderia;
 
     /**
      * Default constructor
@@ -424,6 +425,16 @@ public class Taras implements Serializable
 
 	public void setManifiesto(String manifiesto) {
 		this.manifiesto = manifiesto;
+	}
+	
+	
+
+	public String getMercaderia() {
+		return mercaderia;
+	}
+
+	public void setMercaderia(String mercaderia) {
+		this.mercaderia = mercaderia;
 	}
 
 	//----------------------------------------------------------------------
