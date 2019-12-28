@@ -33,6 +33,9 @@ public class AduanaDialog extends Dialog<String> {
 		case ConfiguracionesController.IMPORTADORES:
 			title += " Importadores/Exportadores";
 			break;
+		case ConfiguracionesController.ATA_TRANSPORTISTA:
+			title += " Ata/Transportista";
+			break;
 		case ConfiguracionesController.PROCEDENCIAS:
 			title += " Procedencia";
 			break;

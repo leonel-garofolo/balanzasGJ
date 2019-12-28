@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.javafx.controls.customs.ComboBoxAutoComplete;
 
 import com.balanzasgj.app.conn.serial.SocketConnection;
+import com.balanzasgj.app.model.Ata;
 import com.balanzasgj.app.model.Clientes;
 import com.balanzasgj.app.model.Comunicaciones;
 import com.balanzasgj.app.model.Ejes;
@@ -33,6 +34,7 @@ import com.balanzasgj.app.model.Productos;
 import com.balanzasgj.app.model.Taras;
 import com.balanzasgj.app.model.Transportes;
 import com.balanzasgj.app.model.Usuarios;
+import com.balanzasgj.app.persistence.AtaPersistence;
 import com.balanzasgj.app.persistence.ClientesPersistence;
 import com.balanzasgj.app.persistence.ComunicacionesPersistence;
 import com.balanzasgj.app.persistence.EjesPersistence;
@@ -44,6 +46,7 @@ import com.balanzasgj.app.persistence.ProcedenciasPersistence;
 import com.balanzasgj.app.persistence.ProductosPersistence;
 import com.balanzasgj.app.persistence.TarasPersistence;
 import com.balanzasgj.app.persistence.TransportesPersistence;
+import com.balanzasgj.app.persistence.impl.jdbc.AtaPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ClientesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ComunicacionesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.EjesPersistenceJdbc;
@@ -59,6 +62,7 @@ import com.balanzasgj.app.utils.Message;
 import com.balanzasgj.app.utils.ShowJasper;
 import com.balanzasgj.app.view.columns.ClientesTableCell;
 import com.balanzasgj.app.view.columns.ImpExpTableCell;
+import com.balanzasgj.app.view.columns.PatenteTableCell;
 import com.balanzasgj.app.view.columns.ProcedenciasTableCell;
 import com.balanzasgj.app.view.columns.ProductosTableCell;
 import com.balanzasgj.app.view.columns.TransportesTableCell;
@@ -214,7 +218,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private TableColumn<Taras, String> colFecha;
 	@FXML
-	private TableColumn<Taras, String> colChasis;
+	private TableColumn<Taras, Patentes> colChasis;
 	@FXML
 	private TableColumn<Taras, BigDecimal> colEntrada;
 	@FXML
@@ -263,6 +267,21 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private HBox hNeto;
 	
+	
+	// ADUANA
+	@FXML
+	private Label lbllATA;
+	@FXML
+	private Label lblContenedor;
+	@FXML
+	private Label lblManifiesto;	
+	@FXML
+	private ComboBoxAutoComplete<Ata> cbxATA;	
+	@FXML
+	private TextField txtContenedor;	
+	@FXML
+	private TextField txtManifiesto;					
+	
 	private char statusTara;
 
 	private ClientesPersistence clientesPersistence;
@@ -276,6 +295,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private EjesPersistence ejesPersistence;
 	private TarasPersistence tarasPersistence;
 	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
+	private AtaPersistence ataPersistence;
 	private long idTaraEdit = -1;
 	private Taras taraEdit;	
 	
@@ -364,7 +384,6 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private void handleTicket(ActionEvent event) {
 		if (taraEdit != null) {
 			List<Taras> taras = new ArrayList<>();
-			taras.add(taraEdit);
 			HashMap<String, Object> params = new HashMap<>();
 			
 			/*PROPIETARIO DE LA BALANZA*/
@@ -441,10 +460,23 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		        pg = new ParametrosGlobales();
 				pg.setId(ParametrosGlobales.A_VENCIMIENTO);	
 				parametrosGlobalesPersistence.load(pg);
-		        params.put(ParametrosGlobales.A_VENCIMIENTO, (pg.getValue()== null?"":pg.getValue()));	               		        
+		        params.put(ParametrosGlobales.A_VENCIMIENTO, (pg.getValue()== null?"":pg.getValue()));	    
+		        
+		        ImportadoresExportadores ie = cbxImpExp.getSelectionModel().getSelectedItem();
+		        impExpPersistence.load(ie);
+		        taraEdit.setImpExp(ie);
+		        
+		        Patentes p = new Patentes();
+		        p.setPatente(txtPatente.getText());
+		        patentesPersistence.load(p);
+		        taraEdit.setPatente(p);
+		        
+		        Ata ata = cbxATA.getSelectionModel().getSelectedItem();		        
+		        ataPersistence.load(ata);
+		        taraEdit.setAta(ata);
 	        }
 	        
-	        
+	        taras.add(taraEdit);
 	        pg = new ParametrosGlobales();
 			pg.setId(ParametrosGlobales.P_EMPRESA_IMG);	
 			parametrosGlobalesPersistence.load(pg);
@@ -553,7 +585,19 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					if(cbxImpExp.isVisible()) {
 						tara.setImpExp(cbxImpExp.getValue());
 					}
-					tara.setPatente(txtPatente.getText());
+					if(cbxATA.isVisible()) {
+						tara.setAta(cbxATA.getValue());
+					}
+					if(txtContenedor.isVisible()) {
+						tara.setContenedor(txtContenedor.getText());
+					}
+					if(txtManifiesto.isVisible()) {
+						tara.setManifiesto(txtManifiesto.getText());
+					}
+					
+					Patentes p = new Patentes();
+					p.setPatente(txtPatente.getText());		
+					tara.setPatente(p);
 					tara.setNumDoc(txtNumDoc.getText());
 					tara.setConductor(txtConductor.getText());
 					tara.setComprobanteNun1(txtFactura.getText());
@@ -600,7 +644,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 						tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
 					}
 					//comprobar si existe una patente con pesaje de salida pendiente
-					boolean existPending = tarasPersistence.checkPending(tara.getPatente());
+					boolean existPending = tarasPersistence.checkPending(tara.getPatente().getPatente());
 					if(tara.getIdtaras() == null && existPending) {
 						Message.error("Error al guardar, ya existe un pesaje pendiente con la patente " + tara.getPatente() + ".");
 						return;
@@ -682,7 +726,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		idTaraEdit = taraEdit.getIdtaras();
 		txtTransaccion.setText(taraEdit.getTransaccion());
 		txtFecha.setText(format.format(taraEdit.getFechaEntrada()));
-		txtPatente.setText(this.patentesPersistence.findById(taraEdit.getPatente()).getPatente());
+		txtPatente.setText(this.patentesPersistence.findById(taraEdit.getPatente().getPatente()).getPatente());
 		txtEntrada.setText(taraEdit.getPesoEntrada().toString());
 		
 		txtNumDoc.setText(taraEdit.getNumDoc());
@@ -695,6 +739,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxCliente.setValue(taraEdit.getCliente());
 		cbxProducto.setValue(taraEdit.getProducto());	
 		cbxImpExp.setValue(taraEdit.getImpExp());
+		cbxATA.setValue(taraEdit.getAta());
+		txtContenedor.setText(taraEdit.getContenedor());
+		txtManifiesto.setText(taraEdit.getManifiesto());
 		
 		cbxModoTara.setValue(taraEdit.getModoTara());
 		cbxModalidad.setValue(taraEdit.getModalidad());
@@ -828,6 +875,19 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		}
 	}
 	
+	@FXML
+	private void handleEditAta(ActionEvent event) {
+		String value = Message.addElementAduana(ConfiguracionesController.ATA_TRANSPORTISTA);
+		if(!value.equals("")) {
+			Ata ata = (Ata)buildObject(ConfiguracionesController.ATA_TRANSPORTISTA, value);			
+			ata = ataPersistence.save(ata);
+			cbxATA.getItems().clear();
+			cbxATA.getItems().addAll(ataPersistence.findAll());
+			cbxATA.reload();
+			cbxATA.setValue(ata);
+		}
+	}
+	
 	private Entidades buildObject(String type, String values) {
 		String[] result = values.split(AduanaDialog.SPLIT);
 		switch (type) {
@@ -842,6 +902,13 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 				ie.setCuit(result[1]);
 			}
 			return ie;
+		case ConfiguracionesController.ATA_TRANSPORTISTA:
+			Ata ata = new Ata();
+			ata.setNombre(result[0]);
+			if(result.length > 1) {
+				ata.setCuit(result[1]);
+			}
+			return ata;
 		case ConfiguracionesController.PROCEDENCIAS:
 			Procedencias pro = new Procedencias();
 			pro.setNombre(result[0]);
@@ -1117,6 +1184,17 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		        }
 		    }
 		});
+		txtContenedor.textProperty().addListener((ov, oldValue, newValue) -> {
+			if(newValue != null) {
+				txtContenedor.setText(newValue.toUpperCase());
+			}
+		});
+		
+		txtManifiesto.textProperty().addListener((ov, oldValue, newValue) -> {
+			if(newValue != null) {
+				txtManifiesto.setText(newValue.toUpperCase());
+			}
+		});
 	}
 	
 	private void enabledAduana(String newValue) {
@@ -1148,7 +1226,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			}
   		} if(newValue != null && newValue.equals(T_CON_TARA)) {
   			Patentes p = new Patentes();
-  			p.setPatente(taraEdit.getPatente());
+  			p.setPatente(taraEdit.getPatente().getPatente());
   			this.patentesPersistence.load(p);
   			if(p.getTara() != null) {
   				lblTara.setVisible(true);
@@ -1302,6 +1380,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		this.ejesPersistence = new EjesPersistenceJdbc();
 		this.tarasPersistence = new TarasPersistenceJdbc();
 		this.parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
+		this.ataPersistence = new AtaPersistenceJdbc();
 		
 		
 		cbxProducto.getItems().addAll(productosPersistence.findAll());
@@ -1313,7 +1392,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxProcedencia.getItems().addAll(procedenciasPersistence.findAll());
 		cbxProcedencia.reload();
 		cbxImpExp.getItems().addAll(impExpPersistence.findAll());
-		cbxImpExp.reload();
+		cbxImpExp.reload();		
+		cbxATA.getItems().addAll(ataPersistence.findAll());
+		cbxATA.reload();
 		
 		colTransaccion.setCellValueFactory(new PropertyValueFactory<>("transaccion"));
 		colFecha.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
@@ -1327,7 +1408,6 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 
             }
         });
-		colChasis.setCellValueFactory(new PropertyValueFactory<>("patente"));		
 		colEntrada.setCellValueFactory(new PropertyValueFactory<>("pesoEntrada"));
 		colSalida.setCellValueFactory(new PropertyValueFactory<>("pesoSalida"));
 
@@ -1347,6 +1427,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		colCliente.setCellValueFactory(new PropertyValueFactory<>("cliente"));
 		colCliente.setCellFactory(col -> new ClientesTableCell<>());
 
+		colChasis.setCellValueFactory(new PropertyValueFactory<>("patente"));
+		colChasis.setCellFactory(col -> new PatenteTableCell<>());
 		colTransporte.setCellValueFactory(new PropertyValueFactory<>("transporte"));
 		colTransporte.setCellFactory(col -> new TransportesTableCell<>());
 		colProcedencia.setCellValueFactory(new PropertyValueFactory<>("procedencias"));

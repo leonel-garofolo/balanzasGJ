@@ -60,6 +60,7 @@ public class ConfiguracionesController extends AnchorPane {
 	public static final String PRODUCTOS = "PRODUCTOS";
 	public static final String TRANSPORTES = "TRANSPORTES";
 	public static final String IMPORTADORES = "IMPORTADORES/EXPORTADORES";
+	public static final String ATA_TRANSPORTISTA = "ATA/TRANSPORTISTA ";
 	public static final String PATENTES = "PATENTES";		
 	
 	@FXML

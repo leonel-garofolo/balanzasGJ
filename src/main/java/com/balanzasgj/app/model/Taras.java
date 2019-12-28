@@ -7,7 +7,6 @@
 package com.balanzasgj.app.model;
 
 import java.io.Serializable;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -39,7 +38,7 @@ public class Taras implements Serializable
     private String     conductor    ;
     private String     tipoDoc      ;
     private String     numDoc       ;
-    private String     patente      ;
+    private Patentes    patente      ;
     private String     patenteAceptado ;
     private String     observacion  ;
     private String     contenedorNum ;
@@ -47,7 +46,10 @@ public class Taras implements Serializable
     private BigDecimal pesoEntrada  ;
     private BigDecimal pesoSalida   ;
     private BigDecimal pesoNeto   ;
-    private String     modoChasis ;    
+    private String     modoChasis ;  
+    private Ata ata;
+    private String contenedor;
+    private String manifiesto;
 
     /**
      * Default constructor
@@ -252,23 +254,7 @@ public class Taras implements Serializable
     public String getNumDoc() {
         return this.numDoc;
     }
-
-    /**
-     * Set the "patente" field value
-     * This field is mapped on the database column "patente" ( type "VARCHAR", NotNull : false ) 
-     * @param patente
-     */
-    public void setPatente( String patente ) {
-        this.patente = patente;
-    }
-    /**
-     * Get the "patente" field value
-     * This field is mapped on the database column "patente" ( type "VARCHAR", NotNull : false ) 
-     * @return the field value
-     */
-    public String getPatente() {
-        return this.patente;
-    }
+   
 
     /**
      * Set the "patenteAceptado" field value
@@ -406,6 +392,38 @@ public class Taras implements Serializable
 
 	public void setImpExp(ImportadoresExportadores impExp) {
 		this.impExp = impExp;
+	}		
+
+	public Patentes getPatente() {
+		return patente;
+	}
+
+	public void setPatente(Patentes patente) {
+		this.patente = patente;
+	}
+
+	public Ata getAta() {
+		return ata;
+	}
+
+	public void setAta(Ata ata) {
+		this.ata = ata;
+	}
+
+	public String getContenedor() {
+		return contenedor;
+	}
+
+	public void setContenedor(String contenedor) {
+		this.contenedor = contenedor;
+	}
+
+	public String getManifiesto() {
+		return manifiesto;
+	}
+
+	public void setManifiesto(String manifiesto) {
+		this.manifiesto = manifiesto;
 	}
 
 	//----------------------------------------------------------------------

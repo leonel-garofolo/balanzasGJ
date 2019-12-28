@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLType;
+import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -19,15 +19,13 @@ import javax.inject.Named;
 
 import com.balanzasgj.app.model.Clientes;
 import com.balanzasgj.app.model.ImportadoresExportadores;
+import com.balanzasgj.app.model.Patentes;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
 import com.balanzasgj.app.model.Taras;
 import com.balanzasgj.app.model.Transportes;
 import com.balanzasgj.app.persistence.TarasPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
-import java.sql.Types;
-
-import javafx.animation.KeyValue.Type;
 
 /**
  * Taras persistence implementation 
@@ -123,7 +121,7 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		setValue(ps, i++, taras.getConductor() ) ; // "conductor" : java.lang.String
 		setValue(ps, i++, taras.getTipoDoc() ) ; // "tipo_doc" : java.lang.String
 		setValue(ps, i++, taras.getNumDoc() ) ; // "num_doc" : java.lang.String
-		setValue(ps, i++, taras.getPatente() ) ; // "patente" : java.lang.String
+		setValue(ps, i++, taras.getPatente().getPatente() ) ; // "patente" : java.lang.String
 		setValue(ps, i++, taras.getPatenteAceptado() ) ; // "patente_aceptado" : java.lang.String
 		setValue(ps, i++, taras.getObservacion() ) ; // "observacion" : java.lang.String
 		setValue(ps, i++, taras.getContenedorNum() ) ; // "contenedor_num" : java.lang.String
@@ -157,7 +155,7 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		setValue(ps, i++, taras.getConductor() ) ; // "conductor" : java.lang.String
 		setValue(ps, i++, taras.getTipoDoc() ) ; // "tipo_doc" : java.lang.String
 		setValue(ps, i++, taras.getNumDoc() ) ; // "num_doc" : java.lang.String
-		setValue(ps, i++, taras.getPatente() ) ; // "patente" : java.lang.String
+		setValue(ps, i++, taras.getPatente().getPatente() ) ; // "patente" : java.lang.String
 		setValue(ps, i++, taras.getPatenteAceptado() ) ; // "patente_aceptado" : java.lang.String
 		setValue(ps, i++, taras.getObservacion() ) ; // "observacion" : java.lang.String
 		setValue(ps, i++, taras.getContenedorNum() ) ; // "contenedor_num" : java.lang.String
@@ -232,7 +230,12 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		taras.setConductor(rs.getString("conductor")); // java.lang.String
 		taras.setTipoDoc(rs.getString("tipo_doc")); // java.lang.String
 		taras.setNumDoc(rs.getString("num_doc")); // java.lang.String
-		taras.setPatente(rs.getString("patente")); // java.lang.String
+		
+		if(rs.getString("patente") != null) {
+			Patentes p = new Patentes();
+			p.setPatente(rs.getString("patente"));			
+			taras.setPatente(p);
+		}
 		taras.setPatenteAceptado(rs.getString("patente_aceptado")); // java.lang.String
 		taras.setObservacion(rs.getString("observacion")); // java.lang.String
 		taras.setContenedorNum(rs.getString("contenedor_num")); // java.lang.String
