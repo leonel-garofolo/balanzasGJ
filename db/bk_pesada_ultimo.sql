@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Versión del servidor:         10.1.38-MariaDB - mariadb.org binary distribution
+-- Versión del servidor:         5.7.26 - MySQL Community Server (GPL)
 -- SO del servidor:              Win64
 -- HeidiSQL Versión:             10.2.0.5599
 -- --------------------------------------------------------
@@ -26,11 +26,14 @@ CREATE TABLE IF NOT EXISTS `ata` (
   `ultimo_movimiento` datetime DEFAULT NULL,
   `acumulado` decimal(9,2) DEFAULT NULL,
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla sist_pesada.ata: ~0 rows (aproximadamente)
 DELETE FROM `ata`;
 /*!40000 ALTER TABLE `ata` DISABLE KEYS */;
+INSERT INTO `ata` (`codigo`, `nombre`, `CUIT`, `ultimo_movimiento`, `acumulado`) VALUES
+	(1, 'ATA2', '15191', NULL, NULL),
+	(2, 'ATA3', 'asda221', NULL, NULL);
 /*!40000 ALTER TABLE `ata` ENABLE KEYS */;
 
 -- Volcando estructura para tabla sist_pesada.clientes
@@ -41,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `clientes` (
   PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla sist_pesada.clientes: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla sist_pesada.clientes: ~3 rows (aproximadamente)
 DELETE FROM `clientes`;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
 INSERT INTO `clientes` (`codigo`, `nombre`) VALUES
@@ -180,7 +183,7 @@ INSERT INTO `parametros_globales` (`id`, `value`, `valueByte`) VALUES
 	('EMPRESA_TEL', '(341)3553810  \\ 4560954', NULL),
 	('EMPRESA_TEL_BAL', 'EE', NULL),
 	('EMPRESA_TICKET', 'TICKET', NULL),
-	('EMPRESA_TRANSACCION', '67', NULL),
+	('EMPRESA_TRANSACCION', '71', NULL),
 	('VENCIMIENTO', 'AA', NULL);
 /*!40000 ALTER TABLE `parametros_globales` ENABLE KEYS */;
 
@@ -198,6 +201,7 @@ CREATE TABLE IF NOT EXISTS `patentes` (
 DELETE FROM `patentes`;
 /*!40000 ALTER TABLE `patentes` DISABLE KEYS */;
 INSERT INTO `patentes` (`codigo`, `tara`, `date_update`, `dias`) VALUES
+	('AAA111', 0, '2019-12-28 16:49:30', 0),
 	('AAA121', 0, '2019-12-20 17:07:30', 0),
 	('AAA211', 222, '2019-12-20 20:57:37', 3),
 	('AAA221', 5003, '2019-12-20 20:53:57', 2),
@@ -278,36 +282,41 @@ CREATE TABLE IF NOT EXISTS `taras` (
   `id_ata` int(11) DEFAULT NULL,
   `contenedor` varchar(45) DEFAULT NULL,
   `manifiesto` varchar(45) DEFAULT NULL,
+  `mercaderia` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idtaras`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla sist_pesada.taras: ~23 rows (aproximadamente)
+-- Volcando datos para la tabla sist_pesada.taras: ~26 rows (aproximadamente)
 DELETE FROM `taras`;
 /*!40000 ALTER TABLE `taras` DISABLE KEYS */;
-INSERT INTO `taras` (`idtaras`, `transaccion`, `fecha_entrada`, `fecha_salida`, `balanza`, `id_producto`, `id_cliente`, `id_transporte`, `id_procedencia`, `id_imp_exp`, `modalidad`, `comprobante_nun1`, `modoTara`, `destino`, `conductor`, `tipo_doc`, `num_doc`, `patente`, `patente_aceptado`, `observacion`, `contenedor_num`, `peso_entrada`, `peso_salida`, `update_date`, `modoChasis`, `id_ata`, `contenedor`, `manifiesto`) VALUES
-	(1, '45', '2019-11-26 21:16:00', '2019-11-26 21:19:31', 'ING. MANUAL', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ778', NULL, '', NULL, 1000.000, 2000.000, '2019-11-26 21:16:52', 'COMPLETO', NULL, NULL, NULL),
-	(2, '46', '2019-12-03 08:20:00', '2019-12-24 09:21:44', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ778', NULL, '', NULL, 1000.000, 300.000, '2019-12-03 08:21:10', 'COMPLETO', NULL, NULL, NULL),
-	(3, '47', '2019-12-03 08:29:00', '2019-12-24 09:10:01', 'KAIO', 1, 1, 1, 1, NULL, 'ADUANA', '', 'NORMAL', NULL, '', NULL, '', 'JDZ777', NULL, '', NULL, 1000.000, 2000.000, '2019-12-03 08:30:46', 'COMPLETO', NULL, NULL, NULL),
-	(4, '48', '2019-12-03 08:46:00', '2019-12-03 08:47:53', 'ING. MANUAL', 1, 2, 1, 1, 1, 'ADUANA', '', 'NORMAL', NULL, 'ASDASD', NULL, '', 'JDZ779', NULL, '', NULL, 1000.000, 2000.000, '2019-12-03 08:47:31', 'COMPLETO', NULL, NULL, NULL),
-	(5, '49', '2019-12-20 17:07:57', '2019-12-20 19:42:23', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'CON TARA', NULL, '', NULL, '', 'AAA221', NULL, '', NULL, 2079.000, -1.000, '2019-12-20 17:07:58', 'COMPLETO', NULL, NULL, NULL),
-	(6, '48', '2019-12-24 09:10:36', '2019-12-24 09:10:43', 'KAIO', 1, 1, 1, 1, 1, 'ADUANA', '', 'NORMAL', NULL, 'LEO', NULL, '', 'JDZ444', NULL, '', NULL, 2000.000, 3000.000, '2019-12-24 09:10:36', 'COMPLETO', NULL, NULL, NULL),
-	(7, '51', '2019-12-24 09:27:32', '2019-12-24 09:27:58', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ444', NULL, '', NULL, 200.000, 300.000, '2019-12-24 09:27:32', 'COMPLETO', NULL, NULL, NULL),
-	(8, '52', '2019-12-24 09:27:44', '2019-12-24 09:30:22', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ778', NULL, '', NULL, 0.000, 300.000, '2019-12-24 09:27:45', 'COMPLETO', NULL, NULL, NULL),
-	(9, '54', '2019-12-24 09:30:02', '2019-12-24 09:32:22', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ444', NULL, '', NULL, 5000.000, 6000.000, '2019-12-24 09:30:03', 'COMPLETO', NULL, NULL, NULL),
-	(10, '54', '2019-12-24 09:31:14', '2019-12-24 10:35:59', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ778', NULL, '', NULL, 5000.000, 5004.000, '2019-12-24 09:31:14', 'COMPLETO', NULL, NULL, NULL),
-	(11, '55', '2019-12-24 09:33:05', '2019-12-24 09:33:44', 'KAIO', 1, 1, 2, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'AAA221', NULL, '', NULL, 6000.000, 7000.000, '2019-12-24 09:33:05', 'COMPLETO', NULL, NULL, NULL),
-	(12, '56', '2019-12-24 09:33:31', '2019-12-24 09:34:31', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ777', NULL, '', NULL, 400.000, 8000.000, '2019-12-24 09:33:31', 'COMPLETO', NULL, NULL, NULL),
-	(13, '57', '2019-12-24 09:34:16', '2019-12-24 10:28:14', 'KAIO', 2, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ444', NULL, '', NULL, 222.000, 223.000, '2019-12-24 09:34:16', 'COMPLETO', NULL, NULL, NULL),
-	(14, '58', '2019-12-24 09:36:08', '2019-12-24 10:26:49', 'KAIO', 1, 1, 1, 1, 1, 'ADUANA', '', 'NORMAL', NULL, '', NULL, '', 'JDZ777', NULL, '', NULL, 3000.000, 3001.000, '2019-12-24 09:36:08', 'COMPLETO', NULL, NULL, NULL),
-	(15, '59', '2019-12-24 10:02:00', '2019-12-24 10:02:06', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'AAA221', NULL, '', NULL, 5000.000, 6000.000, '2019-12-24 10:02:00', 'COMPLETO', NULL, NULL, NULL),
-	(16, '60', '2019-12-24 10:07:13', '2019-12-24 10:26:21', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'AAA221', NULL, '', NULL, 3000.000, 4001.000, '2019-12-24 10:07:13', 'COMPLETO', NULL, NULL, NULL),
-	(17, '61', '2019-12-24 10:37:22', '2019-12-24 10:37:35', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ778', NULL, '', NULL, 500.560, 6000.850, '2019-12-24 10:37:23', 'COMPLETO', NULL, NULL, NULL),
-	(18, '62', '2019-12-24 11:09:23', '2019-12-24 11:34:52', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ778', NULL, '', NULL, 3000.000, 5006.000, '2019-12-24 11:09:24', 'COMPLETO', NULL, NULL, NULL),
-	(19, '63', '2019-12-24 11:09:55', '2019-12-24 11:30:03', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'AAA221', NULL, '', NULL, 3000.000, 4568.000, '2019-12-24 11:09:55', 'COMPLETO', NULL, NULL, NULL),
-	(20, '64', '2019-12-24 11:11:37', '2019-12-24 11:28:06', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ777', NULL, '', NULL, 5000.000, 6000.000, '2019-12-24 11:11:37', 'COMPLETO', NULL, NULL, NULL),
-	(21, '65', '2019-12-24 11:30:28', '2019-12-24 11:34:35', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'AAA221', NULL, '', NULL, 5000.000, 6000.000, '2019-12-24 11:30:28', 'COMPLETO', NULL, NULL, NULL),
-	(22, '66', '2019-12-27 21:51:27', '2019-12-28 14:30:05', 'BBB', 1, 1, 1, 1, 1, 'ADUANA', '', 'NORMAL', NULL, 'LEONEL', NULL, '31631073', 'JDZ778', NULL, '', NULL, 3000.000, 4000.000, '2019-12-27 21:51:27', 'COMPLETO', NULL, NULL, NULL),
-	(23, '67', '2019-12-28 12:41:41', '2019-12-28 14:29:58', 'BBB', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ777', NULL, '', NULL, 5000.000, 6000.000, '2019-12-28 12:41:41', 'COMPLETO', NULL, NULL, NULL);
+INSERT INTO `taras` (`idtaras`, `transaccion`, `fecha_entrada`, `fecha_salida`, `balanza`, `id_producto`, `id_cliente`, `id_transporte`, `id_procedencia`, `id_imp_exp`, `modalidad`, `comprobante_nun1`, `modoTara`, `destino`, `conductor`, `tipo_doc`, `num_doc`, `patente`, `patente_aceptado`, `observacion`, `contenedor_num`, `peso_entrada`, `peso_salida`, `update_date`, `modoChasis`, `id_ata`, `contenedor`, `manifiesto`, `mercaderia`) VALUES
+	(1, '45', '2019-11-26 21:16:00', '2019-11-26 21:19:31', 'ING. MANUAL', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ778', NULL, '', NULL, 1000.000, 2000.000, '2019-11-26 21:16:52', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(2, '46', '2019-12-03 08:20:00', '2019-12-24 09:21:44', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ778', NULL, '', NULL, 1000.000, 300.000, '2019-12-03 08:21:10', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(3, '47', '2019-12-03 08:29:00', '2019-12-24 09:10:01', 'KAIO', 1, 1, 1, 1, NULL, 'ADUANA', '', 'NORMAL', NULL, '', NULL, '', 'JDZ777', NULL, '', NULL, 1000.000, 2000.000, '2019-12-03 08:30:46', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(4, '48', '2019-12-03 08:46:00', '2019-12-03 08:47:53', 'ING. MANUAL', 1, 2, 1, 1, 1, 'ADUANA', '', 'NORMAL', NULL, 'ASDASD', NULL, '', 'JDZ779', NULL, '', NULL, 1000.000, 2000.000, '2019-12-03 08:47:31', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(5, '49', '2019-12-20 17:07:57', '2019-12-20 19:42:23', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'CON TARA', NULL, '', NULL, '', 'AAA221', NULL, '', NULL, 2079.000, -1.000, '2019-12-20 17:07:58', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(6, '48', '2019-12-24 09:10:36', '2019-12-24 09:10:43', 'KAIO', 1, 1, 1, 1, 1, 'ADUANA', '', 'NORMAL', NULL, 'LEO', NULL, '', 'JDZ444', NULL, '', NULL, 2000.000, 3000.000, '2019-12-24 09:10:36', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(7, '51', '2019-12-24 09:27:32', '2019-12-24 09:27:58', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ444', NULL, '', NULL, 200.000, 300.000, '2019-12-24 09:27:32', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(8, '52', '2019-12-24 09:27:44', '2019-12-24 09:30:22', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ778', NULL, '', NULL, 0.000, 300.000, '2019-12-24 09:27:45', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(9, '54', '2019-12-24 09:30:02', '2019-12-24 09:32:22', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ444', NULL, '', NULL, 5000.000, 6000.000, '2019-12-24 09:30:03', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(10, '54', '2019-12-24 09:31:14', '2019-12-24 10:35:59', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ778', NULL, '', NULL, 5000.000, 5004.000, '2019-12-24 09:31:14', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(11, '55', '2019-12-24 09:33:05', '2019-12-24 09:33:44', 'KAIO', 1, 1, 2, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'AAA221', NULL, '', NULL, 6000.000, 7000.000, '2019-12-24 09:33:05', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(12, '56', '2019-12-24 09:33:31', '2019-12-24 09:34:31', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ777', NULL, '', NULL, 400.000, 8000.000, '2019-12-24 09:33:31', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(13, '57', '2019-12-24 09:34:16', '2019-12-24 10:28:14', 'KAIO', 2, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ444', NULL, '', NULL, 222.000, 223.000, '2019-12-24 09:34:16', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(14, '58', '2019-12-24 09:36:08', '2019-12-24 10:26:49', 'KAIO', 1, 1, 1, 1, 1, 'ADUANA', '', 'NORMAL', NULL, '', NULL, '', 'JDZ777', NULL, '', NULL, 3000.000, 3001.000, '2019-12-24 09:36:08', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(15, '59', '2019-12-24 10:02:00', '2019-12-24 10:02:06', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'AAA221', NULL, '', NULL, 5000.000, 6000.000, '2019-12-24 10:02:00', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(16, '60', '2019-12-24 10:07:13', '2019-12-24 10:26:21', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'AAA221', NULL, '', NULL, 3000.000, 4001.000, '2019-12-24 10:07:13', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(17, '61', '2019-12-24 10:37:22', '2019-12-24 10:37:35', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ778', NULL, '', NULL, 500.560, 6000.850, '2019-12-24 10:37:23', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(18, '62', '2019-12-24 11:09:23', '2019-12-24 11:34:52', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ778', NULL, '', NULL, 3000.000, 5006.000, '2019-12-24 11:09:24', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(19, '63', '2019-12-24 11:09:55', '2019-12-24 11:30:03', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'AAA221', NULL, '', NULL, 3000.000, 4568.000, '2019-12-24 11:09:55', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(20, '64', '2019-12-24 11:11:37', '2019-12-24 11:28:06', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ777', NULL, '', NULL, 5000.000, 6000.000, '2019-12-24 11:11:37', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(21, '65', '2019-12-24 11:30:28', '2019-12-24 11:34:35', 'KAIO', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'AAA221', NULL, '', NULL, 5000.000, 6000.000, '2019-12-24 11:30:28', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(22, '66', '2019-12-27 21:51:27', '2019-12-28 14:30:05', 'BBB', 1, 1, 1, 1, 1, 'ADUANA', '', 'NORMAL', NULL, 'LEONEL', NULL, '31631073', 'JDZ778', NULL, '', NULL, 3000.000, 4000.000, '2019-12-27 21:51:27', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(23, '67', '2019-12-28 12:41:41', '2019-12-28 14:29:58', 'BBB', 1, 1, 1, 1, NULL, 'ESTANDAR', '', 'NORMAL', NULL, '', NULL, '', 'JDZ777', NULL, '', NULL, 5000.000, 6000.000, '2019-12-28 12:41:41', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(24, '68', '2019-12-28 16:35:39', '2019-12-28 16:36:59', 'BBB', 1, 1, 1, 1, 1, 'ADUANA', '', 'NORMAL', NULL, '', NULL, '', 'JDZ778', NULL, '', NULL, 2000.000, 3000.000, '2019-12-28 16:35:40', 'COMPLETO', NULL, NULL, NULL, NULL),
+	(25, '69', '2019-12-28 16:46:18', NULL, 'BBB', 1, 1, 2, 1, 1, 'ADUANA', '', 'NORMAL', NULL, '', NULL, '', 'JDZ777', NULL, '', NULL, 5000.000, NULL, '2019-12-28 16:46:18', 'COMPLETO', 1, 'AAAAA', 'CCCC', NULL),
+	(26, '70', '2019-12-28 16:49:44', '2019-12-28 17:29:33', 'BBB', 1, 1, 1, 1, 1, 'ADUANA', '', 'NORMAL', NULL, 'LEONEL GAROFOLO', NULL, '31631073', 'AAA111', NULL, '', NULL, 2500.000, 300.000, '2019-12-28 16:49:45', 'COMPLETO', 1, 'AAAAA', 'CCCC', NULL),
+	(27, '71', '2019-12-28 17:30:19', NULL, 'BBB', 1, 1, 2, 1, 1, 'ADUANA', 'SS', 'NORMAL', 'CCCCA1', 'LEONEL GAROFOLO', NULL, '31631073', 'AAA111', NULL, 'SS', NULL, 2211.000, NULL, '2019-12-28 17:30:20', 'COMPLETO', 1, 'ASDQQ', 'QDQ', '2EDDA');
 /*!40000 ALTER TABLE `taras` ENABLE KEYS */;
 
 -- Volcando estructura para tabla sist_pesada.transportes
