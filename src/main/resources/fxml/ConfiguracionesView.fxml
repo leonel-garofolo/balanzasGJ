@@ -24,7 +24,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="403.0" prefWidth="909.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.ConfiguracionesController">
+<AnchorPane prefHeight="425.0" prefWidth="909.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.ConfiguracionesController">
    <children>
       <VBox prefHeight="428.0" prefWidth="611.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -196,7 +196,7 @@
                                        <children>
                                           <VBox prefHeight="539.0" prefWidth="153.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <TableView fx:id="tblIndicadores" onMouseClicked="#handleTblIndicadoresSelected" prefHeight="492.0" prefWidth="190.0">
+                                                <TableView fx:id="tblIndicadores" onMouseClicked="#handleTblIndicadoresSelected" prefHeight="340.0" prefWidth="255.0">
                                                   <columns>
                                                     <TableColumn fx:id="colIndicadoresNombre" prefWidth="189.0" text="Nombre" />
                                                       <TableColumn fx:id="colIndicadoresCodigo" prefWidth="189.0" text="Codigo" visible="false" />
@@ -220,6 +220,28 @@
 	                                                            </image>
 	                                                         </ImageView>
 	                                                      </graphic>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER" prefHeight="40.0" prefWidth="190.0" spacing="10.0">
+                                                   <children>
+                                                      <Button fx:id="btnImportar" mnemonicParsing="false" onAction="#handleImportar" text="Importar">
+                                                         <graphic>
+                                                            <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../images/anadir.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                      <Button fx:id="btnExportar" mnemonicParsing="false" onAction="#handleExportar" text="Exportar">
+                                                         <graphic>
+                                                            <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../images/borrar.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
                                                       </Button>
                                                    </children>
                                                 </HBox>
