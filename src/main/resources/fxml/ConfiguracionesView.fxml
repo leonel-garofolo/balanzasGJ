@@ -229,7 +229,7 @@
                                                          <graphic>
                                                             <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
-                                                                  <Image url="@../images/anadir.png" />
+                                                                  <Image url="@../images/importar.png" />
                                                                </image>
                                                             </ImageView>
                                                          </graphic>
@@ -238,7 +238,7 @@
                                                          <graphic>
                                                             <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
-                                                                  <Image url="@../images/borrar.png" />
+                                                                  <Image url="@../images/exportar.png" />
                                                                </image>
                                                             </ImageView>
                                                          </graphic>

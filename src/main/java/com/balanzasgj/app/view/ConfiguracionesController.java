@@ -2,7 +2,6 @@ package com.balanzasgj.app.view;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -43,9 +42,7 @@ import com.balanzasgj.app.persistence.impl.jdbc.ProcedenciasPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.TransportesPersistenceJdbc;
 import com.balanzasgj.app.utils.Message;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -364,15 +361,23 @@ public class ConfiguracionesController extends AnchorPane {
 		File selectedDirectory = fileChooser.showOpenDialog((Stage) source.getScene().getWindow());
 
 		if (selectedDirectory != null) {
-			String path = "PATH TO YOUR JSON FILE";
-	        BufferedReader bufferedReader;
+			BufferedReader bufferedReader;
 			try {
 				bufferedReader = new BufferedReader(new FileReader(selectedDirectory.getAbsolutePath()));
 				Gson gson = new Gson();
 		        Object json = gson.fromJson(bufferedReader, Object.class);
 		        ObjectMapper mapper = new ObjectMapper();
-		        List<Indicadores> studentList = mapper.readValue(json.toString(), new TypeReference<List<Indicadores>>(){});
-		        
+		        List<Indicadores> indicadoresList = mapper.readValue(json.toString(), new TypeReference<List<Indicadores>>(){});
+		        for(Indicadores i: indicadoresList) {
+		    	   if(!indicadoresPersistence.existName(i.getNombre())) {
+		    		   i.setIdindicadores(null);
+		    		   indicadoresPersistence.save(i);
+		    	   }
+		        }
+		        List<Indicadores> indicadores = indicadoresPersistence.findAll();
+		        tblIndicadores.getItems().clear();
+				tblIndicadores.getItems().addAll(indicadores);		        
+		        Message.info("Los indicadores se importaron correctamente.");
 			} catch (IOException  e) {
 				e.printStackTrace();
 			}
@@ -396,6 +401,7 @@ public class ConfiguracionesController extends AnchorPane {
 				String indicadoresStr = gson.toJson(tblIndicadores.getItems());
 				gson.toJson(indicadoresStr, writer);
 				writer.close();
+				Message.info("Los indicadores se exportaron correctamente.");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

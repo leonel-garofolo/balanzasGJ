@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 
-import com.balanzasgj.app.App;
 import com.balanzasgj.app.model.ParametrosGlobales;
 import com.balanzasgj.app.model.Usuarios;
 import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
@@ -40,8 +39,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class PrincipalController implements Initializable, IView{	
-	final static Logger logger = Logger.getLogger(PrincipalController.class);
-	private SimpleDateFormat sf;
+	final static Logger logger = Logger.getLogger(PrincipalController.class);	
 	@FXML
 	private ImageView imgEmpresa;
 	
@@ -168,12 +166,12 @@ public class PrincipalController implements Initializable, IView{
 		    stage.show();
 		} catch (IOException e) {
 			logger.error(e);
+			e.printStackTrace();
 		}
 	}	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {		
-		this.sf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
 		ParametrosGlobales pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);
@@ -210,19 +208,7 @@ public class PrincipalController implements Initializable, IView{
 		lblUsuario.setStyle("-fx-font-weight: bold");
 		lblUsuario.setText(Usuarios.getUsuarioLogeado().toUpperCase());		
 		lblHora.setText("");
-		/*
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				while(true) {
-					lblHora.setText(sf.format(new Date()));
-				}
-			} 
-			
-		});
-		*/
-		
+				
 		String perfil = Usuarios.getPerfilLogeado();
 		switch (perfil) {		
 		case Usuarios.P_SUPERVISOR:

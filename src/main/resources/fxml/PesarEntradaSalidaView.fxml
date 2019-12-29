@@ -206,7 +206,7 @@
                <children>
                   <VBox layoutX="347.0" layoutY="91.0" prefHeight="455.0" prefWidth="1086.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox fx:id="layout2" prefHeight="208.0" prefWidth="1205.0">
+                        <HBox prefHeight="208.0" prefWidth="1205.0">
                            <children>
                               <GridPane focusTraversable="true" prefHeight="146.0" prefWidth="1180.0">
                                 <columnConstraints>

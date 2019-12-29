@@ -5,9 +5,11 @@
 
 package com.balanzasgj.app.persistence.impl.jdbc;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import javax.inject.Named;
@@ -45,6 +47,10 @@ public class IndicadoresPersistenceJdbc extends GenericJdbcDAO<Indicadores> impl
 
 	private final static String SQL_COUNT = 
 		"select count(*) from indicadores where idindicadores = ?";
+	
+	private final static String SQL_NAME =
+			"select idindicadores from indicadores where nombre like ?";
+			
 
     //----------------------------------------------------------------------
 	/**
@@ -319,6 +325,28 @@ public class IndicadoresPersistenceJdbc extends GenericJdbcDAO<Indicadores> impl
 	@Override
 	protected String getSqlCountAll() {
 		return SQL_COUNT_ALL ;
+	}
+
+	@Override
+	public boolean existName(String name) {
+		boolean r=false;
+		Connection conn= null;
+		try {
+			conn = getConnection();
+			PreparedStatement ps = conn.prepareStatement(SQL_NAME);
+			setValue(ps, INITIAL_POSITION, name ) ;
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				r = true;
+			}
+			rs.close();
+			ps.close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			closeConnection(conn);
+		}
+		return r;
 	}
 
 }
