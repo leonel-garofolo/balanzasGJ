@@ -317,7 +317,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private String sBufferConnection;	
 	private Stage stage;
 	
-	private char caracterControl;
+	private String[] caracterControl;
 	private int posicionInicioDato;
 	private int longitudDato;
 	
@@ -1333,9 +1333,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			indicadorConfig= indicadoresPersistence.findById(comunicacion.getIdindicadores().longValue());
 			if(indicadorConfig.getCaracterControl() != null
 					&& indicadorConfig.getCaracterControl().length() > 0) {
-				this.caracterControl = indicadorConfig.getCaracterControl().charAt(0);
-			} else 
-				this.caracterControl = '\0';
+				this.caracterControl = indicadorConfig.getCaracterControl().split(",");
+			}
 			
 			this.posicionInicioDato = indicadorConfig.getPosicionInicioDato();
 			this.longitudDato = indicadorConfig.getLongitudDato();
@@ -1343,7 +1342,6 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			if(indicadorConfig.getParidad().equals("n")) {
 				paridad = SerialPort.PARITY_NONE;
 			}
-			/*
 			try {
 				socket.conectar("COM" + indicadorConfig.getPuerto(), 
 						indicadorConfig.getVelocidad(), 
@@ -1356,7 +1354,6 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			}catch (Exception e) {
 				stage.setTitle("Tomar Pesajes: ERROR DE CONEXION CON EL INDICADOR ");
 			}
-			*/
 			break;
 		}	
 	}
@@ -1587,7 +1584,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	}
 	private int longitud;
 	private String data;
-	
+	private boolean controlChar;
 	private String inputBuffer="";
 	@Override
 	public void serialEvent(SerialPortEvent event) {		
@@ -1599,9 +1596,20 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
                     for(int i=0;i<available;i++){//read all incoming characters
                         int receivedVal=socket.getInput().read();//store it into an int (because of the input.read method                       
                         longitud = this.posicionInicioDato + this.longitudDato;
+                        controlChar = false;
+                        for(int x = 0; x < caracterControl.length; x++) {
+                        	if(receivedVal == caracterControl[x].trim().charAt(0)) {
+                        		controlChar = true;
+                        		break;
+                        	}
+                        }
+                        //Si es Inicio de trama o caracter de control limpio el buffer y sigo
+                        if(controlChar || receivedVal == SocketConnection.STX) {
+                        	inputBuffer= "";
+                        	continue;
+                        }
                         if(receivedVal!=10 && receivedVal!=13 && inputBuffer.length() <= longitud ){//if the character is not a new line "\n" and not a carriage return
-                            inputBuffer+=(char)receivedVal; //store the new character into a buffer                      
-                            System.out.println(inputBuffer);
+                            inputBuffer+=(char)receivedVal; //store the new character into a buffer                                                  
                         }else {//if it's a new line character
                             data = "";
                             data = inputBuffer;                            
@@ -1609,19 +1617,22 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
         					if(data != null && longitud > data.length()) {
         						longitud = data.length();
         					}
-    						data = data.substring(this.posicionInicioDato, longitud);		
-    						sBufferConnection = data.trim().replaceAll("[^\\d.]", "");
-    						if(!sBufferConnection.isEmpty() && 
-    								!txtNumberSerial.getText().trim().equals(sBufferConnection.trim())) {
-    							try {
-    								Double.valueOf(sBufferConnection);
-    								 System.out.println("----" + sBufferConnection);
-    								txtNumberSerial.setText(sBufferConnection);							
-    							}catch ( NumberFormatException e) {													
-    								logger.error("ERROR DE CONVERSION. ", e);
-    							}
-    						}    						
-                            inputBuffer="";//clear the buffer                            
+        					if(this.posicionInicioDato < data.length()) {
+        						data = data.substring(this.posicionInicioDato, longitud);		
+        						sBufferConnection = data.trim().replaceAll("[^\\d.]", "");
+        						//limpio 0 adelante
+        						sBufferConnection = sBufferConnection.replaceFirst("^0+(?!$)", "");
+        						if(!sBufferConnection.isEmpty() && 
+        								!txtNumberSerial.getText().trim().equals(sBufferConnection.trim())) {
+        							try {
+        								Double.valueOf(sBufferConnection);
+        								txtNumberSerial.setText(sBufferConnection);							
+        							}catch ( NumberFormatException e) {													
+        								logger.error("ERROR DE CONVERSION. ", e);
+        							}
+        						}    						
+                                inputBuffer="";//clear the buffer   
+        					}    						                        
                         }
                     }
 				} catch (Exception e) {
