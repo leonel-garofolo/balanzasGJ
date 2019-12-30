@@ -570,7 +570,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					&& !cbxModoTara.getSelectionModel().isEmpty()
 					&& !cbxModalidad.getSelectionModel().isEmpty()
 					&& !cbxModoChasis.getSelectionModel().isEmpty()) {
-				if(cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {
+				if(cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
 					if(cbxATA.getValue() != null
 							&& cbxImpExp.getValue() !=null
 							&& !txtContenedor.getText().isEmpty()
@@ -757,10 +757,10 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxImpExp.setDisable(!edit);	
 		cbxATA.setDisable(!edit);
 		
-		txtContenedor.setEditable(!edit);
-		txtManifiesto.setEditable(!edit);
-		txtDestinatario.setEditable(!edit);
-		txtMercaderia.setEditable(!edit);
+		txtContenedor.setEditable(edit);
+		txtManifiesto.setEditable(edit);
+		txtDestinatario.setEditable(edit);
+		txtMercaderia.setEditable(edit);
 	}
 
 	private void loadTara() {
