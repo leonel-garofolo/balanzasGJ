@@ -561,6 +561,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 				Message.error("Debe Completar la tara y los dias de vencimiento.");
 			}
 		} else {
+			boolean isValid = false;
 			if (cbxProducto.getValue() != null && cbxCliente.getValue() != null && cbxTransporte.getValue() != null
 					&& cbxProcedencia.getValue() != null
 					&& !txtPatente.getText().isEmpty()
@@ -569,7 +570,25 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					&& !cbxModoTara.getSelectionModel().isEmpty()
 					&& !cbxModalidad.getSelectionModel().isEmpty()
 					&& !cbxModoChasis.getSelectionModel().isEmpty()) {
-
+				if(cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {
+					if(cbxATA.getValue() != null
+							&& cbxImpExp.getValue() !=null
+							&& !txtContenedor.getText().isEmpty()
+							&& !txtManifiesto.getText().isEmpty()
+							&& !txtDestinatario.getText().isEmpty()
+							&& !txtMercaderia.getText().isEmpty()) {
+						isValid = true;
+					} else {
+						isValid = false;
+					}
+				} else {
+					isValid = true;
+				}
+			} else {
+				isValid = false;
+			}
+			
+			if(isValid) {
 				if (statusTara == 'S' || statusTara == 'E') {
 					boolean isEje = cbxModoChasis.getSelectionModel().getSelectedItem().equals(C_POR_EJE);				
 					boolean isConTara = cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA);
@@ -698,6 +717,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					btnIngresoManual.setDisable(true);
 					handleNuevoPesaje(event);
 				}
+				
 			} else {
 				Message.error("Debe haber alguna entrada seleccionada.");
 			}
@@ -734,7 +754,13 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxProcedencia.setDisable(!edit);
 		cbxCliente.setDisable(!edit);
 		cbxProducto.setDisable(!edit);
-		cbxImpExp.setDisable(!edit);		
+		cbxImpExp.setDisable(!edit);	
+		cbxATA.setDisable(!edit);
+		
+		txtContenedor.setEditable(!edit);
+		txtManifiesto.setEditable(!edit);
+		txtDestinatario.setEditable(!edit);
+		txtMercaderia.setEditable(!edit);
 	}
 
 	private void loadTara() {
@@ -1091,6 +1117,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxProcedencia.getEditor().setStyle("-fx-opacity: 1");
 		cbxImpExp.setStyle("-fx-opacity: 1");
 		cbxImpExp.getEditor().setStyle("-fx-opacity: 1");
+		cbxATA.setStyle("-fx-opacity: 1");
+		cbxATA.getEditor().setStyle("-fx-opacity: 1");
 		
 		tblEjes.setVisible(false);
 		btnEliminarEje.setVisible(false);
@@ -1597,12 +1625,19 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
                         int receivedVal=socket.getInput().read();//store it into an int (because of the input.read method                       
                         longitud = this.posicionInicioDato + this.longitudDato;
                         controlChar = false;
-                        for(int x = 0; x < caracterControl.length; x++) {
-                        	if(receivedVal == caracterControl[x].trim().charAt(0)) {
-                        		controlChar = true;
-                        		break;
-                        	}
+                        if(caracterControl != null) {
+                        	for(int x = 0; x < caracterControl.length; x++) {
+                        		try {
+                        			if(receivedVal == caracterControl[x].trim().charAt(0)) {
+                                		controlChar = true;
+                                		break;
+                                	}
+                        		}catch (StringIndexOutOfBoundsException e) {
+									continue;
+								}
+                            }
                         }
+                        
                         //Si es Inicio de trama o caracter de control limpio el buffer y sigo
                         if(controlChar || receivedVal == SocketConnection.STX) {
                         	inputBuffer= "";
