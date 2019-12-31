@@ -670,7 +670,7 @@
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{patente} != null ? $F{patente}.getPatente():"")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{contenedorNum} != null ? $F{contenedorNum}:"")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="484" y="10" width="44" height="12" uuid="bb1f638c-d4f7-4ec1-80ff-bdd5a944087b">

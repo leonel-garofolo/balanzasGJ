@@ -274,6 +274,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private Label lblContenedor;
 	@FXML
+	private Label lblTaraContenedor;	
+	@FXML
 	private Label lblManifiesto;	
 	@FXML
 	private Label lblDestinatario;	
@@ -283,6 +285,8 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private ComboBoxAutoComplete<Ata> cbxATA;	
 	@FXML
 	private TextField txtContenedor;	
+	@FXML
+	private TextField txtTaraContenedor;	
 	@FXML
 	private TextField txtManifiesto;
 	@FXML
@@ -574,6 +578,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					if(cbxATA.getValue() != null
 							&& cbxImpExp.getValue() !=null
 							&& !txtContenedor.getText().isEmpty()
+							&& !txtTaraContenedor.getText().isEmpty()
 							&& !txtManifiesto.getText().isEmpty()
 							&& !txtDestinatario.getText().isEmpty()
 							&& !txtMercaderia.getText().isEmpty()) {
@@ -620,6 +625,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					}
 					if(txtContenedor.isVisible()) {
 						tara.setContenedor(txtContenedor.getText());
+					}
+					if(txtTaraContenedor.isVisible()) {
+						tara.setContenedorNum(txtTaraContenedor.getText());
 					}
 					if(txtManifiesto.isVisible()) {
 						tara.setManifiesto(txtManifiesto.getText());
@@ -758,6 +766,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxATA.setDisable(!edit);
 		
 		txtContenedor.setEditable(edit);
+		txtTaraContenedor.setEditable(edit);
 		txtManifiesto.setEditable(edit);
 		txtDestinatario.setEditable(edit);
 		txtMercaderia.setEditable(edit);
@@ -786,6 +795,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxImpExp.setValue(taraEdit.getImpExp());
 		cbxATA.setValue(taraEdit.getAta());
 		txtContenedor.setText(taraEdit.getContenedor());
+		txtTaraContenedor.setText(taraEdit.getContenedorNum());
 		txtManifiesto.setText(taraEdit.getManifiesto());
 		txtDestinatario.setText(taraEdit.getDestino());
 		txtMercaderia.setText(taraEdit.getMercaderia());
@@ -1059,6 +1069,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		lblContenedor.setVisible(isVisible);
 		txtContenedor.setVisible(isVisible);
 		
+		lblTaraContenedor.setVisible(isVisible);
+		txtTaraContenedor.setVisible(isVisible);
+		
 		lblManifiesto.setVisible(isVisible);
 		txtManifiesto.setVisible(isVisible);
 		
@@ -1255,6 +1268,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		txtContenedor.textProperty().addListener((ov, oldValue, newValue) -> {
 			if(newValue != null) {
 				txtContenedor.setText(newValue.toUpperCase());
+			}
+		});
+		
+		txtTaraContenedor.textProperty().addListener((ov, oldValue, newValue) -> {
+			if(newValue != null) {
+				txtTaraContenedor.setText(newValue.toUpperCase());
 			}
 		});
 		
@@ -1556,6 +1575,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		txtObservaciones.setText("");
 		
 		txtContenedor.setText("");
+		txtTaraContenedor.setText("");
 		txtManifiesto.setText("");
 		txtDestinatario.setText("");
 		txtMercaderia.setText("");
