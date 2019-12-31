@@ -17,6 +17,19 @@ DROP DATABASE IF EXISTS `sist_pesada`;
 CREATE DATABASE IF NOT EXISTS `sist_pesada` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `sist_pesada`;
 
+-- Volcando estructura para tabla sist_pesada.ata
+DROP TABLE IF EXISTS `ata`;
+CREATE TABLE IF NOT EXISTS `ata` (
+  `codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) DEFAULT NULL,
+  `CUIT` varchar(45) DEFAULT NULL,
+  `ultimo_movimiento` datetime DEFAULT NULL,
+  `acumulado` decimal(9,2) DEFAULT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- La exportación de datos fue deseleccionada.
+
 -- Volcando estructura para tabla sist_pesada.clientes
 DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE IF NOT EXISTS `clientes` (
@@ -34,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `comunicaciones` (
   `nombre` varchar(45) NOT NULL,
   `idindicadores` int(11) DEFAULT NULL,
   PRIMARY KEY (`idcomunicaciones`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -81,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `indicadores` (
   `control_de_flujo` varchar(45) DEFAULT NULL,
   `bits_parada` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`idindicadores`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -169,8 +182,12 @@ CREATE TABLE IF NOT EXISTS `taras` (
   `peso_salida` decimal(9,3) DEFAULT NULL,
   `update_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modoChasis` varchar(45) DEFAULT NULL,
+  `id_ata` int(11) DEFAULT NULL,
+  `contenedor` varchar(45) DEFAULT NULL,
+  `manifiesto` varchar(45) DEFAULT NULL,
+  `mercaderia` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idtaras`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -202,5 +219,4 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-
 INSERT INTO `usuarios` (`id`, `nombre`, `clave`, `id_perfil`) VALUES (1, 'admin', '123456', 1);
