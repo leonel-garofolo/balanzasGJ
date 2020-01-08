@@ -24,7 +24,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="425.0" prefWidth="909.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.ConfiguracionesController">
+<AnchorPane prefHeight="425.0" prefWidth="930.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.ConfiguracionesController">
    <children>
       <VBox prefHeight="428.0" prefWidth="611.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -148,36 +148,52 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <SplitPane dividerPositions="0.10215053763440861" orientation="VERTICAL" prefHeight="598.0" prefWidth="739.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <SplitPane dividerPositions="0.10913705583756345" orientation="VERTICAL" prefHeight="598.0" prefWidth="739.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <items>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="53.0" prefWidth="928.0">
                                        <children>
-                                          <HBox alignment="CENTER_LEFT" prefHeight="58.0" prefWidth="737.0" spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <VBox prefHeight="42.0" prefWidth="928.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <Label text="Seleccionar Indicador de Peso a utilizar:">
-                                                   <HBox.margin>
-                                                      <Insets left="10.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                                <ComboBox fx:id="cbxIndicadorConfig" onAction="#handleSelectedIndicador" prefHeight="25.0" prefWidth="229.0" />
-                                                <Button fx:id="btnAplicarConecciones" mnemonicParsing="false" onAction="#handleAplicarComunicaciones" text="Aplicar">
-                                                   <graphic>
-                                                      <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../images/guardar.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic></Button>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="928.0" spacing="10.0">
+                                                   <children>
+                                                      <Label prefHeight="17.0" prefWidth="116.0" text="INDICADOR #1:">
+                                                         <padding>
+                                                            <Insets left="5.0" />
+                                                         </padding>
+                                                      </Label>
+                                                      <ComboBox fx:id="cbxIndicadorConfig1" onAction="#handleSelectedIndicador1" prefHeight="25.0" prefWidth="229.0" />
+                                                      <Label prefHeight="17.0" prefWidth="116.0" text="INDICADOR #2:">
+                                                         <padding>
+                                                            <Insets left="5.0" />
+                                                         </padding>
+                                                      </Label>
+                                                      <ComboBox fx:id="cbxIndicadorConfig2" onAction="#handleSelectedIndicador2" prefHeight="25.0" prefWidth="229.0" />
+                                                      <Button fx:id="btnAplicarConecciones" mnemonicParsing="false" onAction="#handleAplicarComunicaciones" text="Aplicar">
+                                                         <graphic>
+                                                            <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../images/guardar.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                   </children>
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </HBox>
                                              </children>
-                                             <opaqueInsets>
-                                                <Insets />
-                                             </opaqueInsets>
-                                          </HBox>
+                                          </VBox>
                                        </children>
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="504.0" prefWidth="737.0">
                                        <children>
-                                          <TextArea fx:id="txtIndicadorInfo" layoutX="260.0" layoutY="55.0" prefHeight="309.0" prefWidth="907.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                          <HBox prefHeight="293.0" prefWidth="928.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <TextArea fx:id="txtIndicadorInfo1" prefHeight="309.0" prefWidth="907.0" />
+                                                <TextArea fx:id="txtIndicadorInfo2" prefHeight="309.0" prefWidth="907.0" />
+                                             </children>
+                                          </HBox>
                                        </children>
                                     </AnchorPane>
                                 </items>

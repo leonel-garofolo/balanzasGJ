@@ -113,9 +113,12 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private ComboBox<String> cbxControlDeFlujo;
 	@FXML
-	private TextField txtNombreIndicadores;
+	private TextField txtNombreIndicadores;	
+	
 	@FXML
-	private ComboBox<Indicadores> cbxIndicadorConfig;
+	private ComboBox<Indicadores> cbxIndicadorConfig1;
+	@FXML
+	private ComboBox<Indicadores> cbxIndicadorConfig2;
 	@FXML
 	private Button btnAplicarConecciones;
 	@FXML
@@ -141,7 +144,9 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private Button btnCerrar;
 	@FXML
-	private TextArea txtIndicadorInfo;
+	private TextArea txtIndicadorInfo1;
+	@FXML
+	private TextArea txtIndicadorInfo2;
 
 	@FXML
 	private AnchorPane usuariosView;
@@ -260,11 +265,11 @@ public class ConfiguracionesController extends AnchorPane {
 	}
 
 	@FXML
-	private void handleSelectedIndicador(ActionEvent event) {
-		if (cbxIndicadorConfig.getValue() == null) {
-			txtIndicadorInfo.setText("");
+	private void handleSelectedIndicador1(ActionEvent event) {	
+		if (cbxIndicadorConfig1.getValue() == null) {
+			txtIndicadorInfo1.setText("");
 		} else {
-			Indicadores indicador = cbxIndicadorConfig.getSelectionModel().getSelectedItem();
+			Indicadores indicador = cbxIndicadorConfig1.getSelectionModel().getSelectedItem();
 			String text = "CONFIGURACION INDICADOR DE PESO N° 1 \n";
 			text += "Puerto: " + indicador.getPuerto() + "\n";
 			text += "Velocidad: " + indicador.getVelocidad() + "\n";
@@ -272,23 +277,53 @@ public class ConfiguracionesController extends AnchorPane {
 			text += "Paridad: " + indicador.getParidad() + "\n";
 			text += "Bits de Parada: " + indicador.getBitsDeParada() + "\n";
 			text += "Control de Flujo : " + indicador.getControlDeFlujo() + "\n";
+			text = text.replaceAll("null", "");		
+			txtIndicadorInfo1.setText(text);
+		}				
+	}
+	
+	@FXML
+	private void handleSelectedIndicador2(ActionEvent event) {	
+		if (cbxIndicadorConfig2.getValue() == null) {
+			txtIndicadorInfo2.setText("");
+		} else {
+			Indicadores indicador = cbxIndicadorConfig2.getSelectionModel().getSelectedItem();
+			String text = "CONFIGURACION INDICADOR DE PESO N° 2 \n";
+			text += "Puerto: " + indicador.getPuerto() + "\n";
+			text += "Velocidad: " + indicador.getVelocidad() + "\n";
+			text += "Bits de Datos: " + indicador.getBitsDeDatos() + "\n";
+			text += "Paridad: " + indicador.getParidad() + "\n";
+			text += "Bits de Parada: " + indicador.getBitsDeParada() + "\n";
+			text += "Control de Flujo : " + indicador.getControlDeFlujo() + "\n";
 			text = text.replaceAll("null", "");
-			txtIndicadorInfo.setText(text);
-		}
+			txtIndicadorInfo2.setText("");
+		}		
 	}
 
 	@FXML
 	private void handleAplicarComunicaciones(ActionEvent event) {
-		if (cbxIndicadorConfig.getValue() != null) {
-			Comunicaciones comun = new Comunicaciones();
-			comun.setIdcomunicaciones((long) 1);
-			comun.setNombre("INDICADOR #1");
-			comun.setIdindicadores(
-					cbxIndicadorConfig.getSelectionModel().getSelectedItem().getIdindicadores().intValue());
-			comunicacionesPersistence.save(comun);
+		if (cbxIndicadorConfig1.getValue() != null || 
+				cbxIndicadorConfig2.getValue() != null) {
+			if(cbxIndicadorConfig1.getValue() != null) {
+				Comunicaciones comun = new Comunicaciones();
+				comun.setIdcomunicaciones((long) 1);
+				comun.setNombre("INDICADOR #1");
+				comun.setIdindicadores(
+						cbxIndicadorConfig1.getSelectionModel().getSelectedItem().getIdindicadores().intValue());
+				comunicacionesPersistence.save(comun);
+			}
+			
+			if(cbxIndicadorConfig2.getValue() != null) {
+				Comunicaciones comun = new Comunicaciones();
+				comun.setIdcomunicaciones((long) 1);
+				comun.setNombre("INDICADOR #2");
+				comun.setIdindicadores(
+						cbxIndicadorConfig2.getSelectionModel().getSelectedItem().getIdindicadores().intValue());
+				comunicacionesPersistence.save(comun);
+			}			
 			Message.info("Se guardo correctamente.");
 		} else {
-			System.out.println("es necesario seleccionar indicodpres");
+			System.out.println("es necesario seleccionar indicador");
 		}
 	}
 
@@ -546,17 +581,27 @@ public class ConfiguracionesController extends AnchorPane {
 		cleanFormIndicadores();
 		List<Indicadores> indicadores = indicadoresPersistence.findAll();
 		tblIndicadores.getItems().addAll(indicadores);
-		cbxIndicadorConfig.getItems().clear();
-		cbxIndicadorConfig.getItems().addAll(indicadores);
+		cbxIndicadorConfig1.getItems().clear();
+		cbxIndicadorConfig1.getItems().addAll(indicadores);
 
 		List<Comunicaciones> all = comunicacionesPersistence.findAll();
 		for (Comunicaciones c : all) {
-			Indicadores i = indicadoresPersistence.findById((long) c.getIdindicadores());
-			if (i != null) {
-				cbxIndicadorConfig.setValue(i);
-				handleSelectedIndicador(null);
+			if(c.getNombre().equals("INDICADOR #1")) {
+				Indicadores i = indicadoresPersistence.findById((long) c.getIdindicadores());
+				if (i != null) {
+					cbxIndicadorConfig1.setValue(i);
+					handleSelectedIndicador1(null);
+					continue;
+				}
 			}
-			break;
+			if(c.getNombre().equals("INDICADOR #2")) {
+				Indicadores i = indicadoresPersistence.findById((long) c.getIdindicadores());
+				if (i != null) {
+					cbxIndicadorConfig2.setValue(i);
+					handleSelectedIndicador1(null);
+					continue;
+				}
+			}
 		}
 	}
 
