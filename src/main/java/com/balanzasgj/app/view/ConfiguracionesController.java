@@ -304,6 +304,10 @@ public class ConfiguracionesController extends AnchorPane {
 	private void handleAplicarComunicaciones(ActionEvent event) {
 		if (cbxIndicadorConfig1.getValue() != null || 
 				cbxIndicadorConfig2.getValue() != null) {
+			if(cbxIndicadorConfig1.getSelectionModel().getSelectedItem().getIdindicadores() == cbxIndicadorConfig2.getSelectionModel().getSelectedItem().getIdindicadores() ) {
+				Message.error("Los indicadores asignados deben ser distintos.");
+				return;
+			}
 			if(cbxIndicadorConfig1.getValue() != null) {
 				Comunicaciones comun = new Comunicaciones();
 				comun.setIdcomunicaciones((long) 1);
@@ -583,6 +587,9 @@ public class ConfiguracionesController extends AnchorPane {
 		tblIndicadores.getItems().addAll(indicadores);
 		cbxIndicadorConfig1.getItems().clear();
 		cbxIndicadorConfig1.getItems().addAll(indicadores);
+		
+		cbxIndicadorConfig2.getItems().clear();
+		cbxIndicadorConfig2.getItems().addAll(indicadores);
 
 		List<Comunicaciones> all = comunicacionesPersistence.findAll();
 		for (Comunicaciones c : all) {

@@ -44,6 +44,9 @@ public class ParametrosGlobales implements Serializable
 	public static final String A_CERTIFICADO= "CERTIFICADO";
 	public static final String A_VENCIMIENTO= "VENCIMIENTO";
 	
+	public static final String I_INDICADOR1= "INDICADOR#1";
+	public static final String I_INDICADOR2= "INDICADOR#2";
+	
     private static final long serialVersionUID = 1L;
 
     private String    id           ; // Id or Primary Key
