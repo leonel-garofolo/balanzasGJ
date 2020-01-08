@@ -598,7 +598,7 @@ public class ConfiguracionesController extends AnchorPane {
 				Indicadores i = indicadoresPersistence.findById((long) c.getIdindicadores());
 				if (i != null) {
 					cbxIndicadorConfig2.setValue(i);
-					handleSelectedIndicador1(null);
+					handleSelectedIndicador2(null);
 					continue;
 				}
 			}
