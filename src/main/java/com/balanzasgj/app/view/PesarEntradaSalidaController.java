@@ -1648,10 +1648,15 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@Override
 	public void serialEvent(SerialPortEvent event) {		
 		if(!ingManual) {
+			if(isDebug) {
+            	logger.info("Rx -> EVENT " + (event.getEventType() == SerialPortEvent.DATA_AVAILABLE));
+            }
 			if (event.getEventType() == SerialPortEvent.DATA_AVAILABLE) {		
-				try {
-					
+				try {					
 					int available = socket.getInput().available();
+					if(isDebug) {
+		            	logger.info("Rx -> available -> " + available);
+		            }
                     for(int i=0;i<available;i++){//read all incoming characters
                         int receivedVal=socket.getInput().read();//store it into an int (because of the input.read method                       
                         longitud = this.posicionInicioDato + this.longitudDato;
