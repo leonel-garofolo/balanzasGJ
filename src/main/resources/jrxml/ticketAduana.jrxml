@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="transaccionesDetalles" pageWidth="578" pageHeight="842" columnWidth="538" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="e373889a-fc0e-4297-9a5a-ab4aff79c358">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="tarasFactory"/>
 	<parameter name="EMPRESA_NOMBRE" class="java.lang.String">
@@ -226,14 +226,14 @@
 				</textField>
 			</frame>
 			<textField>
-				<reportElement x="80" y="200" width="100" height="12" uuid="bab860e1-ba51-4c08-9d43-d59bfb5390a0"/>
+				<reportElement x="80" y="200" width="265" height="12" uuid="bab860e1-ba51-4c08-9d43-d59bfb5390a0"/>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{procedencias}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="80" y="166" width="100" height="12" uuid="f18f74ea-398c-4d46-be20-aa9d54586c5c"/>
+				<reportElement x="80" y="166" width="265" height="12" uuid="f18f74ea-398c-4d46-be20-aa9d54586c5c"/>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
@@ -247,7 +247,7 @@
 				<text><![CDATA[Cliente:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="80" y="184" width="100" height="12" uuid="96aa3b28-9c3c-47e1-9183-b3731afa15ac"/>
+				<reportElement x="80" y="184" width="265" height="12" uuid="96aa3b28-9c3c-47e1-9183-b3731afa15ac"/>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
@@ -261,7 +261,7 @@
 				<text><![CDATA[Transporte:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="80" y="147" width="100" height="12" uuid="b1a3c119-4001-4895-bc68-ae29efd1a50c"/>
+				<reportElement x="80" y="147" width="265" height="12" uuid="b1a3c119-4001-4895-bc68-ae29efd1a50c"/>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>

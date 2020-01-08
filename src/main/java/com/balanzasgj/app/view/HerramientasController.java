@@ -29,6 +29,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -96,6 +97,9 @@ public class HerramientasController extends AnchorPane implements IView {
 	
 	@FXML
 	private PasswordField txtClaveIngManual;
+	
+	@FXML
+	private CheckBox chkActivarDebug;
 		
 	private Stage stage;
 	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
@@ -272,6 +276,12 @@ public class HerramientasController extends AnchorPane implements IView {
 			}
 		}
 		
+		if(chkActivarDebug != null) {			
+			pg.setId(ParametrosGlobales.P_ACTIVAR_DEBUG);
+			pg.setValue(String.valueOf(chkActivarDebug.isSelected()));
+			parametrosGlobalesPersistence.save(pg);
+		}
+				
 		if(txtClaveIngManual != null 
 				&& txtClaveIngManual.getText() != null 
 				&& !txtClaveIngManual.getText().isEmpty()) {			
@@ -464,6 +474,12 @@ public class HerramientasController extends AnchorPane implements IView {
 		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			txtTel.setText(pg.getValue());
+		}
+		
+		pg.setId(ParametrosGlobales.P_ACTIVAR_DEBUG);
+		parametrosGlobalesPersistence.load(pg);
+		if(pg!= null) {
+			chkActivarDebug.setSelected(Boolean.valueOf(pg.getValue()));
 		}
 		
 		pg.setId(ParametrosGlobales.P_EMPRESA_IMG);

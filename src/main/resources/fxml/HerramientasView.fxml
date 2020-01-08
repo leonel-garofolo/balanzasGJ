@@ -110,6 +110,8 @@
 												</Button>
 											</children>
 										</HBox>
+                              <Label text="Activar Debug" GridPane.rowIndex="3" />
+                              <CheckBox fx:id="chkActivarDebug" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 									</children>
 								</GridPane>
 							</children>

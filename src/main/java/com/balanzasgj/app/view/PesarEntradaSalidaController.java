@@ -333,6 +333,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private TextField txtDiasVenc;
 	
+	private boolean isDebug;
 	
 	@FXML
 	private void handleTomar(ActionEvent event) {		
@@ -1385,6 +1386,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			
 			this.posicionInicioDato = indicadorConfig.getPosicionInicioDato();
 			this.longitudDato = indicadorConfig.getLongitudDato();
+			logger.info("caracterControl: " + caracterControl);
+			logger.info("posicionInicioDato: " + posicionInicioDato);
+			logger.info("longitudDato: " + longitudDato);
 			int paridad = 0;
 			if(indicadorConfig.getParidad().equals("n")) {
 				paridad = SerialPort.PARITY_NONE;
@@ -1543,6 +1547,13 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		colPesoEntrada.setCellValueFactory(new PropertyValueFactory<>("pesoEntrada"));
 		colPesoSalida.setCellValueFactory(new PropertyValueFactory<>("pesoSalida"));
 
+		this.isDebug = false;
+		ParametrosGlobales pg = new ParametrosGlobales(); 
+		pg.setId(ParametrosGlobales.P_ACTIVAR_DEBUG);
+		parametrosGlobalesPersistence.load(pg);
+		if(pg!= null) {
+			isDebug = Boolean.valueOf(pg.getValue());			
+		}
 		refleshTableTaras();
 	}
 
@@ -1658,13 +1669,23 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
                             }
                         }
                         
+                        if(isDebug) {
+                        	logger.info("Rx -> " + (char)receivedVal);
+                        }
+                        
                         //Si es Inicio de trama o caracter de control limpio el buffer y sigo
                         if(controlChar || receivedVal == SocketConnection.STX) {
+                        	 if(isDebug) {
+                             	logger.info("Rx -> INICIO TRAZA");
+                             }
                         	inputBuffer= "";
                         	continue;
                         }
                         if(receivedVal!=10 && receivedVal!=13 && inputBuffer.length() <= longitud ){//if the character is not a new line "\n" and not a carriage return
-                            inputBuffer+=(char)receivedVal; //store the new character into a buffer                                                  
+                            inputBuffer+=(char)receivedVal; //store the new character into a buffer  
+                            if(isDebug) {
+                            	logger.info("Rx -> " + inputBuffer);
+                            }
                         }else {//if it's a new line character
                             data = "";
                             data = inputBuffer;                            
@@ -1687,6 +1708,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
         							}
         						}    						
                                 inputBuffer="";//clear the buffer   
+                                if(isDebug) {
+                                 	logger.info("Rx -> FIN TRAZA");
+                                 }
         					}    						                        
                         }
                     }

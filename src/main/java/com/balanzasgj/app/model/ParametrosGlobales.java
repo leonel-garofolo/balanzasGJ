@@ -37,6 +37,7 @@ public class ParametrosGlobales implements Serializable
 	public static final String P_EMPRESA_TRANSACCION= "EMPRESA_TRANSACCION";
 	public static final String P_EMPRESA_BACKUP= "EMPRESA_BACKUP";
 	public static final String P_EMPRESA_AUTOMATICO= "EMPRESA_AUTOMATICO";
+	public static final String P_ACTIVAR_DEBUG= "ACTIVAR_DEBUG";
 	
 	public static final String A_CODIGO_ADUANA= "CODIGO_ADUANA";	                           
 	public static final String A_CODIGO_LOG= "CODIGO_LOG";
