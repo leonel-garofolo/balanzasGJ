@@ -515,7 +515,19 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 						cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
 					ShowJasper.openBeanDataSource("ticketAduana", params, new JRBeanCollectionDataSource(taras));
 				} else {
-					ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
+					pg = new ParametrosGlobales();
+					pg.setId(ParametrosGlobales.P_TICKET_ETIQUETADORA);	
+					parametrosGlobalesPersistence.load(pg);
+			        boolean ticketEt =false;
+			        if(pg.getValue() != null) {
+			        	ticketEt = Boolean.valueOf(pg.getValue());
+			        }
+					if(ticketEt) {
+						ShowJasper.openBeanDataSource("ticketEtiquetadora", params, new JRBeanCollectionDataSource(taras));
+					} else {
+						ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
+					}
+					
 				}
 			} catch (JRException e) {
 				// TODO Auto-generated catch block

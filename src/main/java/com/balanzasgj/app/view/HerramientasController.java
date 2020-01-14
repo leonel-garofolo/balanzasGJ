@@ -100,6 +100,9 @@ public class HerramientasController extends AnchorPane implements IView {
 	
 	@FXML
 	private CheckBox chkActivarDebug;
+	
+	@FXML
+	private CheckBox chkticketEtiquetadora;
 		
 	private Stage stage;
 	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
@@ -279,6 +282,12 @@ public class HerramientasController extends AnchorPane implements IView {
 		if(chkActivarDebug != null) {			
 			pg.setId(ParametrosGlobales.P_ACTIVAR_DEBUG);
 			pg.setValue(String.valueOf(chkActivarDebug.isSelected()));
+			parametrosGlobalesPersistence.save(pg);
+		}
+		
+		if(chkticketEtiquetadora != null) {			
+			pg.setId(ParametrosGlobales.P_TICKET_ETIQUETADORA);
+			pg.setValue(String.valueOf(chkticketEtiquetadora.isSelected()));
 			parametrosGlobalesPersistence.save(pg);
 		}
 				
@@ -480,6 +489,12 @@ public class HerramientasController extends AnchorPane implements IView {
 		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			chkActivarDebug.setSelected(Boolean.valueOf(pg.getValue()));
+		}
+		
+		pg.setId(ParametrosGlobales.P_TICKET_ETIQUETADORA);
+		parametrosGlobalesPersistence.load(pg);
+		if(pg!= null) {
+			chkticketEtiquetadora.setSelected(Boolean.valueOf(pg.getValue()));
 		}
 		
 		pg.setId(ParametrosGlobales.P_EMPRESA_IMG);
