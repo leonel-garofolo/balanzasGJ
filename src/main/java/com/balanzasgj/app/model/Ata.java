@@ -19,6 +19,8 @@ import java.io.Serializable;
 public class Ata extends Entidades implements Serializable
 {
     private static final long serialVersionUID = 1L;
+    
+    private String nacionalidad;
 
     /**
      * Default constructor
@@ -26,8 +28,16 @@ public class Ata extends Entidades implements Serializable
     public Ata() {
         super();
     }
-
-    //----------------------------------------------------------------------
+    
+    public String getNacionalidad() {
+		return nacionalidad;
+	}
+    
+	public void setNacionalidad(String nacionalidad) {
+		this.nacionalidad = nacionalidad;
+	}
+	
+	//----------------------------------------------------------------------
     // toString METHOD
     //----------------------------------------------------------------------
     @Override

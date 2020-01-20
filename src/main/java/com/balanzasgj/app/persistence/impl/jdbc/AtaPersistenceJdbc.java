@@ -26,16 +26,16 @@ import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 public class AtaPersistenceJdbc extends GenericJdbcDAO<Ata> implements AtaPersistence {
 
 	private final static String SQL_SELECT_ALL = 
-		"select codigo, nombre, CUIT, ultimo_movimiento, acumulado from ata"; 
+		"select codigo, nombre, CUIT, ultimo_movimiento, acumulado, nacionalidad from ata"; 
 
 	private final static String SQL_SELECT = 
-		"select codigo, nombre, CUIT, ultimo_movimiento, acumulado from ata where codigo = ?";
+		"select codigo, nombre, CUIT, ultimo_movimiento, acumulado, nacionalidad from ata where codigo = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into ata ( nombre, CUIT, ultimo_movimiento, acumulado ) values ( ?, ?, ?, ? )";
+		"insert into ata ( nombre, CUIT, ultimo_movimiento, acumulado, nacionalidad ) values ( ?, ?, ?, ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update ata set nombre = ?, CUIT = ?, ultimo_movimiento = ?, acumulado = ? where codigo = ?";
+		"update ata set nombre = ?, CUIT = ?, ultimo_movimiento = ?, acumulado = ?, nacionalidad = ? where codigo = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from ata where codigo = ?";
@@ -76,6 +76,7 @@ public class AtaPersistenceJdbc extends GenericJdbcDAO<Ata> implements AtaPersis
 		setValue(ps, i++, ata.getCuit() ) ; // "CUIT" : java.lang.String
 		setValue(ps, i++, ata.getUltimoMovimiento() ) ; // "ultimo_movimiento" : java.util.Date
 		setValue(ps, i++, ata.getAcumulado() ) ; // "acumulado" : java.math.BigDecimal
+		setValue(ps, i++, ata.getNacionalidad() ) ;
 	}
 
     //----------------------------------------------------------------------
@@ -86,6 +87,7 @@ public class AtaPersistenceJdbc extends GenericJdbcDAO<Ata> implements AtaPersis
 		setValue(ps, i++, ata.getCuit() ) ; // "CUIT" : java.lang.String
 		setValue(ps, i++, ata.getUltimoMovimiento() ) ; // "ultimo_movimiento" : java.util.Date
 		setValue(ps, i++, ata.getAcumulado() ) ; // "acumulado" : java.math.BigDecimal
+		setValue(ps, i++, ata.getNacionalidad() ) ; 
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, ata.getCodigo() ) ; // "codigo" : java.lang.Integer
 	}
@@ -119,6 +121,7 @@ public class AtaPersistenceJdbc extends GenericJdbcDAO<Ata> implements AtaPersis
 		ata.setCuit(rs.getString("CUIT")); // java.lang.String
 		ata.setUltimoMovimiento(rs.getDate("ultimo_movimiento")); // java.util.Date
 		ata.setAcumulado(rs.getBigDecimal("acumulado")); // java.math.BigDecimal
+		ata.setNacionalidad(rs.getString("nacionalidad"));		
 		if ( rs.wasNull() ) { ata.setAcumulado(null); }; // not primitive number => keep null value if any
 		return ata ;
 	}

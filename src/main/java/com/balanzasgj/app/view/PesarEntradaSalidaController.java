@@ -965,6 +965,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		case ConfiguracionesController.CLIENTE:
 			Clientes c = new Clientes();
 			c.setNombre(result[0]);
+			if(result.length > 1) {
+				c.setCuit(result[1]);
+			}
 			return c;
 		case ConfiguracionesController.IMPORTADORES:
 			ImportadoresExportadores ie = new ImportadoresExportadores();
@@ -978,6 +981,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			ata.setNombre(result[0]);
 			if(result.length > 1) {
 				ata.setCuit(result[1]);
+			}
+			if(result.length > 2) {
+				ata.setNacionalidad(result[2]);
 			}
 			return ata;
 		case ConfiguracionesController.PROCEDENCIAS:

@@ -26,16 +26,16 @@ import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 public class ClientesPersistenceJdbc extends GenericJdbcDAO<Clientes> implements ClientesPersistence{
 
 	private final static String SQL_SELECT_ALL = 
-		"select codigo, nombre from clientes"; 
+		"select codigo, nombre, CUIT from clientes"; 
 
 	private final static String SQL_SELECT = 
-		"select codigo, nombre from clientes where codigo = ?";
+		"select codigo, nombre, CUIT from clientes where codigo = ?";
 
 	private final static String SQL_INSERT = 
-		"insert into clientes ( nombre ) values ( ? )";
+		"insert into clientes ( nombre, CUIT ) values ( ?, ? )";
 
 	private final static String SQL_UPDATE = 
-		"update clientes set nombre = ? where codigo = ?";
+		"update clientes set nombre = ?, CUIT = ? where codigo = ?";
 
 	private final static String SQL_DELETE = 
 		"delete from clientes where codigo = ?";
@@ -73,6 +73,7 @@ public class ClientesPersistenceJdbc extends GenericJdbcDAO<Clientes> implements
 		//--- Set PRIMARY KEY and DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		// "codigo" is auto-incremented => no set in insert		
 		setValue(ps, i++, clientes.getNombre() ) ; // "nombre" : java.lang.String
+		setValue(ps, i++, clientes.getCuit() ) ; // "cuit" : java.lang.String
 	}
 
     //----------------------------------------------------------------------
@@ -80,6 +81,7 @@ public class ClientesPersistenceJdbc extends GenericJdbcDAO<Clientes> implements
 	protected void setValuesForUpdate(PreparedStatement ps, int i, Clientes clientes) throws SQLException {
 		//--- Set DATA from bean to PreparedStatement ( SQL "SET x=?, y=?, ..." )
 		setValue(ps, i++, clientes.getNombre() ) ; // "nombre" : java.lang.String
+		setValue(ps, i++, clientes.getCuit() ) ; // "cuit" : java.lang.String
 		//--- Set PRIMARY KEY from bean to PreparedStatement ( SQL "WHERE key=?, ..." )
 		setValue(ps, i++, clientes.getCodigo() ) ; // "codigo" : java.lang.Integer
 	}
@@ -92,7 +94,7 @@ public class ClientesPersistenceJdbc extends GenericJdbcDAO<Clientes> implements
 	 */
 	private Clientes newInstanceWithPrimaryKey( Long codigo ) {
 		Clientes clientes = new Clientes();
-		clientes.setCodigo( codigo );
+		clientes.setCodigo( codigo );		
 		return clientes ;
 	}
 
@@ -109,7 +111,8 @@ public class ClientesPersistenceJdbc extends GenericJdbcDAO<Clientes> implements
 		//--- Set data from ResultSet to Bean attributes
 		clientes.setCodigo(rs.getLong("codigo")); // java.lang.Integer
 		if ( rs.wasNull() ) { clientes.setCodigo(null); }; // not primitive number => keep null value if any
-		clientes.setNombre(rs.getString("nombre")); // java.lang.String
+		clientes.setNombre(rs.getString("nombre")); // java.lang.String		
+		clientes.setCuit(rs.getString("CUIT")); // java.lang.String
 		return clientes ;
 	}
 

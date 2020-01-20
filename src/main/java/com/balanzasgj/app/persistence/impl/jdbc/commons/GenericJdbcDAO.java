@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -144,6 +145,19 @@ public abstract class GenericJdbcDAO<T> {
 			} catch (SQLException e) {
 				logger.error(e);
 			}
+		}
+	}
+	
+	protected void closeConnection(Connection conn, Statement st) {		
+		try {
+			if (st != null) {					
+				st.close();
+			}
+			if (conn != null) {					
+				conn.close();
+			}
+		} catch (SQLException e) {
+			logger.error(e);
 		}
 	}
     //-----------------------------------------------------------------------------------------

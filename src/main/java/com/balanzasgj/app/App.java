@@ -12,6 +12,7 @@ import org.quartz.SchedulerFactory;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
+import com.balanzasgj.app.db.UpdateDB;
 import com.balanzasgj.app.model.ParametrosGlobales;
 import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
@@ -62,6 +63,8 @@ public class App {
 			}								
 		}
 		
+		UpdateDB updateDb = new UpdateDB();
+		updateDb.run();
 		MiPrinterJob.preparedPrinter();
 		AppClient.iniciar();			
 	}

@@ -14,17 +14,24 @@ import javafx.scene.layout.Priority;
 
 public class AduanaDialog extends Dialog<String> {
 	public static String SPLIT= "####";
-	private static Label lblNombre;
-	private Label lblCuitAlias;
+	private static Label lblNombre;	
 	private TextField nombreField;
+	
+	private Label lblCuitAlias;	
 	private TextField cuitAliasField;
+	
+	private Label lblNacionalidad;	
+	private TextField nacionalidadField;
 
 	public AduanaDialog(String type) {
 		lblNombre = new Label();
 		lblNombre.setText("Nombre");
 		lblCuitAlias = new Label();
-		GridPane layout = new GridPane();		
-		
+		lblCuitAlias.setText("Cuit");
+		lblNacionalidad = new Label();
+		lblNacionalidad.setText("Nacionalidad");
+				
+		GridPane layout = new GridPane();				
 		String title = "Nuevo ";
 		switch (type) {
 		case ConfiguracionesController.CLIENTE:
@@ -58,10 +65,10 @@ public class AduanaDialog extends Dialog<String> {
 		nombreField.setPromptText("Nombre");
 		
 
-		cuitAliasField = new TextField();
-		if (type.equals(ConfiguracionesController.CLIENTE) || type.equals(ConfiguracionesController.PROCEDENCIAS)) {
+		cuitAliasField = new TextField();		
+		if (type.equals(ConfiguracionesController.PROCEDENCIAS)) {
 			cuitAliasField.setVisible(false);
-			lblCuitAlias.setVisible(false);
+			lblCuitAlias.setVisible(false);			
 		} else {
 			cuitAliasField.setVisible(true);
 			lblCuitAlias.setVisible(true);
@@ -72,10 +79,20 @@ public class AduanaDialog extends Dialog<String> {
 			lblCuitAlias.setText("Cuit");
 		}
 		
+		nacionalidadField = new TextField();
+		if (type.equals(ConfiguracionesController.ATA_TRANSPORTISTA)) {
+			lblNacionalidad.setVisible(true);
+			nacionalidadField.setVisible(true);
+		}else {
+			lblNacionalidad.setVisible(false);
+			nacionalidadField.setVisible(false);
+		}
 		layout.add(lblNombre, 1, 0);
 		layout.add(lblCuitAlias, 1, 1);
+		layout.add(lblNacionalidad, 1, 2);
 		layout.add(nombreField, 2, 0);
 		layout.add(cuitAliasField, 2, 1);
+		layout.add(nacionalidadField, 2, 2);		
 		layout.setPadding(new Insets(10, 10, 10, 10));
 		layout.setHgap(10);
 		layout.setVgap(10);
@@ -87,7 +104,7 @@ public class AduanaDialog extends Dialog<String> {
 
 		setResultConverter(dialogButton -> {
 			if (dialogButton == btnGuardar) {				
-				return nombreField.getText() + SPLIT + cuitAliasField.getText();
+				return nombreField.getText() + SPLIT + cuitAliasField.getText() + SPLIT + nacionalidadField.getText();
 			}
 			return null;
 		});
