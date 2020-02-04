@@ -30,6 +30,7 @@ public class ParametrosGlobales implements Serializable
 	public static final String P_EMPRESA_PROV_BAL = "EMPRESA_PROV_BAL";
 	public static final String P_EMPRESA_TEL_BAL= "EMPRESA_TEL_BAL";
 	public static final String P_TICKET_ETIQUETADORA= "TICKET_ETIQUETADORA";
+	public static final String P_NUM_BALANZAS= "NUM_BALANZAS";
 	
 	public static final String P_EMPRESA_IMG= "EMPRESA_IMG";	
 	public static final String P_EMPRESA_ING_MANUAL= "EMPRESA_ING_MANUAL";

@@ -55,7 +55,9 @@
                               <StringField fx:id="txtProvBalanza" maxValue="100" prefHeight="25.0" prefWidth="303.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <StringField fx:id="txtTelBalanza" maxValue="100" prefHeight="25.0" prefWidth="303.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                               <Label prefHeight="31.0" prefWidth="209.0" text="Ticket con Formato de Etiquetadora" GridPane.rowIndex="9" />
+                              <Label prefHeight="31.0" prefWidth="209.0" text="Número de Balanzas" GridPane.rowIndex="10" />
                               <CheckBox fx:id="chkticketEtiquetadora" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                              <StringField fx:id="txtNumBalanzas" maxValue="100" prefHeight="25.0" prefWidth="303.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
 									</children>
 								</GridPane>
 							</children>

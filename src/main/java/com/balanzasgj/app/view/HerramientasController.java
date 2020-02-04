@@ -103,6 +103,9 @@ public class HerramientasController extends AnchorPane implements IView {
 	
 	@FXML
 	private CheckBox chkticketEtiquetadora;
+	
+	@FXML
+	private StringField txtNumBalanzas;	
 		
 	private Stage stage;
 	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
@@ -258,6 +261,14 @@ public class HerramientasController extends AnchorPane implements IView {
 		}
 		
 		
+		if(txtNumBalanzas != null 
+				&& txtNumBalanzas.getText() != null 
+				&&  !txtNumBalanzas.getText().isEmpty()) {			
+			pg.setId(ParametrosGlobales.P_NUM_BALANZAS);
+			pg.setValue(txtNumBalanzas.getText());
+			parametrosGlobalesPersistence.save(pg);
+		}		
+		
 		if(imgEmpresa.getImage() != null) {			
 			pg.setId(ParametrosGlobales.P_EMPRESA_IMG);
 			BufferedImage bImage = SwingFXUtils.fromFXImage(imgEmpresa.getImage(), null);
@@ -402,6 +413,11 @@ public class HerramientasController extends AnchorPane implements IView {
 			}
 		});	
 		
+		txtNumBalanzas.textProperty().addListener((ov, oldValue, newValue) -> {
+			if(newValue != null) {
+				txtNumBalanzas.setValue(newValue.toUpperCase());
+			}
+		});			
 		
 		ParametrosGlobales pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL);
@@ -452,51 +468,63 @@ public class HerramientasController extends AnchorPane implements IView {
 			txtTransaccion.setValue(pg.getValue());
 		}		
 		
+		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);
 		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			txtNombreEmpresa.setText(pg.getValue());
 		}
 		
+		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_DIR);
 		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			txtDireccion.setText(pg.getValue());
 		}
 		
-		
+		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_LOC);
 		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			txtLocalidad.setText(pg.getValue());
 		}
 		
-		
+		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_PROV);
 		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			txtProv.setText(pg.getValue());
 		}
 		
-		
+		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_TEL);
 		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			txtTel.setText(pg.getValue());
 		}
 		
+		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_ACTIVAR_DEBUG);
 		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			chkActivarDebug.setSelected(Boolean.valueOf(pg.getValue()));
 		}
 		
+		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_TICKET_ETIQUETADORA);
 		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null) {
 			chkticketEtiquetadora.setSelected(Boolean.valueOf(pg.getValue()));
 		}
 		
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_NUM_BALANZAS);
+		parametrosGlobalesPersistence.load(pg);
+		if(pg!= null) {
+			txtNumBalanzas.setText(pg.getValue());
+		}
+		
+		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_IMG);
 		parametrosGlobalesPersistence.load(pg);
 		if(pg!= null && pg.getValueByte() != null) {
@@ -518,10 +546,9 @@ public class HerramientasController extends AnchorPane implements IView {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				logger.error(e);
-			}
-            
+			}            
 		}
-		
+				
 		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_IMG);
 		parametrosGlobalesPersistence.load(pg);		
