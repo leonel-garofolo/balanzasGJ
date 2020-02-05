@@ -35,30 +35,35 @@
                <children>
                   <VBox prefHeight="139.0" prefWidth="971.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox fx:id="layout1" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                        <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label style="-fx-font-weight: bold;" text="Pesaje">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="cbxModoTara" onAction="#handleModoTara" prefHeight="25.0" prefWidth="130.0" />
-                              <ComboBox fx:id="cbxModalidad" onAction="#handleModalidad" prefWidth="130.0" />
-                              <ComboBox fx:id="cbxModoChasis" prefWidth="130.0" />
-                              <Label prefHeight="17.0" prefWidth="66.0" text="Transacción" />
-                              <TextField fx:id="txtTransaccion" editable="false" prefHeight="25.0" prefWidth="99.0" />
-                              <Label prefHeight="17.0" prefWidth="37.0" text="Fecha" />
-                              <TextField fx:id="txtFecha" prefHeight="25.0" prefWidth="142.0" />
-                              <Label style="-fx-font-weight: bold;" text="Indicador:">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="cbxIndicador" onAction="#handleIndicador" prefHeight="25.0" prefWidth="130.0" />
+                              <HBox fx:id="layout1" alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="939.0" spacing="20.0">
+                                 <children>
+                                    <Label style="-fx-font-weight: bold;" text="Pesaje">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="cbxModoTara" onAction="#handleModoTara" prefHeight="25.0" prefWidth="130.0" />
+                                    <ComboBox fx:id="cbxModalidad" onAction="#handleModalidad" prefWidth="130.0" />
+                                    <ComboBox fx:id="cbxModoChasis" prefWidth="130.0" />
+                                    <Label prefHeight="17.0" prefWidth="66.0" text="Transacción" />
+                                    <TextField fx:id="txtTransaccion" editable="false" prefHeight="25.0" prefWidth="99.0" />
+                                    <Label prefHeight="17.0" prefWidth="37.0" text="Fecha" />
+                                    <TextField fx:id="txtFecha" prefHeight="25.0" prefWidth="142.0" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="42.0" prefWidth="252.0" spacing="15.0">
+                                 <children>
+                                    <Label style="-fx-font-weight: bold;" text="Indicador:">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="cbxIndicador" onAction="#handleIndicador" prefHeight="25.0" prefWidth="130.0" />
+                                 </children>
+                              </HBox>
                            </children>
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin>
                         </HBox>
                         <HBox prefHeight="163.0" prefWidth="585.0">
                            <children>

@@ -773,6 +773,10 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			editableLayout(false);
 			loadTara();	
 			btnTicket.setDisable(false);
+
+			if(taraEdit.getPesoSalida() != null) {
+				cbxIndicador.setDisable(false);	
+			}			
 		}
 	}
 	
@@ -782,6 +786,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		txtConductor.setEditable(edit);
 		txtFactura.setEditable(edit);
 		txtObservaciones.setEditable(edit);
+		cbxIndicador.setDisable(edit);
 
 		cbxTransporte.setDisable(!edit);	
 		cbxProcedencia.setDisable(!edit);
@@ -789,7 +794,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxProducto.setDisable(!edit);
 		cbxImpExp.setDisable(!edit);	
 		cbxATA.setDisable(!edit);
-		
+				
 		txtContenedor.setEditable(edit);
 		txtTaraContenedor.setEditable(edit);
 		txtManifiesto.setEditable(edit);
