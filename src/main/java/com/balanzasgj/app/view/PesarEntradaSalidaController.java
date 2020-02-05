@@ -296,6 +296,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private Button btnAccesoATA;
 	
+	@FXML
+	private ComboBox<Indicadores> cbxIndicador;
+	
 	
 	private char statusTara;
 
@@ -336,6 +339,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private boolean isDebug;
 	
 	@FXML
+	private void handleIndicador() {
+		closeSocket();
+		initSerialConnector();
+	}
+	
+	@FXML
 	private void handleTomar(ActionEvent event) {		
 		if(taraEdit.getPesoEntrada() == null || taraEdit.getPesoSalida() == null) {
 			if(cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {
@@ -360,8 +369,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					}
 					tblEjes.getItems().clear();
 					tblEjes.getItems().addAll(ejes);
-				}
-				
+				}			
 			}
 		}
 	}
@@ -387,6 +395,10 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxModoChasis.setValue(C_COMPLETO);
 		editableLayout(true);
 		btnTicket.setDisable(true);
+		if(cbxIndicador.getItems().size() > 0) {
+			cbxIndicador.setValue(cbxIndicador.getItems().get(0));
+			initSerialConnector();
+		}		
 	}
 
 	@FXML
@@ -1150,7 +1162,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxImpExp.setStyle("-fx-opacity: 1");
 		cbxImpExp.getEditor().setStyle("-fx-opacity: 1");
 		cbxATA.setStyle("-fx-opacity: 1");
-		cbxATA.getEditor().setStyle("-fx-opacity: 1");
+		cbxATA.getEditor().setStyle("-fx-opacity: 1");		
+		cbxIndicador.setStyle("-fx-opacity: 1");
+		cbxIndicador.getEditor().setStyle("-fx-opacity: 1");
 		
 		tblEjes.setVisible(false);
 		btnEliminarEje.setVisible(false);
@@ -1394,9 +1408,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private void initSerialConnector() {	
 		stage.setTitle("Tomar Pesajes");
 		socket= new SocketConnection();
-		List<Comunicaciones> comunicaciones= comunicacionesPersistence.findAll();
-		for(Comunicaciones comunicacion: comunicaciones) {
-			indicadorConfig= indicadoresPersistence.findById(comunicacion.getIdindicadores().longValue());
+		
+		if(cbxIndicador.getSelectionModel().getSelectedItem() != null) {
+			indicadorConfig= cbxIndicador.getSelectionModel().getSelectedItem();
 			if(indicadorConfig.getCaracterControl() != null
 					&& indicadorConfig.getCaracterControl().length() > 0) {
 				this.caracterControl = indicadorConfig.getCaracterControl().split(",");
@@ -1423,8 +1437,9 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			}catch (Exception e) {
 				stage.setTitle("Tomar Pesajes: ERROR DE CONEXION CON EL INDICADOR ");
 			}
-			break;
-		}	
+		} else {
+			stage.setTitle("Tomar Pesajes: INDICADOR NO SELECCIONADO ");
+		}
 	}
 	
 	private void modoTomarTara() {
@@ -1516,6 +1531,22 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxATA.getItems().addAll(ataPersistence.findAll());
 		cbxATA.reload();
 		
+		boolean add = true;
+		List<Comunicaciones> all = comunicacionesPersistence.findAll();
+		for (Comunicaciones c : all) {
+			Indicadores i = indicadoresPersistence.findById((long) c.getIdindicadores());			
+			for(Indicadores cbx: cbxIndicador.getItems()) {
+				if(cbx.getIdindicadores().longValue() == i.getIdindicadores().longValue()) {
+					add = false;
+					break;
+				}
+			}
+			if(add) {
+				cbxIndicador.getItems().add(i);
+			}			
+		}	
+		cbxATA.reload();
+				
 		colTransaccion.setCellValueFactory(new PropertyValueFactory<>("transaccion"));
 		colFecha.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
 

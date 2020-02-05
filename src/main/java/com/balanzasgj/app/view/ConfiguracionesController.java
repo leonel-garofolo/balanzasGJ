@@ -116,9 +116,9 @@ public class ConfiguracionesController extends AnchorPane {
 	private TextField txtNombreIndicadores;	
 	
 	@FXML
-	private ComboBox<Indicadores> cbxIndicadorConfig1;
+	private ComboBox<Integer> cbxNroIndicador;
 	@FXML
-	private ComboBox<Indicadores> cbxIndicadorConfig2;
+	private ComboBox<Indicadores> cbxIndicador;
 	@FXML
 	private Button btnAplicarConecciones;
 	@FXML
@@ -144,10 +144,8 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private Button btnCerrar;
 	@FXML
-	private TextArea txtIndicadorInfo1;
-	@FXML
-	private TextArea txtIndicadorInfo2;
-
+	private TextArea txtIndicadorInfo;
+	
 	@FXML
 	private AnchorPane usuariosView;
 
@@ -265,29 +263,19 @@ public class ConfiguracionesController extends AnchorPane {
 	}
 
 	@FXML
-	private void handleSelectedIndicador1(ActionEvent event) {	
-		if (cbxIndicadorConfig1.getValue() == null) {
-			txtIndicadorInfo1.setText("");
-		} else {
-			Indicadores indicador = cbxIndicadorConfig1.getSelectionModel().getSelectedItem();
-			String text = "CONFIGURACION INDICADOR DE PESO N° 1 \n";
-			text += "Puerto: " + indicador.getPuerto() + "\n";
-			text += "Velocidad: " + indicador.getVelocidad() + "\n";
-			text += "Bits de Datos: " + indicador.getBitsDeDatos() + "\n";
-			text += "Paridad: " + indicador.getParidad() + "\n";
-			text += "Bits de Parada: " + indicador.getBitsDeParada() + "\n";
-			text += "Control de Flujo : " + indicador.getControlDeFlujo() + "\n";
-			text = text.replaceAll("null", "");		
-			txtIndicadorInfo1.setText(text);
-		}				
+	private void handleSelectedNroIndicador(ActionEvent event) {	
+		if (cbxNroIndicador.getSelectionModel().getSelectedItem() != null) {
+			setSelectedIndication();
+			handleSelectedIndicador(event);
+		}		
 	}
 	
 	@FXML
-	private void handleSelectedIndicador2(ActionEvent event) {	
-		if (cbxIndicadorConfig2.getValue() == null) {
-			txtIndicadorInfo2.setText("");
+	private void handleSelectedIndicador(ActionEvent event) {	
+		if (cbxIndicador.getSelectionModel().getSelectedItem() == null) {
+			txtIndicadorInfo.setText("");
 		} else {
-			Indicadores indicador = cbxIndicadorConfig2.getSelectionModel().getSelectedItem();
+			Indicadores indicador = cbxIndicador.getSelectionModel().getSelectedItem();
 			String text = "CONFIGURACION INDICADOR DE PESO N° 2 \n";
 			text += "Puerto: " + indicador.getPuerto() + "\n";
 			text += "Velocidad: " + indicador.getVelocidad() + "\n";
@@ -296,35 +284,23 @@ public class ConfiguracionesController extends AnchorPane {
 			text += "Bits de Parada: " + indicador.getBitsDeParada() + "\n";
 			text += "Control de Flujo : " + indicador.getControlDeFlujo() + "\n";
 			text = text.replaceAll("null", "");
-			txtIndicadorInfo2.setText("");
+			txtIndicadorInfo.setText(text);
 		}		
 	}
 
 	@FXML
 	private void handleAplicarComunicaciones(ActionEvent event) {
-		if (cbxIndicadorConfig1.getValue() != null || 
-				cbxIndicadorConfig2.getValue() != null) {
-			if(cbxIndicadorConfig1.getSelectionModel().getSelectedItem().getIdindicadores() == cbxIndicadorConfig2.getSelectionModel().getSelectedItem().getIdindicadores() ) {
-				Message.error("Los indicadores asignados deben ser distintos.");
-				return;
-			}
-			if(cbxIndicadorConfig1.getValue() != null) {
-				Comunicaciones comun = new Comunicaciones();
-				comun.setIdcomunicaciones((long) 1);
-				comun.setNombre("INDICADOR #1");
-				comun.setIdindicadores(
-						cbxIndicadorConfig1.getSelectionModel().getSelectedItem().getIdindicadores().intValue());
-				comunicacionesPersistence.save(comun);
-			}
+		if (cbxNroIndicador.getValue() != null || 
+				cbxIndicador.getValue() != null) {
 			
-			if(cbxIndicadorConfig2.getValue() != null) {
+			if(cbxIndicador.getValue() != null) {
 				Comunicaciones comun = new Comunicaciones();
-				comun.setIdcomunicaciones((long) 1);
-				comun.setNombre("INDICADOR #2");
+				comun.setIdcomunicaciones(cbxNroIndicador.getValue().longValue());
+				comun.setNombre("INDICADOR " + cbxNroIndicador.getValue());
 				comun.setIdindicadores(
-						cbxIndicadorConfig2.getSelectionModel().getSelectedItem().getIdindicadores().intValue());
+						cbxIndicador.getSelectionModel().getSelectedItem().getIdindicadores().intValue());
 				comunicacionesPersistence.save(comun);
-			}			
+			}	
 			Message.info("Se guardo correctamente.");
 		} else {
 			System.out.println("es necesario seleccionar indicador");
@@ -585,31 +561,38 @@ public class ConfiguracionesController extends AnchorPane {
 		cleanFormIndicadores();
 		List<Indicadores> indicadores = indicadoresPersistence.findAll();
 		tblIndicadores.getItems().addAll(indicadores);
-		cbxIndicadorConfig1.getItems().clear();
-		cbxIndicadorConfig1.getItems().addAll(indicadores);
 		
-		cbxIndicadorConfig2.getItems().clear();
-		cbxIndicadorConfig2.getItems().addAll(indicadores);
-
+		cbxNroIndicador.getItems().clear();		
+		ParametrosGlobales pg = new ParametrosGlobales();	
+		pg.setId(ParametrosGlobales.P_NUM_BALANZAS);
+		parametrosGlobalesPersistence.load(pg);
+		if(pg.getValue() == null) {
+			cbxNroIndicador.getItems().add(new Integer(1));			
+		} else {
+			Integer indCount = Integer.valueOf(pg.getValue());
+			for(int i = 1; i < indCount.intValue(); i++) {
+				cbxNroIndicador.getItems().add(new Integer(i));			
+			}
+		}	
+		cbxNroIndicador.setValue(1);
+		
+		cbxIndicador.getItems().clear();
+		cbxIndicador.getItems().addAll(indicadores);	
+		
+		setSelectedIndication();
+		handleSelectedIndicador(null);	
+	}
+	
+	private void setSelectedIndication() {
+		cbxIndicador.setValue(null);
 		List<Comunicaciones> all = comunicacionesPersistence.findAll();
 		for (Comunicaciones c : all) {
-			if(c.getNombre().equals("INDICADOR #1")) {
+			if(cbxNroIndicador.getSelectionModel().getSelectedItem().intValue() == c.getIdcomunicaciones()) {
 				Indicadores i = indicadoresPersistence.findById((long) c.getIdindicadores());
-				if (i != null) {
-					cbxIndicadorConfig1.setValue(i);
-					handleSelectedIndicador1(null);
-					continue;
-				}
-			}
-			if(c.getNombre().equals("INDICADOR #2")) {
-				Indicadores i = indicadoresPersistence.findById((long) c.getIdindicadores());
-				if (i != null) {
-					cbxIndicadorConfig2.setValue(i);
-					handleSelectedIndicador2(null);
-					continue;
-				}
-			}
-		}
+				cbxIndicador.setValue(i);
+				break;
+			}				
+		}	
 	}
 
 	private void cleanFormEntidades() {

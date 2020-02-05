@@ -156,18 +156,18 @@
                                              <children>
                                                 <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="928.0" spacing="10.0">
                                                    <children>
-                                                      <Label prefHeight="17.0" prefWidth="116.0" text="INDICADOR #1:">
+                                                      <Label prefHeight="17.0" prefWidth="116.0" text="Nro. Indicador:">
                                                          <padding>
                                                             <Insets left="5.0" />
                                                          </padding>
                                                       </Label>
-                                                      <ComboBox fx:id="cbxIndicadorConfig1" onAction="#handleSelectedIndicador1" prefHeight="25.0" prefWidth="229.0" />
-                                                      <Label prefHeight="17.0" prefWidth="116.0" text="INDICADOR #2:">
+                                                      <ComboBox fx:id="cbxNroIndicador" onAction="#handleSelectedNroIndicador" prefHeight="25.0" prefWidth="229.0" />
+                                                      <Label prefHeight="17.0" prefWidth="116.0" text="Indicador:">
                                                          <padding>
                                                             <Insets left="5.0" />
                                                          </padding>
                                                       </Label>
-                                                      <ComboBox fx:id="cbxIndicadorConfig2" onAction="#handleSelectedIndicador2" prefHeight="25.0" prefWidth="229.0" />
+                                                      <ComboBox fx:id="cbxIndicador" onAction="#handleSelectedIndicador" prefHeight="25.0" prefWidth="229.0" />
                                                       <Button fx:id="btnAplicarConecciones" mnemonicParsing="false" onAction="#handleAplicarComunicaciones" text="Aplicar">
                                                          <graphic>
                                                             <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
@@ -190,8 +190,7 @@
                                        <children>
                                           <HBox prefHeight="293.0" prefWidth="928.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <TextArea fx:id="txtIndicadorInfo1" prefHeight="309.0" prefWidth="907.0" />
-                                                <TextArea fx:id="txtIndicadorInfo2" prefHeight="309.0" prefWidth="907.0" />
+                                                <TextArea fx:id="txtIndicadorInfo" prefHeight="309.0" prefWidth="907.0" />
                                              </children>
                                           </HBox>
                                        </children>
