@@ -101,20 +101,21 @@ import javafx.stage.Stage;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-public class PesarEntradaSalidaController extends AnchorPane implements IView, Initializable, SerialPortEventListener, EventHandler<KeyEvent> {		
+public class PesarEntradaSalidaController extends AnchorPane
+		implements IView, Initializable, SerialPortEventListener, EventHandler<KeyEvent> {
 	final static Logger logger = Logger.getLogger(PesarEntradaSalidaController.class);
 	private static final String T_NORMAL = "NORMAL";
 	private static final String T_CON_TARA = "CON TARA";
 	private static final String T_TOMAR_TARA = "TOMAR TARA";
 	private static final String M_ESTANDAR = "ESTANDAR";
 	private static final String M_ADUANA = "ADUANA";
+	private static final String M_PUBLICA = "PUBLICA";
 	private static final String C_COMPLETO = "COMPLETO";
 	private static final String C_POR_EJE = "POR EJE";
-	
-	
+
 	@FXML
 	private HBox layout1;
-	
+
 	/* PESAJE */
 	@FXML
 	private ComboBox<String> cbxModoTara;
@@ -123,29 +124,29 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private ComboBox<String> cbxModoChasis;
 	@FXML
-	private Button btnEliminarEje;	
-	
-	/* TOMAR PESAJE*/
+	private Button btnEliminarEje;
+
+	/* TOMAR PESAJE */
 	@FXML
-	private TextField txtNumberSerial;	
+	private TextField txtNumberSerial;
 	@FXML
 	private Button btnIngresoManual;
 	@FXML
-	private Label lblTara;	
+	private Label lblTara;
 	@FXML
-	private Label lblDias;	
+	private Label lblDias;
 	@FXML
-	private Label lblUltima;	
+	private Label lblUltima;
 	@FXML
-	private Label lblImpExp;	
+	private Label lblImpExp;
 	@FXML
-	private TextField txtUltima;	
+	private TextField txtUltima;
 	@FXML
-	private Button btnTomar;	
+	private Button btnTomar;
 	@FXML
 	private Button btnPesarEntrada;
 	@FXML
-	private Button btnPesarSalida;	
+	private Button btnPesarSalida;
 	@FXML
 	private TextField txtEntrada;
 	@FXML
@@ -156,7 +157,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private TextField txtTransaccion;
 	@FXML
 	private TextField txtFecha;
-	
+
 	/* FORMULARIO */
 	@FXML
 	private ComboBoxAutoComplete<Productos> cbxProducto;
@@ -177,40 +178,40 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private Button btnAccesoProcedencia;
 	@FXML
-	private Button btnAccesoImpExp;		
+	private Button btnAccesoImpExp;
 	@FXML
-	private Button btnNuevoPesaje;	
+	private Button btnNuevoPesaje;
 	@FXML
 	private Button btnAplicar;
 	@FXML
-	private Button btnTicket;		
-	
-	/*	
-	private ComboBox<Patentes> cbxPatente;
-	*/
+	private Button btnTicket;
+
+	/*
+	 * private ComboBox<Patentes> cbxPatente;
+	 */
 	@FXML
 	private TextField txtPatente;
 	@FXML
 	private TextField txtNumDoc;
 	@FXML
 	private TextField txtConductor;
-	
+
 	@FXML
 	private TextField txtFactura;
 	@FXML
 	private TextArea txtObservaciones;
-	
-	/*Tabla de ejes*/
+
+	/* Tabla de ejes */
 	@FXML
-	private TableView<Ejes> tblEjes;	
+	private TableView<Ejes> tblEjes;
 	@FXML
 	private TableColumn<Ejes, Integer> colNroEje;
 	@FXML
 	private TableColumn<Ejes, Double> colPesoEntrada;
 	@FXML
 	private TableColumn<Ejes, Double> colPesoSalida;
-	
-	/*Tabla de pesajes*/
+
+	/* Tabla de pesajes */
 	@FXML
 	private TableView<Taras> tblPesajes;
 	@FXML
@@ -236,13 +237,13 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private TableColumn<Taras, Procedencias> colProcedencia;
 	@FXML
-	private TableColumn<Taras, ImportadoresExportadores> colImpExp;		
+	private TableColumn<Taras, ImportadoresExportadores> colImpExp;
 
 	@FXML
 	private Button btnBuscar;
 	@FXML
 	private CheckBox chkSalidasPendientes;
-	
+
 	@FXML
 	private Label lblProducto;
 	@FXML
@@ -254,52 +255,50 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private Label lblObservaciones;
 	@FXML
-	private Label lblFactura;	
+	private Label lblFactura;
 	@FXML
 	private Label lblConductor;
 	@FXML
 	private Label lblDocumento;
-	
+
 	@FXML
 	private HBox hEntrada;
 	@FXML
 	private HBox hSalida;
 	@FXML
 	private HBox hNeto;
-	
-	
+
 	// ADUANA
 	@FXML
 	private Label lbllATA;
 	@FXML
 	private Label lblContenedor;
 	@FXML
-	private Label lblTaraContenedor;	
+	private Label lblTaraContenedor;
 	@FXML
-	private Label lblManifiesto;	
+	private Label lblManifiesto;
 	@FXML
-	private Label lblDestinatario;	
+	private Label lblDestinatario;
 	@FXML
-	private Label lblMercaderia;	
+	private Label lblMercaderia;
 	@FXML
-	private ComboBoxAutoComplete<Ata> cbxATA;	
+	private ComboBoxAutoComplete<Ata> cbxATA;
 	@FXML
-	private TextField txtContenedor;	
+	private TextField txtContenedor;
 	@FXML
-	private TextField txtTaraContenedor;	
+	private TextField txtTaraContenedor;
 	@FXML
 	private TextField txtManifiesto;
 	@FXML
-	private TextField txtDestinatario;	
+	private TextField txtDestinatario;
 	@FXML
 	private TextField txtMercaderia;
 	@FXML
 	private Button btnAccesoATA;
-	
+
 	@FXML
 	private ComboBox<Indicadores> cbxIndicador;
-	
-	
+
 	private char statusTara;
 
 	private ClientesPersistence clientesPersistence;
@@ -315,78 +314,78 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
 	private AtaPersistence ataPersistence;
 	private long idTaraEdit = -1;
-	private Taras taraEdit;	
-	
+	private Taras taraEdit;
+
 	private Indicadores indicadorConfig;
-	
-	private boolean ingManual;	
+
+	private boolean ingManual;
 	private SocketConnection socket;
-	private String sBufferConnection;	
+	private String sBufferConnection;
 	private Stage stage;
-	
+
 	private String[] caracterControl;
 	private int posicionInicioDato;
 	private int longitudDato;
-	
+
 	private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		
+
 	@FXML
 	private TextField txtTara;
-	
+
 	@FXML
 	private TextField txtDiasVenc;
-	
+
 	private boolean isDebug;
-	
+
 	@FXML
 	private void handleIndicador() {
 		closeSocket();
 		initSerialConnector();
 	}
-	
+
 	@FXML
-	private void handleTomar(ActionEvent event) {		
-		if(taraEdit.getPesoEntrada() == null || taraEdit.getPesoSalida() == null) {
-			if(cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {
-				txtTara.setText(txtNumberSerial.getText());		
+	private void handleTomar(ActionEvent event) {
+		if (taraEdit.getPesoEntrada() == null || taraEdit.getPesoSalida() == null) {
+			if (cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {
+				txtTara.setText(txtNumberSerial.getText());
 			}
-			if(cbxModoChasis.getSelectionModel().getSelectedItem().equals(C_POR_EJE)) {
-				Ejes eje = new Ejes();								
+			if (cbxModoChasis.getSelectionModel().getSelectedItem().equals(C_POR_EJE)) {
+				Ejes eje = new Ejes();
 				eje.setNroEje(tblEjes.getItems().size() + 1);
-				if(statusTara == 'E') {
+				if (statusTara == 'E') {
 					eje.setPesoEntrada(Double.valueOf(txtNumberSerial.getText()));
 					tblEjes.getItems().add(eje);
 				}
-				if(statusTara == 'S') {
+				if (statusTara == 'S') {
 					List<Ejes> ejes = new ArrayList<>();
 					ejes.addAll(tblEjes.getItems());
-							
-					for(int i= 0; i < ejes.size(); i++) {
-						if(ejes.get(i).getPesoSalida() == 0d) {
+
+					for (int i = 0; i < ejes.size(); i++) {
+						if (ejes.get(i).getPesoSalida() == 0d) {
 							ejes.get(i).setPesoSalida(Double.valueOf(txtNumberSerial.getText()));
 							break;
 						}
 					}
 					tblEjes.getItems().clear();
 					tblEjes.getItems().addAll(ejes);
-				}			
+				}
 			}
 		}
 	}
-	
+
 	@FXML
-	private void handleEliminarEje(ActionEvent event) {		
-		if(!tblEjes.getItems().isEmpty()) {
-			this.ejesPersistence.deleteById(tblEjes.getItems().get(tblEjes.getItems().size()- 1).getIdEje());
-			tblEjes.getItems().remove(tblEjes.getItems().size()- 1);			
+	private void handleEliminarEje(ActionEvent event) {
+		if (!tblEjes.getItems().isEmpty()) {
+			this.ejesPersistence.deleteById(tblEjes.getItems().get(tblEjes.getItems().size() - 1).getIdEje());
+			tblEjes.getItems().remove(tblEjes.getItems().size() - 1);
 		}
 	}
-	
+
 	@FXML
-	private void handleNuevoPesaje(ActionEvent event) {		
+	private void handleNuevoPesaje(ActionEvent event) {
 		clearForm();
 		idTaraEdit = -1;
-		activarEndrada();		
+		activarEndrada();
 		taraEdit = new Taras();
 		txtFecha.setText(format.format(new Date()));
 		btnIngresoManual.setDisable(false);
@@ -395,151 +394,151 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxModoChasis.setValue(C_COMPLETO);
 		editableLayout(true);
 		btnTicket.setDisable(true);
-		if(cbxIndicador.getItems().size() > 0) {
+		if (cbxIndicador.getItems().size() > 0) {
 			cbxIndicador.setValue(cbxIndicador.getItems().get(0));
 			initSerialConnector();
-		}		
+		}
 	}
 
 	@FXML
 	private void handleBuscar(ActionEvent event) {
 		tblPesajes.getItems().clear();
-		tblPesajes.getItems().addAll(tarasPersistence
-				.findByField("All", "", chkSalidasPendientes.isSelected()));
+		tblPesajes.getItems().addAll(tarasPersistence.findByField("All", "", chkSalidasPendientes.isSelected()));
 	}
-	
+
 	@FXML
 	private void handleTicket(ActionEvent event) {
 		if (taraEdit != null) {
 			List<Taras> taras = new ArrayList<>();
 			HashMap<String, Object> params = new HashMap<>();
-			
-			/*PROPIETARIO DE LA BALANZA*/
+
+			/* PROPIETARIO DE LA BALANZA */
 			ParametrosGlobales pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL);	
+			pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL);
 			parametrosGlobalesPersistence.load(pg);
-	        params.put(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL, (pg.getValue()== null?"":pg.getValue()));
-	        	        
-	        pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_DIR_BAL);	
+			params.put(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL, (pg.getValue() == null ? "" : pg.getValue()));
+
+			pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_DIR_BAL);
 			parametrosGlobalesPersistence.load(pg);
-	        params.put(ParametrosGlobales.P_EMPRESA_DIR_BAL, (pg.getValue()== null?"":pg.getValue()));
-	        
-	        pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_TEL_BAL);	
+			params.put(ParametrosGlobales.P_EMPRESA_DIR_BAL, (pg.getValue() == null ? "" : pg.getValue()));
+
+			pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_TEL_BAL);
 			parametrosGlobalesPersistence.load(pg);
-	        params.put(ParametrosGlobales.P_EMPRESA_TEL_BAL, (pg.getValue()== null?"":pg.getValue()));
-	        
-	        pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_LOC_BAL);	
+			params.put(ParametrosGlobales.P_EMPRESA_TEL_BAL, (pg.getValue() == null ? "" : pg.getValue()));
+
+			pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_LOC_BAL);
 			parametrosGlobalesPersistence.load(pg);
-	        params.put(ParametrosGlobales.P_EMPRESA_LOC_BAL, (pg.getValue()== null?"":pg.getValue()));
-	        
-	        pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_PROV_BAL);	
+			params.put(ParametrosGlobales.P_EMPRESA_LOC_BAL, (pg.getValue() == null ? "" : pg.getValue()));
+
+			pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_PROV_BAL);
 			parametrosGlobalesPersistence.load(pg);
-	        params.put(ParametrosGlobales.P_EMPRESA_PROV_BAL, (pg.getValue()== null?"":pg.getValue()));	
-	        
-	        /* EMPRESA*/
-	        pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);	
+			params.put(ParametrosGlobales.P_EMPRESA_PROV_BAL, (pg.getValue() == null ? "" : pg.getValue()));
+
+			/* EMPRESA */
+			pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);
 			parametrosGlobalesPersistence.load(pg);
-	        params.put(ParametrosGlobales.P_EMPRESA_NOMBRE, (pg.getValue()== null?"":pg.getValue()));
-	        
-	        pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_DIR);	
+			params.put(ParametrosGlobales.P_EMPRESA_NOMBRE, (pg.getValue() == null ? "" : pg.getValue()));
+
+			pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_DIR);
 			parametrosGlobalesPersistence.load(pg);
-	        params.put(ParametrosGlobales.P_EMPRESA_DIR, (pg.getValue()== null?"":pg.getValue()));
-	        
-	        pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_TEL);	
+			params.put(ParametrosGlobales.P_EMPRESA_DIR, (pg.getValue() == null ? "" : pg.getValue()));
+
+			pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_TEL);
 			parametrosGlobalesPersistence.load(pg);
-	        params.put(ParametrosGlobales.P_EMPRESA_TEL, (pg.getValue()== null?"":pg.getValue()));
-	        
-	        pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_LOC);	
+			params.put(ParametrosGlobales.P_EMPRESA_TEL, (pg.getValue() == null ? "" : pg.getValue()));
+
+			pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_LOC);
 			parametrosGlobalesPersistence.load(pg);
-	        params.put(ParametrosGlobales.P_EMPRESA_LOC, (pg.getValue()== null?"":pg.getValue()));
-	        
-	        pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_PROV);	
+			params.put(ParametrosGlobales.P_EMPRESA_LOC, (pg.getValue() == null ? "" : pg.getValue()));
+
+			pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_PROV);
 			parametrosGlobalesPersistence.load(pg);
-	        params.put(ParametrosGlobales.P_EMPRESA_PROV, (pg.getValue()== null?"":pg.getValue()));	               
-	        params.put("USUARIO", Usuarios.getUsuarioLogeado());
-	        
-	        /*Aduana */
-	        if(cbxModalidad.getSelectionModel().getSelectedItem() != null && 
-					cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
-	        	pg = new ParametrosGlobales();
-				pg.setId(ParametrosGlobales.A_CODIGO_ADUANA);	
+			params.put(ParametrosGlobales.P_EMPRESA_PROV, (pg.getValue() == null ? "" : pg.getValue()));
+			params.put("USUARIO", Usuarios.getUsuarioLogeado());
+
+			/* Aduana */
+			if (cbxModalidad.getSelectionModel().getSelectedItem() != null
+					&& cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
+				pg = new ParametrosGlobales();
+				pg.setId(ParametrosGlobales.A_CODIGO_ADUANA);
 				parametrosGlobalesPersistence.load(pg);
-		        params.put(ParametrosGlobales.A_CODIGO_ADUANA, (pg.getValue()== null?"":pg.getValue()));	               
-		        
-		        pg = new ParametrosGlobales();
-				pg.setId(ParametrosGlobales.A_CODIGO_LOG);	
+				params.put(ParametrosGlobales.A_CODIGO_ADUANA, (pg.getValue() == null ? "" : pg.getValue()));
+
+				pg = new ParametrosGlobales();
+				pg.setId(ParametrosGlobales.A_CODIGO_LOG);
 				parametrosGlobalesPersistence.load(pg);
-		        params.put(ParametrosGlobales.A_CODIGO_LOG, (pg.getValue()== null?"":pg.getValue()));	               
-		        
-		        pg = new ParametrosGlobales();
-				pg.setId(ParametrosGlobales.A_CERTIFICADO);	
+				params.put(ParametrosGlobales.A_CODIGO_LOG, (pg.getValue() == null ? "" : pg.getValue()));
+
+				pg = new ParametrosGlobales();
+				pg.setId(ParametrosGlobales.A_CERTIFICADO);
 				parametrosGlobalesPersistence.load(pg);
-		        params.put(ParametrosGlobales.A_CERTIFICADO, (pg.getValue()== null?"":pg.getValue()));	               
-		        
-		        pg = new ParametrosGlobales();
-				pg.setId(ParametrosGlobales.A_VENCIMIENTO);	
+				params.put(ParametrosGlobales.A_CERTIFICADO, (pg.getValue() == null ? "" : pg.getValue()));
+
+				pg = new ParametrosGlobales();
+				pg.setId(ParametrosGlobales.A_VENCIMIENTO);
 				parametrosGlobalesPersistence.load(pg);
-		        params.put(ParametrosGlobales.A_VENCIMIENTO, (pg.getValue()== null?"":pg.getValue()));	    
-		        
-		        ImportadoresExportadores ie = cbxImpExp.getSelectionModel().getSelectedItem();
-		        impExpPersistence.load(ie);
-		        taraEdit.setImpExp(ie);
-		        
-		        Patentes p = new Patentes();
-		        p.setPatente(txtPatente.getText());
-		        patentesPersistence.load(p);
-		        taraEdit.setPatente(p);
-		        
-		        Ata ata = cbxATA.getSelectionModel().getSelectedItem();		        
-		        ataPersistence.load(ata);
-		        taraEdit.setAta(ata);
-	        }
-	        
-	        taras.add(taraEdit);
-	        pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_IMG);	
+				params.put(ParametrosGlobales.A_VENCIMIENTO, (pg.getValue() == null ? "" : pg.getValue()));
+
+				ImportadoresExportadores ie = cbxImpExp.getSelectionModel().getSelectedItem();
+				impExpPersistence.load(ie);
+				taraEdit.setImpExp(ie);
+
+				Patentes p = new Patentes();
+				p.setPatente(txtPatente.getText());
+				patentesPersistence.load(p);
+				taraEdit.setPatente(p);
+
+				Ata ata = cbxATA.getSelectionModel().getSelectedItem();
+				ataPersistence.load(ata);
+				taraEdit.setAta(ata);
+			}
+
+			taras.add(taraEdit);
+			pg = new ParametrosGlobales();
+			pg.setId(ParametrosGlobales.P_EMPRESA_IMG);
 			parametrosGlobalesPersistence.load(pg);
-			if(pg.getValueByte() != null) {
+			if (pg.getValueByte() != null) {
 				try {
 					byte[] img = new byte[new Long(pg.getValueByte().length()).intValue()];
 					Image image = ImageIO.read(new ByteArrayInputStream(img));
-		            
-		            params.put(ParametrosGlobales.P_EMPRESA_IMG, image);
+
+					params.put(ParametrosGlobales.P_EMPRESA_IMG, image);
 				} catch (SQLException e) {
 					logger.error(e);
 				} catch (IOException e) {
 					logger.error(e);
-				}				
+				}
 			} else {
-				 params.put(ParametrosGlobales.P_EMPRESA_IMG, null);
+				params.put(ParametrosGlobales.P_EMPRESA_IMG, null);
 			}
 			try {
-				if(cbxModalidad.getSelectionModel().getSelectedItem() != null && 
-						cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
+				if (cbxModalidad.getSelectionModel().getSelectedItem() != null
+						&& cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
 					ShowJasper.openBeanDataSource("ticketAduana", params, new JRBeanCollectionDataSource(taras));
 				} else {
 					pg = new ParametrosGlobales();
-					pg.setId(ParametrosGlobales.P_TICKET_ETIQUETADORA);	
+					pg.setId(ParametrosGlobales.P_TICKET_ETIQUETADORA);
 					parametrosGlobalesPersistence.load(pg);
-			        boolean ticketEt =false;
-			        if(pg.getValue() != null) {
-			        	ticketEt = Boolean.valueOf(pg.getValue());
-			        }
-					if(ticketEt) {
-						ShowJasper.openBeanDataSource("ticketEtiquetadora", params, new JRBeanCollectionDataSource(taras));
+					boolean ticketEt = false;
+					if (pg.getValue() != null) {
+						ticketEt = Boolean.valueOf(pg.getValue());
+					}
+					if (ticketEt) {
+						ShowJasper.openBeanDataSource("ticketEtiquetadora", params,
+								new JRBeanCollectionDataSource(taras));
 					} else {
 						ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
 					}
-					
+
 				}
 			} catch (JRException e) {
 				// TODO Auto-generated catch block
@@ -547,27 +546,27 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			}
 		}
 	}
-	
+
 	@FXML
 	private void handleIngManual(ActionEvent event) {
-		if(Usuarios.getPerfilLogeado().equals(Usuarios.P_SUPERVISOR)
+		if (Usuarios.getPerfilLogeado().equals(Usuarios.P_SUPERVISOR)
 				|| Usuarios.getPerfilLogeado().equals(Usuarios.P_ADMINISTRADOR)) {
 			enabledIngManual();
 		} else {
 			String value = Message.optionSecurity();
 			ParametrosGlobales pg = new ParametrosGlobales();
 			pg.setId("EMPRESA_ING_MANUAL");
-			parametrosGlobalesPersistence.load(pg);	
+			parametrosGlobalesPersistence.load(pg);
 			String clave = pg.getValue();
-			if(clave == null) {
+			if (clave == null) {
 				clave = "123";
 			}
-			if(value.equals(clave)) {
-				enabledIngManual();				
+			if (value.equals(clave)) {
+				enabledIngManual();
 			}
 		}
 	}
-	
+
 	private void enabledIngManual() {
 		this.ingManual = true;
 		txtNumberSerial.setEditable(ingManual);
@@ -577,13 +576,14 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 
 	@FXML
 	private void handleAplicar(ActionEvent event) {
-		if(cbxModoTara.getSelectionModel().getSelectedItem().equals(T_TOMAR_TARA)) {
-			if (!txtTara.getText().isEmpty() && !txtDiasVenc.getText().isEmpty() ) {
+		if (cbxModoTara.getSelectionModel().getSelectedItem() != null
+				&& cbxModoTara.getSelectionModel().getSelectedItem().equals(T_TOMAR_TARA)) {
+			if (!txtTara.getText().isEmpty() && !txtDiasVenc.getText().isEmpty()) {
 				Patentes p = new Patentes();
 				p.setPatente(txtPatente.getText());
 				p.setTara(Double.valueOf(txtTara.getText()));
 				p.setDiasVenc(Integer.valueOf(txtDiasVenc.getText()));
-				this.patentesPersistence.save(p);					
+				this.patentesPersistence.save(p);
 				Message.info("Los datos se guardaron correctamente.");
 				clearForm();
 			} else {
@@ -592,35 +592,37 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		} else {
 			boolean isValid = false;
 			if (cbxProducto.getValue() != null && cbxCliente.getValue() != null && cbxTransporte.getValue() != null
-					&& cbxProcedencia.getValue() != null
-					&& !txtPatente.getText().isEmpty()
-					&& txtTransaccion.getText() != null && !txtTransaccion.getText().isEmpty() 
-					&& !txtFecha.getText().isEmpty()
-					&& !cbxModoTara.getSelectionModel().isEmpty()
-					&& !cbxModalidad.getSelectionModel().isEmpty()
-					&& !cbxModoChasis.getSelectionModel().isEmpty()) {
-				if(cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
-					if(cbxATA.getValue() != null
-							&& cbxImpExp.getValue() !=null
-							&& !txtContenedor.getText().isEmpty()
-							&& !txtTaraContenedor.getText().isEmpty()
-							&& !txtManifiesto.getText().isEmpty()
-							&& !txtDestinatario.getText().isEmpty()
-							&& !txtMercaderia.getText().isEmpty()) {
+					&& cbxProcedencia.getValue() != null && !txtPatente.getText().isEmpty()
+					&& txtTransaccion.getText() != null && !txtTransaccion.getText().isEmpty()
+					&& !txtFecha.getText().isEmpty() && !cbxModoTara.getSelectionModel().isEmpty()
+					&& !cbxModalidad.getSelectionModel().isEmpty() && !cbxModoChasis.getSelectionModel().isEmpty()) {
+
+				switch (cbxModalidad.getSelectionModel().getSelectedItem()) {
+				case M_ADUANA:
+					if (cbxATA.getValue() != null && cbxImpExp.getValue() != null && !txtContenedor.getText().isEmpty()
+							&& !txtTaraContenedor.getText().isEmpty() && !txtManifiesto.getText().isEmpty()
+							&& !txtDestinatario.getText().isEmpty() && !txtMercaderia.getText().isEmpty()) {
 						isValid = true;
 					} else {
 						isValid = false;
 					}
-				} else {
+					break;
+				case M_PUBLICA:
+					// TODO ver que datos  son requeridos para la publica
 					isValid = true;
+					break;
+
+				default:
+					isValid = true;
+					break;
 				}
 			} else {
 				isValid = false;
 			}
-			
-			if(isValid) {
+
+			if (isValid) {
 				if (statusTara == 'S' || statusTara == 'E') {
-					boolean isEje = cbxModoChasis.getSelectionModel().getSelectedItem().equals(C_POR_EJE);				
+					boolean isEje = cbxModoChasis.getSelectionModel().getSelectedItem().equals(C_POR_EJE);
 					boolean isConTara = cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA);
 					Taras tara = new Taras();
 					if (idTaraEdit >= 0) {
@@ -629,12 +631,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					}
 					tara.setTransaccion(txtTransaccion.getText());
 					try {
-						if(statusTara == 'E') {
+						if (statusTara == 'E') {
 							tara.setFechaEntrada(format.parse(txtFecha.getText()));
 						} else {
 							tara.setFechaSalida(new Date());
 						}
-						
+
 					} catch (ParseException e) {
 						System.out.println("error de formato");
 					}
@@ -642,32 +644,32 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					tara.setCliente(cbxCliente.getValue());
 					tara.setTransporte(cbxTransporte.getValue());
 					tara.setProcedencias(cbxProcedencia.getValue());
-					if(cbxImpExp.isVisible()) {
+					if (cbxImpExp.isVisible()) {
 						tara.setImpExp(cbxImpExp.getValue());
 					}
-					if(cbxATA.isVisible()) {
+					if (cbxATA.isVisible()) {
 						tara.setAta(cbxATA.getValue());
 					}
-					if(txtContenedor.isVisible()) {
+					if (txtContenedor.isVisible()) {
 						tara.setContenedor(txtContenedor.getText());
 					}
-					if(txtTaraContenedor.isVisible()) {
+					if (txtTaraContenedor.isVisible()) {
 						tara.setContenedorNum(txtTaraContenedor.getText());
 					}
-					if(txtManifiesto.isVisible()) {
+					if (txtManifiesto.isVisible()) {
 						tara.setManifiesto(txtManifiesto.getText());
 					}
-					
-					if(txtDestinatario.isVisible()) {
+
+					if (txtDestinatario.isVisible()) {
 						tara.setDestino(txtDestinatario.getText());
 					}
-					
-					if(txtMercaderia.isVisible()) {
+
+					if (txtMercaderia.isVisible()) {
 						tara.setMercaderia(txtMercaderia.getText());
 					}
-					
+
 					Patentes p = new Patentes();
-					p.setPatente(txtPatente.getText());		
+					p.setPatente(txtPatente.getText());
 					tara.setPatente(p);
 					tara.setNumDoc(txtNumDoc.getText());
 					tara.setConductor(txtConductor.getText());
@@ -675,74 +677,76 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					tara.setObservacion(txtObservaciones.getText());
 					tara.setModoTara(cbxModoTara.getSelectionModel().getSelectedItem());
 					tara.setModalidad(cbxModalidad.getSelectionModel().getSelectedItem());
-					tara.setModoChasis(cbxModoChasis.getSelectionModel().getSelectedItem());				
-					if(indicadorConfig != null && !stage.getTitle().contains("ERROR")) {
+					tara.setModoChasis(cbxModoChasis.getSelectionModel().getSelectedItem());
+					if (indicadorConfig != null && !stage.getTitle().contains("ERROR")) {
 						tara.setBalanza(indicadorConfig.getNombre());
-					}else {
+					} else {
 						tara.setBalanza("ING. MANUAL");
 					}
-					
-					double totalPesaje = 0d;					
-					if(isEje) {
+
+					double totalPesaje = 0d;
+					if (isEje) {
 						int count = tblEjes.getItems().size();
-						for(int i = 0; i < count; i++ ) {
-							if(statusTara == 'E') {
-								totalPesaje +=tblEjes.getItems().get(i).getPesoEntrada();
-							}							
-							if(statusTara == 'S') {
-								totalPesaje +=tblEjes.getItems().get(i).getPesoSalida();
+						for (int i = 0; i < count; i++) {
+							if (statusTara == 'E') {
+								totalPesaje += tblEjes.getItems().get(i).getPesoEntrada();
+							}
+							if (statusTara == 'S') {
+								totalPesaje += tblEjes.getItems().get(i).getPesoSalida();
 							}
 						}
 					}
-					
+
 					double totalPeso = 0d;
-					if(isEje) {
-						totalPeso = totalPesaje;						
+					if (isEje) {
+						totalPeso = totalPesaje;
 					} else {
-						totalPeso = Double.valueOf(txtNumberSerial.getText());						
-					}					
-					if(isConTara) {
+						totalPeso = Double.valueOf(txtNumberSerial.getText());
+					}
+					if (isConTara) {
 						totalPeso = totalPeso - Double.valueOf(txtTara.getText());
 					}
-					if (statusTara == 'S') {					
+					if (statusTara == 'S') {
 						txtSalida.setText(String.valueOf(totalPeso));
 						tara.setPesoSalida(new BigDecimal(txtSalida.getText()));
 						calcularNeto();
 					} else if (statusTara == 'E') {
-											
+
 						txtEntrada.setText(String.valueOf(totalPeso));
-						
+
 						tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
 					}
-					//comprobar si existe una patente con pesaje de salida pendiente
+					// comprobar si existe una patente con pesaje de salida pendiente
 					boolean existPending = tarasPersistence.checkPending(tara.getPatente().getPatente());
-					if(tara.getIdtaras() == null && existPending) {
-						Message.error("Error al guardar, ya existe un pesaje pendiente con la patente " + tara.getPatente() + ".");
+					if (tara.getIdtaras() == null && existPending) {
+						Message.error("Error al guardar, ya existe un pesaje pendiente con la patente "
+								+ tara.getPatente() + ".");
 						return;
 					}
-					
+
 					Taras insertTara = tarasPersistence.save(tara);
 					if (idTaraEdit == -1) {
 						idTaraEdit = insertTara.getIdtaras();
 					}
-					
+
 					// guardo todos los ejes cargados
-					if(isEje) {
+					if (isEje) {
 						Ejes eje = null;
-						for(int i = 0; i < tblEjes.getItems().size(); i ++) {
+						for (int i = 0; i < tblEjes.getItems().size(); i++) {
 							eje = tblEjes.getItems().get(i);
 							eje.setIdTaras(idTaraEdit);
 							ejesPersistence.save(eje);
 						}
 					}
-					
+
 					refleshTableTaras();
-					if(taraEdit == null || (taraEdit != null && taraEdit.getIdtaras() == null)) {
+					if (taraEdit == null || (taraEdit != null && taraEdit.getIdtaras() == null)) {
 						saveContadorTransaccion();
 					}
-					
-					boolean ticket = Message.optionYesNo("Los datos se guardaron correctamente. Desea Imprimir el ticket?");
-					if(ticket) {
+
+					boolean ticket = Message
+							.optionYesNo("Los datos se guardaron correctamente. Desea Imprimir el ticket?");
+					if (ticket) {
 						taraEdit = tara;
 						handleTicket(null);
 					}
@@ -750,7 +754,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					btnIngresoManual.setDisable(true);
 					handleNuevoPesaje(event);
 				}
-				
+
 			} else {
 				Message.error("Debe haber alguna entrada seleccionada.");
 			}
@@ -768,18 +772,18 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	private void handleTblEntidadesSelected(MouseEvent event) {
 		if (!tblPesajes.getSelectionModel().isEmpty()) {
 			btnPesarEntrada.setStyle("");
-			btnPesarSalida.setStyle("");	
+			btnPesarSalida.setStyle("");
 			layout1.setDisable(true);
 			editableLayout(false);
-			loadTara();	
+			loadTara();
 			btnTicket.setDisable(false);
 
-			if(taraEdit.getPesoSalida() != null) {
-				cbxIndicador.setDisable(false);	
-			}			
+			if (taraEdit.getPesoSalida() != null) {
+				cbxIndicador.setDisable(false);
+			}
 		}
 	}
-	
+
 	private void editableLayout(boolean edit) {
 		txtPatente.setEditable(edit);
 		txtNumDoc.setEditable(edit);
@@ -788,13 +792,13 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		txtObservaciones.setEditable(edit);
 		cbxIndicador.setDisable(edit);
 
-		cbxTransporte.setDisable(!edit);	
+		cbxTransporte.setDisable(!edit);
 		cbxProcedencia.setDisable(!edit);
 		cbxCliente.setDisable(!edit);
 		cbxProducto.setDisable(!edit);
-		cbxImpExp.setDisable(!edit);	
+		cbxImpExp.setDisable(!edit);
 		cbxATA.setDisable(!edit);
-				
+
 		txtContenedor.setEditable(edit);
 		txtTaraContenedor.setEditable(edit);
 		txtManifiesto.setEditable(edit);
@@ -812,7 +816,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		txtFecha.setText(format.format(taraEdit.getFechaEntrada()));
 		txtPatente.setText(this.patentesPersistence.findById(taraEdit.getPatente().getPatente()).getPatente());
 		txtEntrada.setText(taraEdit.getPesoEntrada().toString());
-		
+
 		txtNumDoc.setText(taraEdit.getNumDoc());
 		txtConductor.setText(taraEdit.getConductor());
 		txtFactura.setText(taraEdit.getComprobanteNun1());
@@ -821,7 +825,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxTransporte.setValue(taraEdit.getTransporte());
 		cbxProcedencia.setValue(taraEdit.getProcedencias());
 		cbxCliente.setValue(taraEdit.getCliente());
-		cbxProducto.setValue(taraEdit.getProducto());	
+		cbxProducto.setValue(taraEdit.getProducto());
 		cbxImpExp.setValue(taraEdit.getImpExp());
 		cbxATA.setValue(taraEdit.getAta());
 		txtContenedor.setText(taraEdit.getContenedor());
@@ -829,36 +833,35 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		txtManifiesto.setText(taraEdit.getManifiesto());
 		txtDestinatario.setText(taraEdit.getDestino());
 		txtMercaderia.setText(taraEdit.getMercaderia());
-		
-		
+
 		cbxModoTara.setValue(taraEdit.getModoTara());
 		cbxModalidad.setValue(taraEdit.getModalidad());
 		cbxModoChasis.setValue(taraEdit.getModoChasis());
-		
-		if(taraEdit.getPesoEntrada() != null && taraEdit.getPesoSalida() != null) {
+
+		if (taraEdit.getPesoEntrada() != null && taraEdit.getPesoSalida() != null) {
 			btnPesarEntrada.setDisable(true);
 			btnPesarSalida.setDisable(true);
 			txtSalida.setText(taraEdit.getPesoSalida().toString());
 			activarSalida();
-		}else if (taraEdit.getPesoSalida() != null) {
+		} else if (taraEdit.getPesoSalida() != null) {
 			txtSalida.setText(taraEdit.getPesoSalida().toString());
 		} else {
 			activarSalida();
 		}
 		if (taraEdit.getPesoNeto() != null) {
 			txtNeto.setText(taraEdit.getPesoNeto().toString());
-		}				
-		
-		if(taraEdit.getPesoEntrada() != null && taraEdit.getPesoSalida() != null) {
+		}
+
+		if (taraEdit.getPesoEntrada() != null && taraEdit.getPesoSalida() != null) {
 			btnAplicar.setDisable(true);
 			btnTomar.setDisable(true);
-			btnIngresoManual.setDisable(true);			
+			btnIngresoManual.setDisable(true);
 		} else {
 			btnAplicar.setDisable(false);
 			btnTomar.setDisable(false);
 			btnIngresoManual.setDisable(false);
 		}
-		
+
 	}
 
 	@FXML
@@ -876,21 +879,21 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		layout1.setDisable(false);
 		editableLayout(false);
 		btnIngresoManual.setDisable(false);
-		
+
 		ParametrosGlobales pg = new ParametrosGlobales();
 		pg.setId("EMPRESA_TRANSACCION");
 		parametrosGlobalesPersistence.load(pg);
 		if (pg != null) {
 			txtTransaccion.setText(Integer.valueOf(pg.getValue()) + 1 + "");
 		}
-		if(taraEdit != null && taraEdit.getIdtaras() != null) {
+		if (taraEdit != null && taraEdit.getIdtaras() != null) {
 			enabledTara(cbxModoTara.getValue());
 			enabledAduana(cbxModalidad.getValue());
 			enabledTableEjes(cbxModoChasis.getValue());
 			layout1.setDisable(true);
 		}
 	}
-	
+
 	private void activarSalida() {
 		// Marcar salida
 		statusTara = 'S';
@@ -901,7 +904,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		btnIngresoManual.setDisable(false);
 		if (taraEdit.getIdtaras() >= 0) {
 			enabledTara(cbxModoTara.getValue());
-			enabledTableEjes(cbxModoChasis.getValue());							
+			enabledTableEjes(cbxModoChasis.getValue());
 		}
 	}
 
@@ -911,27 +914,27 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 					- Double.valueOf(txtEntrada.getText()).doubleValue()));
 		}
 	}
-	
+
 	@FXML
 	private void handleEditPatente(ActionEvent event) {
 		String value = Message.addElement("Ingrese la nueva patente:");
-		if(!value.equals("")) {
+		if (!value.equals("")) {
 			Patentes pat = new Patentes();
 			pat.setPatente(value);
 			pat.setTara(0d);
 			pat.setUpdate(new Date());
-			patentesPersistence.save(pat );
+			patentesPersistence.save(pat);
 		}
 	}
 
 	@FXML
 	private void handleEditProducto(ActionEvent event) {
 		String value = Message.addElementAduana(ConfiguracionesController.PRODUCTOS);
-		if(!value.equals("")) {
-			Productos prod = (Productos)buildObject(ConfiguracionesController.PRODUCTOS, value);			
-			prod = productosPersistence.save(prod );
+		if (!value.equals("")) {
+			Productos prod = (Productos) buildObject(ConfiguracionesController.PRODUCTOS, value);
+			prod = productosPersistence.save(prod);
 			cbxProducto.getItems().clear();
-			cbxProducto.getItems().addAll(productosPersistence.findAll());	
+			cbxProducto.getItems().addAll(productosPersistence.findAll());
 			cbxProducto.reload();
 			cbxProducto.setValue(prod);
 		}
@@ -940,21 +943,22 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private void handleEditCliente(ActionEvent event) {
 		String value = Message.addElementAduana(ConfiguracionesController.CLIENTE);
-		if(!value.equals("")) {
-			Clientes cli = (Clientes)buildObject(ConfiguracionesController.CLIENTE, value);			
-			cli = clientesPersistence.save(cli );
+		if (!value.equals("")) {
+			Clientes cli = (Clientes) buildObject(ConfiguracionesController.CLIENTE, value);
+			cli = clientesPersistence.save(cli);
 			cbxCliente.getItems().clear();
 			cbxCliente.getItems().addAll(clientesPersistence.findAll());
 			cbxCliente.reload();
 			cbxCliente.setValue(cli);
 		}
 	}
-	
+
 	@FXML
 	private void handleEditImpExp(ActionEvent event) {
 		String value = Message.addElementAduana(ConfiguracionesController.IMPORTADORES);
-		if(!value.equals("")) {
-			ImportadoresExportadores ie = (ImportadoresExportadores)buildObject(ConfiguracionesController.IMPORTADORES, value);			
+		if (!value.equals("")) {
+			ImportadoresExportadores ie = (ImportadoresExportadores) buildObject(ConfiguracionesController.IMPORTADORES,
+					value);
 			ie = impExpPersistence.save(ie);
 			cbxImpExp.getItems().clear();
 			cbxImpExp.getItems().addAll(impExpPersistence.findAll());
@@ -962,12 +966,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			cbxImpExp.setValue(ie);
 		}
 	}
-	
+
 	@FXML
 	private void handleEditAta(ActionEvent event) {
 		String value = Message.addElementAduana(ConfiguracionesController.ATA_TRANSPORTISTA);
-		if(!value.equals("")) {
-			Ata ata = (Ata)buildObject(ConfiguracionesController.ATA_TRANSPORTISTA, value);			
+		if (!value.equals("")) {
+			Ata ata = (Ata) buildObject(ConfiguracionesController.ATA_TRANSPORTISTA, value);
 			ata = ataPersistence.save(ata);
 			cbxATA.getItems().clear();
 			cbxATA.getItems().addAll(ataPersistence.findAll());
@@ -975,31 +979,31 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			cbxATA.setValue(ata);
 		}
 	}
-	
+
 	private Entidades buildObject(String type, String values) {
 		String[] result = values.split(AduanaDialog.SPLIT);
 		switch (type) {
 		case ConfiguracionesController.CLIENTE:
 			Clientes c = new Clientes();
 			c.setNombre(result[0]);
-			if(result.length > 1) {
+			if (result.length > 1) {
 				c.setCuit(result[1]);
 			}
 			return c;
 		case ConfiguracionesController.IMPORTADORES:
 			ImportadoresExportadores ie = new ImportadoresExportadores();
 			ie.setNombre(result[0]);
-			if(result.length > 1) {
+			if (result.length > 1) {
 				ie.setCuit(result[1]);
 			}
 			return ie;
 		case ConfiguracionesController.ATA_TRANSPORTISTA:
 			Ata ata = new Ata();
 			ata.setNombre(result[0]);
-			if(result.length > 1) {
+			if (result.length > 1) {
 				ata.setCuit(result[1]);
 			}
-			if(result.length > 2) {
+			if (result.length > 2) {
 				ata.setNacionalidad(result[2]);
 			}
 			return ata;
@@ -1010,17 +1014,17 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		case ConfiguracionesController.PRODUCTOS:
 			Productos p = new Productos();
 			p.setNombre(result[0]);
-			if(result.length > 1) {
+			if (result.length > 1) {
 				p.setAlias(result[1]);
 			}
 			return p;
 		case ConfiguracionesController.TRANSPORTES:
 			Transportes t = new Transportes();
 			t.setNombre(result[0]);
-			if(result.length > 1) {
+			if (result.length > 1) {
 				t.setCuit(result[1]);
 			}
-			return t;	
+			return t;
 		default:
 			break;
 		}
@@ -1030,11 +1034,11 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private void handleEditTransporte(ActionEvent event) {
 		String value = Message.addElementAduana(ConfiguracionesController.TRANSPORTES);
-		if(!value.equals("")) {
-			Transportes tra = (Transportes)buildObject(ConfiguracionesController.TRANSPORTES, value);
-			tra =transportesPersistence.save(tra );
+		if (!value.equals("")) {
+			Transportes tra = (Transportes) buildObject(ConfiguracionesController.TRANSPORTES, value);
+			tra = transportesPersistence.save(tra);
 			cbxTransporte.getItems().clear();
-			cbxTransporte.getItems().addAll(transportesPersistence.findAll());	
+			cbxTransporte.getItems().addAll(transportesPersistence.findAll());
 			cbxTransporte.reload();
 			cbxTransporte.setValue(tra);
 		}
@@ -1042,12 +1046,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 
 	@FXML
 	private void handleEditProcedencia(ActionEvent event) {
-		String value  = Message.addElementAduana(ConfiguracionesController.PROCEDENCIAS);
-		if(!value.equals("")) {
-			Procedencias pro = (Procedencias)buildObject(ConfiguracionesController.PROCEDENCIAS, value);			
-			pro = procedenciasPersistence.save(pro );
+		String value = Message.addElementAduana(ConfiguracionesController.PROCEDENCIAS);
+		if (!value.equals("")) {
+			Procedencias pro = (Procedencias) buildObject(ConfiguracionesController.PROCEDENCIAS, value);
+			pro = procedenciasPersistence.save(pro);
 			cbxProcedencia.getItems().clear();
-			cbxProcedencia.getItems().addAll(procedenciasPersistence.findAll());	
+			cbxProcedencia.getItems().addAll(procedenciasPersistence.findAll());
 			cbxProcedencia.reload();
 			cbxProcedencia.setValue(pro);
 		}
@@ -1068,76 +1072,80 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	@FXML
 	private void handleCancelar(ActionEvent event) {
 	}
-	
+
 	@FXML
 	private void handleModoTara(ActionEvent event) {
-		if(cbxModoTara.getSelectionModel().getSelectedItem() != null && 
-				cbxModoTara.getSelectionModel().getSelectedItem().equals(T_TOMAR_TARA)) {
+		if (cbxModoTara.getSelectionModel().getSelectedItem() != null
+				&& cbxModoTara.getSelectionModel().getSelectedItem().equals(T_TOMAR_TARA)) {
 			modoTomarTara();
-		}else if(cbxModoTara.getSelectionModel().getSelectedItem() != null && 
-			cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {
+		} else if (cbxModoTara.getSelectionModel().getSelectedItem() != null
+				&& cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {
 			modoConTara();
 		} else {
 			modoNormal();
 		}
 	}
+
 	@FXML
 	private void handleModalidad(ActionEvent event) {
-		if(cbxModalidad.getSelectionModel().getSelectedItem() != null && 
-				cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
-			modoAduana(true);
-		}else { 
-			modoAduana(false);
-		} 
+		if (cbxModalidad.getSelectionModel().getSelectedItem() != null) {
+			modoAduana(cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA));
+			modoPublica(cbxModalidad.getSelectionModel().getSelectedItem().equals(M_PUBLICA));
+		}
 	}
-	
+
 	private void modoAduana(boolean isVisible) {
-		//Importacion exportacion
+		// Importacion exportacion
 		lblImpExp.setVisible(isVisible);
 		cbxImpExp.setVisible(isVisible);
 		btnAccesoImpExp.setVisible(isVisible);
-		
+
 		// ATA
 		lbllATA.setVisible(isVisible);
 		cbxATA.setVisible(isVisible);
 		btnAccesoATA.setVisible(isVisible);
-		
+
 		lblContenedor.setVisible(isVisible);
 		txtContenedor.setVisible(isVisible);
-		
+
 		lblTaraContenedor.setVisible(isVisible);
 		txtTaraContenedor.setVisible(isVisible);
-		
+
 		lblManifiesto.setVisible(isVisible);
 		txtManifiesto.setVisible(isVisible);
-		
+
 		lblDestinatario.setVisible(isVisible);
 		txtDestinatario.setVisible(isVisible);
-		
+
 		lblMercaderia.setVisible(isVisible);
-		txtMercaderia.setVisible(isVisible);		
+		txtMercaderia.setVisible(isVisible);
 	}
-	
+
+	private void modoPublica(boolean isVisible) {
+
+	}
+
 	private void addPatente() {
 		String pantente = txtPatente.getText();
-		if(!pantente.isEmpty()) {
-			Patentes p =patentesPersistence.findById(pantente);
-			if(p == null) {
-				boolean desicion= Message.option("La patente no existe, desea agregarla?");
-				if(desicion) {
+		if (!pantente.isEmpty()) {
+			Patentes p = patentesPersistence.findById(pantente);
+			if (p == null) {
+				boolean desicion = Message.option("La patente no existe, desea agregarla?");
+				if (desicion) {
 					Patentes newPatente = new Patentes();
 					newPatente.setPatente(pantente);
 					newPatente.setTara(Double.valueOf(txtTara.getText()));
 					patentesPersistence.save(newPatente);
-				} else {					
+				} else {
 					txtPatente.requestFocus();
 					txtPatente.setText("");
 				}
-			} else {//cargo tara
-				if(!cbxModoTara.getSelectionModel().getSelectedItem().equals(T_TOMAR_TARA) ) {
-					boolean existPending = tarasPersistence.checkPending(pantente);				
-					if(existPending) {
-						Message.error("Error al guardar, ya existe un pesaje pendiente con la patente " + pantente + ".");
+			} else {// cargo tara
+				if (!cbxModoTara.getSelectionModel().getSelectedItem().equals(T_TOMAR_TARA)) {
+					boolean existPending = tarasPersistence.checkPending(pantente);
+					if (existPending) {
+						Message.error(
+								"Error al guardar, ya existe un pesaje pendiente con la patente " + pantente + ".");
 						txtPatente.setText("");
 						txtPatente.requestFocus();
 						return;
@@ -1152,12 +1160,12 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		}
 	}
 
-	private void initValues() {	
+	private void initValues() {
 		btnTicket.setDisable(true);
 		txtFecha.setDisable(true);
 		txtFecha.setStyle("-fx-opacity: 1");
 		cbxProducto.setStyle("-fx-opacity: 1");
-		cbxProducto.getEditor().setStyle("-fx-opacity: 1");		
+		cbxProducto.getEditor().setStyle("-fx-opacity: 1");
 		cbxCliente.setStyle("-fx-opacity: 1");
 		cbxCliente.getEditor().setStyle("-fx-opacity: 1");
 		cbxTransporte.setStyle("-fx-opacity: 1");
@@ -1167,10 +1175,10 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxImpExp.setStyle("-fx-opacity: 1");
 		cbxImpExp.getEditor().setStyle("-fx-opacity: 1");
 		cbxATA.setStyle("-fx-opacity: 1");
-		cbxATA.getEditor().setStyle("-fx-opacity: 1");		
+		cbxATA.getEditor().setStyle("-fx-opacity: 1");
 		cbxIndicador.setStyle("-fx-opacity: 1");
 		cbxIndicador.getEditor().setStyle("-fx-opacity: 1");
-		
+
 		tblEjes.setVisible(false);
 		btnEliminarEje.setVisible(false);
 		btnTomar.setVisible(false);
@@ -1180,79 +1188,73 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		lblDias.setVisible(false);
 		lblUltima.setVisible(false);
 		txtUltima.setVisible(false);
-		
+
 		this.ingManual = false;
 		btnIngresoManual.setDisable(true);
 		layout1.setDisable(true);
 		editableLayout(false);
-		cbxModoTara.getItems().addAll(new String[] { T_NORMAL, T_CON_TARA, T_TOMAR_TARA});
-		cbxModalidad.getItems().addAll(new String[] { M_ESTANDAR, M_ADUANA});
-		cbxModoChasis.getItems().addAll(new String[] { C_COMPLETO, C_POR_EJE});
-		txtPatente.setOnKeyReleased(this);		
+		cbxModoTara.getItems().addAll(new String[] { T_NORMAL, T_CON_TARA, T_TOMAR_TARA });
+		cbxModalidad.getItems().addAll(new String[] { M_ESTANDAR, M_ADUANA, M_PUBLICA });
+		cbxModoChasis.getItems().addAll(new String[] { C_COMPLETO, C_POR_EJE });
+		txtPatente.setOnKeyReleased(this);
 		txtNumDoc.setOnKeyReleased(this);
 		txtConductor.setOnKeyReleased(this);
 		txtFactura.setOnKeyReleased(this);
 		txtObservaciones.setOnKeyReleased(this);
-		
-		
-		txtPatente.focusedProperty().addListener(new ChangeListener<Boolean>()
-		{
-		    @Override
-		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-		    {
-		        if (!newPropertyValue)
-		        {
-		        	addPatente();
-		        }
-		    }
+
+		txtPatente.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue,
+					Boolean newPropertyValue) {
+				if (!newPropertyValue) {
+					addPatente();
+				}
+			}
 		});
-		txtPatente.setOnKeyTyped(new EventHandler<KeyEvent>()
-	    {
-	        @Override
-	        public void handle(KeyEvent ke)
-	        {	           
-	        	if (Character.isWhitespace(ke.getCharacter().charAt(0))) {
-        		   ke.consume();
-        		}
-	        }
-	    });
+		txtPatente.setOnKeyTyped(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent ke) {
+				if (Character.isWhitespace(ke.getCharacter().charAt(0))) {
+					ke.consume();
+				}
+			}
+		});
 		txtPatente.setTextFormatter(new TextFormatter<>((change) -> {
-		    change.setText(change.getText().toUpperCase());
-		    return change;
+			change.setText(change.getText().toUpperCase());
+			return change;
 		}));
 		txtNumDoc.setTextFormatter(new TextFormatter<>((change) -> {
-		    change.setText(change.getText().toUpperCase());
-		    return change;
+			change.setText(change.getText().toUpperCase());
+			return change;
 		}));
 		txtConductor.setTextFormatter(new TextFormatter<>((change) -> {
-		    change.setText(change.getText().toUpperCase());
-		    return change;
+			change.setText(change.getText().toUpperCase());
+			return change;
 		}));
 		txtFactura.setTextFormatter(new TextFormatter<>((change) -> {
-		    change.setText(change.getText().toUpperCase());
-		    return change;
+			change.setText(change.getText().toUpperCase());
+			return change;
 		}));
 		txtObservaciones.setTextFormatter(new TextFormatter<>((change) -> {
-		    change.setText(change.getText().toUpperCase());
-		    return change;
-		}));		
+			change.setText(change.getText().toUpperCase());
+			return change;
+		}));
 		cbxModoTara.valueProperty().addListener(new ChangeListener<String>() {
-	      	@Override
+			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-	      		enabledTara(newValue);
+				enabledTara(newValue);
 			}
-	    });
-		
+		});
+
 		cbxModoChasis.valueProperty().addListener(new ChangeListener<String>() {
-	      	@Override
+			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-	      		enabledTableEjes(newValue);
+				enabledTableEjes(newValue);
 			}
-	    });
+		});
 		txtNumberSerial.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtNumberSerial.setText(newValue.toUpperCase());
-			if(cbxModoTara!= null 
-					&& cbxModoTara.getSelectionModel() != null
+			if (cbxModoTara != null && cbxModoTara.getSelectionModel() != null
 					&& cbxModoTara.getSelectionModel().getSelectedItem() != null
 					&& cbxModoTara.getSelectionModel().getSelectedItem().equals(T_TOMAR_TARA)) {
 				txtTara.setText(newValue.toUpperCase());
@@ -1265,10 +1267,11 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 			txtSalida.setText(newValue.toUpperCase());
 		});
 		txtNeto.textProperty().addListener((ov, oldValue, newValue) -> {
-			if(newValue != null && !newValue.isEmpty()) {
+			if (newValue != null && !newValue.isEmpty()) {
 				try {
-					txtNeto.setText(new java.text.DecimalFormat("#.###").format(Double.valueOf(newValue.toUpperCase())));
-				}catch (NumberFormatException e) {
+					txtNeto.setText(
+							new java.text.DecimalFormat("#.###").format(Double.valueOf(newValue.toUpperCase())));
+				} catch (NumberFormatException e) {
 				}
 			}
 		});
@@ -1277,187 +1280,183 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		});
 		txtNumDoc.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtNumDoc.setText(newValue.toUpperCase());
-		});		
+		});
 		txtConductor.textProperty().addListener((ov, oldValue, newValue) -> {
-			if(newValue != null) {
+			if (newValue != null) {
 				txtConductor.setText(newValue.toUpperCase());
 			}
 		});
-		
+
 		txtNumberSerial.textProperty().addListener(new ChangeListener<String>() {
-		    @Override
-		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
-		        String newValue) {
-		        if (!newValue.matches("-?\\\\d+(.\\\\d+)?")) {
-		        	txtNumberSerial.setText(newValue.replaceAll("-?\\\\d+(.\\\\d+)?", ""));
-		        }
-		    }
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (!newValue.matches("-?\\\\d+(.\\\\d+)?")) {
+					txtNumberSerial.setText(newValue.replaceAll("-?\\\\d+(.\\\\d+)?", ""));
+				}
+			}
 		});
-		
+
 		txtDiasVenc.textProperty().addListener(new ChangeListener<String>() {
-		    @Override
-		    public void changed(ObservableValue<? extends String> observable, String oldValue, 
-		        String newValue) {
-		        if (!newValue.matches("\\d*")) {
-		        	txtDiasVenc.setText(newValue.replaceAll("[^\\d]", ""));
-		        }
-		    }
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (!newValue.matches("\\d*")) {
+					txtDiasVenc.setText(newValue.replaceAll("[^\\d]", ""));
+				}
+			}
 		});
 		txtContenedor.textProperty().addListener((ov, oldValue, newValue) -> {
-			if(newValue != null) {
+			if (newValue != null) {
 				txtContenedor.setText(newValue.toUpperCase());
 			}
 		});
-		
+
 		txtTaraContenedor.textProperty().addListener((ov, oldValue, newValue) -> {
-			if(newValue != null) {
+			if (newValue != null) {
 				txtTaraContenedor.setText(newValue.toUpperCase());
 			}
 		});
-		
+
 		txtManifiesto.textProperty().addListener((ov, oldValue, newValue) -> {
-			if(newValue != null) {
+			if (newValue != null) {
 				txtManifiesto.setText(newValue.toUpperCase());
 			}
 		});
-		
+
 		txtDestinatario.textProperty().addListener((ov, oldValue, newValue) -> {
-			if(newValue != null) {
+			if (newValue != null) {
 				txtDestinatario.setText(newValue.toUpperCase());
 			}
 		});
-		
+
 		txtMercaderia.textProperty().addListener((ov, oldValue, newValue) -> {
-			if(newValue != null) {
+			if (newValue != null) {
 				txtMercaderia.setText(newValue.toUpperCase());
 			}
 		});
 	}
-	
+
 	private void enabledAduana(String newValue) {
-		if(newValue != null && newValue.equals(M_ADUANA)) {
+		if (newValue != null && newValue.equals(M_ADUANA)) {
 			modoAduana(true);
 		}
 		modoAduana(false);
 	}
-	
+
 	private void enabledTara(String newValue) {
-		if(newValue != null && statusTara != '-') {
-  			if(newValue.equals(T_TOMAR_TARA)) {
-  				btnTomar.setText("Tomar Tara");
+		if (newValue != null && statusTara != '-') {
+			if (newValue.equals(T_TOMAR_TARA)) {
+				btnTomar.setText("Tomar Tara");
 				btnTomar.setVisible(true);
 				txtTara.setVisible(true);
 				txtDiasVenc.setVisible(true);
 				lblTara.setVisible(true);
 				lblDias.setVisible(true);
 				lblUltima.setVisible(true);
-  				txtUltima.setVisible(true);
-			}else {
+				txtUltima.setVisible(true);
+			} else {
 				btnTomar.setVisible(false);
 				lblTara.setVisible(false);
 				txtTara.setVisible(false);
 				lblDias.setVisible(false);
-				txtDiasVenc.setVisible(false);								
+				txtDiasVenc.setVisible(false);
 				lblUltima.setVisible(false);
-  				txtUltima.setVisible(false);
+				txtUltima.setVisible(false);
 			}
-  		} if(newValue != null && newValue.equals(T_CON_TARA)) {
-  			Patentes p = new Patentes();
-  			p.setPatente(taraEdit.getPatente().getPatente());
-  			this.patentesPersistence.load(p);
-  			if(p.getTara() != null) {
-  				lblTara.setVisible(true);
-  				txtTara.setVisible(true);
-  				txtTara.setText(p.getTara().toString());
-  				lblDias.setVisible(true);
-  				txtDiasVenc.setVisible(true);
-  				txtDiasVenc.setText(String.valueOf(p.getDiasVenc()));							
-  				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-  				lblUltima.setVisible(true);
-  				txtUltima.setVisible(true);
-  				txtUltima.setText(format.format(p.getUpdate()));					
-  			}
-  		} else {
-  			btnTomar.setVisible(false);
-  			lblTara.setVisible(false);
-  			txtTara.setVisible(false);			
+		}
+		if (newValue != null && newValue.equals(T_CON_TARA)) {
+			Patentes p = new Patentes();
+			p.setPatente(taraEdit.getPatente().getPatente());
+			this.patentesPersistence.load(p);
+			if (p.getTara() != null) {
+				lblTara.setVisible(true);
+				txtTara.setVisible(true);
+				txtTara.setText(p.getTara().toString());
+				lblDias.setVisible(true);
+				txtDiasVenc.setVisible(true);
+				txtDiasVenc.setText(String.valueOf(p.getDiasVenc()));
+				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				lblUltima.setVisible(true);
+				txtUltima.setVisible(true);
+				txtUltima.setText(format.format(p.getUpdate()));
+			}
+		} else {
+			btnTomar.setVisible(false);
+			lblTara.setVisible(false);
+			txtTara.setVisible(false);
 			lblDias.setVisible(false);
 			txtDiasVenc.setVisible(false);
 			lblUltima.setVisible(false);
 			txtUltima.setVisible(false);
-  		}
+		}
 	}
-	
+
 	private void enabledTableEjes(String newValue) {
-		if(newValue != null && statusTara != '-') {
-  			if(newValue.equals(C_POR_EJE)) {
-  				tblEjes.getItems().clear();
-  				if(taraEdit.getIdtaras() != null) {  				
-  					tblEjes.getItems().addAll(ejesPersistence.findAll(taraEdit.getIdtaras()));
-  				}
-  				btnTomar.setText("Pesar EJE");
-  				btnTomar.setVisible(true);
+		if (newValue != null && statusTara != '-') {
+			if (newValue.equals(C_POR_EJE)) {
+				tblEjes.getItems().clear();
+				if (taraEdit.getIdtaras() != null) {
+					tblEjes.getItems().addAll(ejesPersistence.findAll(taraEdit.getIdtaras()));
+				}
+				btnTomar.setText("Pesar EJE");
+				btnTomar.setVisible(true);
 				tblEjes.setVisible(true);
 				btnEliminarEje.setVisible(true);
-			}else {
+			} else {
 				btnTomar.setVisible(false);
 				tblEjes.setVisible(false);
 				btnEliminarEje.setVisible(false);
 			}
-  		} else {
-  			tblEjes.setVisible(false);
+		} else {
+			tblEjes.setVisible(false);
 			btnEliminarEje.setVisible(false);
-  		}
+		}
 	}
 
-	private void initSerialConnector() {	
+	private void initSerialConnector() {
 		stage.setTitle("Tomar Pesajes");
-		socket= new SocketConnection();
-		
-		if(cbxIndicador.getSelectionModel().getSelectedItem() != null) {
-			indicadorConfig= cbxIndicador.getSelectionModel().getSelectedItem();
-			if(indicadorConfig.getCaracterControl() != null
-					&& indicadorConfig.getCaracterControl().length() > 0) {
+		socket = new SocketConnection();
+
+		if (cbxIndicador.getSelectionModel().getSelectedItem() != null) {
+			indicadorConfig = cbxIndicador.getSelectionModel().getSelectedItem();
+			if (indicadorConfig.getCaracterControl() != null && indicadorConfig.getCaracterControl().length() > 0) {
 				this.caracterControl = indicadorConfig.getCaracterControl().split(",");
 			}
-			
+
 			this.posicionInicioDato = indicadorConfig.getPosicionInicioDato();
 			this.longitudDato = indicadorConfig.getLongitudDato();
 			logger.info("caracterControl: " + caracterControl);
 			logger.info("posicionInicioDato: " + posicionInicioDato);
 			logger.info("longitudDato: " + longitudDato);
 			int paridad = 0;
-			if(indicadorConfig.getParidad().equals("n")) {
+			if (indicadorConfig.getParidad().equals("n")) {
 				paridad = SerialPort.PARITY_NONE;
 			}
 			try {
-				socket.conectar("COM" + indicadorConfig.getPuerto(), 
-						indicadorConfig.getVelocidad(), 
-						indicadorConfig.getBitsDeDatos(), 
-						Integer.valueOf(indicadorConfig.getBitsDeParada()), 
-						paridad, 
+				socket.conectar("COM" + indicadorConfig.getPuerto(), indicadorConfig.getVelocidad(),
+						indicadorConfig.getBitsDeDatos(), Integer.valueOf(indicadorConfig.getBitsDeParada()), paridad,
 						2000);
-				socket.addEventSocket(this);			
-				stage.setTitle("Tomar Pesajes: Indicador Conectado -> " + indicadorConfig.getNombre() + " | Puerto: COM" + indicadorConfig.getPuerto() + " | Velocidad: " + indicadorConfig.getVelocidad());
-			}catch (Exception e) {
+				socket.addEventSocket(this);
+				stage.setTitle("Tomar Pesajes: Indicador Conectado -> " + indicadorConfig.getNombre() + " | Puerto: COM"
+						+ indicadorConfig.getPuerto() + " | Velocidad: " + indicadorConfig.getVelocidad());
+			} catch (Exception e) {
 				stage.setTitle("Tomar Pesajes: ERROR DE CONEXION CON EL INDICADOR ");
 			}
 		} else {
 			stage.setTitle("Tomar Pesajes: INDICADOR NO SELECCIONADO ");
 		}
 	}
-	
+
 	private void modoTomarTara() {
-		cambiarModo(false);	
+		cambiarModo(false);
 		lblTara.setVisible(true);
 		txtTara.setVisible(true);
 		lblDias.setVisible(true);
 		txtDiasVenc.setVisible(true);
-		txtDiasVenc.setEditable(true);		
+		txtDiasVenc.setEditable(true);
 		lblUltima.setVisible(true);
 		txtUltima.setVisible(true);
 	}
-	
+
 	private void modoConTara() {
 		cambiarModo(true);
 		lblTara.setVisible(true);
@@ -1468,7 +1467,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		lblUltima.setVisible(true);
 		txtUltima.setVisible(true);
 	}
-	
+
 	private void modoNormal() {
 		cambiarModo(true);
 		lblTara.setVisible(false);
@@ -1478,7 +1477,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		lblUltima.setVisible(false);
 		txtUltima.setVisible(false);
 	}
-	
+
 	private void cambiarModo(boolean visible) {
 		lblProducto.setVisible(visible);
 		cbxProducto.setVisible(visible);
@@ -1488,7 +1487,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxTransporte.setVisible(visible);
 		lblProcedencia.setVisible(visible);
 		cbxProcedencia.setVisible(visible);
-		
+
 		lblFactura.setVisible(visible);
 		txtFactura.setVisible(visible);
 		lblObservaciones.setVisible(visible);
@@ -1497,18 +1496,18 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		txtConductor.setVisible(visible);
 		lblDocumento.setVisible(visible);
 		txtNumDoc.setVisible(visible);
-		
-		btnAccesoProducto.setVisible(visible);		
+
+		btnAccesoProducto.setVisible(visible);
 		btnAccesoCliente.setVisible(visible);
 		btnAccesoTransporte.setVisible(visible);
 		btnAccesoProcedencia.setVisible(visible);
-		
+
 		hEntrada.setVisible(visible);
 		hSalida.setVisible(visible);
 		hNeto.setVisible(visible);
 	}
 
-	private void initPersistence() {		
+	private void initPersistence() {
 		this.patentesPersistence = new PatentesPersistenceJdbc();
 		this.clientesPersistence = new ClientesPersistenceJdbc();
 		this.procedenciasPersistence = new ProcedenciasPersistenceJdbc();
@@ -1521,8 +1520,7 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		this.tarasPersistence = new TarasPersistenceJdbc();
 		this.parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
 		this.ataPersistence = new AtaPersistenceJdbc();
-		
-		
+
 		cbxProducto.getItems().addAll(productosPersistence.findAll());
 		cbxProducto.reload();
 		cbxCliente.getItems().addAll(clientesPersistence.findAll());
@@ -1532,38 +1530,38 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxProcedencia.getItems().addAll(procedenciasPersistence.findAll());
 		cbxProcedencia.reload();
 		cbxImpExp.getItems().addAll(impExpPersistence.findAll());
-		cbxImpExp.reload();		
+		cbxImpExp.reload();
 		cbxATA.getItems().addAll(ataPersistence.findAll());
 		cbxATA.reload();
-		
+
 		boolean add = true;
 		List<Comunicaciones> all = comunicacionesPersistence.findAll();
 		for (Comunicaciones c : all) {
-			Indicadores i = indicadoresPersistence.findById((long) c.getIdindicadores());			
-			for(Indicadores cbx: cbxIndicador.getItems()) {
-				if(cbx.getIdindicadores().longValue() == i.getIdindicadores().longValue()) {
+			Indicadores i = indicadoresPersistence.findById((long) c.getIdindicadores());
+			for (Indicadores cbx : cbxIndicador.getItems()) {
+				if (cbx.getIdindicadores().longValue() == i.getIdindicadores().longValue()) {
 					add = false;
 					break;
 				}
 			}
-			if(add) {
+			if (add) {
 				cbxIndicador.getItems().add(i);
-			}			
-		}	
+			}
+		}
 		cbxATA.reload();
-				
+
 		colTransaccion.setCellValueFactory(new PropertyValueFactory<>("transaccion"));
 		colFecha.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
 
-            @Override
-            public String getValue() {
-                if(cellData.getValue().getFechaEntrada() != null){
-                    return format.format(cellData.getValue().getFechaEntrada());
-                }
-                return "";
+			@Override
+			public String getValue() {
+				if (cellData.getValue().getFechaEntrada() != null) {
+					return format.format(cellData.getValue().getFechaEntrada());
+				}
+				return "";
 
-            }
-        });
+			}
+		});
 		colEntrada.setCellValueFactory(new PropertyValueFactory<>("pesoEntrada"));
 		colSalida.setCellValueFactory(new PropertyValueFactory<>("pesoSalida"));
 
@@ -1591,22 +1589,21 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		colProcedencia.setCellFactory(col -> new ProcedenciasTableCell<>());
 		colProducto.setCellValueFactory(new PropertyValueFactory<>("producto"));
 		colProducto.setCellFactory(col -> new ProductosTableCell<>());
-				
+
 		colImpExp.setCellValueFactory(new PropertyValueFactory<>("impExp"));
 		colImpExp.setCellFactory(col -> new ImpExpTableCell<>());
-		
-		
-		/*Tabla de ejes*/
+
+		/* Tabla de ejes */
 		colNroEje.setCellValueFactory(new PropertyValueFactory<>("nroEje"));
 		colPesoEntrada.setCellValueFactory(new PropertyValueFactory<>("pesoEntrada"));
 		colPesoSalida.setCellValueFactory(new PropertyValueFactory<>("pesoSalida"));
 
 		this.isDebug = false;
-		ParametrosGlobales pg = new ParametrosGlobales(); 
+		ParametrosGlobales pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_ACTIVAR_DEBUG);
 		parametrosGlobalesPersistence.load(pg);
-		if(pg!= null) {
-			isDebug = Boolean.valueOf(pg.getValue());			
+		if (pg != null) {
+			isDebug = Boolean.valueOf(pg.getValue());
 		}
 		refleshTableTaras();
 	}
@@ -1626,25 +1623,25 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 		cbxProducto.setValue(null);
 		cbxCliente.setValue(null);
 		cbxTransporte.setValue(null);
-		cbxProcedencia.setValue(null);		
+		cbxProcedencia.setValue(null);
 		cbxImpExp.setValue(null);
 		cbxATA.setValue(null);
-		
+
 		txtNumDoc.setText("");
 		txtConductor.setText("");
 		txtPatente.setText("");
 		txtTara.setText("0");
-		txtDiasVenc.setText("");							
-		txtUltima.setText("");	
+		txtDiasVenc.setText("");
+		txtUltima.setText("");
 		txtFactura.setText("");
 		txtObservaciones.setText("");
-		
+
 		txtContenedor.setText("");
 		txtTaraContenedor.setText("");
 		txtManifiesto.setText("");
 		txtDestinatario.setText("");
 		txtMercaderia.setText("");
-		
+
 		cbxModoTara.setValue(null);
 		cbxModalidad.setValue(null);
 		cbxModoChasis.setValue(null);
@@ -1655,188 +1652,197 @@ public class PesarEntradaSalidaController extends AnchorPane implements IView, I
 	}
 
 	@Override
-	public void initialize(URL url, ResourceBundle resource) {		
+	public void initialize(URL url, ResourceBundle resource) {
 		initValues();
-		initPersistence();		
+		initPersistence();
 		clearForm();
-		
+
 		// longrunning operation runs on different thread
-        Thread thread = new Thread(new Runnable() {
+		Thread thread = new Thread(new Runnable() {
 
-            @Override
-            public void run() {
-                Runnable updater = new Runnable() {
+			@Override
+			public void run() {
+				Runnable updater = new Runnable() {
 
-                    @Override
-                    public void run() {
-                    	if(statusTara == 'E') {
-                    		txtFecha.setText(format.format(new Date()));
-                    	}
-                    }
-                };
+					@Override
+					public void run() {
+						if (statusTara == 'E') {
+							txtFecha.setText(format.format(new Date()));
+						}
+					}
+				};
 
-                while (true) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                    }
+				while (true) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException ex) {
+					}
 
-                    // UI update is run on the Application thread
-                    Platform.runLater(updater);
-                }
-            }
+					// UI update is run on the Application thread
+					Platform.runLater(updater);
+				}
+			}
 
-        });
-        // don't let thread prevent JVM shutdown
-        thread.setDaemon(true);
-        thread.start();
+		});
+		// don't let thread prevent JVM shutdown
+		thread.setDaemon(true);
+		thread.start();
 	}
-	
+
 	public void closeSocket() {
 		socket.close();
 	}
+
 	private int longitud;
 	private String data;
 	private boolean controlChar;
-	private String inputBuffer="";
+	private String inputBuffer = "";
+
 	@Override
-	public void serialEvent(SerialPortEvent event) {		
-		if(!ingManual) {
-			if(isDebug) {
-            	logger.info("Rx -> EVENT " + (event.getEventType() == SerialPortEvent.DATA_AVAILABLE));
-            }
-			if (event.getEventType() == SerialPortEvent.DATA_AVAILABLE) {		
-				try {					
+	public void serialEvent(SerialPortEvent event) {
+		if (!ingManual) {
+			if (isDebug) {
+				logger.info("Rx -> EVENT " + (event.getEventType() == SerialPortEvent.DATA_AVAILABLE));
+			}
+			if (event.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
+				try {
 					int available = socket.getInput().available();
-					if(isDebug) {
-		            	logger.info("Rx -> available -> " + available);
-		            }
-                    for(int i=0;i<available;i++){//read all incoming characters
-                        int receivedVal=socket.getInput().read();//store it into an int (because of the input.read method                       
-                        longitud = this.posicionInicioDato + this.longitudDato;
-                        controlChar = false;
-                        if(caracterControl != null) {
-                        	for(int x = 0; x < caracterControl.length; x++) {
-                        		try {
-                        			if(receivedVal == caracterControl[x].trim().charAt(0)) {
-                                		controlChar = true;
-                                		break;
-                                	}
-                        		}catch (StringIndexOutOfBoundsException e) {
+					if (isDebug) {
+						logger.info("Rx -> available -> " + available);
+					}
+					for (int i = 0; i < available; i++) {// read all incoming characters
+						int receivedVal = socket.getInput().read();// store it into an int (because of the input.read
+																	// method
+						longitud = this.posicionInicioDato + this.longitudDato;
+						controlChar = false;
+						if (caracterControl != null) {
+							for (int x = 0; x < caracterControl.length; x++) {
+								try {
+									if (receivedVal == caracterControl[x].trim().charAt(0)) {
+										controlChar = true;
+										break;
+									}
+								} catch (StringIndexOutOfBoundsException e) {
 									continue;
 								}
-                            }
-                        }
-                        
-                        if(isDebug) {
-                        	logger.info("Rx -> " + (char)receivedVal);
-                        }
-                        
-                        //Si es Inicio de trama o caracter de control limpio el buffer y sigo
-                        if(controlChar || receivedVal == SocketConnection.STX) {
-                        	 if(isDebug) {
-                             	logger.info("Rx -> INICIO TRAZA");
-                             }
-                        	inputBuffer= "";
-                        	continue;
-                        }
-                        if(receivedVal!=10 && receivedVal!=13 && inputBuffer.length() <= longitud ){//if the character is not a new line "\n" and not a carriage return
-                            inputBuffer+=(char)receivedVal; //store the new character into a buffer  
-                            if(isDebug) {
-                            	logger.info("Rx -> " + inputBuffer);
-                            }
-                        }else {//if it's a new line character
-                            data = "";
-                            data = inputBuffer;                            
-                            longitud = this.posicionInicioDato + this.longitudDato;
-        					if(data != null && longitud > data.length()) {
-        						longitud = data.length();
-        					}
-        					if(this.posicionInicioDato < data.length()) {
-        						data = data.substring(this.posicionInicioDato, longitud);		
-        						sBufferConnection = data.trim().replaceAll("[^\\d.]", "");
-        						//limpio 0 adelante
-        						sBufferConnection = sBufferConnection.replaceFirst("^0+(?!$)", "");
-        						if(!sBufferConnection.isEmpty() && 
-        								!txtNumberSerial.getText().trim().equals(sBufferConnection.trim())) {
-        							try {
-        								Double.valueOf(sBufferConnection);
-        								txtNumberSerial.setText(sBufferConnection);							
-        							}catch ( NumberFormatException e) {													
-        								logger.error("ERROR DE CONVERSION. ", e);
-        							}
-        						}    						
-                                inputBuffer="";//clear the buffer   
-                                if(isDebug) {
-                                 	logger.info("Rx -> FIN TRAZA");
-                                 }
-        					}    						                        
-                        }
-                    }
+							}
+						}
+
+						if (isDebug) {
+							logger.info("Rx -> " + (char) receivedVal);
+						}
+
+						// Si es Inicio de trama o caracter de control limpio el buffer y sigo
+						if (controlChar || receivedVal == SocketConnection.STX) {
+							if (isDebug) {
+								logger.info("Rx -> INICIO TRAZA");
+							}
+							inputBuffer = "";
+							continue;
+						}
+						if (receivedVal != 10 && receivedVal != 13 && inputBuffer.length() <= longitud) {// if the
+																											// character
+																											// is not a
+																											// new line
+																											// "\n" and
+																											// not a
+																											// carriage
+																											// return
+							inputBuffer += (char) receivedVal; // store the new character into a buffer
+							if (isDebug) {
+								logger.info("Rx -> " + inputBuffer);
+							}
+						} else {// if it's a new line character
+							data = "";
+							data = inputBuffer;
+							longitud = this.posicionInicioDato + this.longitudDato;
+							if (data != null && longitud > data.length()) {
+								longitud = data.length();
+							}
+							if (this.posicionInicioDato < data.length()) {
+								data = data.substring(this.posicionInicioDato, longitud);
+								sBufferConnection = data.trim().replaceAll("[^\\d.]", "");
+								// limpio 0 adelante
+								sBufferConnection = sBufferConnection.replaceFirst("^0+(?!$)", "");
+								if (!sBufferConnection.isEmpty()
+										&& !txtNumberSerial.getText().trim().equals(sBufferConnection.trim())) {
+									try {
+										Double.valueOf(sBufferConnection);
+										txtNumberSerial.setText(sBufferConnection);
+									} catch (NumberFormatException e) {
+										logger.error("ERROR DE CONVERSION. ", e);
+									}
+								}
+								inputBuffer = "";// clear the buffer
+								if (isDebug) {
+									logger.info("Rx -> FIN TRAZA");
+								}
+							}
+						}
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
-					logger.error("IO Error Occurred: ", e);					
+					logger.error("IO Error Occurred: ", e);
 				}
 			}
-		}		
+		}
 	}
-		
+
 	@Override
 	public void setStage(Stage stage) {
-		this.stage =stage;
+		this.stage = stage;
 		initSerialConnector();
 		KeyCombination an = new KeyCodeCombination(KeyCode.N, KeyCombination.ALT_DOWN);
 		KeyCombination aa = new KeyCodeCombination(KeyCode.A, KeyCombination.ALT_DOWN);
-		KeyCombination at = new KeyCodeCombination(KeyCode.T, KeyCombination.ALT_DOWN);				
-		
+		KeyCombination at = new KeyCodeCombination(KeyCode.T, KeyCombination.ALT_DOWN);
+
 		Mnemonic m = new Mnemonic(btnNuevoPesaje, an);
 		this.stage.getScene().addMnemonic(m);
-		
+
 		m = new Mnemonic(btnAplicar, aa);
 		this.stage.getScene().addMnemonic(m);
-		
+
 		m = new Mnemonic(btnTicket, at);
 		this.stage.getScene().addMnemonic(m);
 	}
 
 	@Override
-	public void handle(KeyEvent event) {	
-		if(event.getCode().equals(KeyCode.ENTER) 
-				|| event.getCode().equals(KeyCode.TAB)) {
-			if(event.getSource() == txtPatente) {
+	public void handle(KeyEvent event) {
+		if (event.getCode().equals(KeyCode.ENTER) || event.getCode().equals(KeyCode.TAB)) {
+			if (event.getSource() == txtPatente) {
 				txtConductor.requestFocus();
 				return;
 			}
-			if(event.getSource() == txtConductor) {
+			if (event.getSource() == txtConductor) {
 				txtNumDoc.requestFocus();
 				return;
 			}
-			if(event.getSource() == txtNumDoc) {
+			if (event.getSource() == txtNumDoc) {
 				txtFactura.requestFocus();
 				return;
 			}
-			
-			if(event.getSource() == cbxProducto) {
+
+			if (event.getSource() == cbxProducto) {
 				cbxTransporte.requestFocus();
 				return;
 			}
-			if(event.getSource() == cbxTransporte) {
+			if (event.getSource() == cbxTransporte) {
 				txtObservaciones.requestFocus();
 				return;
 			}
-			if(event.getSource() == txtObservaciones) {
+			if (event.getSource() == txtObservaciones) {
 				cbxCliente.requestFocus();
 				return;
 			}
-			if(event.getSource() == cbxCliente) {
+			if (event.getSource() == cbxCliente) {
 				cbxProcedencia.requestFocus();
 				return;
 			}
-			
-			if(event.getSource() == cbxProcedencia) {
+
+			if (event.getSource() == cbxProcedencia) {
 				btnBuscar.requestFocus();
 				return;
 			}
-		}		
-	} 
+		}
+	}
 }
