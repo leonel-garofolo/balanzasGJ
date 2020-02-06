@@ -90,8 +90,12 @@ public class Entidades {
     //----------------------------------------------------------------------
     @Override
     public String toString() { 
-        StringBuffer sb = new StringBuffer();       
-        sb.append(nombre);
+        StringBuffer sb = new StringBuffer(); 
+        if(nombre != null) {
+        	sb.append(nombre);
+        } else {
+        	sb.append("");
+        }
         return sb.toString(); 
     } 
 }

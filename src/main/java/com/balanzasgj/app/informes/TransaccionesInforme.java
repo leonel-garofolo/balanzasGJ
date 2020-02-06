@@ -45,7 +45,7 @@ public class TransaccionesInforme  extends ReportBase{
                 .build();
 
         AbstractColumn colChasis = ColumnBuilder.getNew()
-                .setColumnProperty("transaccion", String.class.getName())
+                .setColumnProperty("patente.patente", String.class.getName())
                 .setTitle("Patente").setWidth(15)
                 .setStyle(numberColStyle)
                 .build();

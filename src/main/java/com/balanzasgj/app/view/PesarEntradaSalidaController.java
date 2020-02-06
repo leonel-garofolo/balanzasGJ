@@ -260,6 +260,9 @@ public class PesarEntradaSalidaController extends AnchorPane
 	private Label lblConductor;
 	@FXML
 	private Label lblDocumento;
+	
+	@FXML
+	private Label lblObservacionesAduana;
 
 	@FXML
 	private HBox hEntrada;
@@ -293,6 +296,9 @@ public class PesarEntradaSalidaController extends AnchorPane
 	private TextField txtDestinatario;
 	@FXML
 	private TextField txtMercaderia;
+	
+	@FXML
+	private TextArea txtObservacionesAduana;
 	@FXML
 	private Button btnAccesoATA;
 
@@ -394,6 +400,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		cbxModoChasis.setValue(C_COMPLETO);
 		editableLayout(true);
 		btnTicket.setDisable(true);
+		cbxIndicador.setDisable(false);
 		if (cbxIndicador.getItems().size() > 0) {
 			cbxIndicador.setValue(cbxIndicador.getItems().get(0));
 			initSerialConnector();
@@ -541,7 +548,6 @@ public class PesarEntradaSalidaController extends AnchorPane
 
 				}
 			} catch (JRException e) {
-				// TODO Auto-generated catch block
 				logger.error(e);
 			}
 		}
@@ -591,24 +597,33 @@ public class PesarEntradaSalidaController extends AnchorPane
 			}
 		} else {
 			boolean isValid = false;
-			if (cbxProducto.getValue() != null && cbxCliente.getValue() != null && cbxTransporte.getValue() != null
-					&& cbxProcedencia.getValue() != null && !txtPatente.getText().isEmpty()
+			if (cbxProducto.getValue() != null && cbxCliente.getValue() != null 
+					&& !txtPatente.getText().isEmpty()
 					&& txtTransaccion.getText() != null && !txtTransaccion.getText().isEmpty()
 					&& !txtFecha.getText().isEmpty() && !cbxModoTara.getSelectionModel().isEmpty()
 					&& !cbxModalidad.getSelectionModel().isEmpty() && !cbxModoChasis.getSelectionModel().isEmpty()) {
 
 				switch (cbxModalidad.getSelectionModel().getSelectedItem()) {
+				case M_ESTANDAR:
+					if (cbxTransporte.getValue() != null && cbxProcedencia.getValue() != null) {
+						isValid = true;
+					}
+					break;
 				case M_ADUANA:
 					if (cbxATA.getValue() != null && cbxImpExp.getValue() != null && !txtContenedor.getText().isEmpty()
 							&& !txtTaraContenedor.getText().isEmpty() && !txtManifiesto.getText().isEmpty()
 							&& !txtDestinatario.getText().isEmpty() && !txtMercaderia.getText().isEmpty()) {
 						isValid = true;
 					} else {
-						isValid = false;
+						if (cbxATA.getValue() != null && cbxImpExp.getValue() != null
+								&& !txtContenedor.getText().isEmpty() && !txtTaraContenedor.getText().isEmpty()
+								&& !txtManifiesto.getText().isEmpty() && !txtDestinatario.getText().isEmpty()
+								&& !txtMercaderia.getText().isEmpty()) {
+							isValid = true;
+						}
 					}
 					break;
 				case M_PUBLICA:
-					// TODO ver que datos  son requeridos para la publica
 					isValid = true;
 					break;
 
@@ -790,6 +805,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		txtConductor.setEditable(edit);
 		txtFactura.setEditable(edit);
 		txtObservaciones.setEditable(edit);
+		txtObservacionesAduana.setEditable(edit);
 		cbxIndicador.setDisable(edit);
 
 		cbxTransporte.setDisable(!edit);
@@ -799,7 +815,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		cbxImpExp.setDisable(!edit);
 		cbxATA.setDisable(!edit);
 
-		txtContenedor.setEditable(edit);
+		txtContenedor.setEditable(edit);		
 		txtTaraContenedor.setEditable(edit);
 		txtManifiesto.setEditable(edit);
 		txtDestinatario.setEditable(edit);
@@ -821,6 +837,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		txtConductor.setText(taraEdit.getConductor());
 		txtFactura.setText(taraEdit.getComprobanteNun1());
 		txtObservaciones.setText(taraEdit.getObservacion());
+		txtObservacionesAduana.setText(taraEdit.getObservacionAduana());
 
 		cbxTransporte.setValue(taraEdit.getTransporte());
 		cbxProcedencia.setValue(taraEdit.getProcedencias());
@@ -1119,10 +1136,19 @@ public class PesarEntradaSalidaController extends AnchorPane
 
 		lblMercaderia.setVisible(isVisible);
 		txtMercaderia.setVisible(isVisible);
+		
+		lblObservacionesAduana.setVisible(isVisible);
+		txtObservacionesAduana.setVisible(isVisible);
 	}
 
 	private void modoPublica(boolean isVisible) {
+		lblProcedencia.setVisible(!isVisible);
+		cbxProcedencia.setVisible(!isVisible);
+		btnAccesoProcedencia.setVisible(!isVisible);
 
+		lblTransporte.setVisible(!isVisible);
+		cbxTransporte.setVisible(!isVisible);
+		btnAccesoTransporte.setVisible(!isVisible);
 	}
 
 	private void addPatente() {
@@ -1201,6 +1227,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		txtConductor.setOnKeyReleased(this);
 		txtFactura.setOnKeyReleased(this);
 		txtObservaciones.setOnKeyReleased(this);
+		txtObservacionesAduana.setOnKeyReleased(this);
 
 		txtPatente.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
@@ -1239,6 +1266,11 @@ public class PesarEntradaSalidaController extends AnchorPane
 			change.setText(change.getText().toUpperCase());
 			return change;
 		}));
+		txtObservacionesAduana.setTextFormatter(new TextFormatter<>((change) -> {
+			change.setText(change.getText().toUpperCase());
+			return change;
+		}));
+		
 		cbxModoTara.valueProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -1492,6 +1524,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 		txtFactura.setVisible(visible);
 		lblObservaciones.setVisible(visible);
 		txtObservaciones.setVisible(visible);
+		lblObservacionesAduana.setVisible(visible);
+		txtObservacionesAduana.setVisible(visible);
 		lblConductor.setVisible(visible);
 		txtConductor.setVisible(visible);
 		lblDocumento.setVisible(visible);
@@ -1533,6 +1567,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		cbxImpExp.reload();
 		cbxATA.getItems().addAll(ataPersistence.findAll());
 		cbxATA.reload();
+		cbxIndicador.setDisable(true);
 
 		boolean add = true;
 		List<Comunicaciones> all = comunicacionesPersistence.findAll();
@@ -1626,6 +1661,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 		cbxProcedencia.setValue(null);
 		cbxImpExp.setValue(null);
 		cbxATA.setValue(null);
+		txtObservaciones.setText("");
+		txtObservacionesAduana.setText("");
 
 		txtNumDoc.setText("");
 		txtConductor.setText("");
@@ -1634,8 +1671,6 @@ public class PesarEntradaSalidaController extends AnchorPane
 		txtDiasVenc.setText("");
 		txtUltima.setText("");
 		txtFactura.setText("");
-		txtObservaciones.setText("");
-
 		txtContenedor.setText("");
 		txtTaraContenedor.setText("");
 		txtManifiesto.setText("");

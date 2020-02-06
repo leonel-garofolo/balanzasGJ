@@ -18,6 +18,7 @@ import org.javafx.controls.customs.ComboBoxAutoComplete;
 import com.balanzasgj.app.informes.TransaccionesInforme;
 import com.balanzasgj.app.model.Clientes;
 import com.balanzasgj.app.model.ParametrosGlobales;
+import com.balanzasgj.app.model.Patentes;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
 import com.balanzasgj.app.model.Taras;
@@ -39,6 +40,7 @@ import com.balanzasgj.app.utils.Message;
 import com.balanzasgj.app.utils.ShowJasper;
 import com.balanzasgj.app.utils.Utils;
 import com.balanzasgj.app.view.columns.ClientesTableCell;
+import com.balanzasgj.app.view.columns.PatenteTableCell;
 import com.balanzasgj.app.view.columns.ProcedenciasTableCell;
 import com.balanzasgj.app.view.columns.ProductosTableCell;
 import com.balanzasgj.app.view.columns.TransportesTableCell;
@@ -86,7 +88,7 @@ public class InformesController {
     @FXML
     private TableColumn<Taras, String> colFecha;
     @FXML
-    private TableColumn<Taras, String> colChasis;
+    private TableColumn<Taras, Patentes> colChasis;
     @FXML
     private TableColumn<Taras, BigDecimal> colEntrada;
     @FXML
@@ -144,11 +146,6 @@ public class InformesController {
 	private TransportesPersistence transportesPersistence;
 	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
 	
-
-    @FXML
-    private void handleTblEntidadesSelected(ActionEvent event) {
-    }
-
     @FXML
     private void handleBuscar(ActionEvent event) {
         if(cbxFiltroBuscar.getSelectionModel().isEmpty()){
@@ -298,11 +295,28 @@ public class InformesController {
     			 params.put(ParametrosGlobales.P_EMPRESA_IMG, null);
     		}
     		try {
-    			ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
-    		} catch (JRException e) {
-    			// TODO Auto-generated catch block
-    			logger.error(e);
-    		}
+    			boolean isAduana = taras.get(0).getImpExp() != null ? true: false; 
+    			if (isAduana) {
+					ShowJasper.openBeanDataSource("ticketAduana", params, new JRBeanCollectionDataSource(taras));
+				} else {
+					pg = new ParametrosGlobales();
+					pg.setId(ParametrosGlobales.P_TICKET_ETIQUETADORA);
+					parametrosGlobalesPersistence.load(pg);
+					boolean ticketEt = false;
+					if (pg.getValue() != null) {
+						ticketEt = Boolean.valueOf(pg.getValue());
+					}
+					if (ticketEt) {
+						ShowJasper.openBeanDataSource("ticketEtiquetadora", params,
+								new JRBeanCollectionDataSource(taras));
+					} else {
+						ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
+					}
+
+				}
+			} catch (JRException e) {
+				logger.error(e);
+			}
     	} else {
     		Message.error("Debe seleccionar un Pesaje.");
     	}
@@ -479,7 +493,8 @@ public class InformesController {
 
             }
         });
-        colChasis.setCellValueFactory(new PropertyValueFactory<>("patente"));       
+        colChasis.setCellValueFactory(new PropertyValueFactory<>("patente"));     
+    	colChasis.setCellFactory(col -> new PatenteTableCell<>());
         colEntrada.setCellValueFactory(new PropertyValueFactory<>("pesoEntrada"));
         colSalida.setCellValueFactory(new PropertyValueFactory<>("pesoSalida"));
 

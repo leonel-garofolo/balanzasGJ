@@ -50,7 +50,7 @@
                   <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#handleLimpiar" text="Limpiar" />
                </children>
             </HBox>
-             <TableView fx:id="tblPesajes" onMouseClicked="#handleTblEntidadesSelected" prefHeight="432.0" prefWidth="758.0">
+             <TableView fx:id="tblPesajes" prefHeight="432.0" prefWidth="758.0">
                  <columns>
                      <TableColumn fx:id="colTransaccion" text="Transacción" />
                      <TableColumn fx:id="colFecha" text="Fecha" />

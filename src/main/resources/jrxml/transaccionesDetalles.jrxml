@@ -39,9 +39,6 @@
 	<field name="conductor" class="java.lang.String">
 		<fieldDescription><![CDATA[conductor]]></fieldDescription>
 	</field>
-	<field name="patente" class="java.lang.String">
-		<fieldDescription><![CDATA[patente]]></fieldDescription>
-	</field>
 	<field name="comprobanteNun1" class="java.lang.String">
 		<fieldDescription><![CDATA[comprobanteNun1]]></fieldDescription>
 	</field>
@@ -83,6 +80,9 @@
 	</field>
 	<field name="impExp" class="com.balanzasgj.app.model.ImportadoresExportadores">
 		<fieldDescription><![CDATA[impExp]]></fieldDescription>
+	</field>
+	<field name="patente" class="com.balanzasgj.app.model.Patentes">
+		<fieldDescription><![CDATA[patente]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -154,8 +154,7 @@
 				<textElement>
 					<font fontName="Arial" size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{pesoNeto}==null ? "": new java.text.DecimalFormat("#.###").format($F{pesoNeto}))
- ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{pesoNeto}==null ? "": new java.text.DecimalFormat("#.###").format($F{pesoNeto}))]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="67" width="80" height="16" uuid="6a3721d3-fb9e-4bda-a8fa-fe371b6eb23f"/>
@@ -183,7 +182,7 @@
 				<textElement>
 					<font fontName="Arial" size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{patente}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{patente}.getPatente()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="101" width="80" height="20" uuid="2500f553-c2c1-41d3-b2d9-ae2e8b9f2225"/>
@@ -239,7 +238,7 @@
 				<textElement>
 					<font fontName="Arial" size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{transporte}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{transporte} !=null? $F{transporte}: "")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="300" y="44" width="80" height="16" uuid="9717eabf-62b3-4dd8-a14b-2e15288e3b0d"/>
@@ -253,7 +252,7 @@
 				<textElement>
 					<font fontName="Arial" size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{procedencias}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{procedencias} !=null? $F{procedencias}: "")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="300" y="62" width="80" height="16" uuid="4560f94e-c9eb-4c0f-b156-fdfe4140235f"/>

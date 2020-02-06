@@ -29,7 +29,9 @@ public class UpdateDB extends GenericJdbcDAO{
 				st.execute(query);
 				query = "ALTER TABLE clientes ADD COLUMN CUIT VARCHAR(45) NULL AFTER nombre";
 				st.execute(query);								
-				query = "delete from comunicaciones";
+				query = "delete from comunicaciones";				
+				st.execute(query);								
+				query = "alter table taras add COLUMN observacion_aduana VARCHAR(255) NULL AFTER observacion";
 				st.execute(query);					
 				insertQueryExecute(1);
 			}

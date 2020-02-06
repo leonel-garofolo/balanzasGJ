@@ -41,6 +41,7 @@ public class Taras implements Serializable
     private Patentes    patente      ;
     private String     patenteAceptado ;
     private String     observacion  ;
+    private String     observacionAduana  ;
     private String     contenedorNum ;
     
     private BigDecimal pesoEntrada  ;
@@ -435,6 +436,16 @@ public class Taras implements Serializable
 
 	public void setMercaderia(String mercaderia) {
 		this.mercaderia = mercaderia;
+	}
+	
+	
+
+	public String getObservacionAduana() {
+		return observacionAduana;
+	}
+
+	public void setObservacionAduana(String observacionAduana) {
+		this.observacionAduana = observacionAduana;
 	}
 
 	//----------------------------------------------------------------------

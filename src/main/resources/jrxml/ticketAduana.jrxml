@@ -230,7 +230,7 @@
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{procedencias}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{procedencias}!= null? $F{procedencias}: "")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="80" y="166" width="265" height="12" uuid="f18f74ea-398c-4d46-be20-aa9d54586c5c"/>
@@ -251,7 +251,8 @@
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{transporte}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{transporte}!= null? $F{transporte}: "")
+]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="184" width="80" height="12" uuid="9717eabf-62b3-4dd8-a14b-2e15288e3b0d"/>
