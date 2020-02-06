@@ -393,7 +393,9 @@ public class PesarEntradaSalidaController extends AnchorPane
 		idTaraEdit = -1;
 		activarEndrada();
 		taraEdit = new Taras();
-		txtFecha.setText(format.format(new Date()));
+		
+		long timestamp = System.currentTimeMillis();		
+		txtFecha.setText(format.format(new Date(timestamp)));
 		btnIngresoManual.setDisable(false);
 		cbxModoTara.setValue(T_NORMAL);
 		cbxModalidad.setValue(M_ESTANDAR);
@@ -648,7 +650,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 						if (statusTara == 'E') {
 							tara.setFechaEntrada(format.parse(txtFecha.getText()));
 						} else {
-							tara.setFechaSalida(new Date());
+							long timestamp = System.currentTimeMillis();	
+							tara.setFechaSalida(new Date(timestamp));
 						}
 
 					} catch (ParseException e) {
@@ -942,7 +945,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 			Patentes pat = new Patentes();
 			pat.setPatente(value);
 			pat.setTara(0d);
-			pat.setUpdate(new Date());
+			long timestamp = System.currentTimeMillis();	
+			pat.setUpdate(new Date(timestamp));
 			patentesPersistence.save(pat);
 		}
 	}
@@ -1708,7 +1712,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 					@Override
 					public void run() {
 						if (statusTara == 'E') {
-							txtFecha.setText(format.format(new Date()));
+							long timestamp = System.currentTimeMillis();	
+							txtFecha.setText(format.format(new Date(timestamp)));
 						}
 					}
 				};
