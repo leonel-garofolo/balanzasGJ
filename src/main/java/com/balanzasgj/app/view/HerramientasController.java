@@ -149,8 +149,15 @@ public class HerramientasController extends AnchorPane implements IView {
 		if(txtTransaccion != null
 				&& txtTransaccion.getText() != null
 				&& !txtTransaccion.getText().isEmpty()) {			
+			try {
+				Integer.valueOf(txtTransaccion.getText().trim());
+			}catch (NumberFormatException e) {
+				Message.error("El numero de transacción debe ser un numero entero.");
+				return;
+			}
+			
 			pg.setId(ParametrosGlobales.P_EMPRESA_TRANSACCION);
-			pg.setValue(txtTransaccion.getText());
+			pg.setValue(txtTransaccion.getText().trim());
 			parametrosGlobalesPersistence.save(pg);
 		}
 				
@@ -263,9 +270,16 @@ public class HerramientasController extends AnchorPane implements IView {
 		
 		if(txtNumBalanzas != null 
 				&& txtNumBalanzas.getText() != null 
-				&&  !txtNumBalanzas.getText().isEmpty()) {			
+				&&  !txtNumBalanzas.getText().isEmpty()) {		
+			try {
+				Integer.valueOf(txtNumBalanzas.getText().trim());
+			}catch (NumberFormatException e) {
+				Message.error("El número de balanzas debe ser un numero entero.");
+				return;
+			}
+			
 			pg.setId(ParametrosGlobales.P_NUM_BALANZAS);
-			pg.setValue(txtNumBalanzas.getText());
+			pg.setValue(txtNumBalanzas.getText().trim());
 			parametrosGlobalesPersistence.save(pg);
 		}		
 		
