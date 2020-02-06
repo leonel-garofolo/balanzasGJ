@@ -403,7 +403,6 @@ public class PesarEntradaSalidaController extends AnchorPane
 		cbxIndicador.setDisable(false);
 		if (cbxIndicador.getItems().size() > 0) {
 			cbxIndicador.setValue(cbxIndicador.getItems().get(0));
-			initSerialConnector();
 		}
 	}
 
@@ -1450,8 +1449,10 @@ public class PesarEntradaSalidaController extends AnchorPane
 
 	private void initSerialConnector() {
 		stage.setTitle("Tomar Pesajes");
-		socket = new SocketConnection();
-
+		if(socket == null) {
+			socket = new SocketConnection();
+		}		
+		
 		if (cbxIndicador.getSelectionModel().getSelectedItem() != null) {
 			indicadorConfig = cbxIndicador.getSelectionModel().getSelectedItem();
 			if (indicadorConfig.getCaracterControl() != null && indicadorConfig.getCaracterControl().length() > 0) {
@@ -1475,6 +1476,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 				stage.setTitle("Tomar Pesajes: Indicador Conectado -> " + indicadorConfig.getNombre() + " | Puerto: COM"
 						+ indicadorConfig.getPuerto() + " | Velocidad: " + indicadorConfig.getVelocidad());
 			} catch (Exception e) {
+				e.printStackTrace();
 				stage.setTitle("Tomar Pesajes: ERROR DE CONEXION CON EL INDICADOR ");
 			}
 		} else {
@@ -1728,8 +1730,11 @@ public class PesarEntradaSalidaController extends AnchorPane
 		thread.start();
 	}
 
-	public void closeSocket() {
-		socket.close();
+	public void closeSocket() {	
+		if(socket != null) {
+			socket.close();
+			socket = null;
+		}
 	}
 
 	private int longitud;

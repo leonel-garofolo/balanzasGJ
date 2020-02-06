@@ -8,8 +8,6 @@ import java.util.TooManyListenersException;
 
 import org.apache.log4j.Logger;
 
-import com.balanzasgj.app.informes.TransaccionesDetalleInforme;
-
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
@@ -27,8 +25,6 @@ public class SocketConnection implements SerialPortEventListener {
 	public static String dataToSend;
 	private InputStream input;
 	private OutputStream output;
-	private static final int TIME_OUT = 2000;
-	private static final int DATA_RATE = 9600;
 	public static final char STX = 0x02;
 	public static final char ETX = 0x03;
 	public static final char EOT = 0x04;
@@ -50,7 +46,7 @@ public class SocketConnection implements SerialPortEventListener {
 				portId = currPortId;
 				break;
 			}
-		}
+		}		
 		serialPort = (SerialPort) portId.open(this.getClass().getName(), timeOut);
 		serialPort.setSerialPortParams(dataRate, dataBits, stopBits, parity);
 		input = serialPort.getInputStream();
