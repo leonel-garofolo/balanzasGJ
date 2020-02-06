@@ -682,6 +682,10 @@ public class PesarEntradaSalidaController extends AnchorPane
 					if (txtMercaderia.isVisible()) {
 						tara.setMercaderia(txtMercaderia.getText());
 					}
+					
+					if (txtObservacionesAduana.isVisible()) {
+						tara.setObservacionAduana(txtObservacionesAduana.getText());
+					}
 
 					Patentes p = new Patentes();
 					p.setPatente(txtPatente.getText());
