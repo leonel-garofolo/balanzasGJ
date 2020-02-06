@@ -497,17 +497,21 @@ public class PesarEntradaSalidaController extends AnchorPane
 				params.put(ParametrosGlobales.A_VENCIMIENTO, (pg.getValue() == null ? "" : pg.getValue()));
 
 				ImportadoresExportadores ie = cbxImpExp.getSelectionModel().getSelectedItem();
-				impExpPersistence.load(ie);
-				taraEdit.setImpExp(ie);
-
+				if(ie != null && ie.getCodigo() != null) {
+					impExpPersistence.load(ie);
+					taraEdit.setImpExp(ie);
+				}
+				
 				Patentes p = new Patentes();
 				p.setPatente(txtPatente.getText());
 				patentesPersistence.load(p);
 				taraEdit.setPatente(p);
-
 				Ata ata = cbxATA.getSelectionModel().getSelectedItem();
-				ataPersistence.load(ata);
-				taraEdit.setAta(ata);
+				if(ata != null && ata.getCodigo() != null) {
+					ataPersistence.load(ata);
+					taraEdit.setAta(ata);
+				}
+				
 			}
 
 			taras.add(taraEdit);
@@ -611,6 +615,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 					}
 					break;
 				case M_ADUANA:
+					/*
 					if (cbxATA.getValue() != null && cbxImpExp.getValue() != null && !txtContenedor.getText().isEmpty()
 							&& !txtTaraContenedor.getText().isEmpty() && !txtManifiesto.getText().isEmpty()
 							&& !txtDestinatario.getText().isEmpty() && !txtMercaderia.getText().isEmpty()) {
@@ -623,6 +628,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 							isValid = true;
 						}
 					}
+					*/
+					isValid = true;
 					break;
 				case M_PUBLICA:
 					isValid = true;
@@ -661,31 +668,31 @@ public class PesarEntradaSalidaController extends AnchorPane
 					tara.setCliente(cbxCliente.getValue());
 					tara.setTransporte(cbxTransporte.getValue());
 					tara.setProcedencias(cbxProcedencia.getValue());
-					if (cbxImpExp.isVisible()) {
+					if (cbxImpExp.isVisible() && cbxImpExp.getText() != null) {
 						tara.setImpExp(cbxImpExp.getValue());
 					}
-					if (cbxATA.isVisible()) {
+					if (cbxATA.isVisible() && cbxATA.getText() != null) {
 						tara.setAta(cbxATA.getValue());
 					}
-					if (txtContenedor.isVisible()) {
+					if (txtContenedor.isVisible() && txtContenedor.getText() != null) {
 						tara.setContenedor(txtContenedor.getText());
 					}
-					if (txtTaraContenedor.isVisible()) {
+					if (txtTaraContenedor.isVisible() && txtTaraContenedor.getText() != null) {
 						tara.setContenedorNum(txtTaraContenedor.getText());
 					}
-					if (txtManifiesto.isVisible()) {
+					if (txtManifiesto.isVisible() && txtManifiesto.getText() != null) {
 						tara.setManifiesto(txtManifiesto.getText());
 					}
 
-					if (txtDestinatario.isVisible()) {
+					if (txtDestinatario.isVisible()  && txtDestinatario.getText() != null) {
 						tara.setDestino(txtDestinatario.getText());
 					}
 
-					if (txtMercaderia.isVisible()) {
+					if (txtMercaderia.isVisible() && txtMercaderia.getText() != null) {
 						tara.setMercaderia(txtMercaderia.getText());
 					}
 					
-					if (txtObservacionesAduana.isVisible()) {
+					if (txtObservacionesAduana.isVisible() && txtObservacionesAduana.getText() != null) {
 						tara.setObservacionAduana(txtObservacionesAduana.getText());
 					}
 

@@ -311,7 +311,7 @@
                                     <TextField fx:id="txtDiasVenc" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
                                     <Label fx:id="lblUltima" prefHeight="17.0" prefWidth="74.0" style="-fx-font-weight: bold;" text="Ultima Toma" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                                     <TextField fx:id="txtUltima" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-                                    <Label fx:id="lblImpExp" focusTraversable="false" prefHeight="17.0" prefWidth="167.0" style="-fx-font-weight: bold;" text="Importadores / Exportadores" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                                    <Label fx:id="lblImpExp" focusTraversable="false" prefHeight="17.0" prefWidth="167.0" text="Importadores / Exportadores" GridPane.columnIndex="6" GridPane.rowIndex="3" />
                                     <ComboBoxAutoComplete fx:id="cbxImpExp" prefHeight="25.0" prefWidth="239.0" GridPane.columnIndex="7" GridPane.rowIndex="3" />
                                     <Button fx:id="btnAccesoImpExp" mnemonicParsing="false" onAction="#handleEditImpExp" prefHeight="26.0" prefWidth="28.0" GridPane.columnIndex="8" GridPane.rowIndex="3">
                                        <graphic>
@@ -322,7 +322,7 @@
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Label fx:id="lbllATA" focusTraversable="false" prefHeight="17.0" prefWidth="114.0" style="-fx-font-weight: bold;" text="ATA / Transportista" GridPane.columnIndex="9" GridPane.rowIndex="3" />
+                                    <Label fx:id="lbllATA" focusTraversable="false" prefHeight="17.0" prefWidth="114.0" text="ATA / Transportista" GridPane.columnIndex="9" GridPane.rowIndex="3" />
                                     <ComboBoxAutoComplete fx:id="cbxATA" prefHeight="25.0" prefWidth="239.0" GridPane.columnIndex="10" GridPane.rowIndex="3" />
                                     <Button fx:id="btnAccesoATA" mnemonicParsing="false" onAction="#handleEditAta" prefHeight="26.0" prefWidth="29.0" GridPane.columnIndex="11" GridPane.rowIndex="3">
                                        <graphic>
@@ -348,15 +348,15 @@
                                          </ImageView>
                                         </graphic>                           
                                     </Button>
-                                    <Label fx:id="lblContenedor" focusTraversable="false" prefHeight="17.0" prefWidth="73.0" style="-fx-font-weight: bold;" text="Contenedor" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                                    <Label fx:id="lblContenedor" focusTraversable="false" prefHeight="17.0" prefWidth="73.0" text="Contenedor" GridPane.columnIndex="6" GridPane.rowIndex="4" />
                                     <TextField fx:id="txtContenedor" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="7" GridPane.rowIndex="4" />
-                                    <Label fx:id="lblManifiesto" prefHeight="17.0" prefWidth="65.0" style="-fx-font-weight: bold;" text="Manifiesto" GridPane.columnIndex="9" GridPane.rowIndex="4" />
+                                    <Label fx:id="lblManifiesto" prefHeight="17.0" prefWidth="65.0" text="Manifiesto" GridPane.columnIndex="9" GridPane.rowIndex="4" />
                                     <TextField fx:id="txtManifiesto" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="10" GridPane.rowIndex="4" />
-                                    <Label fx:id="lblDestinatario" focusTraversable="false" prefHeight="17.0" prefWidth="105.0" style="-fx-font-weight: bold;" text="Cod. Destinatario" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+                                    <Label fx:id="lblDestinatario" focusTraversable="false" prefHeight="17.0" prefWidth="105.0" text="Cod. Destinatario" GridPane.columnIndex="6" GridPane.rowIndex="5" />
                                     <TextField fx:id="txtDestinatario" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="7" GridPane.rowIndex="5" />
-                                    <Label fx:id="lblMercaderia" prefHeight="17.0" prefWidth="65.0" style="-fx-font-weight: bold;" text="Mercaderia" GridPane.columnIndex="9" GridPane.rowIndex="5" />
+                                    <Label fx:id="lblMercaderia" prefHeight="17.0" prefWidth="65.0" text="Mercaderia" GridPane.columnIndex="9" GridPane.rowIndex="5" />
                                     <TextField fx:id="txtMercaderia" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="10" GridPane.rowIndex="5" />
-                                    <Label fx:id="lblTaraContenedor" prefHeight="17.0" prefWidth="98.0" style="-fx-font-weight: bold;" text="Tara Contenedor" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                                    <Label fx:id="lblTaraContenedor" prefHeight="17.0" prefWidth="98.0" text="Tara Contenedor" GridPane.columnIndex="4" GridPane.rowIndex="4" />
                                     <TextField fx:id="txtTaraContenedor" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
                                     <Label fx:id="lblObservacionesAduana" focusTraversable="false" prefHeight="17.0" prefWidth="73.0" text="Obs. Aduana" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                        <opaqueInsets>
