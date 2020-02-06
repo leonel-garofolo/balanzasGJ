@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Sistema de Pesaje"
-#define MyAppVersion "1.10"
+#define MyAppVersion "1.11"
 #define MyAppPublisher "LG, Inc."
 #define MyAppURL "http://www.example.com/"
 #define MyAppExeName "SistemaDePesaje.exe"

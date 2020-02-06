@@ -252,7 +252,8 @@ public class ConfiguracionesController extends AnchorPane {
 	}
 
 	@FXML
-	private void handleSelectedEntidades(ActionEvent event) {
+	private void handleSelectedEntidades(ActionEvent event) {		
+		loadFormEntidades(this.cbxEntidades.getSelectionModel().getSelectedItem());
 		switch (this.cbxEntidades.getSelectionModel().getSelectedItem()) {
 		case PRODUCTOS:
 			lblCuitAlias.setText("Alias");
@@ -265,8 +266,6 @@ public class ConfiguracionesController extends AnchorPane {
 			lblCuitAlias.setText("CUIT");
 			break;
 		}
-		loadFormEntidades(this.cbxEntidades.getSelectionModel().getSelectedItem());
-
 	}
 
 	@FXML
@@ -637,6 +636,7 @@ public class ConfiguracionesController extends AnchorPane {
 					cli.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				}
 				cli.setNombre(nombre);
+				cli.setCuit(txtEntidadCuitAlias.getText());
 				clientesPersistence.save(cli);
 				this.loadFormEntidades(entidadType);
 				break;
