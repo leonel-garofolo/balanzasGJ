@@ -253,10 +253,17 @@ public class ConfiguracionesController extends AnchorPane {
 
 	@FXML
 	private void handleSelectedEntidades(ActionEvent event) {
-		if (this.cbxEntidades.getSelectionModel().getSelectedItem().equals(PRODUCTOS)) {
+		switch (this.cbxEntidades.getSelectionModel().getSelectedItem()) {
+		case PRODUCTOS:
 			lblCuitAlias.setText("Alias");
-		} else {
+			break;
+		case CLIENTE:
 			lblCuitAlias.setText("CUIT");
+			break;
+
+		default:
+			lblCuitAlias.setText("CUIT");
+			break;
 		}
 		loadFormEntidades(this.cbxEntidades.getSelectionModel().getSelectedItem());
 
@@ -492,6 +499,9 @@ public class ConfiguracionesController extends AnchorPane {
 		case CLIENTE:
 			tblEntidades.getItems().addAll(clientesPersistence.findAll());
 			setVisibleAduana(false);
+			lblCuitAlias.setVisible(true);
+			lblCuitAlias.setText("Cuit");
+			txtEntidadCuitAlias.setVisible(true);
 			break;
 		case PROCEDENCIAS:
 			tblEntidades.getItems().addAll(procedenciasPersistence.findAll());
