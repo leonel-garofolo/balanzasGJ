@@ -52,6 +52,8 @@ public class Taras implements Serializable
     private String contenedor;
     private String manifiesto;
     private String mercaderia;
+    
+    private String nacionalidad;
 
     /**
      * Default constructor
@@ -438,7 +440,13 @@ public class Taras implements Serializable
 		this.mercaderia = mercaderia;
 	}
 	
-	
+	public String getNacionalidad() {
+		return nacionalidad;
+	}
+
+	public void setNacionalidad(String nacionalidad) {
+		this.nacionalidad = nacionalidad;
+	}
 
 	public String getObservacionAduana() {
 		return observacionAduana;

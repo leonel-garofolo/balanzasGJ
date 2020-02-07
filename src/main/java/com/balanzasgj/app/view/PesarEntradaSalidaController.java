@@ -156,7 +156,12 @@ public class PesarEntradaSalidaController extends AnchorPane
 	@FXML
 	private TextField txtTransaccion;
 	@FXML
-	private TextField txtFecha;
+	private TextField txtFecha;	
+	@FXML
+	private TextField txtPatenteChasis;
+	@FXML
+	private TextField txtNacionalidad;
+	
 
 	/* FORMULARIO */
 	@FXML
@@ -185,10 +190,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 	private Button btnAplicar;
 	@FXML
 	private Button btnTicket;
-
-	/*
-	 * private ComboBox<Patentes> cbxPatente;
-	 */
+	
 	@FXML
 	private TextField txtPatente;
 	@FXML
@@ -705,7 +707,9 @@ public class PesarEntradaSalidaController extends AnchorPane
 					tara.setObservacion(txtObservaciones.getText());
 					tara.setModoTara(cbxModoTara.getSelectionModel().getSelectedItem());
 					tara.setModalidad(cbxModalidad.getSelectionModel().getSelectedItem());
-					tara.setModoChasis(cbxModoChasis.getSelectionModel().getSelectedItem());
+					tara.setModoChasis(cbxModoChasis.getSelectionModel().getSelectedItem());	
+					tara.setPatenteAceptado(txtPatenteChasis.getText());
+					tara.setNacionalidad(txtNacionalidad.getText());
 					if (indicadorConfig != null && !stage.getTitle().contains("ERROR")) {
 						tara.setBalanza(indicadorConfig.getNombre());
 					} else {
@@ -739,10 +743,13 @@ public class PesarEntradaSalidaController extends AnchorPane
 						tara.setPesoSalida(new BigDecimal(txtSalida.getText()));
 						calcularNeto();
 					} else if (statusTara == 'E') {
-
 						txtEntrada.setText(String.valueOf(totalPeso));
-
 						tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
+						
+						if(cbxModalidad.getSelectionModel().getSelectedItem().equals(M_PUBLICA)) {
+							tara.setPesoSalida(new BigDecimal(0));
+							tara.setPesoNeto(new BigDecimal(0));
+						}
 					}
 					// comprobar si existe una patente con pesaje de salida pendiente
 					boolean existPending = tarasPersistence.checkPending(tara.getPatente().getPatente());
@@ -775,14 +782,13 @@ public class PesarEntradaSalidaController extends AnchorPane
 					boolean ticket = Message
 							.optionYesNo("Los datos se guardaron correctamente. Desea Imprimir el ticket?");
 					if (ticket) {
-						taraEdit = tara;
+						taraEdit = tarasPersistence.findById(tara.getIdtaras());
 						handleTicket(null);
 					}
 					clearForm();
 					btnIngresoManual.setDisable(true);
 					handleNuevoPesaje(event);
 				}
-
 			} else {
 				Message.error("Debe haber alguna entrada seleccionada.");
 			}
@@ -816,6 +822,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 		txtPatente.setEditable(edit);
 		txtNumDoc.setEditable(edit);
 		txtConductor.setEditable(edit);
+		txtNacionalidad.setEditable(edit);
+		txtPatenteChasis.setEditable(edit);
 		txtFactura.setEditable(edit);
 		txtObservaciones.setEditable(edit);
 		txtObservacionesAduana.setEditable(edit);
@@ -844,10 +852,12 @@ public class PesarEntradaSalidaController extends AnchorPane
 		txtTransaccion.setText(taraEdit.getTransaccion());
 		txtFecha.setText(format.format(taraEdit.getFechaEntrada()));
 		txtPatente.setText(this.patentesPersistence.findById(taraEdit.getPatente().getPatente()).getPatente());
+		txtPatenteChasis.setText(taraEdit.getPatenteAceptado());
 		txtEntrada.setText(taraEdit.getPesoEntrada().toString());
 
 		txtNumDoc.setText(taraEdit.getNumDoc());
 		txtConductor.setText(taraEdit.getConductor());
+		txtNacionalidad.setText(taraEdit.getNacionalidad());
 		txtFactura.setText(taraEdit.getComprobanteNun1());
 		txtObservaciones.setText(taraEdit.getObservacion());
 		txtObservacionesAduana.setText(taraEdit.getObservacionAduana());
@@ -1239,6 +1249,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		txtPatente.setOnKeyReleased(this);
 		txtNumDoc.setOnKeyReleased(this);
 		txtConductor.setOnKeyReleased(this);
+		txtNacionalidad.setOnKeyReleased(this);
 		txtFactura.setOnKeyReleased(this);
 		txtObservaciones.setOnKeyReleased(this);
 		txtObservacionesAduana.setOnKeyReleased(this);
@@ -1269,6 +1280,14 @@ public class PesarEntradaSalidaController extends AnchorPane
 			return change;
 		}));
 		txtConductor.setTextFormatter(new TextFormatter<>((change) -> {
+			change.setText(change.getText().toUpperCase());
+			return change;
+		}));
+		txtNacionalidad.setTextFormatter(new TextFormatter<>((change) -> {
+			change.setText(change.getText().toUpperCase());
+			return change;
+		}));
+		txtPatenteChasis.setTextFormatter(new TextFormatter<>((change) -> {
 			change.setText(change.getText().toUpperCase());
 			return change;
 		}));
@@ -1331,8 +1350,17 @@ public class PesarEntradaSalidaController extends AnchorPane
 			if (newValue != null) {
 				txtConductor.setText(newValue.toUpperCase());
 			}
+		});		
+		txtPatenteChasis.textProperty().addListener((ov, oldValue, newValue) -> {
+			if (newValue != null) {
+				txtPatenteChasis.setText(newValue.toUpperCase());
+			}
 		});
-
+		txtNacionalidad.textProperty().addListener((ov, oldValue, newValue) -> {
+			if (newValue != null) {
+				txtNacionalidad.setText(newValue.toUpperCase());
+			}
+		});
 		txtNumberSerial.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -1480,12 +1508,16 @@ public class PesarEntradaSalidaController extends AnchorPane
 				paridad = SerialPort.PARITY_NONE;
 			}
 			try {
-				socket.conectar("COM" + indicadorConfig.getPuerto(), indicadorConfig.getVelocidad(),
+				boolean conect = socket.conectar("COM" + indicadorConfig.getPuerto(), indicadorConfig.getVelocidad(),
 						indicadorConfig.getBitsDeDatos(), Integer.valueOf(indicadorConfig.getBitsDeParada()), paridad,
 						2000);
-				socket.addEventSocket(this);
-				stage.setTitle("Tomar Pesajes: Indicador Conectado -> " + indicadorConfig.getNombre() + " | Puerto: COM"
-						+ indicadorConfig.getPuerto() + " | Velocidad: " + indicadorConfig.getVelocidad());
+				if(conect) {
+					socket.addEventSocket(this);
+					stage.setTitle("Tomar Pesajes: Indicador Conectado -> " + indicadorConfig.getNombre() + " | Puerto: COM"
+							+ indicadorConfig.getPuerto() + " | Velocidad: " + indicadorConfig.getVelocidad());
+				} else {
+					stage.setTitle("Tomar Pesajes: ERROR DE CONEXION CON EL INDICADOR ");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				stage.setTitle("Tomar Pesajes: ERROR DE CONEXION CON EL INDICADOR ");
@@ -1545,6 +1577,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 		txtObservacionesAduana.setVisible(visible);
 		lblConductor.setVisible(visible);
 		txtConductor.setVisible(visible);
+		txtPatenteChasis.setVisible(visible);
+		txtNacionalidad.setVisible(visible);
 		lblDocumento.setVisible(visible);
 		txtNumDoc.setVisible(visible);
 
@@ -1683,6 +1717,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 
 		txtNumDoc.setText("");
 		txtConductor.setText("");
+		txtPatenteChasis.setText("");
+		txtNacionalidad.setText("");
 		txtPatente.setText("");
 		txtTara.setText("0");
 		txtDiasVenc.setText("");

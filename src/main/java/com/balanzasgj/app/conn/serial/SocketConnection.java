@@ -35,7 +35,7 @@ public class SocketConnection implements SerialPortEventListener {
 		super();
 	}
 
-	public void conectar(String portName, int dataRate, int dataBits, int stopBits, int parity, int timeOut)
+	public boolean conectar(String portName, int dataRate, int dataBits, int stopBits, int parity, int timeOut)
 			throws Exception {
 		CommPortIdentifier portId = null;
 		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
@@ -47,10 +47,14 @@ public class SocketConnection implements SerialPortEventListener {
 				break;
 			}
 		}		
-		serialPort = (SerialPort) portId.open(this.getClass().getName(), timeOut);
-		serialPort.setSerialPortParams(dataRate, dataBits, stopBits, parity);
-		input = serialPort.getInputStream();
-		output = serialPort.getOutputStream();
+		if(portId != null) {
+			serialPort = (SerialPort) portId.open(this.getClass().getName(), timeOut);
+			serialPort.setSerialPortParams(dataRate, dataBits, stopBits, parity);
+			input = serialPort.getInputStream();
+			output = serialPort.getOutputStream();
+			return true;
+		}
+		return false;
 	}
 
 	public synchronized void close() {
@@ -122,7 +126,7 @@ public class SocketConnection implements SerialPortEventListener {
 		return input;
 	}
 
-	public void addEventSocket(SerialPortEventListener event) {
+	public void addEventSocket(SerialPortEventListener event) {		
 		try {
 			serialPort.addEventListener(event);
 			serialPort.notifyOnDataAvailable(true);

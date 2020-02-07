@@ -32,9 +32,15 @@ public class UpdateDB extends GenericJdbcDAO{
 				query = "delete from comunicaciones";				
 				st.execute(query);								
 				query = "alter table taras add COLUMN observacion_aduana VARCHAR(255) NULL AFTER observacion";
-				st.execute(query);					
+				st.execute(query);																
 				insertQueryExecute(1);
 			}
+						
+			if(currentVersion < 2) {
+				query = "alter table taras add column nacionalidad varchar(255) NULL";
+				st.execute(query);	
+				insertQueryExecute(2);
+			}			
 			
 		}catch (Exception e) {
 			logger.error("update DDBB ERROR", e);
