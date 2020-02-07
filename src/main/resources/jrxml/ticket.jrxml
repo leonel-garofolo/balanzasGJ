@@ -199,7 +199,7 @@
 				<text><![CDATA[Producto:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="342" y="23" width="70" height="16" uuid="f06e7ebe-bf07-485c-a4d5-ab1c9d0bc3e5">
+				<reportElement x="342" y="23" width="58" height="16" uuid="f06e7ebe-bf07-485c-a4d5-ab1c9d0bc3e5">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -208,7 +208,7 @@
 				<text><![CDATA[Conductor:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="412" y="23" width="120" height="16" uuid="333cc205-8545-4826-bdd5-164f7206b9cc">
+				<reportElement x="400" y="23" width="132" height="16" uuid="333cc205-8545-4826-bdd5-164f7206b9cc">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -217,7 +217,7 @@
 				<textFieldExpression><![CDATA[($F{conductor}==null?"":$F{conductor})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="342" y="64" width="70" height="16" uuid="2500f553-c2c1-41d3-b2d9-ae2e8b9f2225">
+				<reportElement x="342" y="84" width="58" height="16" uuid="2500f553-c2c1-41d3-b2d9-ae2e8b9f2225">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -226,7 +226,7 @@
 				<text><![CDATA[Patente:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="412" y="64" width="120" height="16" uuid="22a632cf-d817-441e-9ec0-eb765f099d64">
+				<reportElement x="400" y="84" width="132" height="16" uuid="22a632cf-d817-441e-9ec0-eb765f099d64">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -235,33 +235,33 @@
 				<textFieldExpression><![CDATA[$F{patente}.getPatente()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="412" y="44" width="120" height="16" uuid="1cc76bc4-7827-4b70-9e27-97bf1d068146">
+				<reportElement x="400" y="44" width="132" height="16" uuid="1cc76bc4-7827-4b70-9e27-97bf1d068146">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{numDoc}==null?"":$F{numDoc}) + "/" + ($F{nacionalidad}==null?"":$F{nacionalidad})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{numDoc}==null?"":$F{numDoc}) ]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="342" y="44" width="70" height="16" uuid="4cba8634-0ace-44d5-99f7-b455c670b314">
+				<reportElement x="342" y="44" width="58" height="16" uuid="4cba8634-0ace-44d5-99f7-b455c670b314">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
 					<font size="10"/>
 				</textElement>
-				<text><![CDATA[DNI / Nac.:]]></text>
+				<text><![CDATA[DNI:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="133" width="80" height="17" uuid="72e92494-8985-4ae5-b3a1-513c78ceb57f"/>
+				<reportElement x="0" y="138" width="80" height="17" uuid="72e92494-8985-4ae5-b3a1-513c78ceb57f"/>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
 				<text><![CDATA[Comprobante:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="80" y="133" width="100" height="17" uuid="540f3463-0065-4abf-854a-108f2a734e93"/>
+				<reportElement x="80" y="138" width="100" height="17" uuid="540f3463-0065-4abf-854a-108f2a734e93"/>
 				<textFieldExpression><![CDATA[($F{comprobanteNun1}==null?"":$F{comprobanteNun1})]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -377,14 +377,14 @@
 				<text><![CDATA[PESO NETO:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="80" y="150" width="240" height="30" uuid="ce3c52be-b585-46ad-839f-40b69a1eee5b"/>
+				<reportElement x="80" y="155" width="240" height="30" uuid="ce3c52be-b585-46ad-839f-40b69a1eee5b"/>
 				<textElement>
 					<font fontName="Arial" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{observacion} == null?"":$F{observacion})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="150" width="80" height="20" uuid="16fd2852-9fa6-468c-8949-529bab1fa684"/>
+				<reportElement x="0" y="155" width="80" height="20" uuid="16fd2852-9fa6-468c-8949-529bab1fa684"/>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
@@ -410,7 +410,7 @@
 				<imageExpression><![CDATA[$P{EMPRESA_IMG}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="342" y="103" width="70" height="16" uuid="764ce0ae-cfd1-4e70-955a-4475563bc7c2">
+				<reportElement x="0" y="120" width="80" height="16" uuid="764ce0ae-cfd1-4e70-955a-4475563bc7c2">
 					<printWhenExpression><![CDATA[$F{impExp} != null]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -419,14 +419,14 @@
 				<text><![CDATA[Imp / Exp:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="412" y="103" width="120" height="16" uuid="d3d94bc4-9491-4e99-824a-68234972293d"/>
+				<reportElement x="80" y="120" width="260" height="16" uuid="d3d94bc4-9491-4e99-824a-68234972293d"/>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{impExp} != null? $F{impExp}: "")]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="342" y="84" width="70" height="16" uuid="60b796f5-0e95-4c2c-8528-cb7e80069bc9">
+				<reportElement x="342" y="104" width="58" height="16" uuid="60b796f5-0e95-4c2c-8528-cb7e80069bc9">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -435,13 +435,32 @@
 				<text><![CDATA[Chasis:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="412" y="84" width="120" height="16" uuid="113fc5cb-dd8a-4d9e-ae11-acf527b9f381">
+				<reportElement x="400" y="104" width="132" height="16" uuid="113fc5cb-dd8a-4d9e-ae11-acf527b9f381">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{patenteAceptado}==null?"":$F{patenteAceptado})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="342" y="64" width="58" height="16" uuid="405a6e66-7a0a-4ebc-a930-5072cc0ab773">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Nac.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="400" y="64" width="132" height="16" uuid="22c5e7ab-a34a-4a13-93a9-c7ba06e4cbd2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{nacionalidad}==null?"":$F{nacionalidad})]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

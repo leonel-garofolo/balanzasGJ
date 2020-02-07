@@ -291,7 +291,7 @@
 				<text><![CDATA[Producto:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="348" y="147" width="52" height="12" uuid="f06e7ebe-bf07-485c-a4d5-ab1c9d0bc3e5">
+				<reportElement x="348" y="133" width="52" height="12" uuid="f06e7ebe-bf07-485c-a4d5-ab1c9d0bc3e5">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -300,7 +300,7 @@
 				<text><![CDATA[Conductor:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="401" y="148" width="134" height="12" uuid="333cc205-8545-4826-bdd5-164f7206b9cc">
+				<reportElement x="401" y="134" width="134" height="12" uuid="333cc205-8545-4826-bdd5-164f7206b9cc">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -333,7 +333,7 @@
 				<textElement>
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{numDoc}==null?"":$F{numDoc}) + " / " + ($F{nacionalidad}==null?"":$F{nacionalidad})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{nacionalidad}==null?"":$F{nacionalidad})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="348" y="165" width="52" height="13" uuid="4cba8634-0ace-44d5-99f7-b455c670b314">
@@ -343,7 +343,7 @@
 				<textElement>
 					<font size="10"/>
 				</textElement>
-				<text><![CDATA[DNI / Nac.:]]></text>
+				<text><![CDATA[Nac.:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="217" width="70" height="12" uuid="72e92494-8985-4ae5-b3a1-513c78ceb57f"/>
@@ -721,6 +721,25 @@
 					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{observacionAduana} == null?"":$F{observacionAduana})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="348" y="148" width="52" height="13" uuid="6fad3eda-777c-495a-ba7f-67ac141852a7">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[DNI:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="401" y="148" width="134" height="13" uuid="50e1383a-3aa7-4a68-8b18-b247437191ac">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{numDoc}==null?"":$F{numDoc}) ]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
