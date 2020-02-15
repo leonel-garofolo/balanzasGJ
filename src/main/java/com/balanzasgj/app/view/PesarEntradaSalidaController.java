@@ -616,21 +616,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 						isValid = true;
 					}
 					break;
-				case M_ADUANA:
-					/*
-					if (cbxATA.getValue() != null && cbxImpExp.getValue() != null && !txtContenedor.getText().isEmpty()
-							&& !txtTaraContenedor.getText().isEmpty() && !txtManifiesto.getText().isEmpty()
-							&& !txtDestinatario.getText().isEmpty() && !txtMercaderia.getText().isEmpty()) {
-						isValid = true;
-					} else {
-						if (cbxATA.getValue() != null && cbxImpExp.getValue() != null
-								&& !txtContenedor.getText().isEmpty() && !txtTaraContenedor.getText().isEmpty()
-								&& !txtManifiesto.getText().isEmpty() && !txtDestinatario.getText().isEmpty()
-								&& !txtMercaderia.getText().isEmpty()) {
-							isValid = true;
-						}
-					}
-					*/
+				case M_ADUANA:					
 					isValid = true;
 					break;
 				case M_PUBLICA:
@@ -670,10 +656,10 @@ public class PesarEntradaSalidaController extends AnchorPane
 					tara.setCliente(cbxCliente.getValue());
 					tara.setTransporte(cbxTransporte.getValue());
 					tara.setProcedencias(cbxProcedencia.getValue());
-					if (cbxImpExp.isVisible() && cbxImpExp.getText() != null) {
+					if (cbxImpExp.isVisible() && cbxImpExp.getValue() != null) {
 						tara.setImpExp(cbxImpExp.getValue());
 					}
-					if (cbxATA.isVisible() && cbxATA.getText() != null) {
+					if (cbxATA.isVisible() && cbxATA.getValue() != null) {
 						tara.setAta(cbxATA.getValue());
 					}
 					if (txtContenedor.isVisible() && txtContenedor.getText() != null) {
@@ -806,9 +792,18 @@ public class PesarEntradaSalidaController extends AnchorPane
 	private void handleTblEntidadesSelected(MouseEvent event) {
 		if (!tblPesajes.getSelectionModel().isEmpty()) {
 			btnPesarEntrada.setStyle("");
-			btnPesarSalida.setStyle("");
-			layout1.setDisable(true);
-			editableLayout(false);
+			btnPesarSalida.setStyle("");			
+			if(cbxModalidad != null
+					&& cbxModalidad.getSelectionModel().getSelectedItem() != null
+					&& cbxModalidad.getSelectionModel().getSelectedItem().equals(M_PUBLICA)) {
+				layout1.setDisable(false);
+				editableLayout(false);
+				editableAduana(true);
+			} else {
+				layout1.setDisable(true);
+				editableLayout(false);
+			}
+			
 			loadTara();
 			btnTicket.setDisable(false);
 
@@ -825,22 +820,31 @@ public class PesarEntradaSalidaController extends AnchorPane
 		txtNacionalidad.setEditable(edit);
 		txtPatenteChasis.setEditable(edit);
 		txtFactura.setEditable(edit);
-		txtObservaciones.setEditable(edit);
-		txtObservacionesAduana.setEditable(edit);
+		txtObservaciones.setEditable(edit);		
 		cbxIndicador.setDisable(edit);
 
 		cbxTransporte.setDisable(!edit);
+		btnAccesoTransporte.setDisable(!edit);
 		cbxProcedencia.setDisable(!edit);
+		btnAccesoProcedencia.setDisable(!edit);
 		cbxCliente.setDisable(!edit);
-		cbxProducto.setDisable(!edit);
-		cbxImpExp.setDisable(!edit);
-		cbxATA.setDisable(!edit);
-
+		btnAccesoCliente.setDisable(!edit);
+		cbxProducto.setDisable(!edit);		
+		btnAccesoProducto.setDisable(!edit);		
+	}
+	
+	private void editableAduana(boolean edit) {		
 		txtContenedor.setEditable(edit);		
 		txtTaraContenedor.setEditable(edit);
 		txtManifiesto.setEditable(edit);
 		txtDestinatario.setEditable(edit);
 		txtMercaderia.setEditable(edit);
+		txtObservacionesAduana.setEditable(edit);
+		
+		cbxImpExp.setDisable(!edit);
+		btnAccesoImpExp.setDisable(!edit);
+		cbxATA.setDisable(!edit);		
+		btnAccesoATA.setDisable(!edit);
 	}
 
 	private void loadTara() {
@@ -916,7 +920,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		btnPesarSalida.setDisable(true);
 		btnPesarEntrada.setStyle("-fx-background-color: #7fffd4; ");
 		btnPesarSalida.setStyle("");
-		layout1.setDisable(false);
+		layout1.setDisable(false);		
 		editableLayout(false);
 		btnIngresoManual.setDisable(false);
 

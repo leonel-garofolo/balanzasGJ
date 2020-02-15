@@ -515,9 +515,9 @@ public class InformesController {
         colCliente.setCellFactory(col -> new ClientesTableCell<>());
 
         colTransporte.setCellValueFactory(new PropertyValueFactory<>("transporte"));
-        colTransporte.setCellFactory(col -> new TransportesTableCell<>());
-        colProcedencia.setCellValueFactory(new PropertyValueFactory<>("procedencia"));
-        colProcedencia.setCellFactory(col -> new ProcedenciasTableCell<>());
+		colTransporte.setCellFactory(col -> new TransportesTableCell<>());
+		colProcedencia.setCellValueFactory(new PropertyValueFactory<>("procedencias"));
+		colProcedencia.setCellFactory(col -> new ProcedenciasTableCell<>());
         colProducto.setCellValueFactory(new PropertyValueFactory<>("producto"));
         colProducto.setCellFactory(col -> new ProductosTableCell<>());
                 
