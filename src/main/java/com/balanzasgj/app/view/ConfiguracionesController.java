@@ -579,7 +579,7 @@ public class ConfiguracionesController extends AnchorPane {
 			cbxNroIndicador.getItems().add(new Integer(1));			
 		} else {
 			Integer indCount = Integer.valueOf(pg.getValue());
-			for(int i = 1; i < indCount.intValue(); i++) {
+			for(int i = 1; i <= indCount.intValue(); i++) {
 				cbxNroIndicador.getItems().add(new Integer(i));			
 			}
 		}	
