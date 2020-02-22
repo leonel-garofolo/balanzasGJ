@@ -798,11 +798,12 @@ public class PesarEntradaSalidaController extends AnchorPane
 					&& cbxModalidad.getSelectionModel().getSelectedItem().equals(M_PUBLICA)) {
 				layout1.setDisable(false);
 				editableLayout(false);
-				editableAduana(true);
+				editableAduana(true);				
 			} else {
 				layout1.setDisable(true);
 				editableLayout(false);
 			}
+			editableNoRequeridos(btnAplicar.isDisable());
 			
 			loadTara();
 			btnTicket.setDisable(false);
@@ -845,6 +846,15 @@ public class PesarEntradaSalidaController extends AnchorPane
 		btnAccesoImpExp.setDisable(!edit);
 		cbxATA.setDisable(!edit);		
 		btnAccesoATA.setDisable(!edit);
+	}
+	
+	private void editableNoRequeridos(boolean edit) {		
+		txtPatenteChasis.setEditable(edit);		
+		txtFactura.setEditable(edit);
+		txtObservaciones.setEditable(edit);
+		txtNumDoc.setEditable(edit);
+		txtConductor.setEditable(edit);
+		txtNacionalidad.setEditable(edit);
 	}
 
 	private void loadTara() {
@@ -1622,7 +1632,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		cbxImpExp.reload();
 		cbxATA.getItems().addAll(ataPersistence.findAll());
 		cbxATA.reload();
-		cbxIndicador.setDisable(true);
+		cbxIndicador.setDisable(false);
 
 		boolean add = true;
 		List<Comunicaciones> all = comunicacionesPersistence.findAll();
@@ -1637,6 +1647,10 @@ public class PesarEntradaSalidaController extends AnchorPane
 			if (add) {
 				cbxIndicador.getItems().add(i);
 			}
+		}
+		// inicializo la pantalla con el primer indicador
+		if (cbxIndicador.getItems().size() > 0) {
+			cbxIndicador.setValue(cbxIndicador.getItems().get(0));
 		}
 		cbxATA.reload();
 

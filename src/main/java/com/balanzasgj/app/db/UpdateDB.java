@@ -11,94 +11,108 @@ import org.apache.log4j.Logger;
 import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
 
 @SuppressWarnings("rawtypes")
-public class UpdateDB extends GenericJdbcDAO{
+public class UpdateDB extends GenericJdbcDAO {
 	final static Logger logger = Logger.getLogger(UpdateDB.class);
-	private int currentVersion; // ultimo script corrido	
-	private String query;	
-	
-	public void run()  {
+	private int currentVersion; // ultimo script corrido
+	private String query;
+
+	public void run() {
 		Connection conn = null;
-		Statement st = null;		
-		query = "";	
-		try {		
+		Statement st = null;
+		query = "";
+		try {
 			conn = getConnection();
-			createTableVersion();			
-			st = conn.createStatement();			
-			if(currentVersion < 1) {
-				query = "alter table ata ADD COLUMN nacionalidad VARCHAR(255)";
-				st.execute(query);
-				query = "ALTER TABLE clientes ADD COLUMN CUIT VARCHAR(45) NULL AFTER nombre";
-				st.execute(query);								
-				query = "delete from comunicaciones";				
-				st.execute(query);								
-				query = "alter table taras add COLUMN observacion_aduana VARCHAR(255) NULL AFTER observacion";
-				st.execute(query);																
+			createTableVersion();
+			st = conn.createStatement();
+			if (currentVersion < 1) {
+				try {
+					query = "alter table ata ADD COLUMN nacionalidad VARCHAR(255)";
+					st.execute(query);	
+				}catch (Exception e) {					
+				}				
+				try {
+					query = "ALTER TABLE clientes ADD COLUMN CUIT VARCHAR(45) NULL AFTER nombre";
+					st.execute(query);	
+				}catch (Exception e) {					
+				}
+				
+				try {
+					query = "delete from comunicaciones";
+					st.execute(query);
+				}catch (Exception e) {
+				}
+				try {
+					query = "alter table taras add COLUMN observacion_aduana VARCHAR(255) NULL AFTER observacion";
+					st.execute(query);
+				}catch (Exception e) {
+				}
 				insertQueryExecute(1);
 			}
-						
-			if(currentVersion < 2) {
+
+			if (currentVersion < 2) {
 				query = "alter table taras add column nacionalidad varchar(255) NULL";
-				st.execute(query);	
+				st.execute(query);
 				insertQueryExecute(2);
-			}			
-			
-		}catch (Exception e) {
+			}
+
+		} catch (Exception e) {
 			logger.error("update DDBB ERROR", e);
-		}finally {			
+		} finally {
 			closeConnection(conn, st);
-		}		
+		}
 	}
-	
+
 	private void createTableVersion() {
 		Connection conn = null;
 		Statement st = null;
-		try {		
+		try {
 			conn = getConnection();
 			st = conn.createStatement();
 			query = "SHOW TABLES LIKE 'versionado'";
 			boolean existTable = false;
 			ResultSet rs = st.executeQuery(query);
-			if(rs.next()) {
+			if (rs.next()) {
 				existTable = true;
 			}
 			rs.close();
-						
-			if(existTable) {
+
+			if (existTable) {
 				query = "select max(numero_sql) as numero_sql from versionado";
 				rs = st.executeQuery(query);
-				if(rs.next()) {
-					currentVersion= rs.getInt("numero_sql");
+				if (rs.next()) {
+					currentVersion = rs.getInt("numero_sql");
 				}
 				rs.close();
-			}else {
-				query = "CREATE TABLE versionado ( " + 
-						"  idversionado INT NOT NULL AUTO_INCREMENT, " + 
-						"  numero_sql INT NOT NULL, " + 
-						"  update_sql DATETIME NULL DEFAULT current_timestamp(), " + 
-						"  PRIMARY KEY (idversionado))";
-				st.execute(query);	
-				currentVersion= 0;
+			} else {
+				query ="SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES'";
+				st.execute(query);				
+				
+				query = "CREATE TABLE versionado (idversionado INT NOT NULL AUTO_INCREMENT, "
+						+ "  numero_sql INT NOT NULL, update_sql DATETIME NULL, "
+						+ "  PRIMARY KEY (idversionado))";
+				st.execute(query);
+				currentVersion = 0;
 			}
 			st.close();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			logger.error("createTableVersion ERROR", e);
-		}finally {
+		} finally {
 			closeConnection(conn);
-		}	
+		}
 	}
-	
+
 	private void insertQueryExecute(int version) {
 		Connection conn = null;
 		Statement st = null;
-		try {		
-			conn = getConnection();					
+		try {
+			conn = getConnection();
 			st = conn.createStatement();
-			query = "insert into versionado (numero_sql) values(" + version + ")";
+			query = "insert into versionado (numero_sql, update_sql) values(" + version + ", current_timestamp())";
 			st.execute(query);
 			st.close();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			logger.error("createTableVersion ERROR", e);
-		}finally {
+		} finally {
 			closeConnection(conn);
 		}
 	}
@@ -154,19 +168,19 @@ public class UpdateDB extends GenericJdbcDAO{
 	@Override
 	protected void setValuesForPrimaryKey(PreparedStatement ps, int i, Object bean) throws SQLException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void setValuesForInsert(PreparedStatement ps, int i, Object bean) throws SQLException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void setValuesForUpdate(PreparedStatement ps, int i, Object bean) throws SQLException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -178,6 +192,6 @@ public class UpdateDB extends GenericJdbcDAO{
 	@Override
 	protected void setAutoIncrementedKey(Object bean, long id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

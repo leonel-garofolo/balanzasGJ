@@ -17,7 +17,6 @@ import com.balanzasgj.app.model.Usuarios;
 import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
 import com.balanzasgj.app.utils.Message;
-import com.ibm.icu.text.SimpleDateFormat;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
