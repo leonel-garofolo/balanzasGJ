@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 
 public class Utils {
 	final static Logger logger = Logger.getLogger(Utils.class);
-	public static String PATH_MYSQL_INSTALLER = "C:\\mysql\\bin\\";
+	public static String PATH_MYSQL_INSTALLER = "C:\\SistemaDePesaje\\mysql\\bin\\";
 	
 	public static Date convertToDate(LocalDate dateToConvert) {
 	    return java.util.Date.from(dateToConvert.atStartOfDay()
