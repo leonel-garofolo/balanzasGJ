@@ -156,12 +156,11 @@ public class PesarEntradaSalidaController extends AnchorPane
 	@FXML
 	private TextField txtTransaccion;
 	@FXML
-	private TextField txtFecha;	
+	private TextField txtFecha;
 	@FXML
 	private TextField txtPatenteChasis;
 	@FXML
 	private TextField txtNacionalidad;
-	
 
 	/* FORMULARIO */
 	@FXML
@@ -190,7 +189,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 	private Button btnAplicar;
 	@FXML
 	private Button btnTicket;
-	
+
 	@FXML
 	private TextField txtPatente;
 	@FXML
@@ -262,7 +261,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 	private Label lblConductor;
 	@FXML
 	private Label lblDocumento;
-	
+
 	@FXML
 	private Label lblObservacionesAduana;
 
@@ -298,7 +297,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 	private TextField txtDestinatario;
 	@FXML
 	private TextField txtMercaderia;
-	
+
 	@FXML
 	private TextArea txtObservacionesAduana;
 	@FXML
@@ -395,14 +394,13 @@ public class PesarEntradaSalidaController extends AnchorPane
 		idTaraEdit = -1;
 		activarEndrada();
 		taraEdit = new Taras();
-		
-		long timestamp = System.currentTimeMillis();		
+
+		long timestamp = System.currentTimeMillis();
 		txtFecha.setText(format.format(new Date(timestamp)));
 		btnIngresoManual.setDisable(false);
 		cbxModoTara.setValue(T_NORMAL);
 		cbxModalidad.setValue(M_ESTANDAR);
 		cbxModoChasis.setValue(C_COMPLETO);
-		editableLayout(true);
 		btnTicket.setDisable(true);
 		cbxIndicador.setDisable(false);
 		if (cbxIndicador.getItems().size() > 0) {
@@ -499,21 +497,21 @@ public class PesarEntradaSalidaController extends AnchorPane
 				params.put(ParametrosGlobales.A_VENCIMIENTO, (pg.getValue() == null ? "" : pg.getValue()));
 
 				ImportadoresExportadores ie = cbxImpExp.getSelectionModel().getSelectedItem();
-				if(ie != null && ie.getCodigo() != null) {
+				if (ie != null && ie.getCodigo() != null) {
 					impExpPersistence.load(ie);
 					taraEdit.setImpExp(ie);
 				}
-				
+
 				Patentes p = new Patentes();
 				p.setPatente(txtPatente.getText());
 				patentesPersistence.load(p);
 				taraEdit.setPatente(p);
 				Ata ata = cbxATA.getSelectionModel().getSelectedItem();
-				if(ata != null && ata.getCodigo() != null) {
+				if (ata != null && ata.getCodigo() != null) {
 					ataPersistence.load(ata);
 					taraEdit.setAta(ata);
 				}
-				
+
 			}
 
 			taras.add(taraEdit);
@@ -604,8 +602,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 			}
 		} else {
 			boolean isValid = false;
-			if (cbxProducto.getValue() != null && cbxCliente.getValue() != null 
-					&& !txtPatente.getText().isEmpty()
+			if (cbxProducto.getValue() != null && cbxCliente.getValue() != null && !txtPatente.getText().isEmpty()
 					&& txtTransaccion.getText() != null && !txtTransaccion.getText().isEmpty()
 					&& !txtFecha.getText().isEmpty() && !cbxModoTara.getSelectionModel().isEmpty()
 					&& !cbxModalidad.getSelectionModel().isEmpty() && !cbxModoChasis.getSelectionModel().isEmpty()) {
@@ -616,7 +613,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 						isValid = true;
 					}
 					break;
-				case M_ADUANA:					
+				case M_ADUANA:
 					isValid = true;
 					break;
 				case M_PUBLICA:
@@ -644,9 +641,11 @@ public class PesarEntradaSalidaController extends AnchorPane
 					try {
 						if (statusTara == 'E') {
 							tara.setFechaEntrada(format.parse(txtFecha.getText()));
-						} else {
-							long timestamp = System.currentTimeMillis();	
-							tara.setFechaSalida(new Date(timestamp));
+						} else {							
+							if(cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {
+								tara.setFechaEntrada(format.parse(txtFecha.getText()));
+							}
+							tara.setFechaSalida(format.parse(txtFecha.getText()));
 						}
 
 					} catch (ParseException e) {
@@ -672,14 +671,14 @@ public class PesarEntradaSalidaController extends AnchorPane
 						tara.setManifiesto(txtManifiesto.getText());
 					}
 
-					if (txtDestinatario.isVisible()  && txtDestinatario.getText() != null) {
+					if (txtDestinatario.isVisible() && txtDestinatario.getText() != null) {
 						tara.setDestino(txtDestinatario.getText());
 					}
 
 					if (txtMercaderia.isVisible() && txtMercaderia.getText() != null) {
 						tara.setMercaderia(txtMercaderia.getText());
 					}
-					
+
 					if (txtObservacionesAduana.isVisible() && txtObservacionesAduana.getText() != null) {
 						tara.setObservacionAduana(txtObservacionesAduana.getText());
 					}
@@ -693,7 +692,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 					tara.setObservacion(txtObservaciones.getText());
 					tara.setModoTara(cbxModoTara.getSelectionModel().getSelectedItem());
 					tara.setModalidad(cbxModalidad.getSelectionModel().getSelectedItem());
-					tara.setModoChasis(cbxModoChasis.getSelectionModel().getSelectedItem());	
+					tara.setModoChasis(cbxModoChasis.getSelectionModel().getSelectedItem());
 					tara.setPatenteAceptado(txtPatenteChasis.getText());
 					tara.setNacionalidad(txtNacionalidad.getText());
 					if (indicadorConfig != null && !stage.getTitle().contains("ERROR")) {
@@ -720,19 +719,20 @@ public class PesarEntradaSalidaController extends AnchorPane
 						totalPeso = totalPesaje;
 					} else {
 						totalPeso = Double.valueOf(txtNumberSerial.getText());
-					}
-					if (isConTara) {
-						totalPeso = totalPeso - Double.valueOf(txtTara.getText());
-					}
+					}					
 					if (statusTara == 'S') {
+						if(cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {							
+							tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
+						}						
+						
 						txtSalida.setText(String.valueOf(totalPeso));
 						tara.setPesoSalida(new BigDecimal(txtSalida.getText()));
 						calcularNeto();
 					} else if (statusTara == 'E') {
 						txtEntrada.setText(String.valueOf(totalPeso));
 						tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
-						
-						if(cbxModalidad.getSelectionModel().getSelectedItem().equals(M_PUBLICA)) {
+
+						if (cbxModalidad.getSelectionModel().getSelectedItem().equals(M_PUBLICA)) {
 							tara.setPesoSalida(new BigDecimal(0));
 							tara.setPesoNeto(new BigDecimal(0));
 						}
@@ -792,25 +792,23 @@ public class PesarEntradaSalidaController extends AnchorPane
 	private void handleTblEntidadesSelected(MouseEvent event) {
 		if (!tblPesajes.getSelectionModel().isEmpty()) {
 			btnPesarEntrada.setStyle("");
-			btnPesarSalida.setStyle("");			
-			if(cbxModalidad != null
-					&& cbxModalidad.getSelectionModel().getSelectedItem() != null
+			btnPesarSalida.setStyle("");
+			if (cbxModalidad != null && cbxModalidad.getSelectionModel().getSelectedItem() != null
 					&& cbxModalidad.getSelectionModel().getSelectedItem().equals(M_PUBLICA)) {
 				layout1.setDisable(false);
 				editableLayout(false);
-				editableAduana(true);				
+				editableAduana(true);
 			} else {
 				layout1.setDisable(true);
 				editableLayout(false);
 			}
-			editableNoRequeridos(btnAplicar.isDisable());
-			
 			loadTara();
 			btnTicket.setDisable(false);
 
 			if (taraEdit.getPesoSalida() != null) {
 				cbxIndicador.setDisable(false);
 			}
+			editableNoRequeridos(btnAplicar.isDisable());
 		}
 	}
 
@@ -821,7 +819,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		txtNacionalidad.setEditable(edit);
 		txtPatenteChasis.setEditable(edit);
 		txtFactura.setEditable(edit);
-		txtObservaciones.setEditable(edit);		
+		txtObservaciones.setEditable(edit);
 		cbxIndicador.setDisable(edit);
 
 		cbxTransporte.setDisable(!edit);
@@ -830,31 +828,31 @@ public class PesarEntradaSalidaController extends AnchorPane
 		btnAccesoProcedencia.setDisable(!edit);
 		cbxCliente.setDisable(!edit);
 		btnAccesoCliente.setDisable(!edit);
-		cbxProducto.setDisable(!edit);		
-		btnAccesoProducto.setDisable(!edit);		
+		cbxProducto.setDisable(!edit);
+		btnAccesoProducto.setDisable(!edit);
 	}
-	
-	private void editableAduana(boolean edit) {		
-		txtContenedor.setEditable(edit);		
+
+	private void editableAduana(boolean edit) {
+		txtContenedor.setEditable(edit);
 		txtTaraContenedor.setEditable(edit);
 		txtManifiesto.setEditable(edit);
 		txtDestinatario.setEditable(edit);
 		txtMercaderia.setEditable(edit);
 		txtObservacionesAduana.setEditable(edit);
-		
+
 		cbxImpExp.setDisable(!edit);
 		btnAccesoImpExp.setDisable(!edit);
-		cbxATA.setDisable(!edit);		
+		cbxATA.setDisable(!edit);
 		btnAccesoATA.setDisable(!edit);
 	}
-	
-	private void editableNoRequeridos(boolean edit) {		
-		txtPatenteChasis.setEditable(edit);		
-		txtFactura.setEditable(edit);
-		txtObservaciones.setEditable(edit);
-		txtNumDoc.setEditable(edit);
-		txtConductor.setEditable(edit);
-		txtNacionalidad.setEditable(edit);
+
+	private void editableNoRequeridos(boolean edit) {
+		txtPatenteChasis.setEditable(!edit);
+		txtFactura.setEditable(!edit);
+		txtObservaciones.setEditable(!edit);
+		txtNumDoc.setEditable(!edit);
+		txtConductor.setEditable(!edit);
+		txtNacionalidad.setEditable(!edit);
 	}
 
 	private void loadTara() {
@@ -918,11 +916,6 @@ public class PesarEntradaSalidaController extends AnchorPane
 
 	}
 
-	@FXML
-	private void handlePesarEntrada(ActionEvent event) {
-		activarEndrada();
-	}
-
 	private void activarEndrada() {
 		// Marcar entrada
 		statusTara = 'E';
@@ -930,8 +923,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 		btnPesarSalida.setDisable(true);
 		btnPesarEntrada.setStyle("-fx-background-color: #7fffd4; ");
 		btnPesarSalida.setStyle("");
-		layout1.setDisable(false);		
-		editableLayout(false);
+		layout1.setDisable(false);
+		editableLayout(true);
 		btnIngresoManual.setDisable(false);
 
 		ParametrosGlobales pg = new ParametrosGlobales();
@@ -960,12 +953,13 @@ public class PesarEntradaSalidaController extends AnchorPane
 			enabledTara(cbxModoTara.getValue());
 			enabledTableEjes(cbxModoChasis.getValue());
 		}
+
 	}
 
 	private void calcularNeto() {
 		if (!txtEntrada.getText().equals("") && !txtSalida.getText().equals("")) {
-			txtNeto.setText(String.valueOf(Double.valueOf(txtSalida.getText()).doubleValue()
-					- Double.valueOf(txtEntrada.getText()).doubleValue()));
+			txtNeto.setText(String.valueOf(Double.valueOf(txtEntrada.getText()).doubleValue()
+					- Double.valueOf(txtSalida.getText()).doubleValue()));
 		}
 	}
 
@@ -976,7 +970,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 			Patentes pat = new Patentes();
 			pat.setPatente(value);
 			pat.setTara(0d);
-			long timestamp = System.currentTimeMillis();	
+			long timestamp = System.currentTimeMillis();
 			pat.setUpdate(new Date(timestamp));
 			patentesPersistence.save(pat);
 		}
@@ -1174,7 +1168,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 
 		lblMercaderia.setVisible(isVisible);
 		txtMercaderia.setVisible(isVisible);
-		
+
 		lblObservacionesAduana.setVisible(isVisible);
 		txtObservacionesAduana.setVisible(isVisible);
 	}
@@ -1213,8 +1207,30 @@ public class PesarEntradaSalidaController extends AnchorPane
 						txtPatente.setText("");
 						txtPatente.requestFocus();
 						return;
+				}
+				}									
+				if(cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {
+					// debo llevar el modo a la salida cargando la entrada con el valor de la TARA
+					txtEntrada.setText(p.getTara().toString());
+					// Marcar salida
+					statusTara = 'S';
+					btnPesarEntrada.setDisable(true);
+					btnPesarSalida.setDisable(false);
+					btnPesarEntrada.setStyle("");
+					btnPesarSalida.setStyle("-fx-background-color: #7fffd4; ");
+					btnIngresoManual.setDisable(false);
+					taraEdit = new Taras();
+					idTaraEdit = -1;
+					taraEdit.setIdtaras(idTaraEdit);
+					taraEdit.setPesoEntrada(new BigDecimal(p.getTara()));
+					try {
+						taraEdit.setFechaEntrada(format.parse(txtFecha.getText()));
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				}
+				
 				txtTara.setText(p.getTara().toString());
 				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 				txtUltima.setText(format.format(p.getUpdate()));
@@ -1317,7 +1333,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 			change.setText(change.getText().toUpperCase());
 			return change;
 		}));
-		
+
 		cbxModoTara.valueProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -1345,11 +1361,12 @@ public class PesarEntradaSalidaController extends AnchorPane
 		txtSalida.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtSalida.setText(newValue.toUpperCase());
 		});
+
 		txtNeto.textProperty().addListener((ov, oldValue, newValue) -> {
 			if (newValue != null && !newValue.isEmpty()) {
 				try {
-					txtNeto.setText(
-							new java.text.DecimalFormat("#.###").format(Double.valueOf(newValue.toUpperCase())));
+					double d = Math.round(Double.valueOf(newValue.toUpperCase()) * 100.0) / 100.0;
+					txtNeto.setText(String.valueOf(d));
 				} catch (NumberFormatException e) {
 				}
 			}
@@ -1364,7 +1381,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 			if (newValue != null) {
 				txtConductor.setText(newValue.toUpperCase());
 			}
-		});		
+		});
 		txtPatenteChasis.textProperty().addListener((ov, oldValue, newValue) -> {
 			if (newValue != null) {
 				txtPatenteChasis.setText(newValue.toUpperCase());
@@ -1451,7 +1468,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 				txtUltima.setVisible(false);
 			}
 		}
-		if (newValue != null && newValue.equals(T_CON_TARA)) {
+		if (newValue != null && newValue.equals(T_CON_TARA) && taraEdit.getPatente() != null) {
 			Patentes p = new Patentes();
 			p.setPatente(taraEdit.getPatente().getPatente());
 			this.patentesPersistence.load(p);
@@ -1502,10 +1519,10 @@ public class PesarEntradaSalidaController extends AnchorPane
 
 	private void initSerialConnector() {
 		stage.setTitle("Tomar Pesajes");
-		if(socket == null) {
+		if (socket == null) {
 			socket = new SocketConnection();
-		}		
-		
+		}
+
 		if (cbxIndicador.getSelectionModel().getSelectedItem() != null) {
 			indicadorConfig = cbxIndicador.getSelectionModel().getSelectedItem();
 			if (indicadorConfig.getCaracterControl() != null && indicadorConfig.getCaracterControl().length() > 0) {
@@ -1525,10 +1542,11 @@ public class PesarEntradaSalidaController extends AnchorPane
 				boolean conect = socket.conectar("COM" + indicadorConfig.getPuerto(), indicadorConfig.getVelocidad(),
 						indicadorConfig.getBitsDeDatos(), Integer.valueOf(indicadorConfig.getBitsDeParada()), paridad,
 						2000);
-				if(conect) {
+				if (conect) {
 					socket.addEventSocket(this);
-					stage.setTitle("Tomar Pesajes: Indicador Conectado -> " + indicadorConfig.getNombre() + " | Puerto: COM"
-							+ indicadorConfig.getPuerto() + " | Velocidad: " + indicadorConfig.getVelocidad());
+					stage.setTitle(
+							"Tomar Pesajes: Indicador Conectado -> " + indicadorConfig.getNombre() + " | Puerto: COM"
+									+ indicadorConfig.getPuerto() + " | Velocidad: " + indicadorConfig.getVelocidad());
 				} else {
 					stage.setTitle("Tomar Pesajes: ERROR DE CONEXION CON EL INDICADOR ");
 				}
@@ -1587,8 +1605,6 @@ public class PesarEntradaSalidaController extends AnchorPane
 		txtFactura.setVisible(visible);
 		lblObservaciones.setVisible(visible);
 		txtObservaciones.setVisible(visible);
-		lblObservacionesAduana.setVisible(visible);
-		txtObservacionesAduana.setVisible(visible);
 		lblConductor.setVisible(visible);
 		txtConductor.setVisible(visible);
 		txtPatenteChasis.setVisible(visible);
@@ -1773,7 +1789,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 					@Override
 					public void run() {
 						if (statusTara == 'E') {
-							long timestamp = System.currentTimeMillis();	
+							long timestamp = System.currentTimeMillis();
 							txtFecha.setText(format.format(new Date(timestamp)));
 						}
 					}
@@ -1796,8 +1812,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 		thread.start();
 	}
 
-	public void closeSocket() {	
-		if(socket != null) {
+	public void closeSocket() {
+		if (socket != null) {
 			socket.close();
 			socket = null;
 		}

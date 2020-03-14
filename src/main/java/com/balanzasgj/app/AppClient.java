@@ -8,7 +8,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -16,8 +15,8 @@ public class AppClient extends Application {
 	private Scene scene;
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("Sistemas de Balanzas");
+	public void start(Stage primaryStage) throws Exception {		
+		primaryStage.setTitle("Sistemas de Balanzas v1.16");
 		/*
 		Screen screen = Screen.getPrimary();
 	    Rectangle2D bounds = screen.getVisualBounds();

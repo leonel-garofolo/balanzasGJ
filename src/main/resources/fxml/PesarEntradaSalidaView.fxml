@@ -99,7 +99,7 @@
                                  <children>
                                     <HBox fx:id="hEntrada" alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="578.0" spacing="15.0">
                                        <children>
-                                          <Button fx:id="btnPesarEntrada" focusTraversable="false" mnemonicParsing="false" onAction="#handlePesarEntrada" prefHeight="37.0" prefWidth="94.0" text="Entrada">
+                                         <Button fx:id="btnPesarEntrada" focusTraversable="false" mnemonicParsing="false" prefHeight="37.0" prefWidth="94.0" text="Entrada">
                                              <graphic>
                                                 <ImageView fitHeight="22.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -338,7 +338,7 @@
                                           <Font name="System Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <CheckBox fx:id="chkSalidasPendientes" focusTraversable="false" mnemonicParsing="false" text="Salidas Pendientes" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                    <CheckBox fx:id="chkSalidasPendientes" focusTraversable="false" mnemonicParsing="false" text="Salidas Pendientes" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5" />
                                     <Button fx:id="btnBuscar" focusTraversable="false" mnemonicParsing="false" onAction="#handleBuscar" text="Buscar" GridPane.columnIndex="4" GridPane.rowIndex="5">
                                     	<graphic>
                                          <ImageView fitHeight="21.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
