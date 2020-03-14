@@ -116,6 +116,24 @@ public class UpdateDB extends GenericJdbcDAO {
 			closeConnection(conn);
 		}
 	}
+	
+	public void dropDatabase() {
+		Connection conn = null;
+		Statement st = null;
+		try {
+			conn = getConnection();
+			st = conn.createStatement();
+			query = "DROP DATABASE sist_pesada";
+			st.execute(query);
+			query = "CREATE DATABASE sist_pesada";
+			st.execute(query);
+			st.close();
+		} catch (Exception e) {
+			logger.error("createTableVersion ERROR", e);
+		} finally {
+			closeConnection(conn);
+		}
+	}
 
 	@Override
 	protected Object newInstance() {
