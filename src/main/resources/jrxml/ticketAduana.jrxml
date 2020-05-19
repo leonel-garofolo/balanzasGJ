@@ -602,7 +602,7 @@
 				<text><![CDATA[Documento del Chofer:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="410" y="72" width="56" height="12" uuid="7b86747c-df83-44a0-be24-dc75d4251e5a"/>
+				<reportElement x="403" y="72" width="56" height="12" uuid="7b86747c-df83-44a0-be24-dc75d4251e5a"/>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
@@ -616,7 +616,7 @@
 				<text><![CDATA[Manifiesto:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="410" y="88" width="82" height="12" uuid="1da391bc-5271-4664-b3cf-0b6a30a80887"/>
+				<reportElement x="403" y="88" width="81" height="12" uuid="1da391bc-5271-4664-b3cf-0b6a30a80887"/>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
@@ -664,7 +664,7 @@
 				<textFieldExpression><![CDATA[($F{ata} != null ? $F{ata}.getNombre():"")]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="492" y="72" width="44" height="12" uuid="36840fd2-d91a-4cd0-8d60-b340e47e3616">
+				<reportElement x="484" y="72" width="53" height="12" uuid="36840fd2-d91a-4cd0-8d60-b340e47e3616">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -673,7 +673,7 @@
 				<textFieldExpression><![CDATA[($F{contenedor}!=null?$F{contenedor}:"")]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="492" y="88" width="44" height="12" uuid="4581bb13-587c-4087-98b9-367549b2ce12">
+				<reportElement x="484" y="88" width="53" height="12" uuid="4581bb13-587c-4087-98b9-367549b2ce12">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -739,7 +739,7 @@
 				<textElement>
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{numDoc}==null?"":$F{numDoc}) ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{numDoc}==null?"":$F{numDoc})]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

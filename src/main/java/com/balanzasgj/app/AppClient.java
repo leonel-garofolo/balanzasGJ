@@ -16,7 +16,7 @@ public class AppClient extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {		
-		primaryStage.setTitle("Sistemas de Balanzas v1.16");
+		primaryStage.setTitle("Sistemas de Balanzas v1.17");
 		/*
 		Screen screen = Screen.getPrimary();
 	    Rectangle2D bounds = screen.getVisualBounds();
