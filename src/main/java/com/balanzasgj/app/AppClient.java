@@ -16,13 +16,7 @@ public class AppClient extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {		
-		primaryStage.setTitle("Sistemas de Balanzas v1.17");
-		/*
-		Screen screen = Screen.getPrimary();
-	    Rectangle2D bounds = screen.getVisualBounds();
-	    primaryStage.setWidth(bounds.getWidth());
-	    primaryStage.setHeight(bounds.getHeight());
-	    */
+		primaryStage.setTitle("Sistemas de Balanzas v1.18");
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/LoginView.fxml"));
 		Parent rootLogin = (Parent)loader.load();

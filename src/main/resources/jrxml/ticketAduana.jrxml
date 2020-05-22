@@ -664,7 +664,7 @@
 				<textFieldExpression><![CDATA[($F{ata} != null ? $F{ata}.getNombre():"")]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="484" y="72" width="53" height="12" uuid="36840fd2-d91a-4cd0-8d60-b340e47e3616">
+				<reportElement x="459" y="72" width="78" height="12" uuid="36840fd2-d91a-4cd0-8d60-b340e47e3616">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
