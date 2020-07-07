@@ -861,6 +861,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 		txtNumberSerial.setText("0");
 		taraEdit = tblPesajes.getSelectionModel().getSelectedItem();
 		idTaraEdit = taraEdit.getIdtaras();
+		long timestamp = System.currentTimeMillis();
+		txtFecha.setText(format.format(new Date(timestamp)));
 		txtTransaccion.setText(taraEdit.getTransaccion());
 		txtPatente.setText(this.patentesPersistence.findById(taraEdit.getPatente().getPatente()).getPatente());
 		txtPatenteChasis.setText(taraEdit.getPatenteAceptado());
