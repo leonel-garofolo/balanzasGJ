@@ -48,6 +48,9 @@
 	<parameter name="CERTIFICADO" class="java.lang.String">
 		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="REPORT_COPY" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -151,7 +154,7 @@
 				<text><![CDATA[Comprobante de Pesaje]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="20" width="500" height="18" uuid="f7d73f44-52ac-4b7b-ae4f-847e108b9850">
+				<reportElement x="0" y="20" width="400" height="18" uuid="f7d73f44-52ac-4b7b-ae4f-847e108b9850">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -166,6 +169,15 @@
 			<textField>
 				<reportElement x="0" y="59" width="500" height="14" uuid="01b9188c-c431-4a15-909b-70a21b740842"/>
 				<textFieldExpression><![CDATA[($P{EMPRESA_TEL_BAL} ==null?"": "Tel.:" + $P{EMPRESA_TEL_BAL})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="20" width="137" height="18" uuid="30a8faef-1076-4a5f-9b1d-745ba188ae0b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{REPORT_COPY}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

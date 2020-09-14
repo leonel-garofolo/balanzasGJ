@@ -43,6 +43,7 @@
 	<parameter name="EMPRESA_PROV_BAL" class="java.lang.String">
 		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="REPORT_COPY" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -118,7 +119,7 @@
 	<title>
 		<band height="55" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="199" height="14" uuid="b31b8f1a-eb74-477e-ba50-4311dbcf18be">
+				<reportElement x="0" y="0" width="120" height="14" uuid="b31b8f1a-eb74-477e-ba50-4311dbcf18be">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
@@ -152,6 +153,15 @@
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($P{EMPRESA_TEL_BAL} ==null?"": "Tel.:" + $P{EMPRESA_TEL_BAL})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="1" width="69" height="12" uuid="d0a930a7-7076-4c4d-8902-91b6ef38c971">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{REPORT_COPY}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -191,8 +201,7 @@
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{transporte} != null? $F{transporte}: "")
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{transporte} != null? $F{transporte}: "")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="49" width="70" height="10" uuid="9717eabf-62b3-4dd8-a14b-2e15288e3b0d"/>

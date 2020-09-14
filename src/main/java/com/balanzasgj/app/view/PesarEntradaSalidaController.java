@@ -31,6 +31,7 @@ import com.balanzasgj.app.model.ParametrosGlobales;
 import com.balanzasgj.app.model.Patentes;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
+import com.balanzasgj.app.model.Reports;
 import com.balanzasgj.app.model.Taras;
 import com.balanzasgj.app.model.Transportes;
 import com.balanzasgj.app.model.Usuarios;
@@ -44,6 +45,7 @@ import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
 import com.balanzasgj.app.persistence.PatentesPersistence;
 import com.balanzasgj.app.persistence.ProcedenciasPersistence;
 import com.balanzasgj.app.persistence.ProductosPersistence;
+import com.balanzasgj.app.persistence.ReportsPersistence;
 import com.balanzasgj.app.persistence.TarasPersistence;
 import com.balanzasgj.app.persistence.TransportesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.AtaPersistenceJdbc;
@@ -56,6 +58,7 @@ import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdb
 import com.balanzasgj.app.persistence.impl.jdbc.PatentesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProcedenciasPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
+import com.balanzasgj.app.persistence.impl.jdbc.ReportsPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.TarasPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.TransportesPersistenceJdbc;
 import com.balanzasgj.app.utils.Message;
@@ -319,6 +322,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 	private EjesPersistence ejesPersistence;
 	private TarasPersistence tarasPersistence;
 	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
+	private ReportsPersistence reportsPersistence;
 	private AtaPersistence ataPersistence;
 	private long idTaraEdit = -1;
 	private Taras taraEdit;
@@ -511,7 +515,6 @@ public class PesarEntradaSalidaController extends AnchorPane
 					ataPersistence.load(ata);
 					taraEdit.setAta(ata);
 				}
-
 			}
 
 			taras.add(taraEdit);
@@ -535,6 +538,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 			try {
 				if (cbxModalidad.getSelectionModel().getSelectedItem() != null
 						&& cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
+					updateReportCount(params);
+					
 					ShowJasper.openBeanDataSource("ticketAduana", params, new JRBeanCollectionDataSource(taras));
 				} else {
 					pg = new ParametrosGlobales();
@@ -544,18 +549,56 @@ public class PesarEntradaSalidaController extends AnchorPane
 					if (pg.getValue() != null) {
 						ticketEt = Boolean.valueOf(pg.getValue());
 					}
+					
+					updateReportCount(params);
 					if (ticketEt) {
 						ShowJasper.openBeanDataSource("ticketEtiquetadora", params,
 								new JRBeanCollectionDataSource(taras));
 					} else {
 						ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
-					}
-
+					}					
 				}
 			} catch (JRException e) {
 				logger.error(e);
 			}
 		}
+	}
+
+	private void updateReportCount(HashMap<String, Object> params) {
+		Reports report =  reportsPersistence.fintByTaraId(taraEdit.getIdtaras());
+		if(report == null){
+			report = new Reports();
+			report.setTaraId(taraEdit.getIdtaras());
+			report.setCount(1);
+			reportsPersistence.save(report);
+		} else {
+			report.setCount(report.getCount() + 1);
+			reportsPersistence.save(report);
+		}
+			
+		String reportCopy = "";
+		switch (report.getCount()) {
+		case 1:
+			reportCopy = "ORIGINAL";
+			break;
+		case 2:
+			reportCopy = "DUPLICADO";
+			break;
+		case 3:
+			reportCopy = "TRIPLICADO";
+			break;
+		case 4:
+			reportCopy = "CUATRIPLICADO";
+			break;
+		case 5:
+			reportCopy = "QUINTUPLICADO";
+			break;
+
+		default:
+			reportCopy = "ORIGINAL";
+			break;
+		}
+		params.put(ParametrosGlobales.P_REPORT_COPY, reportCopy);
 	}
 
 	@FXML
@@ -1635,6 +1678,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		this.ejesPersistence = new EjesPersistenceJdbc();
 		this.tarasPersistence = new TarasPersistenceJdbc();
 		this.parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
+		this.reportsPersistence = new ReportsPersistenceJdbc();
 		this.ataPersistence = new AtaPersistenceJdbc();
 
 		cbxProducto.getItems().addAll(productosPersistence.findAll());
