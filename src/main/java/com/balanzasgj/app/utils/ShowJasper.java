@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
+import com.balanzasgj.app.model.Reports;
 import com.balanzasgj.app.persistence.impl.jdbc.commons.DataSourceProvider;
 
 import net.sf.jasperreports.engine.JRException;
@@ -64,6 +65,42 @@ public class ShowJasper {
             JasperViewer viewer = new JasperViewer(printedReport, false);
             viewer.setVisible(true);
         }
+    }
+    
+    public static String getReportCopy(Reports report) {
+    	String reportCopy = "";
+		switch (report.getCount()) {
+		case 1:
+			reportCopy = "ORIGINAL";
+			break;
+		case 2:
+			reportCopy = "DUPLICADO";
+			break;
+		case 3:
+			reportCopy = "TRIPLICADO";
+			break;
+		case 4:
+			reportCopy = "CUATRIPLICADO";
+			break;
+		case 5:
+			reportCopy = "QUINTUPLICADO";
+			break;
+		case 6:
+			reportCopy = "SEXTUPLICADO";
+			break;
+		case 7:
+			reportCopy = "SEPTUPLICADO";
+			break;
+		case 8:
+			reportCopy = "OCTUPLICADO";
+			break;		
+
+		default:
+			reportCopy = "ORIGINAL";
+			break;
+		}
+		
+		return reportCopy;
     }
 
     public static void main(String[] arts){

@@ -574,31 +574,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 		} else {
 			report.setCount(report.getCount() + 1);
 			reportsPersistence.save(report);
-		}
-			
-		String reportCopy = "";
-		switch (report.getCount()) {
-		case 1:
-			reportCopy = "ORIGINAL";
-			break;
-		case 2:
-			reportCopy = "DUPLICADO";
-			break;
-		case 3:
-			reportCopy = "TRIPLICADO";
-			break;
-		case 4:
-			reportCopy = "CUATRIPLICADO";
-			break;
-		case 5:
-			reportCopy = "QUINTUPLICADO";
-			break;
-
-		default:
-			reportCopy = "ORIGINAL";
-			break;
-		}
-		params.put(ParametrosGlobales.P_REPORT_COPY, reportCopy);
+		}		
+		params.put(ParametrosGlobales.P_REPORT_COPY, ShowJasper.getReportCopy(report));
 	}
 
 	@FXML

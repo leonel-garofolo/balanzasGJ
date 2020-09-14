@@ -280,6 +280,7 @@ public class ReportsPersistenceJdbc extends GenericJdbcDAO<Reports> implements R
 			//--- Execute SQL SELECT
 			ResultSet rs = ps.executeQuery();
 			while ( rs.next() ) {
+				report = new Reports();
 				populateBean(rs, report);
 			}
 			rs.close();

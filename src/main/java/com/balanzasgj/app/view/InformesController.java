@@ -21,6 +21,7 @@ import com.balanzasgj.app.model.ParametrosGlobales;
 import com.balanzasgj.app.model.Patentes;
 import com.balanzasgj.app.model.Procedencias;
 import com.balanzasgj.app.model.Productos;
+import com.balanzasgj.app.model.Reports;
 import com.balanzasgj.app.model.Taras;
 import com.balanzasgj.app.model.Transportes;
 import com.balanzasgj.app.model.Usuarios;
@@ -28,12 +29,14 @@ import com.balanzasgj.app.persistence.ClientesPersistence;
 import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
 import com.balanzasgj.app.persistence.ProcedenciasPersistence;
 import com.balanzasgj.app.persistence.ProductosPersistence;
+import com.balanzasgj.app.persistence.ReportsPersistence;
 import com.balanzasgj.app.persistence.TarasPersistence;
 import com.balanzasgj.app.persistence.TransportesPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.ClientesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProcedenciasPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
+import com.balanzasgj.app.persistence.impl.jdbc.ReportsPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.TarasPersistenceJdbc;
 import com.balanzasgj.app.persistence.impl.jdbc.TransportesPersistenceJdbc;
 import com.balanzasgj.app.utils.Message;
@@ -145,6 +148,7 @@ public class InformesController {
 	private ProductosPersistence productosPersistence;
 	private TransportesPersistence transportesPersistence;
 	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
+	private ReportsPersistence reportsPersistence;
 	
     @FXML
     private void handleBuscar(ActionEvent event) {
@@ -297,6 +301,7 @@ public class InformesController {
     		try {
     			boolean isAduana = taras.get(0).getImpExp() != null ? true: false; 
     			if (isAduana) {
+    				updateReportCount(params);
 					ShowJasper.openBeanDataSource("ticketAduana", params, new JRBeanCollectionDataSource(taras));
 				} else {
 					pg = new ParametrosGlobales();
@@ -306,13 +311,14 @@ public class InformesController {
 					if (pg.getValue() != null) {
 						ticketEt = Boolean.valueOf(pg.getValue());
 					}
+					
+					updateReportCount(params);					
 					if (ticketEt) {
 						ShowJasper.openBeanDataSource("ticketEtiquetadora", params,
 								new JRBeanCollectionDataSource(taras));
 					} else {
 						ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
 					}
-
 				}
 			} catch (JRException e) {
 				logger.error(e);
@@ -322,6 +328,21 @@ public class InformesController {
     	}
     }
 
+    private void updateReportCount(HashMap<String, Object> params) {
+		Reports report =  reportsPersistence.fintByTaraId(tblPesajes.getSelectionModel().getSelectedItem().getIdtaras());
+		if(report == null){
+			report = new Reports();
+			report.setTaraId(tblPesajes.getSelectionModel().getSelectedItem().getIdtaras());
+			report.setCount(1);
+			reportsPersistence.save(report);
+		} else {
+			report.setCount(report.getCount() + 1);
+			reportsPersistence.save(report);
+		}
+			
+		params.put(ParametrosGlobales.P_REPORT_COPY, ShowJasper.getReportCopy(report));
+	}
+    
     @FXML
     private void handleImprimir(ActionEvent event) {
         TransaccionesInforme informe = new TransaccionesInforme(tblPesajes.getItems());
@@ -480,6 +501,7 @@ public class InformesController {
 		this.productosPersistence = new ProductosPersistenceJdbc();
 		this.transportesPersistence = new TransportesPersistenceJdbc();
 		this.parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
+		this.reportsPersistence = new ReportsPersistenceJdbc();
 		
         colTransaccion.setCellValueFactory(new PropertyValueFactory<>("transaccion"));
         colFecha.setCellValueFactory(cellData -> new ObservableValueBase<String>() {
