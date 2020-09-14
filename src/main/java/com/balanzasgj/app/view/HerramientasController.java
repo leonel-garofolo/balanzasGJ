@@ -18,7 +18,6 @@ import javax.sql.rowset.serial.SerialException;
 import org.apache.log4j.Logger;
 import org.javafx.controls.customs.StringField;
 
-import com.balanzasgj.app.App;
 import com.balanzasgj.app.db.UpdateDB;
 import com.balanzasgj.app.model.ParametrosGlobales;
 import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
@@ -108,6 +107,50 @@ public class HerramientasController extends AnchorPane implements IView {
 
 	@FXML
 	private StringField txtNumBalanzas;
+
+	//Campos requeridos de Entrada
+	@FXML
+	private CheckBox chbDocumentoEV;
+	@FXML
+	private CheckBox chbConductorEV;
+	@FXML
+	private CheckBox chbNacionalidadEV;
+	@FXML
+	private CheckBox chbChasisEV;
+	@FXML
+	private CheckBox chbFacturarEV;
+	@FXML
+	private CheckBox chbObservacionesEV;
+	@FXML
+	private CheckBox chbProductoEV;
+	@FXML
+	private CheckBox chbTransporteEV;
+	@FXML
+	private CheckBox chbClienteEV;
+	@FXML
+	private CheckBox chbProcedenciaEV;
+
+	//Campos requeridos de Salida
+	@FXML
+	private CheckBox chbDocumentoSV;
+	@FXML
+	private CheckBox chbConductorSV;
+	@FXML
+	private CheckBox chbNacionalidadSV;
+	@FXML
+	private CheckBox chbChasisSV;
+	@FXML
+	private CheckBox chbFacturarSV;
+	@FXML
+	private CheckBox chbObservacionesSV;
+	@FXML
+	private CheckBox chbProductoSV;
+	@FXML
+	private CheckBox chbTransporteSV;
+	@FXML
+	private CheckBox chbClienteSV;
+	@FXML
+	private CheckBox chbProcedenciaSV;
 
 	private Stage stage;
 	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
@@ -304,7 +347,88 @@ public class HerramientasController extends AnchorPane implements IView {
 			txtPathRst.setText(pg.getValue());
 		}
 
+		saveCamposRequeridos();
 		Message.info("Los datos se guardaron correctamente.");
+	}
+
+	private void saveCamposRequeridos() {
+		String listValidation = "";
+		if(chbDocumentoEV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_DOCUMENTO);
+		}
+		if(chbConductorEV.isSelected()){
+			listValidation += concatSplit(listValidation,ParametrosGlobales.V_CONDUCTOR);
+		}
+		if(chbNacionalidadEV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_NACIONALIDAD);
+		}
+		if(chbChasisEV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_CHASIS);
+		}
+		if(chbFacturarEV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_FACTURA);
+		}
+		if(chbObservacionesEV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_OBSERVACION);
+		}
+		if(chbProductoEV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_PRODUCTO);
+		}
+		if(chbTransporteEV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_TRANSPORTE);
+		}
+		if(chbClienteEV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_CLIENTE);
+		}
+		if(chbProcedenciaEV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_PROCEDENCIA);
+		}
+
+		ParametrosGlobales pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_VALIDACION_ENTRADA);
+		pg.setValue(listValidation);
+		parametrosGlobalesPersistence.save(pg);
+
+		listValidation = "";
+		if(chbDocumentoSV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_DOCUMENTO);
+		}
+		if(chbConductorSV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_CONDUCTOR);
+		}
+		if(chbNacionalidadSV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_NACIONALIDAD);
+		}
+		if(chbChasisSV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_CHASIS);
+		}
+		if(chbFacturarSV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_FACTURA);
+		}
+		if(chbObservacionesSV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_OBSERVACION);
+		}
+		if(chbProductoSV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_PRODUCTO);
+		}
+		if(chbTransporteSV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_TRANSPORTE);
+		}
+		if(chbClienteSV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_CLIENTE);
+		}
+		if(chbProcedenciaSV.isSelected()){
+			listValidation += concatSplit(listValidation, ParametrosGlobales.V_PROCEDENCIA);
+		}
+
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_VALIDACION_SALIDA);
+		pg.setValue(listValidation);
+		parametrosGlobalesPersistence.save(pg);
+	}
+
+	private String concatSplit(String concat, int newValue){
+		return (concat.isEmpty()? "" : ",") + newValue;
 	}
 
 	@FXML
@@ -582,6 +706,93 @@ public class HerramientasController extends AnchorPane implements IView {
 		parametrosGlobalesPersistence.load(pg);
 		if (pg != null) {
 			txtClaveIngManual.setText(pg.getValue());
+		}
+
+		loadCamposRequeridos();
+	}
+
+	private void loadCamposRequeridos(){
+		ParametrosGlobales pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_VALIDACION_ENTRADA);
+		parametrosGlobalesPersistence.load(pg);
+		if (pg != null && pg.getValue() != null) {
+			String[] validaciones = pg.getValue().split(",");
+			for(int i= 0; i < validaciones.length; i++){
+				switch (Integer.valueOf(validaciones[i])){
+					case ParametrosGlobales.V_DOCUMENTO:
+						chbDocumentoEV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_CONDUCTOR:
+						chbConductorEV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_NACIONALIDAD:
+						chbNacionalidadEV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_CHASIS:
+						chbChasisEV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_FACTURA:
+						chbFacturarEV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_OBSERVACION:
+						chbObservacionesEV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_PRODUCTO:
+						chbProductoEV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_TRANSPORTE:
+						chbTransporteEV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_CLIENTE:
+						chbClienteEV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_PROCEDENCIA:
+						chbProcedenciaEV.setSelected(true);
+						break;
+				}
+			}
+		}
+
+
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_VALIDACION_SALIDA);
+		parametrosGlobalesPersistence.load(pg);
+		if (pg != null && pg.getValue() != null) {
+			String[] validaciones = pg.getValue().split(",");
+			for(int i= 0; i < validaciones.length; i++){
+				switch (Integer.valueOf(validaciones[i])){
+					case ParametrosGlobales.V_DOCUMENTO:
+						chbDocumentoSV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_CONDUCTOR:
+						chbConductorSV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_NACIONALIDAD:
+						chbNacionalidadSV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_CHASIS:
+						chbChasisSV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_FACTURA:
+						chbFacturarSV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_OBSERVACION:
+						chbObservacionesSV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_PRODUCTO:
+						chbProductoSV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_TRANSPORTE:
+						chbTransporteSV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_CLIENTE:
+						chbClienteSV.setSelected(true);
+						break;
+					case ParametrosGlobales.V_PROCEDENCIA:
+						chbProcedenciaSV.setSelected(true);
+						break;
+				}
+			}
 		}
 	}
 

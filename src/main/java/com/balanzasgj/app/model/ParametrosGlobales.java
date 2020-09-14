@@ -46,10 +46,21 @@ public class ParametrosGlobales implements Serializable
 	public static final String A_CODIGO_LOG= "CODIGO_LOG";
 	public static final String A_CERTIFICADO= "CERTIFICADO";
 	public static final String A_VENCIMIENTO= "VENCIMIENTO";
+
+	public static final String P_VALIDACION_ENTRADA= "VALIDACION_ENTRADA";
+	public static final String P_VALIDACION_SALIDA= "VALIDACION_SALIDA";
 	
-	public static final String I_INDICADOR1= "INDICADOR#1";
-	public static final String I_INDICADOR2= "INDICADOR#2";
-	
+	public static final int V_DOCUMENTO = 1;
+	public static final int V_CONDUCTOR = 2;
+	public static final int V_NACIONALIDAD = 3;
+	public static final int V_CHASIS = 4;
+	public static final int V_FACTURA = 5;
+	public static final int V_OBSERVACION = 6;
+	public static final int V_PRODUCTO = 7;
+	public static final int V_TRANSPORTE = 8;
+	public static final int V_CLIENTE = 9;
+	public static final int V_PROCEDENCIA = 10;
+
     private static final long serialVersionUID = 1L;
 
     private String    id           ; // Id or Primary Key
