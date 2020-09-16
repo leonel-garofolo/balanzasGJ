@@ -263,6 +263,10 @@ public class PesarEntradaSalidaController extends AnchorPane
 	@FXML
 	private Label lblConductor;
 	@FXML
+	private Label lblNacionalidad;
+	@FXML
+	private Label lblChasis;
+	@FXML
 	private Label lblDocumento;
 
 	@FXML
@@ -621,34 +625,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 				Message.error("Debe Completar la tara y los dias de vencimiento.");
 			}
 		} else {
-			boolean isValid = false;
-			if (cbxProducto.getValue() != null && cbxCliente.getValue() != null && !txtPatente.getText().isEmpty()
-					&& txtTransaccion.getText() != null && !txtTransaccion.getText().isEmpty()
-					&& !txtFecha.getText().isEmpty() && !cbxModoTara.getSelectionModel().isEmpty()
-					&& !cbxModalidad.getSelectionModel().isEmpty() && !cbxModoChasis.getSelectionModel().isEmpty()) {
-
-				switch (cbxModalidad.getSelectionModel().getSelectedItem()) {
-				case M_ESTANDAR:
-					if (cbxTransporte.getValue() != null && cbxProcedencia.getValue() != null) {
-						isValid = true;
-					}
-					break;
-				case M_ADUANA:
-					isValid = true;
-					break;
-				case M_PUBLICA:
-					isValid = true;
-					break;
-
-				default:
-					isValid = true;
-					break;
-				}
-			} else {
-				isValid = false;
-			}
-
-			if (isValid) {
+			if (validateForm()) {
 				if (statusTara == 'S' || statusTara == 'E') {
 					boolean isEje = cbxModoChasis.getSelectionModel().getSelectedItem().equals(C_POR_EJE);
 					boolean isConTara = cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA);
@@ -796,9 +773,22 @@ public class PesarEntradaSalidaController extends AnchorPane
 					handleNuevoPesaje(event);
 				}
 			} else {
-				Message.error("Debe haber alguna entrada seleccionada.");
+				Message.error("Por favor, ingrese los campos requeridos.");
 			}
 		}
+	}
+
+	private boolean validateForm() {
+		boolean isValid;
+		if (!txtPatente.getText().isEmpty()
+				&& txtTransaccion.getText() != null && !txtTransaccion.getText().isEmpty()
+				&& !txtFecha.getText().isEmpty() && !cbxModoTara.getSelectionModel().isEmpty()
+				&& !cbxModalidad.getSelectionModel().isEmpty() && !cbxModoChasis.getSelectionModel().isEmpty()) {
+			isValid = validar(statusTara);
+		} else {
+			isValid = false;
+		}
+		return isValid;
 	}
 
 	private void saveContadorTransaccion() {
@@ -947,6 +937,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		layout1.setDisable(false);
 		editableLayout(true);
 		btnIngresoManual.setDisable(false);
+		initValidationsEntrada();
 
 		ParametrosGlobales pg = new ParametrosGlobales();
 		pg.setId("EMPRESA_TRANSACCION");
@@ -970,6 +961,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 		btnPesarEntrada.setStyle("");
 		btnPesarSalida.setStyle("-fx-background-color: #7fffd4; ");
 		btnIngresoManual.setDisable(false);
+
+		initValidationsSalida();
 		if (taraEdit.getIdtaras() >= 0) {
 			enabledTara(cbxModoTara.getValue());
 			enabledTableEjes(cbxModoChasis.getValue());
@@ -1629,6 +1622,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		lblConductor.setVisible(visible);
 		txtConductor.setVisible(visible);
 		txtPatenteChasis.setVisible(visible);
+		lblNacionalidad.setVisible(visible);
 		txtNacionalidad.setVisible(visible);
 		lblDocumento.setVisible(visible);
 		txtNumDoc.setVisible(visible);
@@ -1799,6 +1793,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 	public void initialize(URL url, ResourceBundle resource) {
 		initValues();
 		initPersistence();
+		initValidationsEntrada();
 		clearForm();
 
 		// longrunning operation runs on different thread
@@ -1832,6 +1827,146 @@ public class PesarEntradaSalidaController extends AnchorPane
 		// don't let thread prevent JVM shutdown
 		thread.setDaemon(true);
 		thread.start();
+	}
+
+	private void initValidationsEntrada() {
+		ParametrosGlobales pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_VALIDACION_ENTRADA);
+		parametrosGlobalesPersistence.load(pg);
+		if (pg != null && pg.getValue() != null && !pg.getValue().isEmpty()) {
+			String[] validaciones = pg.getValue().split(",");
+			for(int i= 0; i < validaciones.length; i++){
+				switch (Integer.valueOf(validaciones[i])){
+					case ParametrosGlobales.V_DOCUMENTO:
+						lblDocumento.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_CONDUCTOR:
+						lblConductor.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_NACIONALIDAD:
+						lblNacionalidad.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_CHASIS:
+						lblChasis.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_FACTURA:
+						lblFactura.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_OBSERVACION:
+						lblObservaciones.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_PRODUCTO:
+						lblProducto.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_TRANSPORTE:
+						lblTransporte.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_CLIENTE:
+						lblCliente.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_PROCEDENCIA:
+						lblProcedencia.setStyle("-fx-font-weight:bold;");
+						break;
+				}
+			}
+		}
+	}
+
+	private boolean validar(char type){
+		if(txtPatente.getText().isEmpty())
+			return false;
+
+		ParametrosGlobales pg = new ParametrosGlobales();
+		if(type == 'E')
+			pg.setId(ParametrosGlobales.P_VALIDACION_ENTRADA);
+		 else
+			pg.setId(ParametrosGlobales.P_VALIDACION_SALIDA);
+		parametrosGlobalesPersistence.load(pg);
+		if (pg != null && pg.getValue() != null && !pg.getValue().isEmpty()) {
+			boolean isValid = false;
+			String[] validaciones = pg.getValue().split(",");
+			for(int i= 0; i < validaciones.length; i++){
+				isValid = false;
+				switch (Integer.valueOf(validaciones[i])){
+					case ParametrosGlobales.V_DOCUMENTO:
+						isValid = !txtNumDoc.getText().isEmpty();
+						break;
+					case ParametrosGlobales.V_CONDUCTOR:
+						isValid = !txtConductor.getText().isEmpty();
+						break;
+					case ParametrosGlobales.V_NACIONALIDAD:
+						isValid = !txtNacionalidad.getText().isEmpty();
+						break;
+					case ParametrosGlobales.V_CHASIS:
+						isValid = !txtPatenteChasis.getText().isEmpty();
+						break;
+					case ParametrosGlobales.V_FACTURA:
+						isValid = !txtFactura.getText().isEmpty();
+						break;
+					case ParametrosGlobales.V_OBSERVACION:
+						isValid = !txtObservaciones.getText().isEmpty();
+						break;
+					case ParametrosGlobales.V_PRODUCTO:
+						isValid = cbxProducto.getValue() != null;
+						break;
+					case ParametrosGlobales.V_TRANSPORTE:
+						isValid = cbxTransporte.getValue() != null;
+						break;
+					case ParametrosGlobales.V_CLIENTE:
+						isValid = cbxCliente.getValue() != null;
+						break;
+					case ParametrosGlobales.V_PROCEDENCIA:
+						isValid = cbxProcedencia.getValue() != null;
+						break;
+				}
+				if(!isValid)
+					return false;
+			}
+		}
+		return true;
+	}
+
+	public void initValidationsSalida(){
+		ParametrosGlobales pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_VALIDACION_SALIDA);
+		parametrosGlobalesPersistence.load(pg);
+		if (pg != null && pg.getValue() != null && !pg.getValue().isEmpty()) {
+			String[] validaciones = pg.getValue().split(",");
+			for(int i= 0; i < validaciones.length; i++){
+				switch (Integer.valueOf(validaciones[i])){
+					case ParametrosGlobales.V_DOCUMENTO:
+						lblDocumento.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_CONDUCTOR:
+						lblConductor.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_NACIONALIDAD:
+						lblNacionalidad.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_CHASIS:
+						lblChasis.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_FACTURA:
+						lblFactura.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_OBSERVACION:
+						lblObservaciones.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_PRODUCTO:
+						lblProducto.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_TRANSPORTE:
+						lblTransporte.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_CLIENTE:
+						lblCliente.setStyle("-fx-font-weight:bold;");
+						break;
+					case ParametrosGlobales.V_PROCEDENCIA:
+						lblProcedencia.setStyle("-fx-font-weight:bold;");
+						break;
+				}
+			}
+		}
 	}
 
 	public void closeSocket() {

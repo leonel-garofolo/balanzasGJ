@@ -7,7 +7,7 @@
 	<version>v1.20</version>
 	<properties>
 		<compileSource>1.8</compileSource>
-		<jdk>C:\Program Files\Java\jdk1.8.0_231\bin\javac.exe</jdk>
+		<jdk>C:\Program Files\Java\jdk1.8.0_181\bin\javac.exe</jdk>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<skipTests>true</skipTests>
 	</properties>

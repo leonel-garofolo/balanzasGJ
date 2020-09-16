@@ -715,7 +715,7 @@ public class HerramientasController extends AnchorPane implements IView {
 		ParametrosGlobales pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_VALIDACION_ENTRADA);
 		parametrosGlobalesPersistence.load(pg);
-		if (pg != null && pg.getValue() != null) {
+		if (pg != null && pg.getValue() != null && !pg.getValue().isEmpty()) {
 			String[] validaciones = pg.getValue().split(",");
 			for(int i= 0; i < validaciones.length; i++){
 				switch (Integer.valueOf(validaciones[i])){
@@ -757,7 +757,7 @@ public class HerramientasController extends AnchorPane implements IView {
 		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_VALIDACION_SALIDA);
 		parametrosGlobalesPersistence.load(pg);
-		if (pg != null && pg.getValue() != null) {
+		if (pg != null && pg.getValue() != null && !pg.getValue().isEmpty()) {
 			String[] validaciones = pg.getValue().split(",");
 			for(int i= 0; i < validaciones.length; i++){
 				switch (Integer.valueOf(validaciones[i])){
