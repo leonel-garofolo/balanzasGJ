@@ -242,22 +242,35 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		Clientes cli = new Clientes();
 		cli.setCodigo(rs.getLong("id_cliente"));
 		cli.setNombre(rs.getString("nombreCli"));
-		taras.setCliente(cli); // java.lang.Integer
+		if(rs.wasNull()){
+			taras.setCliente(null);
+		} else
+			taras.setCliente(cli); // java.lang.Integer
 
 		Transportes tra = new Transportes();
 		tra.setCodigo(rs.getLong("id_transporte"));
 		tra.setNombre(rs.getString("nombreTra"));
-		taras.setTransporte(tra); // java.lang.Integer
+		if(rs.wasNull()){
+			taras.setTransporte(null);
+		} else
+			taras.setTransporte(tra); // java.lang.Integer
 
 		Procedencias procedencias = new Procedencias();
 		procedencias.setCodigo(rs.getLong("id_procedencia"));
 		procedencias.setNombre(rs.getString("nombrePro"));
-		taras.setProcedencias(procedencias);
+		if(rs.wasNull()){
+			taras.setProcedencias(null);
+		} else
+			taras.setProcedencias(procedencias);
+
 
 		Productos productos = new Productos();
 		productos.setCodigo(rs.getLong("id_producto"));
 		productos.setNombre(rs.getString("nombreProducto"));
-		taras.setProducto(productos);
+		if(rs.wasNull()){
+			taras.setProducto(null);
+		} else
+			taras.setProducto(productos);
 		
 		if(rs.getString("nombreIE") != null) {
 			ImportadoresExportadores ie = new ImportadoresExportadores();

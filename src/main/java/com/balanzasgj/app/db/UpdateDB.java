@@ -54,6 +54,22 @@ public class UpdateDB extends GenericJdbcDAO {
 				st.execute(query);
 				insertQueryExecute(2);
 			}
+			if (currentVersion < 3) {
+				query = "CREATE TABLE `reports` ( " +
+						"  `id` int(11) NOT NULL AUTO_INCREMENT, " +
+						"  `tara_id` int(11) NOT NULL, " +
+						"  `count` int(11) NOT NULL DEFAULT '1', " +
+						"  PRIMARY KEY (`id`), " +
+						"  KEY `FK_reports_tara_idx` (`tara_id`), " +
+						"  CONSTRAINT `FK_reports_tara` FOREIGN KEY (`tara_id`) REFERENCES `taras` (`idtaras`) ON DELETE NO ACTION ON UPDATE NO ACTION " +
+						") ENGINE=InnoDB DEFAULT CHARSET=utf8";
+				st.execute(query);
+				query = "insert into parametros_globales(id, value) values('VALIDACION_ENTRADA', '')";
+				st.execute(query);
+				query = "insert into parametros_globales(id, value) values('VALIDACION_SALIDA', '7,8,9,10')";
+				st.execute(query);
+				insertQueryExecute(3);
+			}
 
 		} catch (Exception e) {
 			logger.error("update DDBB ERROR", e);

@@ -8,3 +8,5 @@ CREATE TABLE `reports` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+insert into parametros_globales (id, value) values('VALIDACION_ENTRADA', '');
+insert into parametros_globales (id, value) values('VALIDACION_SALIDA', '7,8,9,10');
