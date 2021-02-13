@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -7,7 +8,7 @@
 <?import javafx.scene.text.*?>
 <?import org.javafx.controls.customs.*?>
 
-<AnchorPane prefHeight="646.0" prefWidth="1320.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.PesarEntradaSalidaController">
+<AnchorPane prefHeight="646.0" prefWidth="1320.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.balanzasgj.app.view.PesarEntradaSalidaController">
    <children>
       <SplitPane dividerPositions="0.3122977346278317" layoutX="298.0" layoutY="135.0" orientation="VERTICAL" prefHeight="620.0" prefWidth="1088.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -199,12 +200,12 @@
                      <children>
                         <HBox prefHeight="208.0" prefWidth="1205.0">
                            <children>
-                              <GridPane focusTraversable="true" prefHeight="173.0" prefWidth="1347.0">
+                              <GridPane focusTraversable="true" prefHeight="173.0" prefWidth="1303.0">
                                 <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="60.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="140.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="246.0" minWidth="10.0" prefWidth="87.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="239.0" minWidth="10.0" prefWidth="140.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="74.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="104.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="246.0" minWidth="10.0" prefWidth="92.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="239.0" minWidth="10.0" prefWidth="119.0" />
                                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="107.0" />
                                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="102.0" />
                                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="6.0" prefWidth="171.0" />
@@ -223,7 +224,7 @@
                                     <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label fx:id="lblProducto" focusTraversable="false" prefHeight="17.0" prefWidth="54.0" text="Producto" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblProducto" focusTraversable="false" prefHeight="17.0" prefWidth="53.0" text="Producto" GridPane.columnIndex="6" GridPane.rowIndex="1" />
                                     <Label fx:id="lblCliente" focusTraversable="false" prefHeight="17.0" prefWidth="47.0" text="Cliente" GridPane.columnIndex="6" GridPane.rowIndex="2" />
                                     <Label fx:id="lblTransporte" focusTraversable="false" prefHeight="17.0" prefWidth="72.0" text="Transporte" GridPane.columnIndex="9" GridPane.rowIndex="1" />
                                     <Label fx:id="lblProcedencia" focusTraversable="false" prefHeight="17.0" prefWidth="72.0" text="Procedencia" GridPane.columnIndex="9" GridPane.rowIndex="2" />
@@ -268,7 +269,7 @@
                                     </Button>
                                     <Label prefHeight="17.0" prefWidth="72.0" text="Conductor" visible="false" GridPane.columnIndex="7" GridPane.rowIndex="1" />
                                     <Label fx:id="lblDocumento" focusTraversable="false" prefHeight="17.0" prefWidth="69.0" text="Documento" GridPane.columnIndex="4" />
-                                    <Label focusTraversable="false" prefHeight="17.0" prefWidth="109.0" style="-fx-font-weight: bold;" text="Patente" />
+                                    <Label fx:id="lblPatente" focusTraversable="false" prefHeight="17.0" prefWidth="109.0" style="-fx-font-weight: bold;" text="Patente" />
                                     <TextField fx:id="txtConductor" visible="false" GridPane.columnIndex="8" GridPane.rowIndex="1" />
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="10" GridPane.rowIndex="2">
                                        <children>
@@ -332,10 +333,10 @@
                                     <TextField fx:id="txtContenedor" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="7" GridPane.rowIndex="4" />
                                     <Label fx:id="lblManifiesto" prefHeight="17.0" prefWidth="65.0" text="Manifiesto" GridPane.columnIndex="9" GridPane.rowIndex="4" />
                                     <TextField fx:id="txtManifiesto" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="10" GridPane.rowIndex="4" />
-                                    <Label fx:id="lblDestinatario" focusTraversable="false" prefHeight="17.0" prefWidth="105.0" text="Cod. Destinatario" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+                                    <Label fx:id="lblDestinatario" focusTraversable="false" prefHeight="17.0" prefWidth="72.0" text="Destinación" GridPane.columnIndex="6" GridPane.rowIndex="5" />
                                     <TextField fx:id="txtDestinatario" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="7" GridPane.rowIndex="5" />
-                                    <Label fx:id="lblMercaderia" prefHeight="17.0" prefWidth="65.0" text="Mercaderia" GridPane.columnIndex="9" GridPane.rowIndex="5" />
-                                    <TextField fx:id="txtMercaderia" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="10" GridPane.rowIndex="5" />
+                                    <Label fx:id="lblMercaderia" prefHeight="17.0" prefWidth="65.0" text="Mercaderia" visible="false" GridPane.columnIndex="9" GridPane.rowIndex="5" />
+                                    <TextField fx:id="txtMercaderia" prefHeight="25.0" prefWidth="105.0" visible="false" GridPane.columnIndex="10" GridPane.rowIndex="5" />
                                     <Label fx:id="lblTaraContenedor" prefHeight="17.0" prefWidth="91.0" text="Tara Contenedor" GridPane.columnIndex="4" GridPane.rowIndex="4" />
                                     <TextField fx:id="txtTaraContenedor" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
                                     <Label fx:id="lblObservacionesAduana" focusTraversable="false" prefHeight="17.0" prefWidth="73.0" text="Obs. Aduana" GridPane.columnIndex="2" GridPane.rowIndex="3">
@@ -350,7 +351,7 @@
                                     <TextField fx:id="txtNacionalidad" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="10" />
                                  </children>
                                  <HBox.margin>
-                                    <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
+                                    <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
                                  </HBox.margin>
                               </GridPane>
                            </children>

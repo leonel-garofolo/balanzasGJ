@@ -67,10 +67,15 @@ import javafx.scene.layout.HBox;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
+
 public class InformesController {
 	final static Logger logger = Logger.getLogger(InformesController.class);
+	
+	public static final String TICKET_ADUANA ="ticketAduanaA4";
+	
+	
 	private static final String B_TODO = "TODO";
-	private static final String B_NUMERO = "NÃºmero de TransacciÃ³n";
+	private static final String B_NUMERO = "Número de Transacción";
 	private static final String B_PATENTE = "Patente";
 	private static final String B_PRODUCTO = "Producto";
 	private static final String B_CLIENTE = "Cliente";
@@ -302,7 +307,7 @@ public class InformesController {
     			boolean isAduana = taras.get(0).getImpExp() != null ? true: false; 
     			if (isAduana) {
     				updateReportCount(params);
-					ShowJasper.openBeanDataSource("ticketAduana", params, new JRBeanCollectionDataSource(taras));
+					ShowJasper.openBeanDataSource(TICKET_ADUANA, params, new JRBeanCollectionDataSource(taras));
 				} else {
 					pg = new ParametrosGlobales();
 					pg.setId(ParametrosGlobales.P_TICKET_ETIQUETADORA);

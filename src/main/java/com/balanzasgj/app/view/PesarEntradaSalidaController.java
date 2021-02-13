@@ -267,6 +267,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 	@FXML
 	private Label lblNacionalidad;
 	@FXML
+	private Label lblPatente;	
+	@FXML
 	private Label lblChasis;
 	@FXML
 	private Label lblDocumento;
@@ -547,7 +549,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 						&& cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
 					updateReportCount(params);
 					
-					ShowJasper.openBeanDataSource("ticketAduana", params, new JRBeanCollectionDataSource(taras));
+					ShowJasper.openBeanDataSource(InformesController.TICKET_ADUANA, params, new JRBeanCollectionDataSource(taras));
 				} else {
 					pg = new ParametrosGlobales();
 					pg.setId(ParametrosGlobales.P_TICKET_ETIQUETADORA);
@@ -1168,13 +1170,33 @@ public class PesarEntradaSalidaController extends AnchorPane
 
 	@FXML
 	private void handleModalidad(ActionEvent event) {
-		if (cbxModalidad.getSelectionModel().getSelectedItem() != null) {
+		if (cbxModalidad.getSelectionModel().getSelectedItem() != null) {							
 			modoAduana(cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA));
 			modoPublica(cbxModalidad.getSelectionModel().getSelectedItem().equals(M_PUBLICA));
+			if(cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
+				// Patentes
+				lblPatente.setText("Pat. Tractor");
+				lblChasis.setText("Pat. Acoplado");
+				lblProducto.setText("Mercaderia");
+				lblProducto.setPrefWidth(80);
+				lblTransporte.setVisible(false);
+				cbxTransporte.setVisible(false);
+				btnAccesoTransporte.setVisible(false);				
+			} else {
+				lblPatente.setText("Patente");
+				lblChasis.setText("Chasis");
+				lblProducto.setText("Producto");
+				lblProducto.setPrefWidth(53);
+			}	
 		}
 	}
 
 	private void modoAduana(boolean isVisible) {
+		// Transporte
+		lblTransporte.setVisible(!isVisible);
+		cbxTransporte.setVisible(!isVisible);
+		btnAccesoTransporte.setVisible(!isVisible);
+		
 		// Importacion exportacion
 		lblImpExp.setVisible(isVisible);
 		cbxImpExp.setVisible(isVisible);
@@ -1197,14 +1219,14 @@ public class PesarEntradaSalidaController extends AnchorPane
 		lblDestinatario.setVisible(isVisible);
 		txtDestinatario.setVisible(isVisible);
 
-		lblMercaderia.setVisible(isVisible);
-		txtMercaderia.setVisible(isVisible);
+		//lblMercaderia.setVisible(isVisible);
+		//txtMercaderia.setVisible(isVisible);
 
 		lblObservacionesAduana.setVisible(isVisible);
 		txtObservacionesAduana.setVisible(isVisible);
 	}
 
-	private void modoPublica(boolean isVisible) {
+	private void modoPublica(boolean isVisible) {			
 		lblProcedencia.setVisible(!isVisible);
 		cbxProcedencia.setVisible(!isVisible);
 		btnAccesoProcedencia.setVisible(!isVisible);
