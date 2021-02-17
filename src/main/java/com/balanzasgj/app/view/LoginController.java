@@ -88,10 +88,12 @@ public class LoginController implements Initializable, IView, EventHandler<Windo
 				
 				stage.setScene(scene);
 				stage.resizableProperty().set(false);
+				
 				/*
 				Image ico = new Image(App.PATH_ICONO); 
 				stage.getIcons().add(ico);
-				*/ 
+				*/
+				 
 				stage.show();
 				
 				stage.setOnHiding(new EventHandler<WindowEvent>() {

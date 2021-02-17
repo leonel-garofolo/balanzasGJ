@@ -24,11 +24,13 @@ public class ParametrosGlobales implements Serializable
 	public static final String P_EMPRESA_LOC= "EMPRESA_LOC";
 	public static final String P_EMPRESA_PROV = "EMPRESA_PROV";
 	public static final String P_EMPRESA_TEL= "EMPRESA_TEL";
+	public static final String P_EMPRESA_EMAIL= "EMPRESA_EMAIL";
 	public static final String P_EMPRESA_NOMBRE_BAL= "EMPRESA_NOMBRE_BAL";
 	public static final String P_EMPRESA_DIR_BAL= "EMPRESA_DIR_BAL";
 	public static final String P_EMPRESA_LOC_BAL= "EMPRESA_LOC_BAL";
 	public static final String P_EMPRESA_PROV_BAL = "EMPRESA_PROV_BAL";
 	public static final String P_EMPRESA_TEL_BAL= "EMPRESA_TEL_BAL";
+	public static final String P_EMPRESA_EMAIL_BAL= "EMPRESA_EMAIL_BAL";
 	public static final String P_TICKET_ETIQUETADORA= "TICKET_ETIQUETADORA";
 	public static final String P_NUM_BALANZAS= "NUM_BALANZAS";
 	public static final String P_NUM_COMPROBANTE= "NUM_COMPROBANTE";

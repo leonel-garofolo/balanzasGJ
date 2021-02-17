@@ -23,7 +23,7 @@ public class App {
 	final static Logger logger = Logger.getLogger(App.class);
 	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
 	
-	public static final String PATH_ICONO = "images/icono/icono.jpg";
+	public static final String PATH_ICONO = "images/icono/fullserivices.jpg";
 	@SuppressWarnings("static-access")
 	private void iniciar(){				
 		logger.debug("Debug Message Logged !!!");

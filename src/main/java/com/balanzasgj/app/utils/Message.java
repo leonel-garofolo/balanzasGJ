@@ -47,7 +47,7 @@ public class Message {
         alert.setTitle("Confirmar");
         alert.setHeaderText(null);
         alert.setContentText(message);
-        ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Sí");
+        ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Si");
         ((Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL)).setText("No");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){

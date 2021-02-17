@@ -51,6 +51,12 @@
 	<parameter name="REPORT_COPY" class="java.lang.String">
 		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="EMPRESA_EMAIL" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="EMPRESA_EMAIL_BAL" class="java.lang.String">
+		<defaultValueExpression><![CDATA["CONFIGURAR"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -170,11 +176,11 @@
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($P{EMPRESA_DIR_BAL}==null?"":"Dirección" + $P{EMPRESA_DIR_BAL} ) + " - " + ($P{EMPRESA_LOC_BAL}== null?"":$P{EMPRESA_LOC_BAL}) + " - " + ($P{EMPRESA_PROV_BAL}==null?"":$P{EMPRESA_PROV_BAL} )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($P{EMPRESA_DIR_BAL}==null?"":"Dirección: " + $P{EMPRESA_DIR_BAL} ) + " - " + ($P{EMPRESA_LOC_BAL}== null?"":$P{EMPRESA_LOC_BAL}) + " - " + ($P{EMPRESA_PROV_BAL}==null?"":$P{EMPRESA_PROV_BAL} )]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="5" y="70" width="500" height="14" uuid="01b9188c-c431-4a15-909b-70a21b740842"/>
-				<textFieldExpression><![CDATA[($P{EMPRESA_TEL_BAL} ==null?"": "Tel.:" + $P{EMPRESA_TEL_BAL})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($P{EMPRESA_TEL_BAL} ==null?"": "Tel.: " + $P{EMPRESA_TEL_BAL})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="386" y="88" width="164" height="18" uuid="30a8faef-1076-4a5f-9b1d-745ba188ae0b">
@@ -183,11 +189,11 @@
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA["TICKET DE PESADA N." + $F{transaccion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["TICKET DE PESADA N. " + $F{transaccion}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="3" y="90" width="284" height="14" uuid="b78c78e1-a29e-4fde-91ca-5737def06ecc"/>
-				<textFieldExpression><![CDATA[($P{EMPRESA_TEL_BAL} ==null?"": "Email.:" )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($P{EMPRESA_EMAIL_BAL} ==null?"": "Email.: " + $P{EMPRESA_EMAIL_BAL} )]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="447" y="30" width="100" height="18" uuid="5544f4a2-bab0-4b35-b244-9b98101224cb">
@@ -201,7 +207,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="495" splitType="Stretch">
+		<band height="492" splitType="Stretch">
 			<rectangle radius="10">
 				<reportElement x="0" y="445" width="553" height="43" uuid="bb26059d-237e-4230-abde-0bd8f8293bd4"/>
 			</rectangle>
@@ -243,7 +249,7 @@
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{mercaderia}!=null?$F{mercaderia}:"")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="297" y="246" width="132" height="12" uuid="4560f94e-c9eb-4c0f-b156-fdfe4140235f"/>
@@ -589,7 +595,7 @@
 				<textElement>
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{numDoc}==null?"":$F{numDoc})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{tipoDoc}==null?"":$F{tipoDoc})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="3" y="60" width="230" height="14" uuid="34a9d12d-6fcb-49ed-b723-e7f9196c95b7"/>
@@ -638,7 +644,7 @@
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{transporte}!= null? $F{transporte}: ($F{ata} != null ? $F{ata}.getNombre():""))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{transporte}!= null? ($F{transporte}.getCuit() != null? $F{transporte}.getCuit():"" ): ($F{ata} != null ? $F{ata}.getCuit() != null? $F{ata}.getCuit():"":""))]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="4" y="180" width="174" height="12" uuid="36d4fc4a-4d8e-4bcd-9bb1-2e054f1898c6"/>
@@ -730,17 +736,42 @@
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yy").format(new Date())
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yy").format(new Date())]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="478" y="2" width="66" height="12" uuid="b5b77cc5-65ef-485d-a1f5-7e25acee131c"/>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new SimpleDateFormat("hh:mm:ss").format(new Date())
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("hh:mm:ss").format(new Date())]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
+	<pageFooter>
+		<band height="80">
+			<textField>
+				<reportElement x="2" y="58" width="458" height="19" uuid="3a706c73-929b-490a-a508-4732ccc782f9"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_EMAIL} ==null?"": "Email.: " + $P{EMPRESA_EMAIL} )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="39" width="458" height="19" uuid="28de7227-317a-4684-841c-f80bfeba3e6e"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_TEL} ==null?"": "Tel.:" + $P{EMPRESA_TEL})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="459" height="19" uuid="16cc248a-32b9-4c27-a0bf-33d835126ba4"/>
+				<textFieldExpression><![CDATA[($P{EMPRESA_DIR}==null?"":$P{EMPRESA_DIR} ) + " - " + ($P{EMPRESA_LOC}== null?"":$P{EMPRESA_LOC}) + " - " + ($P{EMPRESA_PROV}== null?"":$P{EMPRESA_PROV})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="0" width="458" height="20" uuid="68c8efc1-78e5-4bb0-bf10-98da6e2e8aaa"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{EMPRESA_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="478" y="10" width="76" height="70" uuid="475224af-d974-437f-993b-7885425d679a"/>
+				<imageExpression><![CDATA[$P{EMPRESA_IMG}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
 </jasperReport>

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Sistema de Pesaje"
-#define MyAppVersion "1.11"
+#define MyAppVersion "1.23"
 #define MyAppPublisher "LG, Inc."
 #define MyAppURL "http://www.example.com/"
 #define MyAppExeName "SistemaDePesaje.exe"
@@ -22,12 +22,13 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName=c:\SistemaDePesaje
 DisableProgramGroupPage=yes
-OutputDir=D:\innoSetup
+OutputDir=D:\workspace\innoSetup
 OutputBaseFilename=setupSistemaDePesaje_{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 DisableDirPage=yes
 PrivilegesRequired=admin
+
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -37,11 +38,11 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "D:\innoSetup\SistemaDePesaje\jre\*"; DestDir: "{app}\jre"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "D:\innoSetup\SistemaDePesaje\SistemaDePesaje.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "D:\innoSetup\SistemaDePesaje\mysql-5.5.62-win32.msi"; DestDir: "{tmp}"; Flags: nocompression dontcopy
-Source: "D:\innoSetup\SistemaDePesaje\bk_inicial.sql"; DestDir: "{app}\mysql"; Flags: ignoreversion
-Source: "D:\innoSetup\SistemaDePesaje\script_restore.bat"; DestDir: "{app}\mysql\bin"; Flags: ignoreversion
+Source: "D:\workspace\innoSetup\SistemaDePesaje\jre\*"; DestDir: "{app}\jre"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\workspace\innoSetup\SistemaDePesaje\SistemaDePesaje.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\workspace\innoSetup\SistemaDePesaje\mysql-5.5.62-win32.msi"; DestDir: "{tmp}"; Flags: nocompression dontcopy
+Source: "D:\workspace\innoSetup\SistemaDePesaje\bk_inicial.sql"; DestDir: "{app}\mysql"; Flags: ignoreversion
+Source: "D:\workspace\innoSetup\SistemaDePesaje\script_restore.bat"; DestDir: "{app}\mysql\bin"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

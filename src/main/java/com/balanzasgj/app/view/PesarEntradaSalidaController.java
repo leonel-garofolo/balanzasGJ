@@ -291,7 +291,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 	@FXML
 	private Label lblTaraContenedor;
 	@FXML
-	private Label lblManifiesto;
+	private Label lblManifiesto;	
 	@FXML
 	private Label lblDestinatario;
 	@FXML
@@ -303,7 +303,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 	@FXML
 	private TextField txtTaraContenedor;
 	@FXML
-	private TextField txtManifiesto;
+	private TextField txtManifiesto;	
 	@FXML
 	private TextField txtDestinatario;
 	@FXML
@@ -448,6 +448,11 @@ public class PesarEntradaSalidaController extends AnchorPane
 			pg.setId(ParametrosGlobales.P_EMPRESA_TEL_BAL);
 			parametrosGlobalesPersistence.load(pg);
 			params.put(ParametrosGlobales.P_EMPRESA_TEL_BAL, (pg.getValue() == null ? "" : pg.getValue()));
+			
+			pg = new ParametrosGlobales();
+	    	pg.setId(ParametrosGlobales.P_EMPRESA_EMAIL_BAL);	
+	    	parametrosGlobalesPersistence.load(pg);
+	        params.put(ParametrosGlobales.P_EMPRESA_EMAIL_BAL, (pg.getValue()== null?"":pg.getValue()));
 
 			pg = new ParametrosGlobales();
 			pg.setId(ParametrosGlobales.P_EMPRESA_LOC_BAL);
@@ -474,6 +479,11 @@ public class PesarEntradaSalidaController extends AnchorPane
 			pg.setId(ParametrosGlobales.P_EMPRESA_TEL);
 			parametrosGlobalesPersistence.load(pg);
 			params.put(ParametrosGlobales.P_EMPRESA_TEL, (pg.getValue() == null ? "" : pg.getValue()));
+			
+			pg = new ParametrosGlobales();
+    		pg.setId(ParametrosGlobales.P_EMPRESA_EMAIL);	
+    		parametrosGlobalesPersistence.load(pg);
+            params.put(ParametrosGlobales.P_EMPRESA_EMAIL, (pg.getValue()== null?"":pg.getValue()));
 
 			pg = new ParametrosGlobales();
 			pg.setId(ParametrosGlobales.P_EMPRESA_LOC);
@@ -671,7 +681,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 					}
 					if (txtManifiesto.isVisible() && txtManifiesto.getText() != null) {
 						tara.setManifiesto(txtManifiesto.getText());
-					}
+					}					
 
 					if (txtDestinatario.isVisible() && txtDestinatario.getText() != null) {
 						tara.setDestino(txtDestinatario.getText());
@@ -1219,8 +1229,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 		lblDestinatario.setVisible(isVisible);
 		txtDestinatario.setVisible(isVisible);
 
-		//lblMercaderia.setVisible(isVisible);
-		//txtMercaderia.setVisible(isVisible);
+		lblMercaderia.setVisible(isVisible);
+		txtMercaderia.setVisible(isVisible);
 
 		lblObservacionesAduana.setVisible(isVisible);
 		txtObservacionesAduana.setVisible(isVisible);

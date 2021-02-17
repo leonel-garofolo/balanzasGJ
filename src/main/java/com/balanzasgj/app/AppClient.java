@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -16,7 +17,7 @@ public class AppClient extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {		
-		primaryStage.setTitle("Sistemas de Balanzas v1.21");
+		primaryStage.setTitle("Sistemas de Balanzas v1.23");
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/LoginView.fxml"));
 		Parent rootLogin = (Parent)loader.load();
@@ -29,11 +30,9 @@ public class AppClient extends Application {
 	    	controller.setStage(primaryStage);
 	    }
 		
-		primaryStage.setScene(scene);		
-		/*
-		Image ico = new Image(App.PATH_ICONO); 
-		primaryStage.getIcons().add(ico);
-		*/ 
+		primaryStage.setScene(scene);				
+		//Image ico = new Image(this.getClass().getResource(App.PATH_ICONO).getFile()); 
+		//primaryStage.getIcons().add(ico);
 		primaryStage.resizableProperty().set(false);		
 		primaryStage.show();
 		primaryStage.setOnHiding(new EventHandler<WindowEvent>() {

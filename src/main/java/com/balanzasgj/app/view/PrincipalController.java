@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 
+import com.balanzasgj.app.App;
 import com.balanzasgj.app.model.ParametrosGlobales;
 import com.balanzasgj.app.model.Usuarios;
 import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
@@ -94,11 +95,11 @@ public class PrincipalController implements Initializable, IView{
 			Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
 			stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
 			stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
-			stage.resizableProperty().set(false);		
+			stage.resizableProperty().set(false);	
 			/*
 			Image ico = new Image(App.PATH_ICONO); 
 			stage.getIcons().add(ico);
-			*/ 
+			*/
 			controller.setStage(stage);	
 			stage.show();
 			
@@ -164,8 +165,10 @@ public class PrincipalController implements Initializable, IView{
 		    }		    
 		    stage.show();
 		} catch (IOException e) {
-			logger.error(e);
 			e.printStackTrace();
+			logger.error(e.getCause());
+			logger.error(e.getMessage());
+			logger.error(e);						
 		}
 	}	
 
@@ -198,8 +201,11 @@ public class PrincipalController implements Initializable, IView{
 				logger.error(e);
 			} catch (IOException e) {
 				logger.error(e);
+				imgEmpresa.setImage(null);
+			} catch(NullPointerException e) {
+				logger.error(e);
+				imgEmpresa.setImage(null);
 			}
-            
 		}
 		
 		lblEmpresa.setFont(new Font("Arial", 30));

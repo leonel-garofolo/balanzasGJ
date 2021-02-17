@@ -74,6 +74,9 @@ public class HerramientasController extends AnchorPane implements IView {
 
 	@FXML
 	private StringField txtTel;
+	
+	@FXML
+	private StringField txtEmail;	
 
 	@FXML
 	private StringField txtLocalidad;
@@ -89,6 +92,9 @@ public class HerramientasController extends AnchorPane implements IView {
 
 	@FXML
 	private StringField txtTelBalanza;
+	
+	@FXML
+	private StringField txtEmailBalanza;
 
 	@FXML
 	private StringField txtLocalidadBalanza;
@@ -154,6 +160,13 @@ public class HerramientasController extends AnchorPane implements IView {
 
 	private Stage stage;
 	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
+	
+	private static String EMPRESA= "Balanzas Full Service SRL";
+	private static String DIRECCION= "Misiones 1011";
+	private static String LOCALIDAD= "San Lorenzo";
+	private static String PROVINCIA= "Santa Fe";
+	private static String TELEFONO= "0341 153538781 // 03476 15535441";
+	private static String EMAIL= "ventas@fullservicebalanzas.com.ar";
 
 	@FXML
 	private void handleSelectImagen(ActionEvent event) {
@@ -255,13 +268,19 @@ public class HerramientasController extends AnchorPane implements IView {
 			pg.setValue(txtTelBalanza.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
+		
+		if (txtEmailBalanza != null && txtEmailBalanza.getText() != null && !txtEmailBalanza.getText().isEmpty()) {
+			pg.setId(ParametrosGlobales.P_EMPRESA_EMAIL_BAL);
+			pg.setValue(txtEmailBalanza.getText());
+			parametrosGlobalesPersistence.save(pg);
+		}				
 
 		/* DATOS DE LA EMPRESA */
 		if (txtNombreEmpresa != null && txtNombreEmpresa.getText() != null && !txtNombreEmpresa.getText().isEmpty()) {
 			pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);
 			pg.setValue(txtNombreEmpresa.getText());
 			parametrosGlobalesPersistence.save(pg);
-		}
+		} 
 
 		if (txtDireccion != null && txtDireccion.getText() != null && !txtDireccion.getText().isEmpty()) {
 			pg.setId(ParametrosGlobales.P_EMPRESA_DIR);
@@ -286,6 +305,12 @@ public class HerramientasController extends AnchorPane implements IView {
 			pg.setValue(txtTel.getText());
 			parametrosGlobalesPersistence.save(pg);
 		}
+		
+		if (txtEmail != null && txtEmail.getText() != null && !txtEmail.getText().isEmpty()) {
+			pg.setId(ParametrosGlobales.P_EMPRESA_EMAIL);
+			pg.setValue(txtEmail.getText());
+			parametrosGlobalesPersistence.save(pg);
+		}		
 
 		if (txtNumBalanzas != null && txtNumBalanzas.getText() != null && !txtNumBalanzas.getText().isEmpty()) {
 			try {
@@ -507,6 +532,11 @@ public class HerramientasController extends AnchorPane implements IView {
 				txtTel.setText(newValue.toUpperCase());
 			}
 		});
+		txtEmail.textProperty().addListener((ov, oldValue, newValue) -> {
+			if (newValue != null) {
+				txtEmail.setText(newValue.toUpperCase());
+			}
+		});
 
 		txtNombreBalanza.textProperty().addListener((ov, oldValue, newValue) -> {
 			if (newValue != null) {
@@ -533,6 +563,12 @@ public class HerramientasController extends AnchorPane implements IView {
 				txtTelBalanza.setText(newValue.toUpperCase());
 			}
 		});
+		
+		txtEmailBalanza.textProperty().addListener((ov, oldValue, newValue) -> {
+			if (newValue != null) {
+				txtEmailBalanza.setText(newValue.toUpperCase());
+			}
+		});		
 
 		txtTransaccion.textProperty().addListener((ov, oldValue, newValue) -> {
 			if (newValue != null) {
@@ -580,14 +616,20 @@ public class HerramientasController extends AnchorPane implements IView {
 		if (pg != null) {
 			txtTelBalanza.setValue(pg.getValue());
 		}
-
+		
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_EMAIL_BAL);
+		parametrosGlobalesPersistence.load(pg);
+		if (pg != null) {
+			txtEmailBalanza.setValue(pg.getValue());
+		}
+		
 		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_TICKET);
 		parametrosGlobalesPersistence.load(pg);
 		if (pg != null) {
 			txtNombreEmpresa.setValue(pg.getValue());
-		}
-
+		} 
 		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_TRANSACCION);
 		parametrosGlobalesPersistence.load(pg);
@@ -598,36 +640,57 @@ public class HerramientasController extends AnchorPane implements IView {
 		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);
 		parametrosGlobalesPersistence.load(pg);
-		if (pg != null) {
+		if (pg != null && pg.getValue() != null && !pg.getValue().isEmpty()) {
 			txtNombreEmpresa.setText(pg.getValue());
+		} else {
+			txtNombreEmpresa.setText(EMPRESA);
 		}
+			
 
 		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_DIR);
 		parametrosGlobalesPersistence.load(pg);
-		if (pg != null) {
+		if (pg != null && pg.getValue() != null && !pg.getValue().isEmpty()) {
 			txtDireccion.setText(pg.getValue());
+		} else {
+			txtDireccion.setText(DIRECCION);
 		}
 
 		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_LOC);
 		parametrosGlobalesPersistence.load(pg);
-		if (pg != null) {
+		if (pg != null && pg.getValue() != null && !pg.getValue().isEmpty()) {
 			txtLocalidad.setText(pg.getValue());
+		} else {
+			txtLocalidad.setText(LOCALIDAD);
 		}
+
 
 		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_PROV);
 		parametrosGlobalesPersistence.load(pg);
-		if (pg != null) {
+		if (pg != null && pg.getValue() != null && !pg.getValue().isEmpty()) {
 			txtProv.setText(pg.getValue());
+		}else {
+			txtProv.setText(PROVINCIA);
 		}
 
 		pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_TEL);
 		parametrosGlobalesPersistence.load(pg);
-		if (pg != null) {
+		if (pg != null && pg.getValue() != null && !pg.getValue().isEmpty()) {
 			txtTel.setText(pg.getValue());
+		} else {
+			txtTel.setText(TELEFONO);
+		}
+		
+		pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_EMAIL);
+		parametrosGlobalesPersistence.load(pg);
+		if (pg != null && pg.getValue() != null && !pg.getValue().isEmpty()) {
+			txtEmail.setText(pg.getValue());
+		} else {
+			txtEmail.setText(EMAIL);
 		}
 
 		pg = new ParametrosGlobales();
@@ -668,11 +731,12 @@ public class HerramientasController extends AnchorPane implements IView {
 				Image image = SwingFXUtils.toFXImage(buffer, null);
 				imgEmpresa.setImage(image);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				logger.error(e);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				logger.error(e);
+			} catch (NullPointerException e) {
+				logger.error(e);
+				imgEmpresa.setImage(null);
 			}
 		}
 

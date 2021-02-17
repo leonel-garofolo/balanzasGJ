@@ -335,8 +335,8 @@
                                     <TextField fx:id="txtManifiesto" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="10" GridPane.rowIndex="4" />
                                     <Label fx:id="lblDestinatario" focusTraversable="false" prefHeight="17.0" prefWidth="72.0" text="Destinación" GridPane.columnIndex="6" GridPane.rowIndex="5" />
                                     <TextField fx:id="txtDestinatario" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="7" GridPane.rowIndex="5" />
-                                    <Label fx:id="lblMercaderia" prefHeight="17.0" prefWidth="65.0" text="Mercaderia" visible="false" GridPane.columnIndex="9" GridPane.rowIndex="5" />
-                                    <TextField fx:id="txtMercaderia" prefHeight="25.0" prefWidth="105.0" visible="false" GridPane.columnIndex="10" GridPane.rowIndex="5" />
+                                    <Label fx:id="lblMercaderia" prefHeight="17.0" prefWidth="65.0" text="Bulto" GridPane.columnIndex="9" GridPane.rowIndex="5" />
+                                    <TextField fx:id="txtMercaderia" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="10" GridPane.rowIndex="5" />
                                     <Label fx:id="lblTaraContenedor" prefHeight="17.0" prefWidth="91.0" text="Tara Contenedor" GridPane.columnIndex="4" GridPane.rowIndex="4" />
                                     <TextField fx:id="txtTaraContenedor" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
                                     <Label fx:id="lblObservacionesAduana" focusTraversable="false" prefHeight="17.0" prefWidth="73.0" text="Obs. Aduana" GridPane.columnIndex="2" GridPane.rowIndex="3">

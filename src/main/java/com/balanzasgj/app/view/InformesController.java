@@ -75,7 +75,7 @@ public class InformesController {
 	
 	
 	private static final String B_TODO = "TODO";
-	private static final String B_NUMERO = "Número de Transacción";
+	private static final String B_NUMERO = "Numero de Transaccion";
 	private static final String B_PATENTE = "Patente";
 	private static final String B_PRODUCTO = "Producto";
 	private static final String B_CLIENTE = "Cliente";
@@ -250,6 +250,11 @@ public class InformesController {
             params.put(ParametrosGlobales.P_EMPRESA_TEL_BAL, (pg.getValue()== null?"":pg.getValue()));
             
             pg = new ParametrosGlobales();
+    		pg.setId(ParametrosGlobales.P_EMPRESA_EMAIL_BAL);	
+    		parametrosGlobalesPersistence.load(pg);
+            params.put(ParametrosGlobales.P_EMPRESA_EMAIL_BAL, (pg.getValue()== null?"":pg.getValue()));
+            
+            pg = new ParametrosGlobales();
     		pg.setId(ParametrosGlobales.P_EMPRESA_LOC_BAL);	
     		parametrosGlobalesPersistence.load(pg);
             params.put(ParametrosGlobales.P_EMPRESA_LOC_BAL, (pg.getValue()== null?"":pg.getValue()));
@@ -274,6 +279,11 @@ public class InformesController {
     		pg.setId(ParametrosGlobales.P_EMPRESA_TEL);	
     		parametrosGlobalesPersistence.load(pg);
             params.put(ParametrosGlobales.P_EMPRESA_TEL, (pg.getValue()== null?"":pg.getValue()));
+            
+            pg = new ParametrosGlobales();
+    		pg.setId(ParametrosGlobales.P_EMPRESA_EMAIL);	
+    		parametrosGlobalesPersistence.load(pg);
+            params.put(ParametrosGlobales.P_EMPRESA_EMAIL, (pg.getValue()== null?"":pg.getValue()));
             
             pg = new ParametrosGlobales();
     		pg.setId(ParametrosGlobales.P_EMPRESA_LOC);	
@@ -378,6 +388,11 @@ public class InformesController {
 		pg.setId(ParametrosGlobales.P_EMPRESA_TEL_BAL);	
 		parametrosGlobalesPersistence.load(pg);
         params.put(ParametrosGlobales.P_EMPRESA_TEL_BAL, (pg.getValue()== null?"":pg.getValue()));
+        
+        pg = new ParametrosGlobales();
+		pg.setId(ParametrosGlobales.P_EMPRESA_EMAIL_BAL);	
+		parametrosGlobalesPersistence.load(pg);
+        params.put(ParametrosGlobales.P_EMPRESA_EMAIL_BAL, (pg.getValue()== null?"":pg.getValue()));        
         
         pg = new ParametrosGlobales();
 		pg.setId(ParametrosGlobales.P_EMPRESA_LOC_BAL);	
