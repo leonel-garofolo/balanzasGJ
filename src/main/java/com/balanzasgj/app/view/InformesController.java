@@ -316,6 +316,26 @@ public class InformesController {
     		try {
     			boolean isAduana = taras.get(0).getImpExp() != null ? true: false; 
     			if (isAduana) {
+    				pg = new ParametrosGlobales();
+    				pg.setId(ParametrosGlobales.A_CODIGO_ADUANA);
+    				parametrosGlobalesPersistence.load(pg);
+    				params.put(ParametrosGlobales.A_CODIGO_ADUANA, (pg.getValue() == null ? "" : pg.getValue()));
+
+    				pg = new ParametrosGlobales();
+    				pg.setId(ParametrosGlobales.A_CODIGO_LOG);
+    				parametrosGlobalesPersistence.load(pg);
+    				params.put(ParametrosGlobales.A_CODIGO_LOG, (pg.getValue() == null ? "" : pg.getValue()));
+
+    				pg = new ParametrosGlobales();
+    				pg.setId(ParametrosGlobales.A_CERTIFICADO);
+    				parametrosGlobalesPersistence.load(pg);
+    				params.put(ParametrosGlobales.A_CERTIFICADO, (pg.getValue() == null ? "" : pg.getValue()));
+
+    				pg = new ParametrosGlobales();
+    				pg.setId(ParametrosGlobales.A_VENCIMIENTO);
+    				parametrosGlobalesPersistence.load(pg);
+    				params.put(ParametrosGlobales.A_VENCIMIENTO, (pg.getValue() == null ? "" : pg.getValue()));
+    				
     				updateReportCount(params);
 					ShowJasper.openBeanDataSource(TICKET_ADUANA, params, new JRBeanCollectionDataSource(taras));
 				} else {

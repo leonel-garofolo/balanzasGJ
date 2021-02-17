@@ -1188,10 +1188,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 				lblPatente.setText("Pat. Tractor");
 				lblChasis.setText("Pat. Acoplado");
 				lblProducto.setText("Mercaderia");
-				lblProducto.setPrefWidth(80);
-				lblTransporte.setVisible(false);
-				cbxTransporte.setVisible(false);
-				btnAccesoTransporte.setVisible(false);				
+				lblProducto.setPrefWidth(80);										
 			} else {
 				lblPatente.setText("Patente");
 				lblChasis.setText("Chasis");
@@ -1202,11 +1199,6 @@ public class PesarEntradaSalidaController extends AnchorPane
 	}
 
 	private void modoAduana(boolean isVisible) {
-		// Transporte
-		lblTransporte.setVisible(!isVisible);
-		cbxTransporte.setVisible(!isVisible);
-		btnAccesoTransporte.setVisible(!isVisible);
-		
 		// Importacion exportacion
 		lblImpExp.setVisible(isVisible);
 		cbxImpExp.setVisible(isVisible);
