@@ -1229,8 +1229,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 		lblDestinatario.setVisible(isVisible);
 		txtDestinatario.setVisible(isVisible);
 
-		lblMercaderia.setVisible(isVisible);
-		txtMercaderia.setVisible(isVisible);
+		//lblMercaderia.setVisible(isVisible);
+		//txtMercaderia.setVisible(isVisible);
 
 		lblObservacionesAduana.setVisible(isVisible);
 		txtObservacionesAduana.setVisible(isVisible);
