@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="transaccionesDetalles" pageWidth="578" pageHeight="842" columnWidth="538" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="e373889a-fc0e-4297-9a5a-ab4aff79c358">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="tarasFactory"/>
 	<parameter name="EMPRESA_NOMBRE" class="java.lang.String">
@@ -157,14 +157,14 @@
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{procedencias}.getCodigo() != null? $F{procedencias}: "")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{procedencias} != null? $F{procedencias}.getNombre(): "")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="80" y="64" width="260" height="16" uuid="f18f74ea-398c-4d46-be20-aa9d54586c5c"/>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{cliente} != null? $F{cliente}.getNombre(): "")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="64" width="80" height="16" uuid="5c0a39a0-579b-4b73-8fd9-4e66f7f6ef3a"/>
@@ -178,7 +178,7 @@
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{transporte}.getCodigo() != null? $F{transporte}: "")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{transporte} != null? $F{transporte}.getNombre(): "")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="84" width="80" height="16" uuid="9717eabf-62b3-4dd8-a14b-2e15288e3b0d"/>
@@ -192,7 +192,7 @@
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{producto} != null? $F{producto}.getNombre(): "")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="103" width="80" height="16" uuid="4560f94e-c9eb-4c0f-b156-fdfe4140235f"/>
