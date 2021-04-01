@@ -8,6 +8,7 @@ import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
 import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
 import ar.com.fdvs.dj.domain.constants.Font;
 import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
+import ar.com.fdvs.dj.domain.constants.Page;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
 import com.balanzasgj.app.model.Taras;
@@ -17,6 +18,7 @@ import net.sf.jasperreports.view.JasperViewer;
 
 import java.awt.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public class TransaccionesInforme  extends ReportBase{
@@ -27,7 +29,11 @@ public class TransaccionesInforme  extends ReportBase{
 
     @Override
     public DynamicReport buildReport() throws Exception {
-        DynamicReportBuilder drb = new DynamicReportBuilder();
+        final DynamicReportBuilder drb = new DynamicReportBuilder();  
+        //postraid
+        final Page page = new Page(595, 842);
+        page.setOrientationPortrait(true);        
+        drb.setPageSizeAndOrientation(page);
 
         Style numberColStyle = new Style("col number");
         numberColStyle.setHorizontalAlign(HorizontalAlign.CENTER);
@@ -41,6 +47,12 @@ public class TransaccionesInforme  extends ReportBase{
         AbstractColumn coltransaccion = ColumnBuilder.getNew()
                 .setColumnProperty("transaccion", String.class.getName())
                 .setTitle("Nro").setWidth(10)
+                .setStyle(numberColStyle)
+                .build();
+        
+        AbstractColumn colFecha = ColumnBuilder.getNew()
+                .setColumnProperty("fechaEntrada", Date.class.getName())
+                .setTitle("Fecha").setWidth(30)
                 .setStyle(numberColStyle)
                 .build();
 
@@ -99,6 +111,7 @@ public class TransaccionesInforme  extends ReportBase{
 
         drb.addGlobalFooterVariable(colPesoNeto, DJCalculation.SUM, g1Variables);
         drb.addColumn(coltransaccion)
+        		.addColumn(colFecha)
                 .addColumn(colChasis)
                 .addColumn(colProducto)
                 .addColumn(colCliente)
@@ -113,9 +126,11 @@ public class TransaccionesInforme  extends ReportBase{
                 .setGrandTotalLegend("Total")
                 .setGrandTotalLegendStyle(g1Variables)
                 .setUseFullPageWidth(true);
+        
+       
         drb.addAutoText(AutoText.AUTOTEXT_CREATED_ON,
                 AutoText.POSITION_FOOTER, AutoText.ALIGNMENT_LEFT,
-                AutoText.PATTERN_DATE_DATE_TIME);
+                AutoText.PATTERN_DATE_DATE_TIME).setUseFullPageWidth(true);
         drb.addAutoText(AutoText.AUTOTEXT_PAGE_X_OF_Y, AutoText.POSITION_FOOTER, AutoText.ALIGNMENT_RIGHT);
         return drb.build();
     }

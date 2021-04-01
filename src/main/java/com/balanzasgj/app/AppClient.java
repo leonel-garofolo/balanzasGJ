@@ -17,7 +17,7 @@ public class AppClient extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {		
-		primaryStage.setTitle("Sistemas de Balanzas v1.24");
+		primaryStage.setTitle("Sistemas de Balanzas v1.26");
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/LoginView.fxml"));
 		Parent rootLogin = (Parent)loader.load();

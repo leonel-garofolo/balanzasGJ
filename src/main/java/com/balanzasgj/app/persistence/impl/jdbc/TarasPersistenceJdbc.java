@@ -252,10 +252,10 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 		} else
 			taras.setCliente(cli); // java.lang.Integer
 
-		Transportes tra = new Transportes();
+		Transportes tra = new Transportes();		
+		tra.setCuit(rs.getString("cuitTra"));
 		tra.setCodigo(rs.getLong("id_transporte"));
 		tra.setNombre(rs.getString("nombreTra"));
-		tra.setCuit(rs.getString("cuitTra"));
 		if(rs.wasNull()){
 			taras.setTransporte(null);
 		} else

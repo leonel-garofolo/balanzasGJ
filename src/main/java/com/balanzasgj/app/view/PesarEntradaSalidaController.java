@@ -641,7 +641,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 			}
 		} else {
 			if (validateForm()) {
-				if (statusTara == 'S' || statusTara == 'E') {
+				if (statusTara == 'S' || statusTara == 'E') {					
 					boolean isEje = cbxModoChasis.getSelectionModel().getSelectedItem().equals(C_POR_EJE);
 					boolean isConTara = cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA);
 					Taras tara = new Taras();
@@ -663,10 +663,19 @@ public class PesarEntradaSalidaController extends AnchorPane
 					} catch (ParseException e) {
 						System.out.println("error de formato");
 					}
-					tara.setProducto(cbxProducto.getValue());
-					tara.setCliente(cbxCliente.getValue());
-					tara.setTransporte(cbxTransporte.getValue());
-					tara.setProcedencias(cbxProcedencia.getValue());
+					
+					if (cbxProducto.isVisible() && cbxProducto.getValue() != null) {
+						tara.setProducto(cbxProducto.getValue());
+					}
+					if (cbxCliente.isVisible() && cbxCliente.getValue() != null) {
+						tara.setCliente(cbxCliente.getValue());
+					}
+					if (cbxTransporte.isVisible() && cbxTransporte.getValue() != null) {
+						tara.setTransporte(cbxTransporte.getValue());
+					}
+					if (cbxProcedencia.isVisible() && cbxProcedencia.getValue() != null) {
+						tara.setProcedencias(cbxProcedencia.getValue());
+					}					
 					if (cbxImpExp.isVisible() && cbxImpExp.getValue() != null) {
 						tara.setImpExp(cbxImpExp.getValue());
 					}

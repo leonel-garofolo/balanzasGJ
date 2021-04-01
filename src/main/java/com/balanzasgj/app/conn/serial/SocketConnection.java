@@ -3,12 +3,14 @@ package com.balanzasgj.app.conn.serial;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Enumeration;
 import java.util.TooManyListenersException;
 
 import org.apache.log4j.Logger;
 
 import gnu.io.CommPortIdentifier;
+import gnu.io.NoSuchPortException;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
@@ -36,17 +38,8 @@ public class SocketConnection implements SerialPortEventListener {
 	}
 
 	public boolean conectar(String portName, int dataRate, int dataBits, int stopBits, int parity, int timeOut)
-			throws Exception {
-		CommPortIdentifier portId = null;
-		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
-		// iterate through, looking for the port
-		while (portEnum.hasMoreElements()) {
-			CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
-			if (currPortId.getName().equals(portName)) {
-				portId = currPortId;
-				break;
-			}
-		}		
+			throws Exception {	
+		CommPortIdentifier portId =CommPortIdentifier.getPortIdentifier(portName);		
 		if(portId != null) {
 			serialPort = (SerialPort) portId.open(this.getClass().getName(), timeOut);
 			serialPort.setSerialPortParams(dataRate, dataBits, stopBits, parity);
