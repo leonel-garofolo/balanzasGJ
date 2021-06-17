@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import org.apache.log4j.Logger;
 import org.javafx.controls.customs.ComboBoxAutoComplete;
 
+import com.balanzasgj.app.conn.serial.JSocketConnection;
 import com.balanzasgj.app.conn.serial.SocketConnection;
 import com.balanzasgj.app.model.Ata;
 import com.balanzasgj.app.model.Clientes;
@@ -70,10 +71,10 @@ import com.balanzasgj.app.view.columns.ProcedenciasTableCell;
 import com.balanzasgj.app.view.columns.ProductosTableCell;
 import com.balanzasgj.app.view.columns.TransportesTableCell;
 import com.balanzasgj.app.view.custom.AduanaDialog;
+import com.fazecast.jSerialComm.SerialPort;
+import com.fazecast.jSerialComm.SerialPortDataListener;
+import com.fazecast.jSerialComm.SerialPortEvent;
 
-import gnu.io.SerialPort;
-import gnu.io.SerialPortEvent;
-import gnu.io.SerialPortEventListener;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -105,7 +106,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public class PesarEntradaSalidaController extends AnchorPane
-		implements IView, Initializable, SerialPortEventListener, EventHandler<KeyEvent> {
+		implements IView, Initializable, SerialPortDataListener, EventHandler<KeyEvent> {
 	final static Logger logger = Logger.getLogger(PesarEntradaSalidaController.class);
 	private static final String T_NORMAL = "NORMAL";
 	private static final String T_CON_TARA = "CON TARA";
@@ -338,7 +339,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 	private Indicadores indicadorConfig;
 
 	private boolean ingManual;
-	private SocketConnection socket;
+	private JSocketConnection socket;
 	private String sBufferConnection;
 	private Stage stage;
 
@@ -1591,7 +1592,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 	private void initSerialConnector() {
 		stage.setTitle("Tomar Pesajes");
 		if (socket == null) {
-			socket = new SocketConnection();
+			socket = new JSocketConnection();
 		}
 
 		if (cbxIndicador.getSelectionModel().getSelectedItem() != null) {
@@ -1607,7 +1608,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 			logger.info("longitudDato: " + longitudDato);
 			int paridad = 0;
 			if (indicadorConfig.getParidad().equals("n")) {
-				paridad = SerialPort.PARITY_NONE;
+				paridad = SerialPort.NO_PARITY;
 			}
 			try {
 				boolean conect = socket.conectar("COM" + indicadorConfig.getPuerto(), indicadorConfig.getVelocidad(),
@@ -2082,21 +2083,100 @@ public class PesarEntradaSalidaController extends AnchorPane
 	private String data;
 	private boolean controlChar;
 	private String inputBuffer = "";
+	
+	@Override
+	public void setStage(Stage stage) {
+		this.stage = stage;
+		initSerialConnector();
+		KeyCombination an = new KeyCodeCombination(KeyCode.N, KeyCombination.ALT_DOWN);
+		KeyCombination aa = new KeyCodeCombination(KeyCode.A, KeyCombination.ALT_DOWN);
+		KeyCombination at = new KeyCodeCombination(KeyCode.T, KeyCombination.ALT_DOWN);
+
+		Mnemonic m = new Mnemonic(btnNuevoPesaje, an);
+		this.stage.getScene().addMnemonic(m);
+
+		m = new Mnemonic(btnAplicar, aa);
+		this.stage.getScene().addMnemonic(m);
+
+		m = new Mnemonic(btnTicket, at);
+		this.stage.getScene().addMnemonic(m);
+	}
 
 	@Override
-	public void serialEvent(SerialPortEvent event) {
+	public void handle(KeyEvent event) {
+		if (event.getCode().equals(KeyCode.ENTER) || event.getCode().equals(KeyCode.TAB)) {
+			if (event.getSource() == txtPatente) {
+				txtConductor.requestFocus();
+				return;
+			}
+			if (event.getSource() == txtConductor) {
+				txtNumDoc.requestFocus();
+				return;
+			}
+			if (event.getSource() == txtNumDoc) {
+				txtFactura.requestFocus();
+				return;
+			}
+
+			if (event.getSource() == cbxProducto) {
+				cbxTransporte.requestFocus();
+				return;
+			}
+			if (event.getSource() == cbxTransporte) {
+				txtObservaciones.requestFocus();
+				return;
+			}
+			if (event.getSource() == txtObservaciones) {
+				cbxCliente.requestFocus();
+				return;
+			}
+			if (event.getSource() == cbxCliente) {
+				cbxProcedencia.requestFocus();
+				return;
+			}
+
+			if (event.getSource() == cbxProcedencia) {
+				btnBuscar.requestFocus();
+				return;
+			}
+		}
+	}
+
+	 @Override
+	   public int getListeningEvents() { return SerialPort.LISTENING_EVENT_DATA_RECEIVED; }
+
+	@Override
+	public void serialEvent(com.fazecast.jSerialComm.SerialPortEvent event) {
+		if (isDebug) {
+			logger.info("Es manual? " + (ingManual?"Si": "No"));
+		}
 		if (!ingManual) {
 			if (isDebug) {
-				logger.info("Rx -> EVENT " + (event.getEventType() == SerialPortEvent.DATA_AVAILABLE));
+				logger.info("Rx -> EVENT " + (event.getEventType() == SerialPort.LISTENING_EVENT_DATA_AVAILABLE));
+				logger.info("Rx -> EVENT type: " + event.getEventType() );					
 			}
-			if (event.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
-				try {
-					int available = socket.getInput().available();
-					if (isDebug) {
-						logger.info("Rx -> available -> " + available);
+			//if (event.getEventType() == SerialPort.LISTENING_EVENT_DATA_RECEIVED) {
+				try {					
+					byte[] newData = event.getReceivedData();
+					if(newData == null) {
+						logger.info("Rx -> sin datos");
+						return;
 					}
-					for (int i = 0; i < available; i++) {// read all incoming characters
-						int receivedVal = socket.getInput().read();// store it into an int (because of the input.read
+					
+					if (isDebug) {
+						logger.info("Rx -> Received data of size: " + newData.length);											   
+					}
+					int available = newData.length;
+					//for (int i = 0; i < available; i++) {// read all incoming characters
+					int i= 0;
+					 for (; ; ) {
+						 char receivedVal;
+						 try {
+							 receivedVal = (char)newData[i];
+						 }catch (ArrayIndexOutOfBoundsException e) {
+							break;
+						}
+						// store it into an int (because of the input.read
 																	// method
 						longitud = this.posicionInicioDato + this.longitudDato;
 						controlChar = false;
@@ -2164,70 +2244,14 @@ public class PesarEntradaSalidaController extends AnchorPane
 								}
 							}
 						}
+						i++;
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					logger.error("IO Error Occurred: ", e);
 				}
-			}
+			//}
 		}
-	}
-
-	@Override
-	public void setStage(Stage stage) {
-		this.stage = stage;
-		initSerialConnector();
-		KeyCombination an = new KeyCodeCombination(KeyCode.N, KeyCombination.ALT_DOWN);
-		KeyCombination aa = new KeyCodeCombination(KeyCode.A, KeyCombination.ALT_DOWN);
-		KeyCombination at = new KeyCodeCombination(KeyCode.T, KeyCombination.ALT_DOWN);
-
-		Mnemonic m = new Mnemonic(btnNuevoPesaje, an);
-		this.stage.getScene().addMnemonic(m);
-
-		m = new Mnemonic(btnAplicar, aa);
-		this.stage.getScene().addMnemonic(m);
-
-		m = new Mnemonic(btnTicket, at);
-		this.stage.getScene().addMnemonic(m);
-	}
-
-	@Override
-	public void handle(KeyEvent event) {
-		if (event.getCode().equals(KeyCode.ENTER) || event.getCode().equals(KeyCode.TAB)) {
-			if (event.getSource() == txtPatente) {
-				txtConductor.requestFocus();
-				return;
-			}
-			if (event.getSource() == txtConductor) {
-				txtNumDoc.requestFocus();
-				return;
-			}
-			if (event.getSource() == txtNumDoc) {
-				txtFactura.requestFocus();
-				return;
-			}
-
-			if (event.getSource() == cbxProducto) {
-				cbxTransporte.requestFocus();
-				return;
-			}
-			if (event.getSource() == cbxTransporte) {
-				txtObservaciones.requestFocus();
-				return;
-			}
-			if (event.getSource() == txtObservaciones) {
-				cbxCliente.requestFocus();
-				return;
-			}
-			if (event.getSource() == cbxCliente) {
-				cbxProcedencia.requestFocus();
-				return;
-			}
-
-			if (event.getSource() == cbxProcedencia) {
-				btnBuscar.requestFocus();
-				return;
-			}
-		}
+		
 	}
 }

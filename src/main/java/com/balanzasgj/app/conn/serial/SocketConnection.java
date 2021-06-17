@@ -42,11 +42,13 @@ public class SocketConnection implements SerialPortEventListener {
 		CommPortIdentifier portId =CommPortIdentifier.getPortIdentifier(portName);		
 		if(portId != null) {
 			serialPort = (SerialPort) portId.open(this.getClass().getName(), timeOut);
-			serialPort.setSerialPortParams(dataRate, dataBits, stopBits, parity);
+			serialPort.setSerialPortParams(dataRate, dataBits, stopBits, parity);		
 			input = serialPort.getInputStream();
 			output = serialPort.getOutputStream();
+			logger.info("Connect Port: " + portName + " | Velocidad (dataRate): " + dataRate + " | Bit paridad (dataBits): " + dataBits + " | stop bit: " + stopBits + " | paridad: " + parity);
 			return true;
 		}
+		logger.error("error no pudo conectar con: " + portName);
 		return false;
 	}
 
@@ -64,11 +66,12 @@ public class SocketConnection implements SerialPortEventListener {
 	public synchronized void serialEvent(SerialPortEvent oEvent) {
 		if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			try {
+				logger.info("type data: DATA_AVAILABLE");
 				int available = input.available();
 				byte[] chunk = new byte[available];
 				input.read(chunk, 0, available);
 				st = new String(chunk);
-				System.out.print(st);
+				logger.info("RX -> Sync: " + st);
 				try {
 					Thread.sleep(5000);
 				} catch (InterruptedException ex) {
@@ -79,7 +82,26 @@ public class SocketConnection implements SerialPortEventListener {
 				System.out.println("IO Error Occurred: " + e.toString());
 
 			}
+		} else {			
+			try {
+				logger.info("type data: " + oEvent.getEventType());
+								
+				int available = input.available();
+				byte[] chunk = new byte[available];
+				input.read(chunk, 0, available);				
+				logger.info("RX -> Sync No DATA: " + new String(chunk));
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException ex) {
+					Thread.currentThread().interrupt();
+				}
+				// Displayed results are codepage dependent
+			} catch (IOException e) {
+				System.out.println("IO Error Occurred: " + e.toString());
+
+			}					
 		}
+			
 	}
 
 	public static class SerialWriter implements Runnable {
@@ -93,6 +115,7 @@ public class SocketConnection implements SerialPortEventListener {
 		}
 
 		public void run() {
+			logger.info("data: " + data);
 			if (data != null) {
 				data = data + "\r\n";
 				while(true) {
