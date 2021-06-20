@@ -1,80 +1,18 @@
 package com.balanzasgj.app.view;
 
-import java.awt.Image;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import javax.imageio.ImageIO;
-
-import org.apache.log4j.Logger;
-import org.javafx.controls.customs.ComboBoxAutoComplete;
-
 import com.balanzasgj.app.conn.serial.JSocketConnection;
 import com.balanzasgj.app.conn.serial.SocketConnection;
-import com.balanzasgj.app.model.Ata;
-import com.balanzasgj.app.model.Clientes;
-import com.balanzasgj.app.model.Comunicaciones;
-import com.balanzasgj.app.model.Ejes;
-import com.balanzasgj.app.model.Entidades;
-import com.balanzasgj.app.model.ImportadoresExportadores;
-import com.balanzasgj.app.model.Indicadores;
-import com.balanzasgj.app.model.ParametrosGlobales;
-import com.balanzasgj.app.model.Patentes;
-import com.balanzasgj.app.model.Procedencias;
-import com.balanzasgj.app.model.Productos;
-import com.balanzasgj.app.model.Reports;
-import com.balanzasgj.app.model.Taras;
-import com.balanzasgj.app.model.Transportes;
-import com.balanzasgj.app.model.Usuarios;
-import com.balanzasgj.app.persistence.AtaPersistence;
-import com.balanzasgj.app.persistence.ClientesPersistence;
-import com.balanzasgj.app.persistence.ComunicacionesPersistence;
-import com.balanzasgj.app.persistence.EjesPersistence;
-import com.balanzasgj.app.persistence.ImportadoresExportadoresPersistence;
-import com.balanzasgj.app.persistence.IndicadoresPersistence;
-import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
-import com.balanzasgj.app.persistence.PatentesPersistence;
-import com.balanzasgj.app.persistence.ProcedenciasPersistence;
-import com.balanzasgj.app.persistence.ProductosPersistence;
-import com.balanzasgj.app.persistence.ReportsPersistence;
-import com.balanzasgj.app.persistence.TarasPersistence;
-import com.balanzasgj.app.persistence.TransportesPersistence;
-import com.balanzasgj.app.persistence.impl.jdbc.AtaPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ClientesPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ComunicacionesPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.EjesPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ImportadoresExportadoresPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.IndicadoresPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.PatentesPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ProcedenciasPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ReportsPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.TarasPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.TransportesPersistenceJdbc;
+import com.balanzasgj.app.model.*;
+import com.balanzasgj.app.persistence.*;
+import com.balanzasgj.app.persistence.impl.jdbc.*;
+import com.balanzasgj.app.services.ParamConfigurationService;
+import com.balanzasgj.app.services.ReportService;
 import com.balanzasgj.app.utils.Message;
 import com.balanzasgj.app.utils.ShowJasper;
-import com.balanzasgj.app.view.columns.ClientesTableCell;
-import com.balanzasgj.app.view.columns.ImpExpTableCell;
-import com.balanzasgj.app.view.columns.PatenteTableCell;
-import com.balanzasgj.app.view.columns.ProcedenciasTableCell;
-import com.balanzasgj.app.view.columns.ProductosTableCell;
-import com.balanzasgj.app.view.columns.TransportesTableCell;
+import com.balanzasgj.app.view.columns.*;
 import com.balanzasgj.app.view.custom.AduanaDialog;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
-import com.fazecast.jSerialComm.SerialPortEvent;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -83,39 +21,25 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.Mnemonic;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.log4j.Logger;
+import org.javafx.controls.customs.ComboBoxAutoComplete;
+
+import java.math.BigDecimal;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class PesarEntradaSalidaController extends AnchorPane
 		implements IView, Initializable, SerialPortDataListener, EventHandler<KeyEvent> {
 	final static Logger logger = Logger.getLogger(PesarEntradaSalidaController.class);
-	private static final String T_NORMAL = "NORMAL";
-	private static final String T_CON_TARA = "CON TARA";
-	private static final String T_TOMAR_TARA = "TOMAR TARA";
-	private static final String M_ESTANDAR = "ESTANDAR";
-	private static final String M_ADUANA = "ADUANA";
-	private static final String M_PUBLICA = "PUBLICA";
-	private static final String C_COMPLETO = "COMPLETO";
-	private static final String C_POR_EJE = "POR EJE";
+
 	private static final String STYLE_BOLD_LABEL = "-fx-font-weight:bold;";
 	private static final String STYLE_NOMAL_LABEL = "-fx-font-weight:normal;";
 
@@ -320,6 +244,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 
 	private char statusTara;
 
+	private ParamConfigurationService paramConfigurationService;
+
 	private ClientesPersistence clientesPersistence;
 	private PatentesPersistence patentesPersistence;
 	private ProcedenciasPersistence procedenciasPersistence;
@@ -366,10 +292,10 @@ public class PesarEntradaSalidaController extends AnchorPane
 	@FXML
 	private void handleTomar(ActionEvent event) {
 		if (taraEdit.getPesoEntrada() == null || taraEdit.getPesoSalida() == null) {
-			if (cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {
+			if (cbxModoTara.getSelectionModel().getSelectedItem().equals(Taras.ACTION.T_CON_TARA.label)) {
 				txtTara.setText(txtNumberSerial.getText());
 			}
-			if (cbxModoChasis.getSelectionModel().getSelectedItem().equals(C_POR_EJE)) {
+			if (cbxModoChasis.getSelectionModel().getSelectedItem().equals(Taras.TIPO.C_POR_EJE.label)) {
 				Ejes eje = new Ejes();
 				eje.setNroEje(tblEjes.getItems().size() + 1);
 				if (statusTara == 'E') {
@@ -412,9 +338,9 @@ public class PesarEntradaSalidaController extends AnchorPane
 		long timestamp = System.currentTimeMillis();
 		txtFecha.setText(format.format(new Date(timestamp)));
 		btnIngresoManual.setDisable(false);
-		cbxModoTara.setValue(T_NORMAL);
-		cbxModalidad.setValue(M_ESTANDAR);
-		cbxModoChasis.setValue(C_COMPLETO);
+		cbxModoTara.setValue(Taras.ACTION.T_NORMAL.label);
+		cbxModalidad.setValue(Taras.MODO.M_ESTANDAR.label);
+		cbxModoChasis.setValue(Taras.TIPO.C_COMPLETO.label);
 		btnTicket.setDisable(true);
 		cbxIndicador.setDisable(false);
 		if (cbxIndicador.getItems().size() > 0) {
@@ -431,95 +357,9 @@ public class PesarEntradaSalidaController extends AnchorPane
 	@FXML
 	private void handleTicket(ActionEvent event) {
 		if (taraEdit != null) {
-			List<Taras> taras = new ArrayList<>();
-			HashMap<String, Object> params = new HashMap<>();
-
-			/* PROPIETARIO DE LA BALANZA */
-			ParametrosGlobales pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL);
-			parametrosGlobalesPersistence.load(pg);
-			params.put(ParametrosGlobales.P_EMPRESA_NOMBRE_BAL, (pg.getValue() == null ? "" : pg.getValue()));
-
-			pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_DIR_BAL);
-			parametrosGlobalesPersistence.load(pg);
-			params.put(ParametrosGlobales.P_EMPRESA_DIR_BAL, (pg.getValue() == null ? "" : pg.getValue()));
-
-			pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_TEL_BAL);
-			parametrosGlobalesPersistence.load(pg);
-			params.put(ParametrosGlobales.P_EMPRESA_TEL_BAL, (pg.getValue() == null ? "" : pg.getValue()));
-			
-			pg = new ParametrosGlobales();
-	    	pg.setId(ParametrosGlobales.P_EMPRESA_EMAIL_BAL);	
-	    	parametrosGlobalesPersistence.load(pg);
-	        params.put(ParametrosGlobales.P_EMPRESA_EMAIL_BAL, (pg.getValue()== null?"":pg.getValue()));
-
-			pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_LOC_BAL);
-			parametrosGlobalesPersistence.load(pg);
-			params.put(ParametrosGlobales.P_EMPRESA_LOC_BAL, (pg.getValue() == null ? "" : pg.getValue()));
-
-			pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_PROV_BAL);
-			parametrosGlobalesPersistence.load(pg);
-			params.put(ParametrosGlobales.P_EMPRESA_PROV_BAL, (pg.getValue() == null ? "" : pg.getValue()));
-
-			/* EMPRESA */
-			pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);
-			parametrosGlobalesPersistence.load(pg);
-			params.put(ParametrosGlobales.P_EMPRESA_NOMBRE, (pg.getValue() == null ? "" : pg.getValue()));
-
-			pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_DIR);
-			parametrosGlobalesPersistence.load(pg);
-			params.put(ParametrosGlobales.P_EMPRESA_DIR, (pg.getValue() == null ? "" : pg.getValue()));
-
-			pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_TEL);
-			parametrosGlobalesPersistence.load(pg);
-			params.put(ParametrosGlobales.P_EMPRESA_TEL, (pg.getValue() == null ? "" : pg.getValue()));
-			
-			pg = new ParametrosGlobales();
-    		pg.setId(ParametrosGlobales.P_EMPRESA_EMAIL);	
-    		parametrosGlobalesPersistence.load(pg);
-            params.put(ParametrosGlobales.P_EMPRESA_EMAIL, (pg.getValue()== null?"":pg.getValue()));
-
-			pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_LOC);
-			parametrosGlobalesPersistence.load(pg);
-			params.put(ParametrosGlobales.P_EMPRESA_LOC, (pg.getValue() == null ? "" : pg.getValue()));
-
-			pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_PROV);
-			parametrosGlobalesPersistence.load(pg);
-			params.put(ParametrosGlobales.P_EMPRESA_PROV, (pg.getValue() == null ? "" : pg.getValue()));
-			params.put("USUARIO", Usuarios.getUsuarioLogeado());
-
-			/* Aduana */
-			if (cbxModalidad.getSelectionModel().getSelectedItem() != null
-					&& cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
-				pg = new ParametrosGlobales();
-				pg.setId(ParametrosGlobales.A_CODIGO_ADUANA);
-				parametrosGlobalesPersistence.load(pg);
-				params.put(ParametrosGlobales.A_CODIGO_ADUANA, (pg.getValue() == null ? "" : pg.getValue()));
-
-				pg = new ParametrosGlobales();
-				pg.setId(ParametrosGlobales.A_CODIGO_LOG);
-				parametrosGlobalesPersistence.load(pg);
-				params.put(ParametrosGlobales.A_CODIGO_LOG, (pg.getValue() == null ? "" : pg.getValue()));
-
-				pg = new ParametrosGlobales();
-				pg.setId(ParametrosGlobales.A_CERTIFICADO);
-				parametrosGlobalesPersistence.load(pg);
-				params.put(ParametrosGlobales.A_CERTIFICADO, (pg.getValue() == null ? "" : pg.getValue()));
-
-				pg = new ParametrosGlobales();
-				pg.setId(ParametrosGlobales.A_VENCIMIENTO);
-				parametrosGlobalesPersistence.load(pg);
-				params.put(ParametrosGlobales.A_VENCIMIENTO, (pg.getValue() == null ? "" : pg.getValue()));
-
+			final String modalidad = cbxModalidad.getSelectionModel().getSelectedItem();
+			if (modalidad != null
+					&& modalidad.equals(Taras.MODO.M_ADUANA.label)) {
 				ImportadoresExportadores ie = cbxImpExp.getSelectionModel().getSelectedItem();
 				if (ie != null && ie.getCodigo() != null) {
 					impExpPersistence.load(ie);
@@ -537,65 +377,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 				}
 			}
 
-			taras.add(taraEdit);
-			pg = new ParametrosGlobales();
-			pg.setId(ParametrosGlobales.P_EMPRESA_IMG);
-			parametrosGlobalesPersistence.load(pg);
-			if (pg.getValueByte() != null) {
-				try {
-					byte[] img = new byte[new Long(pg.getValueByte().length()).intValue()];
-					Image image = ImageIO.read(new ByteArrayInputStream(img));
-
-					params.put(ParametrosGlobales.P_EMPRESA_IMG, image);
-				} catch (SQLException e) {
-					logger.error(e);
-				} catch (IOException e) {
-					logger.error(e);
-				}
-			} else {
-				params.put(ParametrosGlobales.P_EMPRESA_IMG, null);
-			}
-			try {
-				if (cbxModalidad.getSelectionModel().getSelectedItem() != null
-						&& cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
-					updateReportCount(params);
-					
-					ShowJasper.openBeanDataSource(InformesController.TICKET_ADUANA, params, new JRBeanCollectionDataSource(taras));
-				} else {
-					pg = new ParametrosGlobales();
-					pg.setId(ParametrosGlobales.P_TICKET_ETIQUETADORA);
-					parametrosGlobalesPersistence.load(pg);
-					boolean ticketEt = false;
-					if (pg.getValue() != null) {
-						ticketEt = Boolean.valueOf(pg.getValue());
-					}
-					
-					updateReportCount(params);
-					if (ticketEt) {
-						ShowJasper.openBeanDataSource("ticketEtiquetadora", params,
-								new JRBeanCollectionDataSource(taras));
-					} else {
-						ShowJasper.openBeanDataSource("ticket", params, new JRBeanCollectionDataSource(taras));
-					}					
-				}
-			} catch (JRException e) {
-				logger.error(e);
-			}
+			ReportService.ticket(modalidad, taraEdit.getIdtaras().longValue());
 		}
-	}
-
-	private void updateReportCount(HashMap<String, Object> params) {
-		Reports report =  reportsPersistence.fintByTaraId(taraEdit.getIdtaras());
-		if(report == null){
-			report = new Reports();
-			report.setTaraId(taraEdit.getIdtaras());
-			report.setCount(1);
-			reportsPersistence.save(report);
-		} else {
-			report.setCount(report.getCount() + 1);
-			reportsPersistence.save(report);
-		}		
-		params.put(ParametrosGlobales.P_REPORT_COPY, ShowJasper.getReportCopy(report));
 	}
 
 	@FXML
@@ -628,7 +411,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 	@FXML
 	private void handleAplicar(ActionEvent event) {
 		if (cbxModoTara.getSelectionModel().getSelectedItem() != null
-				&& cbxModoTara.getSelectionModel().getSelectedItem().equals(T_TOMAR_TARA)) {
+				&& cbxModoTara.getSelectionModel().getSelectedItem().equals(Taras.ACTION.T_TOMAR_TARA.label)) {
 			if (!txtTara.getText().isEmpty() && !txtDiasVenc.getText().isEmpty()) {
 				Patentes p = new Patentes();
 				p.setPatente(txtPatente.getText());
@@ -643,8 +426,8 @@ public class PesarEntradaSalidaController extends AnchorPane
 		} else {
 			if (validateForm()) {
 				if (statusTara == 'S' || statusTara == 'E') {					
-					boolean isEje = cbxModoChasis.getSelectionModel().getSelectedItem().equals(C_POR_EJE);
-					boolean isConTara = cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA);
+					boolean isEje = cbxModoChasis.getSelectionModel().getSelectedItem().equals(Taras.TIPO.C_POR_EJE.label);
+					boolean isConTara = cbxModoTara.getSelectionModel().getSelectedItem().equals(Taras.ACTION.T_CON_TARA.label);
 					Taras tara = new Taras();
 					if (idTaraEdit >= 0) {
 						tara.setIdtaras(idTaraEdit);
@@ -655,7 +438,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 						if (statusTara == 'E') {
 							tara.setFechaEntrada(format.parse(txtFecha.getText()));
 						} else {							
-							if(cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {
+							if(cbxModoTara.getSelectionModel().getSelectedItem().equals(Taras.ACTION.T_CON_TARA.label)) {
 								tara.setFechaEntrada(format.parse(txtFecha.getText()));
 							}
 							tara.setFechaSalida(format.parse(txtFecha.getText()));
@@ -743,7 +526,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 						totalPeso = Double.valueOf(txtNumberSerial.getText());
 					}					
 					if (statusTara == 'S') {
-						if(cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {							
+						if(cbxModoTara.getSelectionModel().getSelectedItem().equals(Taras.ACTION.T_CON_TARA.label)) {
 							tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
 						}						
 						
@@ -754,7 +537,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 						txtEntrada.setText(String.valueOf(totalPeso));
 						tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
 
-						if (cbxModalidad.getSelectionModel().getSelectedItem().equals(M_PUBLICA)) {
+						if (cbxModalidad.getSelectionModel().getSelectedItem().equals(Taras.MODO.M_PUBLICA.label)) {
 							tara.setPesoSalida(new BigDecimal(0));
 							tara.setPesoNeto(new BigDecimal(0));
 						}
@@ -793,6 +576,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 						taraEdit = tarasPersistence.findById(tara.getIdtaras());
 						handleTicket(null);
 					}
+					ReportService.exportCsv();
 					clearForm();
 					btnIngresoManual.setDisable(true);
 					handleNuevoPesaje(event);
@@ -829,7 +613,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 			btnPesarEntrada.setStyle("");
 			btnPesarSalida.setStyle("");
 			if (cbxModalidad != null && cbxModalidad.getSelectionModel().getSelectedItem() != null
-					&& cbxModalidad.getSelectionModel().getSelectedItem().equals(M_PUBLICA)) {
+					&& cbxModalidad.getSelectionModel().getSelectedItem().equals(Taras.MODO.M_PUBLICA.label)) {
 				layout1.setDisable(false);
 				editableLayout(false);
 				editableAduana(true);
@@ -1178,10 +962,10 @@ public class PesarEntradaSalidaController extends AnchorPane
 	@FXML
 	private void handleModoTara(ActionEvent event) {
 		if (cbxModoTara.getSelectionModel().getSelectedItem() != null
-				&& cbxModoTara.getSelectionModel().getSelectedItem().equals(T_TOMAR_TARA)) {
+				&& cbxModoTara.getSelectionModel().getSelectedItem().equals(Taras.ACTION.T_TOMAR_TARA.label)) {
 			modoTomarTara();
 		} else if (cbxModoTara.getSelectionModel().getSelectedItem() != null
-				&& cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {
+				&& cbxModoTara.getSelectionModel().getSelectedItem().equals(Taras.ACTION.T_CON_TARA.label)) {
 			modoConTara();
 		} else {
 			modoNormal();
@@ -1191,9 +975,9 @@ public class PesarEntradaSalidaController extends AnchorPane
 	@FXML
 	private void handleModalidad(ActionEvent event) {
 		if (cbxModalidad.getSelectionModel().getSelectedItem() != null) {							
-			modoAduana(cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA));
-			modoPublica(cbxModalidad.getSelectionModel().getSelectedItem().equals(M_PUBLICA));
-			if(cbxModalidad.getSelectionModel().getSelectedItem().equals(M_ADUANA)) {
+			modoAduana(cbxModalidad.getSelectionModel().getSelectedItem().equals(Taras.MODO.M_ADUANA.label));
+			modoPublica(cbxModalidad.getSelectionModel().getSelectedItem().equals(Taras.MODO.M_PUBLICA.label));
+			if(cbxModalidad.getSelectionModel().getSelectedItem().equals(Taras.MODO.M_ADUANA.label)) {
 				// Patentes
 				lblPatente.setText("Pat. Tractor");
 				lblChasis.setText("Pat. Acoplado");
@@ -1264,7 +1048,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 					txtPatente.setText("");
 				}
 			} else {// cargo tara
-					if (!cbxModoTara.getSelectionModel().getSelectedItem().equals(T_TOMAR_TARA)) {
+					if (!cbxModoTara.getSelectionModel().getSelectedItem().equals(Taras.ACTION.T_TOMAR_TARA.label)) {
 						boolean existPending = tarasPersistence.checkPending(pantente);
 						if (existPending) {
 							Message.error(
@@ -1274,7 +1058,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 							return;
 					}
 				}									
-				if(cbxModoTara.getSelectionModel().getSelectedItem().equals(T_CON_TARA)) {
+				if(cbxModoTara.getSelectionModel().getSelectedItem().equals(Taras.ACTION.T_CON_TARA.label)) {
 					// debo llevar el modo a la salida cargando la entrada con el valor de la TARA
 					txtEntrada.setText(p.getTara().toString());
 					// Marcar salida
@@ -1345,9 +1129,9 @@ public class PesarEntradaSalidaController extends AnchorPane
 		btnIngresoManual.setDisable(true);
 		layout1.setDisable(true);
 		editableLayout(false);
-		cbxModoTara.getItems().addAll(new String[] { T_NORMAL, T_CON_TARA, T_TOMAR_TARA });
-		cbxModalidad.getItems().addAll(new String[] { M_ESTANDAR, M_ADUANA, M_PUBLICA });
-		cbxModoChasis.getItems().addAll(new String[] { C_COMPLETO, C_POR_EJE });
+		cbxModoTara.getItems().addAll(new String[] {Taras.ACTION.T_NORMAL.label, Taras.ACTION.T_CON_TARA.label, Taras.ACTION.T_TOMAR_TARA.label });
+		cbxModalidad.getItems().addAll(new String[] { Taras.MODO.M_ESTANDAR.label, Taras.MODO.M_ADUANA.label, Taras.MODO.M_PUBLICA.label });
+		cbxModoChasis.getItems().addAll(new String[] { Taras.TIPO.C_COMPLETO.label, Taras.TIPO.C_POR_EJE.label });
 		txtPatente.setOnKeyReleased(this);
 		txtNumDoc.setOnKeyReleased(this);
 		txtConductor.setOnKeyReleased(this);
@@ -1423,7 +1207,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 			txtNumberSerial.setText(newValue.toUpperCase());
 			if (cbxModoTara != null && cbxModoTara.getSelectionModel() != null
 					&& cbxModoTara.getSelectionModel().getSelectedItem() != null
-					&& cbxModoTara.getSelectionModel().getSelectedItem().equals(T_TOMAR_TARA)) {
+					&& cbxModoTara.getSelectionModel().getSelectedItem().equals(Taras.ACTION.T_TOMAR_TARA.label)) {
 				txtTara.setText(newValue.toUpperCase());
 			}
 		});
@@ -1513,7 +1297,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 	}
 
 	private void enabledAduana(String newValue) {
-		if (newValue != null && newValue.equals(M_ADUANA)) {
+		if (newValue != null && newValue.equals(Taras.MODO.M_ADUANA.label)) {
 			modoAduana(true);
 		}
 		modoAduana(false);
@@ -1521,7 +1305,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 
 	private void enabledTara(String newValue) {
 		if (newValue != null && statusTara != '-') {
-			if (newValue.equals(T_TOMAR_TARA)) {
+			if (newValue.equals(Taras.ACTION.T_TOMAR_TARA.label)) {
 				btnTomar.setText("Tomar Tara");
 				btnTomar.setVisible(true);
 				txtTara.setVisible(true);
@@ -1540,7 +1324,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 				txtUltima.setVisible(false);
 			}
 		}
-		if (newValue != null && newValue.equals(T_CON_TARA) && taraEdit.getPatente() != null) {
+		if (newValue != null && newValue.equals(Taras.ACTION.T_CON_TARA.label) && taraEdit.getPatente() != null) {
 			Patentes p = new Patentes();
 			p.setPatente(taraEdit.getPatente().getPatente());
 			this.patentesPersistence.load(p);
@@ -1569,7 +1353,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 
 	private void enabledTableEjes(String newValue) {
 		if (newValue != null && statusTara != '-') {
-			if (newValue.equals(C_POR_EJE)) {
+			if (newValue.equals(Taras.TIPO.C_POR_EJE.label)) {
 				tblEjes.getItems().clear();
 				if (taraEdit.getIdtaras() != null) {
 					tblEjes.getItems().addAll(ejesPersistence.findAll(taraEdit.getIdtaras()));

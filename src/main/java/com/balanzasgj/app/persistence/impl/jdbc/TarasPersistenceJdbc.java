@@ -27,6 +27,8 @@ import com.balanzasgj.app.model.Taras;
 import com.balanzasgj.app.model.Transportes;
 import com.balanzasgj.app.persistence.TarasPersistence;
 import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
+import com.balanzasgj.app.view.HerramientasController;
+import org.apache.log4j.Logger;
 
 /**
  * Taras persistence implementation 
@@ -36,6 +38,7 @@ import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
  */
 @Named("TarasPersistence")
 public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements TarasPersistence {
+	final static Logger logger = Logger.getLogger(TarasPersistenceJdbc.class);
 
 	private final static String SQL_SELECT_ALL = 
 		"select idtaras, transaccion, fecha_entrada, fecha_salida, balanza, t.id_producto, p.nombre as nombreProducto, t.id_cliente, c.nombre as nombreCli, t.id_transporte, tra.nombre as nombreTra, tra.cuit as cuitTra, t.id_procedencia, pro.nombre as nombrePro, ie.codigo as codigoIE, ie.nombre as nombreIE, modalidad, comprobante_nun1, modoTara, destino, conductor, tipo_doc, num_doc, patente, patente_aceptado, observacion, observacion_aduana, contenedor_num, TRIM(peso_entrada) + 0 as peso_entrada, TRIM(peso_salida) + 0 as peso_salida, modoChasis, contenedor, manifiesto, id_ata, a.nombre as ata_nombre, a.CUIT as ata_cuit, mercaderia, t.nacionalidad " +
@@ -497,9 +500,12 @@ public class TarasPersistenceJdbc extends GenericJdbcDAO<Taras> implements Taras
 			Connection conn = null;
 			try {
 				conn = getConnection();
-				PreparedStatement ps = conn.prepareStatement( getSqlInsert() );
+				final String sqlInsert = getSqlInsert();
+				PreparedStatement ps = conn.prepareStatement(sqlInsert);
 				//--- Call specific method to set the values to be inserted
-				setValuesForInsert(ps, 1, taras); 
+				setValuesForInsert(ps, 1, taras);
+				logger.info(ps);
+				logger.info(taras.toString());
 				//--- Execute SQL INSERT
 				ps.executeUpdate();
 				ResultSet rs = ps.getGeneratedKeys();

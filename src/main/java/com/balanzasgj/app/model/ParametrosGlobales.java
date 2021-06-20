@@ -52,6 +52,9 @@ public class ParametrosGlobales implements Serializable
 
 	public static final String P_VALIDACION_ENTRADA= "VALIDACION_ENTRADA";
 	public static final String P_VALIDACION_SALIDA= "VALIDACION_SALIDA";
+	public static final String P_EXPORT_PATH= "EXPORT_PATH";
+	public static final String P_USER_WINDOWS= "USER_WINDOWS";
+	public static final String P_PASS_WINDOWS= "PASS_WINDOWS";
 	
 	public static final int V_DOCUMENTO = 1;
 	public static final int V_CONDUCTOR = 2;

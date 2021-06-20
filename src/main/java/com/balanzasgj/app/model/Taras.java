@@ -20,6 +20,44 @@ public class Taras implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
+    public enum ACTION{
+        T_NORMAL("NORMAL"),
+        T_CON_TARA("CON TARA"),
+        T_TOMAR_TARA("TOMAR TARA");
+
+        public final String label;
+
+        private ACTION(String label) {
+            this.label = label;
+        }
+    };
+
+    public enum MODO{
+        M_ESTANDAR("ESTANDAR"),
+        M_ADUANA("ADUANA"),
+        M_PUBLICA("PUBLICA");
+
+        public final String label;
+
+        private MODO(String label) {
+            this.label = label;
+        }
+    };
+
+    public enum TIPO{
+        C_COMPLETO("COMPLETO"),
+        C_POR_EJE("POR EJE");
+
+        public final String label;
+
+        private TIPO(String label) {
+            this.label = label;
+        }
+    };
+
+    private static final String C_COMPLETO = "COMPLETO";
+    private static final String C_POR_EJE = "POR EJE";
+
     private Long    idtaras      ; // Id or Primary Key
 
     private String     transaccion  ;
