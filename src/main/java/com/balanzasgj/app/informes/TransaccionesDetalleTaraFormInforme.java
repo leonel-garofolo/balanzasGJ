@@ -10,7 +10,7 @@ import ar.com.fdvs.dj.domain.constants.Font;
 import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
-import com.balanzasgj.app.model.Taras;
+import com.balanzasgj.app.model.Tare;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
@@ -20,8 +20,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class TransaccionesDetalleTaraFormInforme extends ReportBase{
-    private List<Taras> taras;
-    public TransaccionesDetalleTaraFormInforme(List<Taras> taras){
+    private List<Tare> taras;
+    public TransaccionesDetalleTaraFormInforme(List<Tare> taras){
         this.taras = taras;
     }
 

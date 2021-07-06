@@ -9,31 +9,26 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobKey;
 
-import com.balanzasgj.app.model.ParametrosGlobales;
-import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
-import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
+import com.balanzasgj.app.model.GlobalParameter;
+import com.balanzasgj.app.services.GlobalParameterService;
 import com.balanzasgj.app.utils.Utils;
 
 public class SimpleJob implements Job {
 	final static Logger logger = Logger.getLogger(SimpleJob.class);
-	private ParametrosGlobalesPersistence parametrosGoblalesPersistence;
-	
+		
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		 JobKey jobKey = context.getJobDetail().getKey();
 		 logger.info("SimpleJob says: " + jobKey + " executing at " + new Date());
 		 
-		 parametrosGoblalesPersistence = new ParametrosGlobalesPersistenceJdbc();
-		 ParametrosGlobales pg = new ParametrosGlobales();
-		 pg.setId(ParametrosGlobales.P_EMPRESA_BACKUP);
-		 parametrosGoblalesPersistence.load(pg);		
-		 if(pg!= null) {
+		 final GlobalParameterService dao = new GlobalParameterService();
+		 String pg = dao.get(GlobalParameter.P_EMPRESA_BACKUP);		 
+		 if(!pg.isEmpty()) {
 			 try {
-				Utils.generarBackup(pg.getValue());
+				Utils.generarBackup(pg);
 				logger.info("BACKUP GENERADO Hora: " + new Date());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e);
 			}
 		 }
 	}

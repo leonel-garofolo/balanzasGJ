@@ -279,7 +279,7 @@
                                     <TextArea fx:id="txtObservaciones" prefHeight="71.0" prefWidth="195.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="2" />                                    
                                     <TextField fx:id="txtNumDoc" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="5" />
                                     <TextField fx:id="txtFactura" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label fx:id="lblFactura" focusTraversable="false" prefHeight="17.0" prefWidth="109.0" text="Factura" GridPane.rowIndex="2" />
+                                    <Label fx:id="lblFactura" focusTraversable="false" prefHeight="17.0" prefWidth="109.0" text="Comprobante" GridPane.rowIndex="2" />
                                     <TextField fx:id="txtPatente" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" />
                                     <Label fx:id="lblTara" prefHeight="17.0" prefWidth="29.0" style="-fx-font-weight: bold;" text="Tara" GridPane.columnIndex="2" />
                                     <TextField fx:id="txtTara" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="110.0" GridPane.columnIndex="3" />
@@ -345,7 +345,7 @@
                                        </opaqueInsets>
                                     </Label>
                                     <TextArea fx:id="txtObservacionesAduana" prefHeight="39.0" prefWidth="113.0" GridPane.columnIndex="3" GridPane.rowIndex="3" GridPane.rowSpan="2" />
-                                    <Label fx:id="lblChasis" focusTraversable="false" prefHeight="17.0" prefWidth="109.0" text="Chasis" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblChasis" focusTraversable="false" prefHeight="17.0" prefWidth="109.0" text="Pat. Acoplado" GridPane.rowIndex="1" />
                                     <TextField fx:id="txtPatenteChasis" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <Label fx:id="lblNacionalidad" focusTraversable="false" prefHeight="17.0" prefWidth="74.0" text="Nacionalidad" GridPane.columnIndex="9" />
                                     <TextField fx:id="txtNacionalidad" prefHeight="25.0" prefWidth="105.0" GridPane.columnIndex="10" />

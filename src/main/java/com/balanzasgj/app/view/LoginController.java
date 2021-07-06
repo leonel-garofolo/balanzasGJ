@@ -1,33 +1,23 @@
 package com.balanzasgj.app.view;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.balanzasgj.app.App;
-import com.balanzasgj.app.model.Usuarios;
-import com.balanzasgj.app.persistence.UsuariosPersistence;
-import com.balanzasgj.app.persistence.impl.jdbc.UsuariosPersistenceJdbc;
+import com.balanzasgj.app.model.User;
+import com.balanzasgj.app.services.UserService;
 import com.balanzasgj.app.utils.Message;
 import com.balanzasgj.app.utils.Utils;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class LoginController implements Initializable, IView, EventHandler<WindowEvent>{
@@ -37,15 +27,14 @@ public class LoginController implements Initializable, IView, EventHandler<Windo
 	private PasswordField txtClave;
 	@FXML
 	private Button btnIngresar;
-	private UsuariosPersistence usuariosPersistence;
-	
-	private Stage stage;
+	private UserService userService;
+	private MainActions mainActions;
 	
 	@FXML
 	public void handleIngresar(Event e) {
 		if(!txtUsuario.getText().isEmpty()
-				&& !txtClave.getText().isEmpty()) {
-			Usuarios usuario = this.usuariosPersistence.loadForNombre(txtUsuario.getText());
+				&& !txtClave.getText().isEmpty()) {					
+			User usuario = this.userService.loadForNombre(txtUsuario.getText());
 			if(usuario == null) {
 				Message.error("Usuario incorrecto.");
 				return;
@@ -54,57 +43,23 @@ public class LoginController implements Initializable, IView, EventHandler<Windo
 				return;
 			}
 			
-			Usuarios.setUsuarioLogeado(usuario.getNombre());
+			User.setUsuarioLogeado(usuario.getNombre());
 			switch (String.valueOf(usuario.getIdPerfil())) {
 			case "1":
-				Usuarios.setPerfilLogeado(Usuarios.P_ADMINISTRADOR);
+				User.setPerfilLogeado(User.P_ADMINISTRADOR);
 				break;
 			case "2":
-				Usuarios.setPerfilLogeado(Usuarios.P_SUPERVISOR);
+				User.setPerfilLogeado(User.P_SUPERVISOR);
 				break;
 			case "3":
-				Usuarios.setPerfilLogeado(Usuarios.P_OPERADOR);
+				User.setPerfilLogeado(User.P_OPERADOR);
 				break;
 
 			default:
 				break;
 			}
-			
-			//Stage stage = new Stage();
-			Screen screen = Screen.getPrimary();
-		    Rectangle2D bounds = screen.getVisualBounds();
-		    stage.setX(0);
-		    stage.setY(0);
-		    stage.setWidth(bounds.getWidth());
-		    stage.setHeight(bounds.getHeight());
-		    		    
-			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/PrincipalView.fxml"));
-				Parent rootPrincipal = (Parent)loader.load();				
-				IView controller = (PrincipalController)loader.getController();
-		    	controller.setStage(stage);		    			    	
-				Scene scene = new Scene(rootPrincipal);
-				scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
-				
-				stage.setScene(scene);
-				stage.resizableProperty().set(false);
-				
-				/*
-				Image ico = new Image(App.PATH_ICONO); 
-				stage.getIcons().add(ico);
-				*/
-				 
-				stage.show();
-				
-				stage.setOnHiding(new EventHandler<WindowEvent>() {
-
-		            public void handle(WindowEvent event) {
-		            	System.exit(0);
-		            }
-		        });		
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+									
+			this.mainActions.showDashboard();
 		}
 	}
 	
@@ -120,7 +75,7 @@ public class LoginController implements Initializable, IView, EventHandler<Windo
 		    return change;
 		}));
 		
-		this.usuariosPersistence = new UsuariosPersistenceJdbc();		
+		this.userService = new UserService();		
 		txtUsuario.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
 	        @Override
@@ -144,16 +99,15 @@ public class LoginController implements Initializable, IView, EventHandler<Windo
 	        }
 	    });
 	}
-
-
-	@Override
-	public void setStage(Stage stage) {
-		this.stage = stage;		
-		this.stage.setOnShowing(this);
-	}
 	
 	@Override
 	public void handle(WindowEvent e) {
 		txtUsuario.requestFocus();		
+	}
+
+
+	@Override
+	public void setMainActions(MainActions mainActions) {
+		this.mainActions = mainActions;	
 	}
 }

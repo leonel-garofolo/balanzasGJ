@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -13,11 +14,11 @@ import javax.imageio.ImageIO;
 import org.apache.log4j.Logger;
 
 import com.balanzasgj.app.App;
-import com.balanzasgj.app.model.ParametrosGlobales;
-import com.balanzasgj.app.model.Usuarios;
-import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
-import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
+import com.balanzasgj.app.model.GlobalParameter;
+import com.balanzasgj.app.model.User;
+import com.balanzasgj.app.services.GlobalParameterService;
 import com.balanzasgj.app.utils.Message;
+import com.balanzasgj.app.view.dashboard.DashboardActions;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -52,8 +53,9 @@ public class PrincipalController implements Initializable, IView{
 	@FXML
 	private Button btnSalir;	
 	@FXML
-	private Button btnHerramientas;	
-	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
+	private Button btnHerramientas;
+	
+	private GlobalParameterService paramConfigurationService;
 	
 	@FXML
 	private Label lblEmpresa;
@@ -64,6 +66,7 @@ public class PrincipalController implements Initializable, IView{
 	@FXML
 	private Label lblUsuario;
 	private Stage stage;
+	private DashboardActions dashboardActions;
 	
 	@FXML
     private void handleUsuarios(ActionEvent event) {
@@ -71,13 +74,14 @@ public class PrincipalController implements Initializable, IView{
     }
 	
 	@FXML
-    private void handleTara(ActionEvent event) {
-		ParametrosGlobales transact = parametrosGlobalesPersistence.findById(ParametrosGlobales.P_EMPRESA_TRANSACCION);
-		if(transact != null) {
-			this.openWindows("PesarEntradaSalidaView", "Tara");
+    private void handleTara(ActionEvent event) {		
+		String transact = paramConfigurationService.get(GlobalParameter.P_EMPRESA_TRANSACCION);
+		if(transact.isEmpty()) {
+			Message.error("Para ingresar a la pantalla de Pesaje es requerido el campo 'Transaccion' en la pantalla de Sistemas.");			
 		} else {
-			Message.error("Para ingresar a la pantalla de Pesaje es requerido el campo 'Transaccion' en la pantalla de Sistemas.");
+			this.openWindows("PesarEntradaSalidaView", "Tara");
 		}
+		
     }
 	
 	@FXML
@@ -88,19 +92,15 @@ public class PrincipalController implements Initializable, IView{
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/LoginView.fxml"));			
 			Parent rootPrincipal = (Parent)loader.load();			
 			Scene scene = new Scene(rootPrincipal);			
-			scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getClassLoader().getResource(App.STYLE_CSS).toExternalForm());
 			LoginController controller = (LoginController)loader.getController();
 	    	
 			stage.setScene(scene);
 			Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
 			stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
 			stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
-			stage.resizableProperty().set(false);	
-			/*
-			Image ico = new Image(App.PATH_ICONO); 
-			stage.getIcons().add(ico);
-			*/
-			controller.setStage(stage);	
+			stage.resizableProperty().set(false);				
+			//controller.setStage(stage);	
 			stage.show();
 			
 			
@@ -149,7 +149,7 @@ public class PrincipalController implements Initializable, IView{
 			stage.getIcons().add(ico);
 			*/ 
 		    Scene scene = new Scene(rootHerramientas);
-		    scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());
+		    scene.getStylesheets().add(getClass().getClassLoader().getResource(App.STYLE_CSS).toExternalForm());
 		    stage.setScene(scene);  
 		    
 		    if(loader.getController() instanceof PesarEntradaSalidaController) {
@@ -157,11 +157,11 @@ public class PrincipalController implements Initializable, IView{
 		    	stage.setOnCloseRequest(E -> {
 		    		controller.closeSocket();
 		    	   });
-		    	controller.setStage(stage);
+		    	//controller.setStage(stage);
 		    }
 		    if(loader.getController() instanceof HerramientasController) {
 		    	IView controller = (HerramientasController)loader.getController();
-		    	controller.setStage(stage);
+		    	//controller.setStage(stage);
 		    }		    
 		    stage.show();
 		} catch (IOException e) {
@@ -173,23 +173,17 @@ public class PrincipalController implements Initializable, IView{
 	}	
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {		
-		parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
-		ParametrosGlobales pg = new ParametrosGlobales();
-		pg.setId(ParametrosGlobales.P_EMPRESA_NOMBRE);
-		parametrosGlobalesPersistence.load(pg);		
-		if(pg!= null) {
-			lblEmpresa.setText(pg.getValue());
-		}		
+	public void initialize(URL location, ResourceBundle resources) {
+		this.paramConfigurationService = new GlobalParameterService();
+		lblEmpresa.setText(this.paramConfigurationService.get(GlobalParameter.P_EMPRESA_NOMBRE));	
 		
-		pg.setId(ParametrosGlobales.P_EMPRESA_IMG);
-		parametrosGlobalesPersistence.load(pg);
-		if(pg!= null && pg.getValueByte() != null) {
+		Blob imageBlob= this.paramConfigurationService.getBlob(GlobalParameter.P_EMPRESA_IMG);
+		if(imageBlob != null) {
 			//convert blob to byte[]
             InputStream input;
 			try {
-				input = pg.getValueByte().getBinaryStream();
-				byte[] img = new byte[new Long(pg.getValueByte().length()).intValue()];
+				input = imageBlob.getBinaryStream();
+				byte[] img = new byte[new Long(imageBlob.length()).intValue()];
 	            input.read(img);
 
 	            //convert byte[] to image
@@ -211,15 +205,15 @@ public class PrincipalController implements Initializable, IView{
 		lblEmpresa.setFont(new Font("Arial", 30));
 		lblUsuario.setFont(new Font("Arial", 14));
 		lblUsuario.setStyle("-fx-font-weight: bold");
-		lblUsuario.setText(Usuarios.getUsuarioLogeado().toUpperCase());		
+		lblUsuario.setText(User.getUsuarioLogeado().toUpperCase());		
 		lblHora.setText("");
 				
-		String perfil = Usuarios.getPerfilLogeado();
+		String perfil = User.getPerfilLogeado();
 		switch (perfil) {		
-		case Usuarios.P_SUPERVISOR:
+		case User.P_SUPERVISOR:
 			btnHerramientas.setDisable(true);
 			break;
-		case Usuarios.P_OPERADOR:
+		case User.P_OPERADOR:
 			btnHerramientas.setDisable(true);
 			break;
 		default:
@@ -228,8 +222,8 @@ public class PrincipalController implements Initializable, IView{
 	}
 
 	@Override
-	public void setStage(Stage stage) {
-		this.stage= stage;
+	public void setMainActions(MainActions mainActions) {
+		// TODO Auto-generated method stub
 		
 	}
 }

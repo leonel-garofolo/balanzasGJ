@@ -7,11 +7,15 @@ package com.balanzasgj.app.persistence.impl.jdbc.commons;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp.BasicDataSource; 
+import org.apache.commons.dbcp.BasicDataSource;
+
+import com.j256.ormlite.jdbc.JdbcPooledConnectionSource; 
 
 //import com.zaxxer.hikari.HikariDataSource;
 
@@ -31,7 +35,9 @@ public class DataSourceProvider {
 	/**
 	 * The unique DataSource instance (singleton)
 	 */
-	private final static DataSource datasource = createDataSource() ;
+	private final static DataSource datasource = createDataSource() ;	
+	
+	private final static JdbcPooledConnectionSource jdbcPooledConnectionSource = createJdbcPooledConnectionSource() ;
 	
 	/**
 	 * Returns the DataSource unique instance (the DataSource is a singleton)
@@ -41,6 +47,18 @@ public class DataSourceProvider {
 		return datasource;
 	}
 
+	
+	
+	public static JdbcPooledConnectionSource getJdbcPooledConnectionSource() {
+		return jdbcPooledConnectionSource;
+	}	
+	
+	public static Connection getConnection() {
+		try {
+			return DataSourceProvider.getDataSource().getConnection();
+		} catch (SQLException e) {}		
+		return null;
+	}
 	/**
 	 * Returns the JDBC properties file name
 	 * @return
@@ -74,11 +92,17 @@ public class DataSourceProvider {
 		return datasource ;
 	}
 
-//	private static DataSource createDataSourceHikary() {
-//		HikariDataSource datasource = new HikariDataSource();
-//		// TODO : configuration
-//		return datasource ;
-//	}
+	private static JdbcPooledConnectionSource createJdbcPooledConnectionSource() {
+		Properties env = loadJdbcPropertiesFromClassPath();	
+		JdbcPooledConnectionSource connectionSource = null;
+		try {
+			connectionSource = new JdbcPooledConnectionSource(env.getProperty("jdbc.url"), env.getProperty("jdbc.username"), env.getProperty("jdbc.password"));	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		return connectionSource;
+	}
 
 	private static Properties loadPropertiesFromClassPath(String fileName) {
 		Properties properties = new Properties();

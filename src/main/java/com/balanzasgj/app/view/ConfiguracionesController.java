@@ -6,42 +6,35 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.balanzasgj.app.model.Ata;
-import com.balanzasgj.app.model.Clientes;
-import com.balanzasgj.app.model.Comunicaciones;
-import com.balanzasgj.app.model.Entidades;
-import com.balanzasgj.app.model.ImportadoresExportadores;
-import com.balanzasgj.app.model.Indicadores;
-import com.balanzasgj.app.model.ParametrosGlobales;
-import com.balanzasgj.app.model.Patentes;
-import com.balanzasgj.app.model.Procedencias;
-import com.balanzasgj.app.model.Productos;
-import com.balanzasgj.app.model.Transportes;
-import com.balanzasgj.app.model.Usuarios;
-import com.balanzasgj.app.persistence.AtaPersistence;
-import com.balanzasgj.app.persistence.ClientesPersistence;
-import com.balanzasgj.app.persistence.ComunicacionesPersistence;
-import com.balanzasgj.app.persistence.ImportadoresExportadoresPersistence;
-import com.balanzasgj.app.persistence.IndicadoresPersistence;
-import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
-import com.balanzasgj.app.persistence.PatentesPersistence;
-import com.balanzasgj.app.persistence.ProcedenciasPersistence;
-import com.balanzasgj.app.persistence.ProductosPersistence;
-import com.balanzasgj.app.persistence.TransportesPersistence;
-import com.balanzasgj.app.persistence.impl.jdbc.AtaPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ClientesPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ComunicacionesPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ImportadoresExportadoresPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.IndicadoresPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.PatentesPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ProcedenciasPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.ProductosPersistenceJdbc;
-import com.balanzasgj.app.persistence.impl.jdbc.TransportesPersistenceJdbc;
+import com.balanzasgj.app.model.Client;
+import com.balanzasgj.app.model.Comunication;
+import com.balanzasgj.app.model.Entity;
+import com.balanzasgj.app.model.GlobalParameter;
+import com.balanzasgj.app.model.ImportAndExport;
+import com.balanzasgj.app.model.Indicator;
+import com.balanzasgj.app.model.Origin;
+import com.balanzasgj.app.model.Patent;
+import com.balanzasgj.app.model.Product;
+import com.balanzasgj.app.model.Transport;
+import com.balanzasgj.app.model.User;
+import com.balanzasgj.app.services.AtaService;
+import com.balanzasgj.app.services.ClientService;
+import com.balanzasgj.app.services.ComunicationService;
+import com.balanzasgj.app.services.GlobalParameterService;
+import com.balanzasgj.app.services.ImportAndExportService;
+import com.balanzasgj.app.services.IndicatorService;
+import com.balanzasgj.app.services.OriginService;
+import com.balanzasgj.app.services.PatentService;
+import com.balanzasgj.app.services.ProductService;
+import com.balanzasgj.app.services.TransportService;
 import com.balanzasgj.app.utils.Message;
+import com.balanzasgj.app.view.settings.RemitoView;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -54,6 +47,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -78,17 +72,17 @@ public class ConfiguracionesController extends AnchorPane {
 	public static final String PATENTES = "PATENTES";
 
 	@FXML
-	private TableView<Entidades> tblEntidades;
+	private TableView<Entity> tblEntidades;
 	@FXML
-	private TableColumn<Entidades, Long> colCodigo;
+	private TableColumn<Entity, Long> colCodigo;
 
 	@FXML
-	private TableColumn<Entidades, String> colNombre;
+	private TableColumn<Entity, String> colNombre;
 
 	@FXML
-	private TableColumn<Indicadores, Long> colIndicadoresCodigo;
+	private TableColumn<Indicator, Long> colIndicadoresCodigo;
 	@FXML
-	private TableColumn<Indicadores, String> colIndicadoresNombre;
+	private TableColumn<Indicator, String> colIndicadoresNombre;
 
 	@FXML
 	private Button btnNuevoEntidad;
@@ -118,13 +112,13 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private ComboBox<Integer> cbxNroIndicador;
 	@FXML
-	private ComboBox<Indicadores> cbxIndicador;
+	private ComboBox<Indicator> cbxIndicador;
 	@FXML
 	private Button btnAplicarConecciones;
 	@FXML
 	private Button btnCancelarConecciones;
 	@FXML
-	private TableView<Indicadores> tblIndicadores;
+	private TableView<Indicator> tblIndicadores;
 	@FXML
 	private Button btnNuevoIndicador;
 	@FXML
@@ -145,6 +139,8 @@ public class ConfiguracionesController extends AnchorPane {
 	private Button btnCerrar;
 	@FXML
 	private TextArea txtIndicadorInfo;
+	@FXML
+	private CheckBox chkIndEje;
 	
 	@FXML
 	private AnchorPane usuariosView;
@@ -159,6 +155,8 @@ public class ConfiguracionesController extends AnchorPane {
 	private Tab tabUsuarios;
 	@FXML
 	private Tab tabAduana;
+	@FXML
+	private Tab tabRemito;
 
 	@FXML
 	private TabPane tabPane;
@@ -199,50 +197,33 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private TextField txtVenc;
 
-	private ClientesPersistence clientesPersistence;
-	private ProcedenciasPersistence procedenciasPersistence;
-	private ProductosPersistence productosPersistence;
-	private TransportesPersistence transportesPersistence;
-	private IndicadoresPersistence indicadoresPersistence;
-	private ComunicacionesPersistence comunicacionesPersistence;
-	private ImportadoresExportadoresPersistence importadoresExportadoresPersistence;
-	private AtaPersistence ataPersistence;
-	private PatentesPersistence patentesPersistence;
-	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
+	private ClientService clientService;
+	private OriginService originService;
+	private ProductService productService;
+	private TransportService transportService;
+	private IndicatorService indicatorService;
+	private ComunicationService comunicationService;
+	private ImportAndExportService importAndExportService;
+	private AtaService ataService;
+	private PatentService patentService;
+	private GlobalParameterService globalParameterService;
 	private boolean modoEditEntidades = false;
 	private boolean modoEditIndicadores = false;
 
 	@FXML
-	private void handleAplicarAduana(ActionEvent event) {
-		ParametrosGlobales pg = new ParametrosGlobales();
-		if (txtCodAduana != null && txtCodAduana.getText() != null && !txtCodAduana.getText().isEmpty()) {
-			pg.setId(ParametrosGlobales.A_CODIGO_ADUANA);
-			pg.setValue(txtCodAduana.getText());
-			parametrosGlobalesPersistence.save(pg);
-		}
-
-		pg = new ParametrosGlobales();
-		if (txtCodLOT != null && txtCodLOT.getText() != null && !txtCodLOT.getText().isEmpty()) {
-			pg.setId(ParametrosGlobales.A_CODIGO_LOG);
-			pg.setValue(txtCodLOT.getText());
-			parametrosGlobalesPersistence.save(pg);
-		}
-
-		pg = new ParametrosGlobales();
-		if (txtCertHab != null && txtCertHab.getText() != null && !txtCertHab.getText().isEmpty()) {
-			pg.setId(ParametrosGlobales.A_CERTIFICADO);
-			pg.setValue(txtCertHab.getText());
-			parametrosGlobalesPersistence.save(pg);
-		}
-
-		pg = new ParametrosGlobales();
-		if (txtVenc != null && txtVenc.getText() != null && !txtVenc.getText().isEmpty()) {
-			pg.setId(ParametrosGlobales.A_VENCIMIENTO);
-			pg.setValue(txtVenc.getText());
-			parametrosGlobalesPersistence.save(pg);
-		}
+	private void handleAplicarAduana(ActionEvent event) {	
+		saveFromTextComponent(GlobalParameter.A_CODIGO_ADUANA, txtCodAduana);
+		saveFromTextComponent(GlobalParameter.A_CODIGO_LOG, txtCodLOT);
+		saveFromTextComponent(GlobalParameter.A_CERTIFICADO, txtCertHab);
+		saveFromTextComponent(GlobalParameter.A_VENCIMIENTO, txtVenc);
 
 		Message.info("Los datos se guardaron correctamente.");
+	}
+	
+	private void saveFromTextComponent(String param, TextField field) {
+		if (field != null && field.getText() != null && !field.getText().isEmpty()) {			
+			globalParameterService.save(param, field.getText());
+		}
 	}
 
 	@FXML
@@ -281,7 +262,7 @@ public class ConfiguracionesController extends AnchorPane {
 		if (cbxIndicador.getSelectionModel().getSelectedItem() == null) {
 			txtIndicadorInfo.setText("");
 		} else {
-			Indicadores indicador = cbxIndicador.getSelectionModel().getSelectedItem();
+			Indicator indicador = cbxIndicador.getSelectionModel().getSelectedItem();
 			String text = "CONFIGURACION INDICADOR DE PESO N° 2 \n";
 			text += "Puerto: " + indicador.getPuerto() + "\n";
 			text += "Velocidad: " + indicador.getVelocidad() + "\n";
@@ -300,12 +281,12 @@ public class ConfiguracionesController extends AnchorPane {
 				cbxIndicador.getValue() != null) {
 			
 			if(cbxIndicador.getValue() != null) {
-				Comunicaciones comun = new Comunicaciones();
+				Comunication comun = new Comunication();
 				comun.setIdcomunicaciones(cbxNroIndicador.getValue().longValue());
 				comun.setNombre("INDICADOR " + cbxNroIndicador.getValue());
 				comun.setIdindicadores(
 						cbxIndicador.getSelectionModel().getSelectedItem().getIdindicadores().intValue());
-				comunicacionesPersistence.save(comun);
+				comunicationService.save(comun);
 			}	
 			Message.info("Se guardo correctamente.");
 		} else {
@@ -317,8 +298,8 @@ public class ConfiguracionesController extends AnchorPane {
 	private void handleTblEntidadesSelected(MouseEvent event) {
 		if (!tblEntidades.getSelectionModel().isEmpty()) {
 			modoEditEntidades = true;
-			if (tblEntidades.getSelectionModel().getSelectedItem() instanceof Patentes) {
-				Patentes p = (Patentes) tblEntidades.getSelectionModel().getSelectedItem();
+			if (tblEntidades.getSelectionModel().getSelectedItem() instanceof Patent) {
+				Patent p = (Patent) tblEntidades.getSelectionModel().getSelectedItem();
 				txtEntidadNombre.setText(p.getPatente());
 				SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				txtEntidadCuitAlias.setText(String.valueOf(p.getTara()));
@@ -327,21 +308,41 @@ public class ConfiguracionesController extends AnchorPane {
 
 			} else {
 				txtEntidadNombre.setText(tblEntidades.getSelectionModel().getSelectedItem().getNombre());
-				if (this.cbxEntidades.getSelectionModel().getSelectedItem().equals(PRODUCTOS)) {
-					txtEntidadCuitAlias.setText(tblEntidades.getSelectionModel().getSelectedItem().getAlias());
-				} else {
-					txtEntidadCuitAlias.setText(tblEntidades.getSelectionModel().getSelectedItem().getCuit());
-				}
-
-				if (tblEntidades.getSelectionModel().getSelectedItem().getUltimoMovimiento() != null) {
-					SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-					txtEntidadUltMov.setText(
-							sd.format(tblEntidades.getSelectionModel().getSelectedItem().getUltimoMovimiento()));
-				}
-				if (tblEntidades.getSelectionModel().getSelectedItem().getAcumulado() != null) {
-					txtEntidadAcumulado
-							.setText(tblEntidades.getSelectionModel().getSelectedItem().getAcumulado().toString());
-				}
+				SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+				switch (this.cbxEntidades.getSelectionModel().getSelectedItem()) {
+				case CLIENTE:
+					txtEntidadCuitAlias.setText(((Client)tblEntidades.getSelectionModel().getSelectedItem()).getCuit());
+					break;
+				case PRODUCTOS:
+					txtEntidadCuitAlias.setText(((Product)tblEntidades.getSelectionModel().getSelectedItem()).getAlias());
+					BigDecimal aProduct = ((Product)tblEntidades.getSelectionModel().getSelectedItem()).getAcumulado();
+					txtEntidadAcumulado.setText(aProduct == null ? "" : aProduct.toString());
+					break;
+				case TRANSPORTES:	
+					Transport t = (Transport)tblEntidades.getSelectionModel().getSelectedItem();
+					Date dTransporte = t.getUltimoMovimiento();
+					txtEntidadUltMov.setText(dTransporte==null ? "": sd.format(dTransporte));					
+					break;
+				case IMPORTADORES:
+					ImportAndExport importExport = (ImportAndExport)tblEntidades.getSelectionModel().getSelectedItem();
+					BigDecimal aImportAndExport = importExport.getAcumulado();
+					txtEntidadAcumulado.setText(aImportAndExport == null ? "" : aImportAndExport.toString());
+					Date dImpExp = importExport.getUltimoMovimiento();
+					txtEntidadUltMov.setText(dImpExp==null ? "": sd.format(dImpExp));
+					txtEntidadCuitAlias.setText(importExport.getCuit());
+					break;
+				case ATA_TRANSPORTISTA:
+					Ata ata = (Ata)tblEntidades.getSelectionModel().getSelectedItem();
+					BigDecimal aAta = ata.getAcumulado();
+					txtEntidadAcumulado.setText(aAta == null ? "" : aAta.toString());
+					Date dAta = ata.getUltimoMovimiento();
+					txtEntidadUltMov.setText(dAta==null ? "": sd.format(dAta));
+					txtEntidadCuitAlias.setText(ata.getCuit());
+					break;
+				
+				default:				
+					break;
+				}								
 			}
 		}
 	}
@@ -351,7 +352,7 @@ public class ConfiguracionesController extends AnchorPane {
 		if (!tblIndicadores.getSelectionModel().isEmpty()) {
 			modoEditIndicadores = true;
 			txtNombreIndicadores.setText(tblIndicadores.getSelectionModel().getSelectedItem().getNombre());
-			Indicadores indicadores = indicadoresPersistence
+			Indicator indicadores = indicatorService
 					.findById(tblIndicadores.getSelectionModel().getSelectedItem().getIdindicadores());
 			txtEditPosicionControl.setText(indicadores.getPosicionCaracterControl().toString());
 			txtEditLongCaracterControl.setText(indicadores.getLongitudCaracterControl().toString());
@@ -364,6 +365,7 @@ public class ConfiguracionesController extends AnchorPane {
 			cbxParidad.setValue(indicadores.getParidad());
 			cbxBitsDeParada.setValue(indicadores.getBitsDeParada());
 			cbxControlDeFlujo.setValue(indicadores.getControlDeFlujo());
+			chkIndEje.setSelected(indicadores.isEje());
 		}
 	}
 
@@ -388,14 +390,14 @@ public class ConfiguracionesController extends AnchorPane {
 				Gson gson = new Gson();
 		        Object json = gson.fromJson(bufferedReader, Object.class);
 		        ObjectMapper mapper = new ObjectMapper();
-		        List<Indicadores> indicadoresList = mapper.readValue(json.toString(), new TypeReference<List<Indicadores>>(){});
-		        for(Indicadores i: indicadoresList) {
-		    	   if(!indicadoresPersistence.existName(i.getNombre())) {
+		        List<Indicator> indicadoresList = mapper.readValue(json.toString(), new TypeReference<List<Indicator>>(){});
+		        for(Indicator i: indicadoresList) {
+		    	   if(!indicatorService.existName(i.getNombre())) {
 		    		   i.setIdindicadores(null);
-		    		   indicadoresPersistence.save(i);
+		    		   indicatorService.save(i);
 		    	   }
 		        }
-		        List<Indicadores> indicadores = indicadoresPersistence.findAll();
+		        List<Indicator> indicadores = indicatorService.findAll();
 		        tblIndicadores.getItems().clear();
 				tblIndicadores.getItems().addAll(indicadores);		        
 		        Message.info("Los indicadores se importaron correctamente.");
@@ -440,28 +442,28 @@ public class ConfiguracionesController extends AnchorPane {
 			String entidadType = cbxEntidades.getSelectionModel().getSelectedItem();
 			switch (entidadType) {
 			case CLIENTE:
-				clientesPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				clientService.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				break;
 			case PROCEDENCIAS:
-				procedenciasPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				originService.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				break;
 			case PRODUCTOS:
-				productosPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				productService.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				break;
 			case TRANSPORTES:
-				transportesPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				transportService.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				break;
 			case IMPORTADORES:
-				importadoresExportadoresPersistence
+				importAndExportService
 						.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				break;
 			case ATA_TRANSPORTISTA:
-				ataPersistence.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				ataService.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				break;
 
 			case PATENTES:
-				patentesPersistence
-						.deleteById(((Patentes) tblEntidades.getSelectionModel().getSelectedItem()).getPatente());
+				patentService
+						.deleteById(((Patent) tblEntidades.getSelectionModel().getSelectedItem()).getPatente());
 				break;
 			default:
 				break;
@@ -481,7 +483,7 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private void handleEliminarIndicadores(ActionEvent event) {
 		if (!tblIndicadores.getSelectionModel().isEmpty()) {
-			indicadoresPersistence.deleteById(tblIndicadores.getSelectionModel().getSelectedItem().getIdindicadores());
+			indicatorService.deleteById(tblIndicadores.getSelectionModel().getSelectedItem().getIdindicadores());
 			loadFormIndicadores();
 		}
 	}
@@ -496,34 +498,34 @@ public class ConfiguracionesController extends AnchorPane {
 		colNombre.setText("Nombre");
 		switch (entidadType) {
 		case CLIENTE:
-			tblEntidades.getItems().addAll(clientesPersistence.findAll());
+			tblEntidades.getItems().addAll(clientService.findAll());
 			setVisibleAduana(false);
 			lblCuitAlias.setVisible(true);
 			lblCuitAlias.setText("Cuit");
 			txtEntidadCuitAlias.setVisible(true);
 			break;
 		case PROCEDENCIAS:
-			tblEntidades.getItems().addAll(procedenciasPersistence.findAll());
+			tblEntidades.getItems().addAll(originService.findAll());
 			setVisibleAduana(false);
 			break;
 		case PRODUCTOS:
-			tblEntidades.getItems().addAll(productosPersistence.findAll());
+			tblEntidades.getItems().addAll(productService.findAll());
 			setVisibleAduana(true);
 			break;
 		case TRANSPORTES:
-			tblEntidades.getItems().addAll(transportesPersistence.findAll());
+			tblEntidades.getItems().addAll(transportService.findAll());
 			setVisibleAduana(true);
 			break;
 		case IMPORTADORES:
-			tblEntidades.getItems().addAll(importadoresExportadoresPersistence.findAll());
+			tblEntidades.getItems().addAll(importAndExportService.findAll());
 			setVisibleAduana(true);
 			break;
 		case ATA_TRANSPORTISTA:
-			tblEntidades.getItems().addAll(ataPersistence.findAll());
+			tblEntidades.getItems().addAll(ataService.findAll());
 			setVisibleAduana(true);
 			break;
 		case PATENTES:
-			tblEntidades.getItems().addAll(patentesPersistence.findAll());
+			tblEntidades.getItems().addAll(patentService.findAll());
 			setVisiblePatente(true);
 			colNombre.setText("Patentes");
 			break;
@@ -568,17 +570,15 @@ public class ConfiguracionesController extends AnchorPane {
 
 	private void loadFormIndicadores() {
 		cleanFormIndicadores();
-		List<Indicadores> indicadores = indicadoresPersistence.findAll();
+		List<Indicator> indicadores = indicatorService.findAll();
 		tblIndicadores.getItems().addAll(indicadores);
 		
-		cbxNroIndicador.getItems().clear();		
-		ParametrosGlobales pg = new ParametrosGlobales();	
-		pg.setId(ParametrosGlobales.P_NUM_BALANZAS);
-		parametrosGlobalesPersistence.load(pg);
-		if(pg.getValue() == null) {
+		cbxNroIndicador.getItems().clear();				
+		String pg = globalParameterService.get(GlobalParameter.P_NUM_BALANZAS);
+		if(pg.isEmpty()) {
 			cbxNroIndicador.getItems().add(new Integer(1));			
 		} else {
-			Integer indCount = Integer.valueOf(pg.getValue());
+			Integer indCount = Integer.valueOf(pg);
 			for(int i = 1; i <= indCount.intValue(); i++) {
 				cbxNroIndicador.getItems().add(new Integer(i));			
 			}
@@ -594,10 +594,10 @@ public class ConfiguracionesController extends AnchorPane {
 	
 	private void setSelectedIndication() {
 		cbxIndicador.setValue(null);
-		List<Comunicaciones> all = comunicacionesPersistence.findAll();
-		for (Comunicaciones c : all) {
+		List<Comunication> all = comunicationService.findAll();
+		for (Comunication c : all) {
 			if(cbxNroIndicador.getSelectionModel().getSelectedItem().intValue() == c.getIdcomunicaciones()) {
-				Indicadores i = indicadoresPersistence.findById((long) c.getIdindicadores());
+				Indicator i = indicatorService.findById((long) c.getIdindicadores());
 				cbxIndicador.setValue(i);
 				break;
 			}				
@@ -631,50 +631,50 @@ public class ConfiguracionesController extends AnchorPane {
 		} else {
 			switch (entidadType) {
 			case CLIENTE:
-				Clientes cli = new Clientes();
+				Client cli = new Client();
 				if (modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
 					cli.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				}
 				cli.setNombre(nombre);
 				cli.setCuit(txtEntidadCuitAlias.getText());
-				clientesPersistence.save(cli);
+				clientService.save(cli);
 				this.loadFormEntidades(entidadType);
 				break;
 			case PROCEDENCIAS:
-				Procedencias pro = new Procedencias();
+				Origin pro = new Origin();
 				if (modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
 					pro.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				}
 				pro.setNombre(nombre);
-				procedenciasPersistence.save(pro);
+				originService.save(pro);
 				break;
 			case PRODUCTOS:
-				Productos producto = new Productos();
+				Product producto = new Product();
 				if (modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
 					producto.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				}
 
 				producto.setNombre(nombre);
 				producto.setAlias(txtEntidadCuitAlias.getText());
-				productosPersistence.save(producto);
+				productService.save(producto);
 				break;
 			case TRANSPORTES:
-				Transportes tras = new Transportes();
+				Transport tras = new Transport();
 				if (modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
 					tras.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				}
 				tras.setNombre(nombre);
 				tras.setCuit(txtEntidadCuitAlias.getText());
-				transportesPersistence.save(tras);
+				transportService.save(tras);
 				break;
 			case IMPORTADORES:
-				ImportadoresExportadores ie = new ImportadoresExportadores();
+				ImportAndExport ie = new ImportAndExport();
 				if (modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
 					ie.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
 				}
 				ie.setNombre(nombre);
 				ie.setCuit(txtEntidadCuitAlias.getText());
-				importadoresExportadoresPersistence.save(ie);
+				importAndExportService.save(ie);
 				break;
 			case ATA_TRANSPORTISTA:
 				Ata ata = new Ata();
@@ -683,16 +683,16 @@ public class ConfiguracionesController extends AnchorPane {
 				}
 				ata.setNombre(nombre);
 				ata.setCuit(txtEntidadCuitAlias.getText());
-				ataPersistence.save(ata);
+				ataService.save(ata);
 				break;
 			case PATENTES:
-				Patentes p = new Patentes();
+				Patent p = new Patent();
 				if (modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
-					p.setPatente(((Patentes) tblEntidades.getSelectionModel().getSelectedItem()).getPatente());
+					p.setPatente(((Patent) tblEntidades.getSelectionModel().getSelectedItem()).getPatente());
 				}
 				p.setTara(Double.valueOf(txtEntidadCuitAlias.getText()));
 				p.setDiasVenc(Integer.valueOf(txtEntidadAcumulado.getText()));
-				patentesPersistence.save(p);
+				patentService.save(p);
 				break;
 
 			default:
@@ -700,11 +700,10 @@ public class ConfiguracionesController extends AnchorPane {
 			}
 			this.loadFormEntidades(entidadType);
 		}
-
 	}
 
 	private void saveIndicadores() {
-		Indicadores indicadores = new Indicadores();
+		Indicator indicadores = new Indicator();
 		indicadores.setNombre(txtNombreIndicadores.getText());
 		if (txtEditPosicionControl.getText() != null) {
 			indicadores.setPosicionCaracterControl(Integer.valueOf(txtEditPosicionControl.getText()));
@@ -726,25 +725,27 @@ public class ConfiguracionesController extends AnchorPane {
 		indicadores.setParidad(cbxParidad.getValue());
 		indicadores.setBitsDeParada(cbxBitsDeParada.getValue());
 		indicadores.setControlDeFlujo(cbxControlDeFlujo.getValue());
+		indicadores.setEje(chkIndEje.isSelected());
 		if (modoEditIndicadores && !tblIndicadores.getSelectionModel().isEmpty()) {
 			indicadores.setIdindicadores(tblIndicadores.getSelectionModel().getSelectedItem().getIdindicadores());
 		}
-		indicadoresPersistence.save(indicadores);
+		indicatorService.save(indicadores);
 
 		loadFormIndicadores();
 	}
 
 	public void initialize() {
-		switch (Usuarios.getPerfilLogeado()) {
-		case Usuarios.P_SUPERVISOR:
+		switch (User.getPerfilLogeado()) {
+		case User.P_SUPERVISOR:
 			tabCom.setDisable(true);
 			tabInd.setDisable(true);
 			break;
-		case Usuarios.P_OPERADOR:
+		case User.P_OPERADOR:
 			tabCom.setDisable(true);
 			tabInd.setDisable(true);
 			tabUsuarios.setDisable(true);
 			tabAduana.setDisable(true);
+			tabRemito.setDisable(true);
 			break;
 		default:
 			break;
@@ -760,6 +761,7 @@ public class ConfiguracionesController extends AnchorPane {
 
 		// cargo los datos de los indicadores del sistema
 		loadFormIndicadores();
+		initRemitoView();
 	}
 
 	private void initTextUpperCase() {
@@ -858,46 +860,28 @@ public class ConfiguracionesController extends AnchorPane {
 			}
 		});
 
-		ParametrosGlobales pg = new ParametrosGlobales();
-		pg.setId(ParametrosGlobales.A_CODIGO_ADUANA);
-		parametrosGlobalesPersistence.load(pg);
-		if (pg != null) {
-			txtCodAduana.setText(pg.getValue());
-		}
-
-		pg = new ParametrosGlobales();
-		pg.setId(ParametrosGlobales.A_CODIGO_LOG);
-		parametrosGlobalesPersistence.load(pg);
-		if (pg != null) {
-			txtCodLOT.setText(pg.getValue());
-		}
-
-		pg = new ParametrosGlobales();
-		pg.setId(ParametrosGlobales.A_CERTIFICADO);
-		parametrosGlobalesPersistence.load(pg);
-		if (pg != null) {
-			txtCertHab.setText(pg.getValue());
-		}
-
-		pg = new ParametrosGlobales();
-		pg.setId(ParametrosGlobales.A_VENCIMIENTO);
-		parametrosGlobalesPersistence.load(pg);
-		if (pg != null) {
-			txtVenc.setText(pg.getValue());
-		}
+		
+		txtCodAduana.setText(globalParameterService.get(GlobalParameter.A_CODIGO_ADUANA));	
+		txtCodLOT.setText(globalParameterService.get(GlobalParameter.A_CODIGO_LOG));
+		txtCertHab.setText(globalParameterService.get(GlobalParameter.A_CERTIFICADO));		
+		txtVenc.setText(globalParameterService.get(GlobalParameter.A_VENCIMIENTO));
+	}
+	
+	private void initRemitoView() {		
+		tabRemito.setContent(new RemitoView().build());
 	}
 
 	private void initPersistence() {
-		this.parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
-		this.clientesPersistence = new ClientesPersistenceJdbc();
-		this.procedenciasPersistence = new ProcedenciasPersistenceJdbc();
-		this.productosPersistence = new ProductosPersistenceJdbc();
-		this.transportesPersistence = new TransportesPersistenceJdbc();
-		this.indicadoresPersistence = new IndicadoresPersistenceJdbc();
-		this.comunicacionesPersistence = new ComunicacionesPersistenceJdbc();
-		this.importadoresExportadoresPersistence = new ImportadoresExportadoresPersistenceJdbc();
-		this.patentesPersistence = new PatentesPersistenceJdbc();
-		this.ataPersistence = new AtaPersistenceJdbc();
+		this.globalParameterService = new GlobalParameterService();
+		this.clientService = new ClientService();
+		this.originService = new OriginService();
+		this.productService = new ProductService();
+		this.transportService = new TransportService();
+		this.indicatorService = new IndicatorService();
+		this.comunicationService = new ComunicationService();
+		this.importAndExportService = new ImportAndExportService();
+		this.patentService = new PatentService();
+		this.ataService = new AtaService();
 	}
 
 	private void initComunicaciones() {
@@ -922,8 +906,8 @@ public class ConfiguracionesController extends AnchorPane {
 
 			@Override
 			public String getValue() {
-				if (cellData.getValue() instanceof Patentes) {
-					return ((Patentes) cellData.getValue()).getPatente();
+				if (cellData.getValue() instanceof Patent) {
+					return ((Patent) cellData.getValue()).getPatente();
 				} else {
 					return cellData.getValue().getNombre().toString();
 				}

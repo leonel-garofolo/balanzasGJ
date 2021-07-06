@@ -1,17 +1,17 @@
 package com.balanzasgj.app.db;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.apache.log4j.Logger;
 
-import com.balanzasgj.app.persistence.impl.jdbc.commons.GenericJdbcDAO;
+import com.balanzasgj.app.persistence.impl.jdbc.commons.DataSourceProvider;
 
 @SuppressWarnings("rawtypes")
-public class UpdateDB extends GenericJdbcDAO {
+public class UpdateDB {
+	
 	final static Logger logger = Logger.getLogger(UpdateDB.class);
 	private int currentVersion; // ultimo script corrido
 	private String query;
@@ -21,7 +21,7 @@ public class UpdateDB extends GenericJdbcDAO {
 		Statement st = null;
 		query = "";
 		try {
-			conn = getConnection();
+			conn = DataSourceProvider.getConnection();
 			createTableVersion();
 			st = conn.createStatement();
 			if (currentVersion < 1) {
@@ -70,6 +70,16 @@ public class UpdateDB extends GenericJdbcDAO {
 				st.execute(query);
 				insertQueryExecute(3);
 			}
+			if (currentVersion < 4) {
+				query = "alter table indicadores add column is_eje bit(1) NULL";
+				st.execute(query);
+				insertQueryExecute(4);
+			}
+			if (currentVersion < 5) {
+				query = "alter table patentes add column nombre varchar(255) NULL";
+				st.execute(query);
+				insertQueryExecute(5);
+			}
 
 		} catch (Exception e) {
 			logger.error("update DDBB ERROR", e);
@@ -77,12 +87,32 @@ public class UpdateDB extends GenericJdbcDAO {
 			closeConnection(conn, st);
 		}
 	}
+	
+	private void closeConnection(Connection conn) {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void closeConnection(Connection conn, Statement st) {
+		if(st != null)
+			try {
+				st.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		closeConnection(conn);	
+	}
 
 	private void createTableVersion() {
 		Connection conn = null;
 		Statement st = null;
 		try {
-			conn = getConnection();
+			conn = DataSourceProvider.getConnection();
 			st = conn.createStatement();
 			query = "SHOW TABLES LIKE 'versionado'";
 			boolean existTable = false;
@@ -117,11 +147,13 @@ public class UpdateDB extends GenericJdbcDAO {
 		}
 	}
 
+	
+
 	private void insertQueryExecute(int version) {
 		Connection conn = null;
 		Statement st = null;
 		try {
-			conn = getConnection();
+			conn = DataSourceProvider.getConnection();
 			st = conn.createStatement();
 			query = "insert into versionado (numero_sql, update_sql) values(" + version + ", current_timestamp())";
 			st.execute(query);
@@ -137,7 +169,7 @@ public class UpdateDB extends GenericJdbcDAO {
 		Connection conn = null;
 		Statement st = null;
 		try {
-			conn = getConnection();
+			conn = DataSourceProvider.getConnection();
 			st = conn.createStatement();
 			query = "DROP DATABASE sist_pesada";
 			st.execute(query);
@@ -149,83 +181,5 @@ public class UpdateDB extends GenericJdbcDAO {
 		} finally {
 			closeConnection(conn);
 		}
-	}
-
-	@Override
-	protected Object newInstance() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected String getSqlSelect() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected String getSqlSelectAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected String getSqlInsert() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected String getSqlUpdate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected String getSqlDelete() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected String getSqlCount() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected String getSqlCountAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected void setValuesForPrimaryKey(PreparedStatement ps, int i, Object bean) throws SQLException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void setValuesForInsert(PreparedStatement ps, int i, Object bean) throws SQLException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void setValuesForUpdate(PreparedStatement ps, int i, Object bean) throws SQLException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected Object populateBean(ResultSet rs, Object bean) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected void setAutoIncrementedKey(Object bean, long id) {
-		// TODO Auto-generated method stub
-
 	}
 }

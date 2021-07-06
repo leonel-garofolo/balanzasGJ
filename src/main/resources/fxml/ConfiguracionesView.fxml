@@ -315,6 +315,8 @@
                                                                   <Insets right="15.0" />
                                                                </GridPane.margin>
                                                             </TextField>
+                                                            <CheckBox fx:id="chkIndEje" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+                                                            <Label text="Indicador para Ejes" GridPane.rowIndex="6" />
                                                          </children>
                                                       </GridPane>
                                                       <Button fx:id="btnAplicarEditIndicacion" layoutX="349.0" layoutY="234.0" mnemonicParsing="false" onAction="#handleAplicarIndicadores" text="Aplicar">
@@ -380,6 +382,10 @@
                            </children>
                         </AnchorPane>
                     </content>
+                  </Tab>
+                  <Tab fx:id="tabRemito" text="Remito">
+                  	<content>
+                  	</content>
                   </Tab>
               </tabs>
             </TabPane>

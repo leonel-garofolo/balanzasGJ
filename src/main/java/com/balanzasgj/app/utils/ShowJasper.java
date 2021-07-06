@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
-import com.balanzasgj.app.model.Reports;
+import com.balanzasgj.app.model.Report;
 import com.balanzasgj.app.persistence.impl.jdbc.commons.DataSourceProvider;
 
 import net.sf.jasperreports.engine.JRException;
@@ -67,7 +67,7 @@ public class ShowJasper {
         }
     }
     
-    public static String getReportCopy(Reports report) {
+    public static String getReportCopy(Report report) {
     	String reportCopy = "";
 		switch (report.getCount()) {
 		case 1:

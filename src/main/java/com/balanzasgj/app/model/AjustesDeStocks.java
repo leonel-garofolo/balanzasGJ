@@ -8,6 +8,9 @@ package com.balanzasgj.app.model;
 
 import java.io.Serializable;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 
 /**
  * Java bean for entity "ajustes_de_stocks"
@@ -15,13 +18,17 @@ import java.io.Serializable;
  * @author Telosys Tools Generator
  *
  */
-public class AjustesDeStocks extends Entidades implements Serializable
+@DatabaseTable(tableName = "aaaa")
+public class AjustesDeStocks extends Entity implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
+    @DatabaseField(id = true)
     private Long    codigo       ; // Id or Primary Key
 
+    @DatabaseField(canBeNull = false)
     private String     nombre       ;
+    @DatabaseField(canBeNull = true)
     private Integer    existencia   ;
 
     /**

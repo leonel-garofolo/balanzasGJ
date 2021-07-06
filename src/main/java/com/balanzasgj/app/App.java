@@ -13,63 +13,58 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
 import com.balanzasgj.app.db.UpdateDB;
-import com.balanzasgj.app.model.ParametrosGlobales;
-import com.balanzasgj.app.persistence.ParametrosGlobalesPersistence;
-import com.balanzasgj.app.persistence.impl.jdbc.ParametrosGlobalesPersistenceJdbc;
+import com.balanzasgj.app.model.GlobalParameter;
 import com.balanzasgj.app.quartz.SimpleJob;
+import com.balanzasgj.app.services.GlobalParameterService;
 import com.balanzasgj.app.utils.MiPrinterJob;
 
 public class App {
 	final static Logger logger = Logger.getLogger(App.class);
-	private ParametrosGlobalesPersistence parametrosGlobalesPersistence;
+	public static final String STYLE_CSS = "styles/main.css";
+	public static final String APP_NAME = "Sistemas de Balanzas v1.28";
+	private GlobalParameterService globalParameterService;
 	
 	public static final String PATH_ICONO = "images/icono/fullserivices.jpg";
-	@SuppressWarnings("static-access")
+
+	
 	private void iniciar(){				
 		logger.debug("Debug Message Logged !!!");
 		logger.info("Info Message Logged !!!");
 		GargareCollection gargare = new GargareCollection();
 		gargare.start();
 		
-		String bkpAutmatico = "";
-		parametrosGlobalesPersistence = new ParametrosGlobalesPersistenceJdbc();
-		ParametrosGlobales pg = new ParametrosGlobales();
-		pg.setId(ParametrosGlobales.P_EMPRESA_AUTOMATICO);
-		parametrosGlobalesPersistence.load(pg);		
-		if(pg!= null) {
-			bkpAutmatico = pg.getValue();
-			
-			if(bkpAutmatico != null && !bkpAutmatico.isEmpty()) {	
-				String[] hm = bkpAutmatico.split(":");
-				SchedulerFactory sf = new StdSchedulerFactory();
-				try {
-					Scheduler sched = sf.getScheduler();
-					JobDetail job = JobBuilder.newJob(SimpleJob.class)
-						    .withIdentity("job1", "group1")
-						    .build();
-
-					CronTrigger trigger = TriggerBuilder.newTrigger()
-					    .withIdentity("trigger1", "group1")
-					    .withSchedule(CronScheduleBuilder.cronSchedule("0 " + hm[1] + " " + hm[0] + " * * ?"))
+		globalParameterService = new GlobalParameterService();
+		String bkpAutmatico = globalParameterService.get(GlobalParameter.P_EMPRESA_AUTOMATICO);
+		
+		if(bkpAutmatico != null && !bkpAutmatico.isEmpty()) {	
+			String[] hm = bkpAutmatico.split(":");
+			SchedulerFactory sf = new StdSchedulerFactory();
+			try {
+				Scheduler sched = sf.getScheduler();
+				JobDetail job = JobBuilder.newJob(SimpleJob.class)
+					    .withIdentity("job1", "group1")
 					    .build();
 
-					sched.scheduleJob(job, trigger);
-					sched.start();
-				} catch (SchedulerException e) {
-					// TODO Auto-generated catch block
-					logger.error(e);
-				}
-				
-			}								
-		}
+				CronTrigger trigger = TriggerBuilder.newTrigger()
+				    .withIdentity("trigger1", "group1")
+				    .withSchedule(CronScheduleBuilder.cronSchedule("0 " + hm[1] + " " + hm[0] + " * * ?"))
+				    .build();
+
+				sched.scheduleJob(job, trigger);
+				sched.start();
+			} catch (SchedulerException e) {
+				logger.error(e);
+			}
+			
+		}	
 		
 		UpdateDB updateDb = new UpdateDB();
 		updateDb.run();
 		MiPrinterJob.preparedPrinter();
-		AppClient.iniciar();			
+		AppClient.iniciar();
 	}
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {	
 		App app = new App();		
 		app.iniciar();		
 	}

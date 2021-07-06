@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.balanzasgj.app.model.Taras;
-import com.balanzasgj.app.persistence.TarasPersistence;
-import com.balanzasgj.app.persistence.impl.jdbc.TarasPersistenceJdbc;
+import com.balanzasgj.app.model.Tare;
 
 import ar.com.fdvs.dj.domain.DynamicReport;
 import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
@@ -15,22 +13,10 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class TransaccionesDetalleInforme extends ReportBase{
-	final static Logger logger = Logger.getLogger(TransaccionesDetalleInforme.class);
-    private List<Taras> taras;
-    public TransaccionesDetalleInforme(List<Taras> taras){
+	final static Logger logger = Logger.getLogger(TransaccionesDetalleInforme.class);	
+    private List<Tare> taras;
+    public TransaccionesDetalleInforme(List<Tare> taras){
         this.taras = taras;
-    }
-
-    public static void main(String[] args){
-        TarasPersistence tarasPersistence = new TarasPersistenceJdbc();
-        TransaccionesDetalleInforme inf = new TransaccionesDetalleInforme(tarasPersistence.findAll());
-        try {
-            inf.generateReport();
-        } catch (Exception e) {
-            logger.error(e);
-        }
-        inf.show();
-
     }
 
     @Override
@@ -68,7 +54,7 @@ public class TransaccionesDetalleInforme extends ReportBase{
         }
          */
 
-        for(Taras tara: taras){
+        for(Tare tara: taras){
 
         }
        

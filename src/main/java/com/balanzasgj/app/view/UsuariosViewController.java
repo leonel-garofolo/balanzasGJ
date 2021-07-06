@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import com.balanzasgj.app.model.Perfiles;
-import com.balanzasgj.app.model.Usuarios;
-import com.balanzasgj.app.persistence.UsuariosPersistence;
-import com.balanzasgj.app.persistence.impl.jdbc.UsuariosPersistenceJdbc;
+import com.balanzasgj.app.model.User;
+import com.balanzasgj.app.services.UserService;
 import com.balanzasgj.app.utils.Message;
 
 import javafx.event.ActionEvent;
@@ -30,11 +29,11 @@ public class UsuariosViewController extends AnchorPane implements Initializable{
 	@FXML
 	private Button btnNuevo;
 	@FXML
-	private TableView<Usuarios> tblUsuarios;
+	private TableView<User> tblUsuarios;
 	@FXML
-	private TableColumn<Usuarios, String> colUsuario;
+	private TableColumn<User, String> colUsuario;
 	@FXML
-	private TableColumn<Usuarios, String> colClave;
+	private TableColumn<User, String> colClave;
 	@FXML
 	private Button btnAplicar;
 	
@@ -43,9 +42,9 @@ public class UsuariosViewController extends AnchorPane implements Initializable{
 	@FXML
 	private PasswordField txtClave;
 	
-	private UsuariosPersistence usuariosPersistence;
+	private UserService userService;
 	
-	private Usuarios userEdit; 
+	private User userEdit; 
 	
 	@FXML
 	private void handleEliminar(ActionEvent event) {
@@ -58,7 +57,7 @@ public class UsuariosViewController extends AnchorPane implements Initializable{
 			return;
 		}
 		this.userEdit = tblUsuarios.getSelectionModel().getSelectedItem();
-		usuariosPersistence.deleteById(userEdit.getId());
+		userService.deleteById(userEdit.getId());
 		refreshTableUsuarios();
 		cleanFormUsuario();
 		Message.info("El usuario se elimino correctamente.");
@@ -78,13 +77,13 @@ public class UsuariosViewController extends AnchorPane implements Initializable{
 				Message.error("Los campos en negrita son requeridos.");					
 			}
 			if(this.userEdit == null) {
-				this.userEdit = new Usuarios();				
+				this.userEdit = new User();				
 			}
 			
 			this.userEdit.setNombre(txtUsuario.getText());
 			this.userEdit.setClave(txtClave.getText());
 			this.userEdit.setIdPerfil(tblPerfiles.getSelectionModel().getSelectedItem().getId());
-			usuariosPersistence.save(userEdit);
+			userService.save(userEdit);
 			refreshTableUsuarios();
 			cleanFormUsuario();
 			Message.info("Se guardo correctamente.");
@@ -114,7 +113,7 @@ public class UsuariosViewController extends AnchorPane implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		this.usuariosPersistence = new UsuariosPersistenceJdbc();
+		this.userService = new UserService();
 		txtUsuario.textProperty().addListener((ov, oldValue, newValue) -> {
 			txtUsuario.setText(newValue.toUpperCase());
 		});
@@ -129,21 +128,21 @@ public class UsuariosViewController extends AnchorPane implements Initializable{
 		colUsuario.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 		
 		Perfiles perf = null;
-		if(Usuarios.getPerfilLogeado().equals(Usuarios.P_ADMINISTRADOR)) {
+		if(User.getPerfilLogeado().equals(User.P_ADMINISTRADOR)) {
 			perf = new Perfiles();
 			perf.setId(1);
-			perf.setNombre(Usuarios.P_ADMINISTRADOR);
+			perf.setNombre(User.P_ADMINISTRADOR);
 			tblPerfiles.getItems().add(perf);
 		}
 		
 		perf = new Perfiles();
 		perf.setId(2);
-		perf.setNombre(Usuarios.P_SUPERVISOR);
+		perf.setNombre(User.P_SUPERVISOR);
 		tblPerfiles.getItems().add(perf);
 		
 		perf = new Perfiles();
 		perf.setId(3);
-		perf.setNombre(Usuarios.P_OPERADOR);
+		perf.setNombre(User.P_OPERADOR);
 		tblPerfiles.getItems().add(perf);		
 	}
 	
@@ -151,13 +150,13 @@ public class UsuariosViewController extends AnchorPane implements Initializable{
 		tblUsuarios.getItems().clear();
 		if(tblPerfiles.getSelectionModel().isEmpty()) {			
 			// perfil por defecto es el ADMINISTRADOR
-			tblUsuarios.getItems().addAll(usuariosPersistence.loadForPerfil(1));
+			tblUsuarios.getItems().addAll(userService.loadForPerfil(1));
 		}else {
-			if(Usuarios.getPerfilLogeado().equals(Usuarios.P_SUPERVISOR)) {
-				List<Usuarios> usuarios = usuariosPersistence.loadForPerfil(tblPerfiles.getSelectionModel().getSelectedItem().getId());
-				for(Usuarios u: usuarios) {
+			if(User.getPerfilLogeado().equals(User.P_SUPERVISOR)) {
+				List<User> usuarios = userService.loadForPerfil(tblPerfiles.getSelectionModel().getSelectedItem().getId());
+				for(User u: usuarios) {
 					if(u.getIdPerfil() == 2) {
-						if(u.getNombre().equals(Usuarios.getUsuarioLogeado())) {
+						if(u.getNombre().equals(User.getUsuarioLogeado())) {
 							tblUsuarios.getItems().add(u);
 							break;
 						}
@@ -166,7 +165,7 @@ public class UsuariosViewController extends AnchorPane implements Initializable{
 					}
 				}	
 			} else {
-				tblUsuarios.getItems().addAll(usuariosPersistence.loadForPerfil(tblPerfiles.getSelectionModel().getSelectedItem().getId()));
+				tblUsuarios.getItems().addAll(userService.loadForPerfil(tblPerfiles.getSelectionModel().getSelectedItem().getId()));
 			}
 		}
 	}

@@ -1,50 +1,104 @@
 package com.balanzasgj.app;
 
-import com.balanzasgj.app.view.IView;
+import java.io.IOException;
+
+import org.apache.log4j.Logger;
+
+import com.balanzasgj.app.view.DashboardView;
 import com.balanzasgj.app.view.LoginController;
+import com.balanzasgj.app.view.MainActions;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
-public class AppClient extends Application {
-	private Scene scene;
+public class AppClient extends Application implements MainActions {
+	final static Logger logger = Logger.getLogger(AppClient.class);	
+	private Stage primaryStage;
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {		
-		primaryStage.setTitle("Sistemas de Balanzas v1.28");
-		
-		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/LoginView.fxml"));
-		Parent rootLogin = (Parent)loader.load();
-		this.scene = new Scene(rootLogin);	
-		
-		scene.getStylesheets().add(getClass().getClassLoader().getResource("fxml/style.css").toExternalForm());		
-		
-		if(loader.getController() instanceof LoginController) {
-	    	IView controller = (LoginController)loader.getController();
-	    	controller.setStage(primaryStage);
-	    }
-		
-		primaryStage.setScene(scene);				
-		//Image ico = new Image(this.getClass().getResource(App.PATH_ICONO).getFile()); 
-		//primaryStage.getIcons().add(ico);
-		primaryStage.resizableProperty().set(false);		
-		primaryStage.show();
-		primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
-
-            public void handle(WindowEvent event) {
-            	System.exit(0);
-            }
-        });		
+	public void start(Stage primaryStage) throws Exception {	
+		Platform.setImplicitExit(true);
+		this.primaryStage = new Stage();
+		//primaryStage.setTitle(App.APP_NAME);
+		//primaryStage.setMaximized(true);		
+		showLogin();
 	}
 	
 	public static void iniciar(){
 		String[] args = {};
 		launch(args);
+	}
+
+	@Override
+	public void showLogin() {
+		openLogin("LoginView", App.APP_NAME);
+	}
+
+	@Override
+	public void showDashboard() {			 
+		DashboardView dashboardView = new DashboardView(this);
+		Screen screen = Screen.getPrimary();
+		Rectangle2D bounds = screen.getVisualBounds();
+
+		primaryStage.setX(bounds.getMinX());
+		primaryStage.setY(bounds.getMinY());
+		primaryStage.setWidth(bounds.getWidth());
+		primaryStage.setHeight(bounds.getHeight());
+		
+		primaryStage.centerOnScreen();
+		primaryStage.setTitle(App.APP_NAME);
+		//primaryStage.setMaximized(true);
+		primaryStage.resizableProperty().setValue(Boolean.FALSE);
+		
+	    Scene scene = new Scene(dashboardView);
+		scene.getStylesheets().add(getClass().getClassLoader().getResource(App.STYLE_CSS).toExternalForm());	    
+		primaryStage.setScene(scene);   
+		primaryStage.show();		
+		primaryStage.setOnHiding(e-> close());		
+	}
+	
+	@Override
+	public void close() {
+		System.exit(0);
+		
+	}
+
+	@Override
+	public Stage getStage() {
+		return this.primaryStage;
+	}	
+	
+	private void openLogin(String fxmlName, String title) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/" + fxmlName + ".fxml"));
+			Parent rootHerramientas = (Parent)loader.load();		
+			
+			primaryStage.setWidth(350);
+			primaryStage.setHeight(180);
+			primaryStage.centerOnScreen();
+			primaryStage.resizableProperty().setValue(Boolean.FALSE);
+			primaryStage.setTitle(title);
+		    Scene scene = new Scene(rootHerramientas);
+		    scene.getStylesheets().add(getClass().getClassLoader().getResource(App.STYLE_CSS).toExternalForm());
+		    primaryStage.setScene(scene); 
+		    primaryStage.setOnHiding(e-> {
+		    	close();
+		    });		
+		    
+		    LoginController controller = (LoginController)loader.getController();			
+		    controller.setMainActions(this);
+		    primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+			logger.error(e.getCause());
+			logger.error(e.getMessage());
+			logger.error(e);						
+		}
 	}
 }

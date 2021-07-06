@@ -11,7 +11,7 @@ import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.constants.Page;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
-import com.balanzasgj.app.model.Taras;
+import com.balanzasgj.app.model.Tare;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
@@ -22,8 +22,8 @@ import java.util.Date;
 import java.util.List;
 
 public class TransaccionesInforme  extends ReportBase{
-    private List<Taras> taras;
-    public TransaccionesInforme(List<Taras> taras){
+    private List<Tare> taras;
+    public TransaccionesInforme(List<Tare> taras){
         this.taras = taras;
     }
 

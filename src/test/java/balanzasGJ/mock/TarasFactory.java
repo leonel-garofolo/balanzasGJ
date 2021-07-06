@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.balanzasgj.app.model.Taras;
+import com.balanzasgj.app.model.Tare;
 
 public class TarasFactory {
 
-	public static List<Taras> load(){
-		List<Taras> taras = new ArrayList<Taras>();
-		Taras tara = new Taras();
+	public static List<Tare> load(){
+		List<Tare> taras = new ArrayList<Tare>();
+		Tare tara = new Tare();
 		tara.setFechaEntrada(new Date());
 		tara.setFechaSalida(new Date());
 		tara.setBalanza("2561");		
@@ -20,7 +20,7 @@ public class TarasFactory {
 		tara.setPesoSalida(new BigDecimal(7000));		
 		taras.add(tara);
 		
-		tara = new Taras();
+		tara = new Tare();
 		tara.setBalanza("256122");
 		tara.setTransaccion("122");
 		tara.setPesoEntrada(new BigDecimal(3000));
