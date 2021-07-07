@@ -37,6 +37,7 @@ public class ExportTaraCsvTest {
 
     @Test
     public  void testReportService(){
-        ReportService.exportCsv("sistema_balanzas_taras.csv");
+    	ReportService reportService = new ReportService();
+        reportService.exportCsv("sistema_balanzas_taras.csv");
     }
 }

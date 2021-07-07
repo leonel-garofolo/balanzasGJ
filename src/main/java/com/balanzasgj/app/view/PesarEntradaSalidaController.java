@@ -418,7 +418,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 				}
 			}
 
-			ReportService.ticket(modalidad, taraEdit.getIdtaras().longValue());
+			reportService.ticket(modalidad, taraEdit.getIdtaras().longValue());
 		}
 	}
 
@@ -613,7 +613,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 						taraEdit = tareService.findById(tara.getIdtaras());
 						handleTicket(null);
 					}
-					ReportService.exportCsv("sistema_balanzas_taras.csv");
+					reportService.exportCsv("sistema_balanzas_taras.csv");
 					clearForm();
 					btnIngresoManual.setDisable(true);
 					handleNuevoPesaje(event);

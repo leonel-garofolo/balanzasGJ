@@ -2,8 +2,13 @@ package com.balanzasgj.app.view.settings;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.javafx.controls.customs.view.ComboBoxAutoCompleteView;
 
 import com.balanzasgj.app.informes.model.RemitoFieldType;
+import com.balanzasgj.app.model.RemitoField;
+import com.balanzasgj.app.services.RemitoFieldService;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -19,8 +24,11 @@ import javafx.scene.layout.VBox;
 
 public class RemitoView extends VBox {
 	private VBox screen;	
-	private TableView<Field> tblRemito;
+	private TableView<RemitoField> tblRemito;
+	private RemitoFieldService remitoFieldService;
+	
 	public RemitoView(){
+		this.remitoFieldService = new RemitoFieldService();
 		initialize();
 	}		
 
@@ -29,21 +37,27 @@ public class RemitoView extends VBox {
 	}
 	
 	private void initialize() {
-		screen = new VBox();
+		screen = new VBox();		
+		ComboBoxAutoCompleteView<String> setupPage = new ComboBoxAutoCompleteView<String>("Seleccione el formato de pagina");
+		setupPage.getItems().add("A4");
+		setupPage.getItems().add("A5");
+		screen.getChildren().add(setupPage);	
+		
+		
 		Label lbl = new Label("Indique en la tabla las posiciones vertical y horizontal de cada variable en centimetros:");
 		lbl.setPadding(new Insets(5, 0, 5, 0));
 		screen.getChildren().add(lbl);	
 		screen.setMaxHeight(Double.MAX_VALUE);				
 		setMaxHeight(Double.MAX_VALUE);
 		
-		List<Field> items = buildItems();
-		tblRemito = new TableView<RemitoView.Field>();
+		List<RemitoField> items = buildItems();
+		tblRemito = new TableView<RemitoField>();
 		tblRemito.setEditable(true);
-		TableColumn<RemitoView.Field, String> colFieldName = new TableColumn<RemitoView.Field, String>();
+		TableColumn<RemitoField, String> colFieldName = new TableColumn<RemitoField, String>();
 		colFieldName.setText("Variable");
 		colFieldName.setCellValueFactory(new PropertyValueFactory<>("dato"));
 		
-		TableColumn<RemitoView.Field, String> colFieldPosX = new TableColumn<RemitoView.Field, String>();
+		TableColumn<RemitoField, String> colFieldPosX = new TableColumn<RemitoField, String>();
 		colFieldPosX.setText("Posición X");
 		colFieldPosX.setCellFactory(TextFieldTableCell.forTableColumn());
 		colFieldPosX.setOnEditCommit(e ->{
@@ -51,7 +65,7 @@ public class RemitoView extends VBox {
 		});				
 		colFieldPosX.setCellValueFactory(new PropertyValueFactory<>("posX"));
 		
-		TableColumn<RemitoView.Field, String> colFieldPosY = new TableColumn<RemitoView.Field, String>();
+		TableColumn<RemitoField, String> colFieldPosY = new TableColumn<RemitoField, String>();
 		colFieldPosY.setText("Posición Y");
 		colFieldPosY.setCellFactory(TextFieldTableCell.forTableColumn());
 		colFieldPosY.setOnEditCommit(e ->{
@@ -67,16 +81,17 @@ public class RemitoView extends VBox {
 		final HBox hbox = new HBox();
 		hbox.setId("BoxButton");
 		hbox.setSpacing(10);	
-		hbox.setPadding(new Insets(5, 0, 5, 0));
+		hbox.setPadding(new Insets(5, 10, 5, 0));
+		
 		final Button btnPrimary = new Button("Guardar");
-		btnPrimary.setOnAction(v -> {
-			List<Field> fields = tblRemito.getItems();
-			for(Field f: fields) {
-				System.out.println(f.getDato() + "|" + f.getPosX() + "|" + f.getPosY());
-			}
-		});
+		btnPrimary.setOnAction(v -> save());
 		btnPrimary.setId("btnPrimary");		
 		hbox.getChildren().add(btnPrimary);		
+		
+		final Button btnGenRemito = new Button("Generar Remito");
+		btnGenRemito.setOnAction(v -> generarRemito());
+		btnGenRemito.setId("btnSecundary");		
+		hbox.getChildren().add(btnGenRemito);		
 		
 		
 		ScrollPane scroll = new ScrollPane(screen);
@@ -86,51 +101,38 @@ public class RemitoView extends VBox {
 		getChildren().add(hbox);
 	}
 	
-	private List<Field> buildItems(){
-		List<Field> items = new ArrayList<>();
-		items.add(new Field(RemitoFieldType.DENOMINACION.label, "", ""));
-		items.add(new Field(RemitoFieldType.DOMICILIO.label, "", ""));
-		items.add(new Field(RemitoFieldType.LOCALIDAD.label, "", ""));
-		items.add(new Field(RemitoFieldType.PROVINCIA.label, "", ""));
-		items.add(new Field(RemitoFieldType.CUIT.label, "", ""));
-		items.add(new Field(RemitoFieldType.CONDUCTOR.label, "", ""));
-		items.add(new Field(RemitoFieldType.ACOPLADO.label, "", ""));
-		items.add(new Field(RemitoFieldType.PESO_ENTRADA.label, "", ""));
-		items.add(new Field(RemitoFieldType.PESO_SALIDA.label, "", ""));
+	private void generarRemito() {
+		save();
+		List<RemitoField> fields = remitoFieldService.findAll();
+	}
+
+	private void save() {
+		remitoFieldService.deleteAll();
+		List<RemitoField> fields = tblRemito.getItems();
+		List<RemitoField> fieldsValid =fields.stream().filter(f -> validateNull(f)).collect(Collectors.toList());
+		for(RemitoField f: fieldsValid) {
+			remitoFieldService.save(f);				
+		}
+	}
+	
+	private boolean validateNull(RemitoField f) {
+		return !f.getDato().isEmpty() && !f.getPosX().isEmpty() && !f.getPosY().isEmpty();
+	}
+
+	private List<RemitoField> buildItems(){
+		List<RemitoField> items = new ArrayList<>();
+		items.add(new RemitoField(RemitoFieldType.DENOMINACION.label, "", ""));
+		items.add(new RemitoField(RemitoFieldType.DOMICILIO.label, "", ""));
+		items.add(new RemitoField(RemitoFieldType.LOCALIDAD.label, "", ""));
+		items.add(new RemitoField(RemitoFieldType.PROVINCIA.label, "", ""));
+		items.add(new RemitoField(RemitoFieldType.CUIT.label, "", ""));
+		items.add(new RemitoField(RemitoFieldType.CONDUCTOR.label, "", ""));
+		items.add(new RemitoField(RemitoFieldType.ACOPLADO.label, "", ""));
+		items.add(new RemitoField(RemitoFieldType.PESO_ENTRADA.label, "", ""));
+		items.add(new RemitoField(RemitoFieldType.PESO_SALIDA.label, "", ""));
 		return items;
 	}
 	
-	public class Field {
-		private String dato;
-		private String posX;
-		private String posY;
-				
-		public Field(String dato, String posX, String posY) {
-			super();
-			this.dato = dato;
-			this.posX = posX;
-			this.posY = posY;
-		}
-		public String getDato() {
-			return dato;
-		}
-		public void setDato(String dato) {
-			this.dato = dato;
-		}
-		public String getPosX() {
-			return posX;
-		}
-		public void setPosX(String posX) {
-			this.posX = posX;
-		}
-		public String getPosY() {
-			return posY;
-		}
-		public void setPosY(String posY) {
-			this.posY = posY;
-		}
-		
-		
-	}
+	
 	
 }

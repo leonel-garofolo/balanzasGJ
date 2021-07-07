@@ -80,6 +80,17 @@ public class UpdateDB {
 				st.execute(query);
 				insertQueryExecute(5);
 			}
+			if (currentVersion < 6) {
+				query = "CREATE TABLE `remito_field` ( " +
+						"  `id` int(11) NOT NULL AUTO_INCREMENT, " +
+						"  `dato` varchar(100) NOT NULL, " +
+						"  `pos_x` int(11) NULL, " +
+						"  `pos_y` int(11) NULL, " +
+						"  PRIMARY KEY (`id`) " +
+						") ENGINE=InnoDB DEFAULT CHARSET=utf8";
+				st.execute(query);
+				insertQueryExecute(6);
+			}					
 
 		} catch (Exception e) {
 			logger.error("update DDBB ERROR", e);

@@ -42,38 +42,32 @@ public class ReportService implements  Runnable {
     };
 
     public ReportService() {
-    	super();
+    	 this.paramConfigurationService = new GlobalParameterService();
+         this.tareService = new TareService();
+         try {			
+ 			this.reportDao = new ReportDaoImpl();
+ 		} catch (SQLException e) {
+ 			logger.error(e);
+ 		}
     }
     
-    public ReportService(REPORT modeReport, HashMap<String, Object> params){
-        this.paramConfigurationService = new GlobalParameterService();
-        this.tareService = new TareService();
-        try {			
-			this.reportDao = new ReportDaoImpl();
-		} catch (SQLException e) {
-			logger.error(e);
-		}
-        
-        this.modeReport = modeReport;
-        this.params = params;
-    }
-
-    public static void exportCsv(String fileName){
+    public void exportCsv(String fileName){
         final HashMap<String, Object> params = new HashMap<>();
         params.put("fileName", fileName);
         runReport(REPORT.EXPORT_CSV, new HashMap<>());
     }
 
-    public static void ticket(String modalidad, long idTaras){
+    public void ticket(String modalidad, long idTaras){
         final HashMap<String, Object> params = new HashMap<>();
         params.put("idtaras", idTaras);
         params.put("modalidad", modalidad);
         runReport(REPORT.TICKET, params);
     }
 
-    private static void runReport(REPORT mode, HashMap<String, Object> params){
-        ReportService reportService = new ReportService(mode, params);
-        Thread t = new Thread(reportService);
+    private  void runReport(REPORT mode, HashMap<String, Object> params){
+    	this.modeReport = mode;
+    	this.params = params;
+        Thread t = new Thread(this);
         t.run();
     }
 

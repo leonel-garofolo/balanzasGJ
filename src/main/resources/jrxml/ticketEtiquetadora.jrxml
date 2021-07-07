@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="transaccionesDetalles" pageWidth="226" pageHeight="226" columnWidth="198" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="14" isSummaryWithPageHeaderAndFooter="true" uuid="e373889a-fc0e-4297-9a5a-ab4aff79c358">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="tarasFactory"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -50,16 +50,16 @@
 	<field name="pesoEntrada" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[pesoEntrada]]></fieldDescription>
 	</field>
-	<field name="transporte" class="com.balanzasgj.app.model.Transportes">
+	<field name="transporte" class="com.balanzasgj.app.model.Transport">
 		<fieldDescription><![CDATA[transporte]]></fieldDescription>
 	</field>
 	<field name="numDoc" class="java.lang.String">
 		<fieldDescription><![CDATA[numDoc]]></fieldDescription>
 	</field>
-	<field name="producto" class="com.balanzasgj.app.model.Productos">
+	<field name="producto" class="com.balanzasgj.app.model.Product">
 		<fieldDescription><![CDATA[producto]]></fieldDescription>
 	</field>
-	<field name="procedencias" class="com.balanzasgj.app.model.Procedencias">
+	<field name="procedencias" class="com.balanzasgj.app.model.Origin">
 		<fieldDescription><![CDATA[procedencias]]></fieldDescription>
 	</field>
 	<field name="comprobanteNun1" class="java.lang.String">
@@ -92,7 +92,7 @@
 	<field name="conductor" class="java.lang.String">
 		<fieldDescription><![CDATA[conductor]]></fieldDescription>
 	</field>
-	<field name="cliente" class="com.balanzasgj.app.model.Clientes">
+	<field name="cliente" class="com.balanzasgj.app.model.Client">
 		<fieldDescription><![CDATA[cliente]]></fieldDescription>
 	</field>
 	<field name="pesoNeto" class="java.math.BigDecimal">
@@ -110,10 +110,10 @@
 	<field name="idtaras" class="java.lang.Long">
 		<fieldDescription><![CDATA[idtaras]]></fieldDescription>
 	</field>
-	<field name="impExp" class="com.balanzasgj.app.model.ImportadoresExportadores">
+	<field name="impExp" class="com.balanzasgj.app.model.ImportAndExport">
 		<fieldDescription><![CDATA[impExp]]></fieldDescription>
 	</field>
-	<field name="patente" class="com.balanzasgj.app.model.Patentes">
+	<field name="patente" class="com.balanzasgj.app.model.Patent">
 		<fieldDescription><![CDATA[patente]]></fieldDescription>
 	</field>
 	<title>

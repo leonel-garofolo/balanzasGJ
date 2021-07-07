@@ -408,13 +408,13 @@ public class InformesController {
         cbxFiltroBuscar.setValue(ReportFilter.B_TODO.label);
     }
 
-    private void initPersistence() {
-        this.tareService = new TareService();
+    private void initPersistence() {        
         this.clientService = new ClientService();
 		this.originService = new OriginService();
 		this.productService = new ProductService();
 		this.transportService = new TransportService();
 		this.globalParameterService = new GlobalParameterService();
+		this.tareService = new TareService();
 		this.reportService= new ReportService();
 		
         colTransaccion.setCellValueFactory(new PropertyValueFactory<>("transaccion"));
