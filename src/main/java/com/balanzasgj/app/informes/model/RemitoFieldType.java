@@ -8,7 +8,8 @@ public enum RemitoFieldType {
 	CONDUCTOR("Conductor"),
 	ACOPLADO("Acoplado"),
 	PESO_ENTRADA("Peso Entrada"),
-	PESO_SALIDA("Peso Salida"),	
+	PESO_SALIDA("Peso Salida"),
+	PESO_NETO("Peso Neto"),	
 	CUIT("Cuit");		
 	public final String label;
 

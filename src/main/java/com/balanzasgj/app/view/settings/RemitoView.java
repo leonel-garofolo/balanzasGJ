@@ -1,14 +1,20 @@
 package com.balanzasgj.app.view.settings;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.javafx.controls.customs.view.ComboBoxAutoCompleteView;
 
+import com.balanzasgj.app.informes.RemitoReport;
 import com.balanzasgj.app.informes.model.RemitoFieldType;
+import com.balanzasgj.app.model.GlobalParameter;
 import com.balanzasgj.app.model.RemitoField;
+import com.balanzasgj.app.services.GlobalParameterService;
 import com.balanzasgj.app.services.RemitoFieldService;
+import com.balanzasgj.app.utils.Message;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -25,10 +31,12 @@ import javafx.scene.layout.VBox;
 public class RemitoView extends VBox {
 	private VBox screen;	
 	private TableView<RemitoField> tblRemito;
-	private RemitoFieldService remitoFieldService;
+	private final RemitoFieldService remitoFieldService;
+	private final GlobalParameterService globalParameterService; 
 	
 	public RemitoView(){
 		this.remitoFieldService = new RemitoFieldService();
+		this.globalParameterService = new GlobalParameterService();
 		initialize();
 	}		
 
@@ -39,7 +47,7 @@ public class RemitoView extends VBox {
 	private void initialize() {
 		screen = new VBox();		
 		ComboBoxAutoCompleteView<String> setupPage = new ComboBoxAutoCompleteView<String>("Seleccione el formato de pagina");
-		setupPage.getItems().add("A4");
+		setupPage.addItem("A4");
 		setupPage.getItems().add("A5");
 		screen.getChildren().add(setupPage);	
 		
@@ -103,16 +111,36 @@ public class RemitoView extends VBox {
 	
 	private void generarRemito() {
 		save();
-		List<RemitoField> fields = remitoFieldService.findAll();
+		Map<String, String> data = new HashMap<String, String>();
+		data.put(RemitoFieldType.DENOMINACION.label, "<DENOMINACION>");
+		data.put(RemitoFieldType.DOMICILIO.label, globalParameterService.get(GlobalParameter.P_EMPRESA_DIR_BAL));
+		data.put(RemitoFieldType.LOCALIDAD.label, globalParameterService.get(GlobalParameter.P_EMPRESA_LOC_BAL));
+		data.put(RemitoFieldType.PROVINCIA.label, globalParameterService.get(GlobalParameter.P_EMPRESA_PROV_BAL));
+		data.put(RemitoFieldType.CUIT.label, "20-3163.107-8");
+		data.put(RemitoFieldType.CONDUCTOR.label, "<TARA_CONDUCTOR>");
+		data.put(RemitoFieldType.ACOPLADO.label, "<TARA_ACOPLADO>");
+		data.put(RemitoFieldType.PESO_ENTRADA.label, "<PESO_ENTRADA>");
+		data.put(RemitoFieldType.PESO_SALIDA.label, "<PESO_SALIDA>");
+		data.put(RemitoFieldType.PESO_NETO.label, "<PESO_NETO>");
+		
+		RemitoReport remito = new RemitoReport(remitoFieldService.findAll(), data);
+		try {
+			remito.buildReport();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		remito.show();
+		
 	}
+		
 
 	private void save() {
-		remitoFieldService.deleteAll();
 		List<RemitoField> fields = tblRemito.getItems();
 		List<RemitoField> fieldsValid =fields.stream().filter(f -> validateNull(f)).collect(Collectors.toList());
 		for(RemitoField f: fieldsValid) {
 			remitoFieldService.save(f);				
 		}
+		Message.info("Se ha guardado correctamente!");
 	}
 	
 	private boolean validateNull(RemitoField f) {
@@ -120,19 +148,27 @@ public class RemitoView extends VBox {
 	}
 
 	private List<RemitoField> buildItems(){
-		List<RemitoField> items = new ArrayList<>();
-		items.add(new RemitoField(RemitoFieldType.DENOMINACION.label, "", ""));
-		items.add(new RemitoField(RemitoFieldType.DOMICILIO.label, "", ""));
-		items.add(new RemitoField(RemitoFieldType.LOCALIDAD.label, "", ""));
-		items.add(new RemitoField(RemitoFieldType.PROVINCIA.label, "", ""));
-		items.add(new RemitoField(RemitoFieldType.CUIT.label, "", ""));
-		items.add(new RemitoField(RemitoFieldType.CONDUCTOR.label, "", ""));
-		items.add(new RemitoField(RemitoFieldType.ACOPLADO.label, "", ""));
-		items.add(new RemitoField(RemitoFieldType.PESO_ENTRADA.label, "", ""));
-		items.add(new RemitoField(RemitoFieldType.PESO_SALIDA.label, "", ""));
+		List<RemitoField> fields = remitoFieldService.findAll();
+		List<RemitoField> items = new ArrayList<>();		
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.DENOMINACION.label, "", "")));
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.DOMICILIO.label, "", "")));
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.LOCALIDAD.label, "", "")));
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.PROVINCIA.label, "", "")));
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.CUIT.label, "", "")));
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.CONDUCTOR.label, "", "")));
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.ACOPLADO.label, "", "")));
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.PESO_ENTRADA.label, "", "")));
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.PESO_SALIDA.label, "", "")));
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.PESO_NETO.label, "", "")));
 		return items;
 	}
 	
-	
-	
+	private RemitoField findPositions(List<RemitoField> fields, RemitoField r) {			
+		for(RemitoField field: fields) {
+			if(field.getDato().equals(r.getDato())) {
+				return field;
+			}	
+		}
+		return r;
+	}
 }

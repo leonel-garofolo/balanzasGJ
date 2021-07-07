@@ -21,6 +21,19 @@ public abstract class ReportBase {
 	protected JasperReport jr;
 	protected Map params = new HashMap();
 	protected DynamicReport dr;
+	protected enum PAGE_FORMAT{
+		A4(595,842),
+		A5(400, 300);
+		
+		public int with;		
+		public int height;
+		
+
+	    private PAGE_FORMAT(int with, int height) {
+	        this.with = with;
+	        this.height = height;
+	    }
+	}
  
 	
 	public abstract DynamicReport buildReport() throws Exception;
