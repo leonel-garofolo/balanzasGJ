@@ -116,7 +116,7 @@ public class RemitoView extends VBox {
 		data.put(RemitoFieldType.DOMICILIO.label, globalParameterService.get(GlobalParameter.P_EMPRESA_DIR_BAL));
 		data.put(RemitoFieldType.LOCALIDAD.label, globalParameterService.get(GlobalParameter.P_EMPRESA_LOC_BAL));
 		data.put(RemitoFieldType.PROVINCIA.label, globalParameterService.get(GlobalParameter.P_EMPRESA_PROV_BAL));
-		data.put(RemitoFieldType.CUIT.label, "20-3163.107-8");
+		data.put(RemitoFieldType.CUIT.label, "<TARA_CLIENTE_CUIT>");
 		data.put(RemitoFieldType.CONDUCTOR.label, "<TARA_CONDUCTOR>");
 		data.put(RemitoFieldType.ACOPLADO.label, "<TARA_ACOPLADO>");
 		data.put(RemitoFieldType.PESO_ENTRADA.label, "<PESO_ENTRADA>");
