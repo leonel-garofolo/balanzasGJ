@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.javafx.form.FormBuilder;
 import org.javafx.form.model.FormField;
+import org.javafx.form.model.FormFieldList;
 import org.javafx.form.model.FormFieldType;
 
 import com.balanzasgj.app.model.GlobalParameter;
+import com.balanzasgj.app.model.GlobalParameter.TYPE_TICKET;
 import com.balanzasgj.app.services.GlobalParameterService;
 import com.balanzasgj.app.view.DashboardView;
 import com.balanzasgj.app.view.IView;
@@ -68,8 +70,20 @@ public class SystemView extends VBox implements IView {
 		param = GlobalParameter.P_NUM_BALANZAS;
 		fields.add(new FormField(param, "Número de Balanzas", FormFieldType.NUMBER, paramConfigurationService.get(param)));				
 		fields.add(new FormField(FormFieldType.NEW_ROW));
-		param = GlobalParameter.P_EMPRESA_TICKET;
-		fields.add(new FormField(param, "Ticket con Formato de Etiquetadora", FormFieldType.BOOLEAN, paramConfigurationService.get(param)));
+		param = GlobalParameter.P_TICKET_ETIQUETADORA;
+		//fields.add(new FormField(param, "Ticket con Formato de Etiquetadora", FormFieldType.BOOLEAN, paramConfigurationService.get(param)));
+		List<Object> listTicketType = new ArrayList<Object>();
+		for(TYPE_TICKET type: GlobalParameter.TYPE_TICKET.values()) {
+			listTicketType.add(type.label);
+		}	
+		String value = paramConfigurationService.get(param);
+		if(value != null) {
+			if(value.equals("true"))
+				value = TYPE_TICKET.FORMATO_ETIQUETADORA.label;
+			else 
+				value = TYPE_TICKET.NORMAL.label;
+		}
+		fields.add(new FormFieldList(param, "Formato Ticket", listTicketType, value));
 		
 		fields.add(new FormField(null, "Validaciones - Pantalla de Tara", FormFieldType.SUBTITLE1, null));
 		fields.add(new FormField(null, "Campos requeridos en la Entrada", FormFieldType.SUBTITLE2, null));

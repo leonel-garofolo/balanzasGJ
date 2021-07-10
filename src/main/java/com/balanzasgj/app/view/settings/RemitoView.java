@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.javafx.controls.customs.view.ComboBoxAutoCompleteView;
 
 import com.balanzasgj.app.informes.RemitoReport;
+import com.balanzasgj.app.informes.ReportBase.PAGE_FORMAT;
 import com.balanzasgj.app.informes.model.RemitoFieldType;
 import com.balanzasgj.app.model.GlobalParameter;
 import com.balanzasgj.app.model.RemitoField;
@@ -30,6 +31,7 @@ import javafx.scene.layout.VBox;
 
 public class RemitoView extends VBox {
 	private VBox screen;	
+	private ComboBoxAutoCompleteView<String> setupPage;
 	private TableView<RemitoField> tblRemito;
 	private final RemitoFieldService remitoFieldService;
 	private final GlobalParameterService globalParameterService; 
@@ -46,9 +48,9 @@ public class RemitoView extends VBox {
 	
 	private void initialize() {
 		screen = new VBox();		
-		ComboBoxAutoCompleteView<String> setupPage = new ComboBoxAutoCompleteView<String>("Seleccione el formato de pagina");
-		setupPage.addItem("A4");
-		setupPage.getItems().add("A5");
+		this.setupPage = new ComboBoxAutoCompleteView<String>("Seleccione el formato de pagina");
+		setupPage.addItem(PAGE_FORMAT.A4.label);
+		setupPage.getItems().add(PAGE_FORMAT.A5.label);
 		screen.getChildren().add(setupPage);	
 		
 		
@@ -110,37 +112,43 @@ public class RemitoView extends VBox {
 	}
 	
 	private void generarRemito() {
-		save();
-		Map<String, String> data = new HashMap<String, String>();
-		data.put(RemitoFieldType.DENOMINACION.label, "<DENOMINACION>");
-		data.put(RemitoFieldType.DOMICILIO.label, globalParameterService.get(GlobalParameter.P_EMPRESA_DIR_BAL));
-		data.put(RemitoFieldType.LOCALIDAD.label, globalParameterService.get(GlobalParameter.P_EMPRESA_LOC_BAL));
-		data.put(RemitoFieldType.PROVINCIA.label, globalParameterService.get(GlobalParameter.P_EMPRESA_PROV_BAL));
-		data.put(RemitoFieldType.CUIT.label, "<TARA_CLIENTE_CUIT>");
-		data.put(RemitoFieldType.CONDUCTOR.label, "<TARA_CONDUCTOR>");
-		data.put(RemitoFieldType.ACOPLADO.label, "<TARA_ACOPLADO>");
-		data.put(RemitoFieldType.PESO_ENTRADA.label, "<PESO_ENTRADA>");
-		data.put(RemitoFieldType.PESO_SALIDA.label, "<PESO_SALIDA>");
-		data.put(RemitoFieldType.PESO_NETO.label, "<PESO_NETO>");
-		
-		RemitoReport remito = new RemitoReport(remitoFieldService.findAll(), data);
-		try {
-			remito.buildReport();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		remito.show();
-		
+		if(save()) {
+			Map<String, String> data = new HashMap<String, String>();
+			data.put(RemitoFieldType.DENOMINACION.label, "<DENOMINACION>");
+			data.put(RemitoFieldType.DOMICILIO.label, globalParameterService.get(GlobalParameter.P_EMPRESA_DIR_BAL));
+			data.put(RemitoFieldType.LOCALIDAD.label, globalParameterService.get(GlobalParameter.P_EMPRESA_LOC_BAL));
+			data.put(RemitoFieldType.PROVINCIA.label, globalParameterService.get(GlobalParameter.P_EMPRESA_PROV_BAL));
+			data.put(RemitoFieldType.CUIT.label, "<TARA_CLIENTE_CUIT>");
+			data.put(RemitoFieldType.CONDUCTOR.label, "<TARA_CONDUCTOR>");
+			data.put(RemitoFieldType.ACOPLADO.label, "<TARA_ACOPLADO>");
+			data.put(RemitoFieldType.PESO_ENTRADA.label, "<PESO_ENTRADA>");
+			data.put(RemitoFieldType.PESO_SALIDA.label, "<PESO_SALIDA>");
+			data.put(RemitoFieldType.PESO_NETO.label, "<PESO_NETO>");
+			
+			RemitoReport remito = new RemitoReport(remitoFieldService.findAll(), data, RemitoReport.PAGE_FORMAT.A4);
+			try {
+				remito.buildReport();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			remito.show();
+		}		
 	}
 		
 
-	private void save() {
-		List<RemitoField> fields = tblRemito.getItems();
-		List<RemitoField> fieldsValid =fields.stream().filter(f -> validateNull(f)).collect(Collectors.toList());
-		for(RemitoField f: fieldsValid) {
-			remitoFieldService.save(f);				
-		}
-		Message.info("Se ha guardado correctamente!");
+	private boolean save() {
+		if(setupPage.getSelectionModel().getSelectedItem() != null) {
+			globalParameterService.save(GlobalParameter.P_REMITO_PAGE_FORMAT, setupPage.getSelectionModel().getSelectedItem());
+			List<RemitoField> fields = tblRemito.getItems();
+			List<RemitoField> fieldsValid =fields.stream().filter(f -> validateNull(f)).collect(Collectors.toList());
+			for(RemitoField f: fieldsValid) {
+				remitoFieldService.save(f);				
+			}
+			Message.info("Se ha guardado correctamente!");
+			return true;
+		} else 
+			Message.error("Seleccione el formato de Hoja");
+		return false;
 	}
 	
 	private boolean validateNull(RemitoField f) {

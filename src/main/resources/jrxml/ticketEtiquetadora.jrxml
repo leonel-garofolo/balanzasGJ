@@ -183,7 +183,7 @@
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{cliente} != null? $F{cliente}: "")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="37" width="70" height="10" uuid="5c0a39a0-579b-4b73-8fd9-4e66f7f6ef3a">
@@ -217,7 +217,7 @@
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{producto} != null? $F{producto}: "")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="61" width="70" height="10" uuid="4560f94e-c9eb-4c0f-b156-fdfe4140235f"/>

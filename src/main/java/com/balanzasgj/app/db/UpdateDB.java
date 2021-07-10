@@ -84,8 +84,8 @@ public class UpdateDB {
 				query = "CREATE TABLE `remito_field` ( " +
 						"  `id` int(11) NOT NULL AUTO_INCREMENT, " +
 						"  `dato` varchar(100) NOT NULL, " +
-						"  `pos_x` int(11) NULL, " +
-						"  `pos_y` int(11) NULL, " +
+						"  `pos_x` varchar(10) NULL, " +
+						"  `pos_y` varchar(10) NULL, " +
 						"  PRIMARY KEY (`id`) " +
 						") ENGINE=InnoDB DEFAULT CHARSET=utf8";
 				st.execute(query);

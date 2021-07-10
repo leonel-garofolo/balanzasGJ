@@ -24,24 +24,25 @@ public class RemitoReport extends ReportBase{
 	private final Map<String, String> data;
 	private final List<RemitoField> fields;
 	private final JasperDesign jasperDesign;
+	private final PAGE_FORMAT page;
 	
-    public RemitoReport(List<RemitoField> fields, Map<String, String> data){    	
+    public RemitoReport(List<RemitoField> fields, Map<String, String> data, PAGE_FORMAT page){    	
         this.fields = fields;
         this.data = data;
         this.jasperDesign = new JasperDesign();
+        this.page = page;
     }
     	
 	public JasperDesign build() throws Exception {        
         jasperDesign.setName("The dynamically generated report");        
-        jasperDesign.setPageWidth(595);
-        jasperDesign.setPageHeight(842);
+        jasperDesign.setPageWidth(page.with);
+        jasperDesign.setPageHeight(page.height);
         jasperDesign.setLeftMargin(0);
         jasperDesign.setTopMargin(0);
 
         //Detail
         JRDesignBand band = new JRDesignBand();
-        band.setHeight(400);
-        
+        band.setHeight((new Double(page.height - (page.height * 0.04))).intValue());        
         for (RemitoField f : fields) {
         	JRDesignStaticText staticText = new JRDesignStaticText();
         	int x = toCM(Integer.valueOf(f.getPosX()));        	

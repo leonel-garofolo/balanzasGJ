@@ -383,6 +383,10 @@ public class PesarEntradaSalidaController extends AnchorPane
 		if(indicador.isEje()) 
 			cbxModoChasis.setValue(Tare.TIPO.C_POR_EJE.label);
 		
+		String ticketFormat = globalParameterService.get(GlobalParameter.P_TICKET_ETIQUETADORA);
+		if(ticketFormat.equals(GlobalParameter.TYPE_TICKET.REMITO.label)) {
+			btnTicket.setText("Remito");
+		} 
 		
 		btnTicket.setDisable(true);
 		cbxIndicador.setDisable(false);
@@ -418,7 +422,11 @@ public class PesarEntradaSalidaController extends AnchorPane
 				}
 			}
 
-			reportService.ticket(modalidad, taraEdit.getIdtaras().longValue());
+			String ticketFormat = globalParameterService.get(GlobalParameter.P_TICKET_ETIQUETADORA);			
+			if(ticketFormat.equals(GlobalParameter.TYPE_TICKET.REMITO.label)) {
+				reportService.remito(taraEdit.getIdtaras().longValue());
+			}else
+				reportService.ticket(modalidad, taraEdit.getIdtaras().longValue());						
 		}
 	}
 

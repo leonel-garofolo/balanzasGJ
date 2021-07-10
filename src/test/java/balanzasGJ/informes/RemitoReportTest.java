@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.balanzasgj.app.informes.RemitoReport;
+import com.balanzasgj.app.informes.ReportBase.PAGE_FORMAT;
 import com.balanzasgj.app.informes.model.RemitoFieldType;
 import com.balanzasgj.app.model.GlobalParameter;
 import com.balanzasgj.app.persistence.RemitoFieldDao;
@@ -43,7 +44,7 @@ public class RemitoReportTest {
 			data.put(RemitoFieldType.ACOPLADO.label, "<TARA_ACOPLADO>");
 			data.put(RemitoFieldType.PESO_ENTRADA.label, "<PESO_ENTRADA>");
 			data.put(RemitoFieldType.PESO_SALIDA.label, "<PESO_SALIDA>");
-			RemitoReport remito = new RemitoReport(dao.queryForAll(), data);
+			RemitoReport remito = new RemitoReport(dao.queryForAll(), data, PAGE_FORMAT.A4);
 			remito.build();
 			remito.show();
 			new Thread().sleep(20000);

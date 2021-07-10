@@ -21,15 +21,17 @@ public abstract class ReportBase {
 	protected JasperReport jr;
 	protected Map params = new HashMap();
 	protected DynamicReport dr;
-	protected enum PAGE_FORMAT{
-		A4(595,842),
-		A5(400, 300);
+	public static enum PAGE_FORMAT{
+		A4("A4", 595,842),
+		A5("A5", 400, 300);
 		
+		public String label;
 		public int with;		
 		public int height;
 		
 
-	    private PAGE_FORMAT(int with, int height) {
+	    private PAGE_FORMAT(String label, int with, int height) {
+	    	this.label = label;
 	        this.with = with;
 	        this.height = height;
 	    }

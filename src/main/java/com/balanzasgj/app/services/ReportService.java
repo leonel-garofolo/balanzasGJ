@@ -8,12 +8,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 
+import com.balanzasgj.app.informes.RemitoReport;
+import com.balanzasgj.app.informes.ReportBase.PAGE_FORMAT;
 import com.balanzasgj.app.informes.csv.ExportTaraCsv;
+import com.balanzasgj.app.informes.model.RemitoFieldType;
 import com.balanzasgj.app.model.GlobalParameter;
 import com.balanzasgj.app.model.Report;
 import com.balanzasgj.app.model.Tare;
@@ -30,6 +34,7 @@ public class ReportService implements  Runnable {
     final static Logger logger = Logger.getLogger(ReportService.class);
 
     private GlobalParameterService paramConfigurationService;
+    private RemitoFieldService remitoFieldService;
     private TareService tareService;
     private ReportDao reportDao;
     private HashMap<String, Object> params;
@@ -38,12 +43,14 @@ public class ReportService implements  Runnable {
     private enum REPORT {
         EXPORT_CSV,
         TICKET,
-        TICKET_PRE_PRINT
+        TICKET_PRE_PRINT,
+        REMITO
     };
 
     public ReportService() {
     	 this.paramConfigurationService = new GlobalParameterService();
          this.tareService = new TareService();
+         this.remitoFieldService = new RemitoFieldService();
          try {			
  			this.reportDao = new ReportDaoImpl();
  		} catch (SQLException e) {
@@ -63,6 +70,12 @@ public class ReportService implements  Runnable {
         params.put("modalidad", modalidad);
         runReport(REPORT.TICKET, params);
     }
+    
+    public void remito(long idTaras) {
+    	final HashMap<String, Object> params = new HashMap<>();
+        params.put("idtaras", idTaras);
+        runReport(REPORT.REMITO, params);
+    }
 
     private  void runReport(REPORT mode, HashMap<String, Object> params){
     	this.modeReport = mode;
@@ -80,6 +93,9 @@ public class ReportService implements  Runnable {
                 break;           
             case EXPORT_CSV:
                 buildExportCsv();
+                break;
+            case REMITO:
+            	buildRemito();
                 break;
         }
     }
@@ -150,7 +166,17 @@ public class ReportService implements  Runnable {
 
                 ShowJasper.openBeanDataSource(InformesController.TICKET_ADUANA, params, new JRBeanCollectionDataSource(taras));
             } else {
-                final boolean ticketEt = Boolean.valueOf(paramConfigurationService.get(GlobalParameter.P_TICKET_ETIQUETADORA));
+            	final String typeTicket = paramConfigurationService.get(GlobalParameter.P_TICKET_ETIQUETADORA);            	
+                boolean ticketEt = false;
+                try {
+                	ticketEt= Boolean.valueOf(typeTicket);                	 
+                }catch (Exception e) {					
+                	if(typeTicket.equals(GlobalParameter.TYPE_TICKET.FORMATO_ETIQUETADORA.label)) 
+                		ticketEt = true;
+                	else
+                		ticketEt = false;
+				}      
+                
                 updateReportCount(params);
                 if (ticketEt) {
                     ShowJasper.openBeanDataSource("ticketEtiquetadora", params,
@@ -166,6 +192,35 @@ public class ReportService implements  Runnable {
         } catch (JRException e) {
             logger.error(e);
         }
+    }
+    
+    private void buildRemito() {
+    	Tare tare =tareService.findById((long)params.get("idtaras"));
+    	String remitoPageFormat = paramConfigurationService.get(GlobalParameter.P_REMITO_PAGE_FORMAT);
+    	PAGE_FORMAT page = RemitoReport.PAGE_FORMAT.A4;
+    	if(!remitoPageFormat.isEmpty()) {
+    		if(!page.label.equals(remitoPageFormat))
+    			page =  RemitoReport.PAGE_FORMAT.A5;
+    	}
+    	
+    	Map<String, String> data = new HashMap<String, String>();
+		data.put(RemitoFieldType.DENOMINACION.label, "<DENOMINACION>");
+		data.put(RemitoFieldType.DOMICILIO.label, paramConfigurationService.get(GlobalParameter.P_EMPRESA_DIR_BAL));
+		data.put(RemitoFieldType.LOCALIDAD.label, paramConfigurationService.get(GlobalParameter.P_EMPRESA_LOC_BAL));
+		data.put(RemitoFieldType.PROVINCIA.label, paramConfigurationService.get(GlobalParameter.P_EMPRESA_PROV_BAL));
+		data.put(RemitoFieldType.CUIT.label, tare.getCliente().getCuit());
+		data.put(RemitoFieldType.CONDUCTOR.label, tare.getConductor());
+		data.put(RemitoFieldType.ACOPLADO.label, tare.getPatenteAceptado());
+		data.put(RemitoFieldType.PESO_ENTRADA.label, tare.getPesoEntrada().toString());
+		data.put(RemitoFieldType.PESO_SALIDA.label, tare.getPesoSalida().toString());
+		data.put(RemitoFieldType.PESO_NETO.label, tare.getPesoNeto().toString());		
+    	RemitoReport remito = new RemitoReport(remitoFieldService.findAll(), data, page);
+		try {
+			remito.buildReport();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		remito.show();
     }
 
     private void updateReportCount(HashMap<String, Object> params) {

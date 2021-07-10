@@ -44,6 +44,7 @@ public class GlobalParameter implements Serializable
 	public static final String P_EMPRESA_AUTOMATICO= "EMPRESA_AUTOMATICO";
 	public static final String P_ACTIVAR_DEBUG= "ACTIVAR_DEBUG";
 	public static final String P_REPORT_COPY= "REPORT_COPY";
+	public static final String P_REMITO_PAGE_FORMAT = "REMITO_PAGE_FORMAT";
 	
 	public static final String A_CODIGO_ADUANA= "CODIGO_ADUANA";	                           
 	public static final String A_CODIGO_LOG= "CODIGO_LOG";
@@ -68,6 +69,17 @@ public class GlobalParameter implements Serializable
 	public static final int V_TRANSPORTE = 8;
 	public static final int V_CLIENTE = 9;
 	public static final int V_PROCEDENCIA = 10;
+	
+	public static enum TYPE_TICKET{
+		NORMAL("TICKET NORMAL"),
+		FORMATO_ETIQUETADORA("TICKET CON FORMATO ETIQUETADORA"),
+		REMITO("REMITO");
+		public String label;
+		
+		private TYPE_TICKET(String label) {
+			this.label=label;
+		}
+	};
 
     private static final long serialVersionUID = 1L;
 

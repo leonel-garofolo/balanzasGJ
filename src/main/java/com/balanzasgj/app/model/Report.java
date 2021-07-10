@@ -12,7 +12,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 
-@DatabaseTable(tableName = "report")
+@DatabaseTable(tableName = "reports")
 public class Report implements Serializable
 {
     private static final long serialVersionUID = 1L;
