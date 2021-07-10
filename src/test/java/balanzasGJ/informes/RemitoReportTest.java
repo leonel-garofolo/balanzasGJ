@@ -1,12 +1,5 @@
 package balanzasGJ.informes;
 
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.balanzasgj.app.informes.RemitoReport;
 import com.balanzasgj.app.informes.ReportBase.PAGE_FORMAT;
 import com.balanzasgj.app.informes.model.RemitoFieldType;
@@ -14,6 +7,12 @@ import com.balanzasgj.app.model.GlobalParameter;
 import com.balanzasgj.app.persistence.RemitoFieldDao;
 import com.balanzasgj.app.persistence.impl.jdbc.RemitoFieldDaoImpl;
 import com.balanzasgj.app.services.GlobalParameterService;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RemitoReportTest {
     private GlobalParameterService globalParameterService; 
@@ -32,9 +31,8 @@ public class RemitoReportTest {
 
 	@Test
 	public void testRemito() {
-
 		try {
-			Map<String, String> data = new HashMap<String, String>();
+			Map<String, Object> data = new HashMap();
 			data.put(RemitoFieldType.DENOMINACION.label, "<DENOMINACION>");
 			data.put(RemitoFieldType.DOMICILIO.label, globalParameterService.get(GlobalParameter.P_EMPRESA_DIR_BAL));
 			data.put(RemitoFieldType.LOCALIDAD.label, globalParameterService.get(GlobalParameter.P_EMPRESA_LOC_BAL));
@@ -44,7 +42,7 @@ public class RemitoReportTest {
 			data.put(RemitoFieldType.ACOPLADO.label, "<TARA_ACOPLADO>");
 			data.put(RemitoFieldType.PESO_ENTRADA.label, "<PESO_ENTRADA>");
 			data.put(RemitoFieldType.PESO_SALIDA.label, "<PESO_SALIDA>");
-			RemitoReport remito = new RemitoReport(dao.queryForAll(), data, PAGE_FORMAT.A4);
+			RemitoReport remito = new RemitoReport(PAGE_FORMAT.A4,  data, dao.queryForAll());
 			remito.build();
 			remito.show();
 			new Thread().sleep(20000);

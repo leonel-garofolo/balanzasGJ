@@ -1,25 +1,23 @@
 package com.balanzasgj.app.view.system;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.javafx.form.FormBuilder;
-import org.javafx.form.model.FormField;
-import org.javafx.form.model.FormFieldList;
-import org.javafx.form.model.FormFieldType;
-
 import com.balanzasgj.app.model.GlobalParameter;
 import com.balanzasgj.app.model.GlobalParameter.TYPE_TICKET;
 import com.balanzasgj.app.services.GlobalParameterService;
 import com.balanzasgj.app.view.DashboardView;
 import com.balanzasgj.app.view.IView;
 import com.balanzasgj.app.view.MainActions;
-
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.javafx.form.FormBuilder;
+import org.javafx.form.model.FormField;
+import org.javafx.form.model.FormFieldList;
+import org.javafx.form.model.FormFieldType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SystemView extends VBox implements IView {	
 	
@@ -78,10 +76,11 @@ public class SystemView extends VBox implements IView {
 		}	
 		String value = paramConfigurationService.get(param);
 		if(value != null) {
-			if(value.equals("true"))
-				value = TYPE_TICKET.FORMATO_ETIQUETADORA.label;
-			else 
-				value = TYPE_TICKET.NORMAL.label;
+			if(value.equals("true") || value.equals("false"))
+				if(value.equals("true"))
+					value = TYPE_TICKET.FORMATO_ETIQUETADORA.label;
+				else
+					value = TYPE_TICKET.NORMAL.label;
 		}
 		fields.add(new FormFieldList(param, "Formato Ticket", listTicketType, value));
 		

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.balanzasgj.app.persistence.ProductDao;
+import com.balanzasgj.app.persistence.impl.jdbc.ProductDaoImpl;
 import org.apache.log4j.Logger;
 
 import com.balanzasgj.app.model.Tare;
@@ -30,11 +32,12 @@ public class TareService {
 	    }
 	}
 
-	
+	private ProductDao productDao;
 	private TareDao tareDao;
 	
 	public TareService() {
 		try {
+			this.productDao = new ProductDaoImpl();
 			this.tareDao = new TareDaoImpl();
 		} catch (SQLException e) {
 			logger.error(e);

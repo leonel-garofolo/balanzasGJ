@@ -16,6 +16,7 @@ public class TransaccionesDetalleInforme extends ReportBase{
 	final static Logger logger = Logger.getLogger(TransaccionesDetalleInforme.class);	
     private List<Tare> taras;
     public TransaccionesDetalleInforme(List<Tare> taras){
+        super(null, null);
         this.taras = taras;
     }
 
@@ -65,6 +66,11 @@ public class TransaccionesDetalleInforme extends ReportBase{
     public JRDataSource getDataSource() {
         JRDataSource ds = new JRBeanCollectionDataSource(taras);
         return ds;
+    }
+
+    @Override
+    public void build() throws Exception {
+
     }
 
     public void show(){

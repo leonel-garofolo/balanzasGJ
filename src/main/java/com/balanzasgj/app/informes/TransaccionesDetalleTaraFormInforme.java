@@ -22,6 +22,7 @@ import java.util.List;
 public class TransaccionesDetalleTaraFormInforme extends ReportBase{
     private List<Tare> taras;
     public TransaccionesDetalleTaraFormInforme(List<Tare> taras){
+        super(null, null);
         this.taras = taras;
     }
 
@@ -36,6 +37,11 @@ public class TransaccionesDetalleTaraFormInforme extends ReportBase{
     public JRDataSource getDataSource() {
         JRDataSource ds = new JRBeanCollectionDataSource(taras);
         return ds;
+    }
+
+    @Override
+    public void build() throws Exception {
+
     }
 
     public void show(){

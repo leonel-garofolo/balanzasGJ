@@ -1,21 +1,10 @@
 package com.balanzasgj.app.services;
 
-import java.awt.Image;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.sql.Blob;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-
-import org.apache.log4j.Logger;
-
 import com.balanzasgj.app.informes.RemitoReport;
+import com.balanzasgj.app.informes.ReportBase;
 import com.balanzasgj.app.informes.ReportBase.PAGE_FORMAT;
+import com.balanzasgj.app.informes.Ticket;
+import com.balanzasgj.app.informes.TicketPrinter;
 import com.balanzasgj.app.informes.csv.ExportTaraCsv;
 import com.balanzasgj.app.informes.model.RemitoFieldType;
 import com.balanzasgj.app.model.GlobalParameter;
@@ -26,9 +15,20 @@ import com.balanzasgj.app.persistence.ReportDao;
 import com.balanzasgj.app.persistence.impl.jdbc.ReportDaoImpl;
 import com.balanzasgj.app.utils.ShowJasper;
 import com.balanzasgj.app.view.InformesController;
-
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.log4j.Logger;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ReportService implements  Runnable {
     final static Logger logger = Logger.getLogger(ReportService.class);
@@ -160,35 +160,37 @@ public class ReportService implements  Runnable {
             params.put(GlobalParameter.P_EMPRESA_IMG, null);
         }
         try {
+            updateReportCount(params);
+            ReportBase report = null;
             if (modalidad != null
                     && modalidad.equals(Tare.MODO.M_ADUANA.label)) {
-                updateReportCount(params);
-
                 ShowJasper.openBeanDataSource(InformesController.TICKET_ADUANA, params, new JRBeanCollectionDataSource(taras));
             } else {
-            	final String typeTicket = paramConfigurationService.get(GlobalParameter.P_TICKET_ETIQUETADORA);            	
+            	final String typeTicket = paramConfigurationService.get(GlobalParameter.P_TICKET_ETIQUETADORA);
                 boolean ticketEt = false;
-                try {
-                	ticketEt= Boolean.valueOf(typeTicket);                	 
-                }catch (Exception e) {					
-                	if(typeTicket.equals(GlobalParameter.TYPE_TICKET.FORMATO_ETIQUETADORA.label)) 
-                		ticketEt = true;
-                	else
-                		ticketEt = false;
-				}      
-                
-                updateReportCount(params);
+            	if(typeTicket.equals(GlobalParameter.TYPE_TICKET.FORMATO_ETIQUETADORA.label))
+            	   ticketEt = true;
+                else if(typeTicket.equals(GlobalParameter.TYPE_TICKET.NORMAL.label) || (typeTicket.equals(GlobalParameter.TYPE_TICKET.REMITO.label)))
+                    ticketEt = false;
+                else {
+                    try {
+                        ticketEt= Boolean.valueOf(typeTicket);
+                    }catch (Exception e) {
+                    }
+                }
+
                 if (ticketEt) {
-                    ShowJasper.openBeanDataSource("ticketEtiquetadora", params,
-                            new JRBeanCollectionDataSource(taras));
+                    report = new TicketPrinter(PAGE_FORMAT.CARTA, params, taras);
                 } else {
-                	String fileReport = "ticket";
-                	if(modeReport == REPORT.TICKET_PRE_PRINT)
-                		fileReport = "ticketPreImpreso";
-                	
-                    ShowJasper.openBeanDataSource(fileReport, params, new JRBeanCollectionDataSource(taras));
+                    report = new Ticket(RemitoReport.PAGE_FORMAT.A4, params, taras);
                 }
             }
+            try {
+                report.build();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            report.show();
         } catch (JRException e) {
             logger.error(e);
         }
@@ -203,7 +205,7 @@ public class ReportService implements  Runnable {
     			page =  RemitoReport.PAGE_FORMAT.A5;
     	}
     	
-    	Map<String, String> data = new HashMap<String, String>();
+    	Map<String, Object> data = new HashMap();
 		data.put(RemitoFieldType.DENOMINACION.label, "<DENOMINACION>");
 		data.put(RemitoFieldType.DOMICILIO.label, paramConfigurationService.get(GlobalParameter.P_EMPRESA_DIR_BAL));
 		data.put(RemitoFieldType.LOCALIDAD.label, paramConfigurationService.get(GlobalParameter.P_EMPRESA_LOC_BAL));
@@ -214,9 +216,9 @@ public class ReportService implements  Runnable {
 		data.put(RemitoFieldType.PESO_ENTRADA.label, tare.getPesoEntrada().toString());
 		data.put(RemitoFieldType.PESO_SALIDA.label, tare.getPesoSalida().toString());
 		data.put(RemitoFieldType.PESO_NETO.label, tare.getPesoNeto().toString());		
-    	RemitoReport remito = new RemitoReport(remitoFieldService.findAll(), data, page);
+    	RemitoReport remito = new RemitoReport(page, data, remitoFieldService.findAll());
 		try {
-			remito.buildReport();
+			remito.build();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

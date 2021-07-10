@@ -4,40 +4,87 @@ import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
 import ar.com.fdvs.dj.core.layout.LayoutManager;
 import ar.com.fdvs.dj.domain.DynamicReport;
+import com.balanzasgj.app.services.RemitoFieldService;
 import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.*;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.view.JasperViewer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public abstract class ReportBase {
- 
-	protected static final Log log = LogFactory.getLog(ReportBase.class);
+	final static Logger logger = Logger.getLogger(ReportBase.class);
+	protected final Map<String, Object> parameter;
+	protected JRDesignStyle textStyle;
+	protected final JasperDesign jasperDesign;
+	protected final PAGE_FORMAT page;
+
 	protected JasperPrint jp;
 	protected JasperReport jr;
 	protected Map params = new HashMap();
 	protected DynamicReport dr;
-	public static enum PAGE_FORMAT{
+
+	public enum PAGE_FORMAT{
 		A4("A4", 595,842),
-		A5("A5", 400, 300);
+		A4_LANDSCAPE("A4_landscape", 842, 595),
+		A5("A5", 570, 595),
+		A5_LANDSCAPE("A5_landscape", 595, 421),
+		CARTA("CARTA", 226, 226);
 		
 		public String label;
 		public int with;		
 		public int height;
 		
 
-	    private PAGE_FORMAT(String label, int with, int height) {
+	    PAGE_FORMAT(String label, int with, int height) {
 	    	this.label = label;
 	        this.with = with;
 	        this.height = height;
 	    }
 	}
- 
-	
+
+	public enum Unit{
+		cm,
+		px
+	}
+
+	public ReportBase(PAGE_FORMAT page, Map<String, Object> parameter) {
+		this.parameter = parameter;
+		this.jasperDesign = new JasperDesign();
+		if(page == null)
+			page = PAGE_FORMAT.A4;
+		this.page = page;
+		setup();
+	}
+
+	private void setup(){
+		jasperDesign.setPageWidth(page.with);
+		jasperDesign.setPageHeight(page.height);
+
+		Iterator it = parameter.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry)it.next();
+			JRDesignParameter param = new JRDesignParameter();
+			param.setName(String.valueOf(pair.getKey()));
+			param.setValueClass(String.class);
+			JRDesignExpression expression = new JRDesignExpression();
+			param.setDefaultValueExpression(expression);
+			try {
+				jasperDesign.addParameter(param);
+			} catch (JRException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public abstract DynamicReport buildReport() throws Exception;
 	
 	public abstract JRDataSource getDataSource();
@@ -62,22 +109,22 @@ public abstract class ReportBase {
 	  	 * Creamos el objeto que imprimiremos pasando como parametro
 		 * el JasperReport object, y el JRDataSource
 		 */
-  		log.debug("Filling the report");
+		logger.debug("Filling the report");
   		if (ds != null){
   			jp = JasperFillManager.fillReport(jr, params, ds);
   		}else{
   			jp = JasperFillManager.fillReport(jr, params);
-  			log.debug("Filling done!");
-  			log.debug("Exporting the report (pdf, xls, etc)");
+			logger.debug("Filling done!");
+			logger.debug("Exporting the report (pdf, xls, etc)");
   		}
   			
   		exportReport();
- 
-        log.debug("test finished");
+
+		logger.debug("test finished");
 		 
 	}
- 
-	
+
+	public abstract void build() throws Exception;
  
 	protected LayoutManager getLayoutManager() {
 		return new ClassicLayoutManager();
@@ -88,8 +135,8 @@ public abstract class ReportBase {
 	protected void exportReport() throws Exception {
  
 			final String path=System.getProperty("user.dir")+ "/target/reports/" + this.getClass().getCanonicalName()+ ".pdf";
-			
-			log.debug("Exporing report to: " + path);
+
+		logger.debug("Exporing report to: " + path);
 			JRPdfExporter exporter = new JRPdfExporter();
 			File outputFile = new File(path);
 			File parentFile = outputFile.getParentFile();
@@ -102,7 +149,7 @@ public abstract class ReportBase {
 	  		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, fos);
 	  
 	  		exporter.exportReport();
-	  		log.debug("Report exported: " + path);
+		logger.debug("Report exported: " + path);
 			
 	}
 		 	
@@ -114,7 +161,59 @@ public abstract class ReportBase {
 		} else {
 			DynamicJasperHelper.generateJRXML(this.dr, this.getLayoutManager(), this.params, "UTF-8",System.getProperty("user.dir")+ "/target/reports/" + this.getClass().getCanonicalName() + ".jrxml");
 		}
-	}	
-	
-	
+	}
+
+	public void setTextStyle(JRDesignStyle textStyle) {
+		this.textStyle = textStyle;
+	}
+
+	protected JRDesignStaticText staticText(Unit unit, double x, double y, Object text){
+		final JRDesignStaticText staticText = new JRDesignStaticText();
+		switch (unit){
+			case cm:
+				staticText.setX(toCM(x));
+				staticText.setY(toCM(y));
+				break;
+			case px:
+				staticText.setX(new Double(x).intValue());
+				staticText.setY(new Double(y).intValue());
+				break;
+		}
+		if(this.textStyle != null)
+			staticText.setStyle(this.textStyle);
+		staticText.setWidth(100);
+		staticText.setHeight(20);
+		staticText.setText(text == null? "": text.toString());
+		return staticText;
+	}
+
+	protected JRDesignStaticText staticText(Unit unit, JRDesignStyle textStyle, double x, double y, Object text){
+		JRDesignStaticText staticText = this.staticText(unit, x, y, text);
+		staticText.setStyle(textStyle);
+		return staticText;
+	}
+
+	protected JRDesignStyle style(String name, String font, int size){
+		JRDesignStyle textStyle = new JRDesignStyle();
+		textStyle.setName(name);
+		textStyle.setFontName(font);
+		textStyle.setFontSize(Integer.valueOf(size).floatValue());
+		return textStyle;
+	}
+	private int toCM(double pixel) {
+		return new Double(( 96 / 2.54 ) * pixel).intValue();
+	}
+
+	public void show(){
+		JasperReport report;
+		try {
+			logger.info("report dimention:  width: " + this.jasperDesign.getPageWidth() + " | height: " + this.jasperDesign.getPageHeight());
+			report = JasperCompileManager.compileReport(this.jasperDesign);
+
+			JasperPrint jasperPrint = JasperFillManager.fillReport(report, new HashMap(), getDataSource());
+			JasperViewer.viewReport(jasperPrint, false);
+		} catch (JRException e) {
+			e.printStackTrace();
+		}
+	}
 }

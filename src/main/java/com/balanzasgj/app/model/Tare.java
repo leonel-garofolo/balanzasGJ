@@ -67,15 +67,15 @@ public class Tare implements Serializable
     private Date 		fechaSalida  ;
     @DatabaseField(canBeNull = true)
     private String     balanza      ;
-    @DatabaseField(canBeNull = true, foreign = true, columnName = "id_producto")
+    @DatabaseField(canBeNull = true, foreign = true, columnName = "id_producto", foreignColumnName = "codigo")
     private Product    producto   ;
-    @DatabaseField(canBeNull = true, foreign = true, columnName = "id_cliente")    
+    @DatabaseField(canBeNull = true, foreign = true, columnName = "id_cliente", foreignColumnName = "codigo")
     private Client    cliente    ;
-    @DatabaseField(canBeNull = true, foreign = true, columnName = "id_transporte")
+    @DatabaseField(canBeNull = true, foreign = true, columnName = "id_transporte", foreignColumnName = "codigo")
     private Transport    transporte ;
-    @DatabaseField(canBeNull = true, foreign = true, columnName = "id_procedencia")
+    @DatabaseField(canBeNull = true, foreign = true, columnName = "id_procedencia", foreignColumnName = "codigo")
     private Origin procedencias;
-    @DatabaseField(canBeNull = true, foreign = true, columnName = "id_imp_exp")
+    @DatabaseField(canBeNull = true, foreign = true, columnName = "id_imp_exp", foreignColumnName = "codigo")
     private ImportAndExport impExp;
     @DatabaseField(canBeNull = true)
     private String     modalidad ;

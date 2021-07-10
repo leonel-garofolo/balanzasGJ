@@ -1,13 +1,5 @@
 package com.balanzasgj.app.view.settings;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.javafx.controls.customs.view.ComboBoxAutoCompleteView;
-
 import com.balanzasgj.app.informes.RemitoReport;
 import com.balanzasgj.app.informes.ReportBase.PAGE_FORMAT;
 import com.balanzasgj.app.informes.model.RemitoFieldType;
@@ -16,18 +8,20 @@ import com.balanzasgj.app.model.RemitoField;
 import com.balanzasgj.app.services.GlobalParameterService;
 import com.balanzasgj.app.services.RemitoFieldService;
 import com.balanzasgj.app.utils.Message;
-
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.javafx.controls.customs.view.ComboBoxAutoCompleteView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RemitoView extends VBox {
 	private VBox screen;	
@@ -113,7 +107,7 @@ public class RemitoView extends VBox {
 	
 	private void generarRemito() {
 		if(save()) {
-			Map<String, String> data = new HashMap<String, String>();
+			Map<String, Object> data = new HashMap();
 			data.put(RemitoFieldType.DENOMINACION.label, "<DENOMINACION>");
 			data.put(RemitoFieldType.DOMICILIO.label, globalParameterService.get(GlobalParameter.P_EMPRESA_DIR_BAL));
 			data.put(RemitoFieldType.LOCALIDAD.label, globalParameterService.get(GlobalParameter.P_EMPRESA_LOC_BAL));
@@ -125,7 +119,7 @@ public class RemitoView extends VBox {
 			data.put(RemitoFieldType.PESO_SALIDA.label, "<PESO_SALIDA>");
 			data.put(RemitoFieldType.PESO_NETO.label, "<PESO_NETO>");
 			
-			RemitoReport remito = new RemitoReport(remitoFieldService.findAll(), data, RemitoReport.PAGE_FORMAT.A4);
+			RemitoReport remito = new RemitoReport(RemitoReport.PAGE_FORMAT.A4, data, remitoFieldService.findAll());
 			try {
 				remito.buildReport();
 			} catch (Exception e) {
