@@ -1,10 +1,7 @@
 package com.balanzasgj.app.services;
 
-import com.balanzasgj.app.informes.RemitoReport;
-import com.balanzasgj.app.informes.ReportBase;
+import com.balanzasgj.app.informes.*;
 import com.balanzasgj.app.informes.ReportBase.PAGE_FORMAT;
-import com.balanzasgj.app.informes.Ticket;
-import com.balanzasgj.app.informes.TicketPrinter;
 import com.balanzasgj.app.informes.csv.ExportTaraCsv;
 import com.balanzasgj.app.informes.model.RemitoFieldType;
 import com.balanzasgj.app.model.GlobalParameter;
@@ -14,7 +11,7 @@ import com.balanzasgj.app.model.User;
 import com.balanzasgj.app.persistence.ReportDao;
 import com.balanzasgj.app.persistence.impl.jdbc.ReportDaoImpl;
 import com.balanzasgj.app.utils.ShowJasper;
-import com.balanzasgj.app.view.InformesController;
+import javafx.collections.ObservableList;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
@@ -40,11 +37,14 @@ public class ReportService implements  Runnable {
     private HashMap<String, Object> params;
 
     private REPORT modeReport;
+
     private enum REPORT {
         EXPORT_CSV,
         TICKET,
         TICKET_PRE_PRINT,
-        REMITO
+        REMITO,
+        TARE,
+        TARE_DETALLE,
     };
 
     public ReportService() {
@@ -59,7 +59,7 @@ public class ReportService implements  Runnable {
     }
     
     public void exportCsv(String fileName){
-        final HashMap<String, Object> params = new HashMap<>();
+        params = new HashMap<>();
         params.put("fileName", fileName);
         runReport(REPORT.EXPORT_CSV, new HashMap<>());
     }
@@ -72,9 +72,21 @@ public class ReportService implements  Runnable {
     }
     
     public void remito(long idTaras) {
-    	final HashMap<String, Object> params = new HashMap<>();
+    	params = new HashMap<>();
         params.put("idtaras", idTaras);
         runReport(REPORT.REMITO, params);
+    }
+
+    public void tare(ObservableList<Tare> items) {
+        params = new HashMap<>();
+        params.put("tares", items);
+        runReport(REPORT.TARE, params);
+    }
+
+    public void tareDetalle(ObservableList<Tare> items) {
+        params = new HashMap<>();
+        params.put("tares", items);
+        runReport(REPORT.TARE_DETALLE, params);
     }
 
     private  void runReport(REPORT mode, HashMap<String, Object> params){
@@ -96,6 +108,12 @@ public class ReportService implements  Runnable {
                 break;
             case REMITO:
             	buildRemito();
+                break;
+            case TARE:
+                buildTare();
+                break;
+            case TARE_DETALLE:
+                buildTareDetalle();
                 break;
         }
     }
@@ -159,41 +177,38 @@ public class ReportService implements  Runnable {
         } else {
             params.put(GlobalParameter.P_EMPRESA_IMG, null);
         }
-        try {
-            updateReportCount(params);
-            ReportBase report = null;
-            if (modalidad != null
-                    && modalidad.equals(Tare.MODO.M_ADUANA.label)) {
-                ShowJasper.openBeanDataSource(InformesController.TICKET_ADUANA, params, new JRBeanCollectionDataSource(taras));
-            } else {
-            	final String typeTicket = paramConfigurationService.get(GlobalParameter.P_TICKET_ETIQUETADORA);
-                boolean ticketEt = false;
-            	if(typeTicket.equals(GlobalParameter.TYPE_TICKET.FORMATO_ETIQUETADORA.label))
-            	   ticketEt = true;
-                else if(typeTicket.equals(GlobalParameter.TYPE_TICKET.NORMAL.label) || (typeTicket.equals(GlobalParameter.TYPE_TICKET.REMITO.label)))
-                    ticketEt = false;
-                else {
-                    try {
-                        ticketEt= Boolean.valueOf(typeTicket);
-                    }catch (Exception e) {
-                    }
-                }
 
-                if (ticketEt) {
-                    report = new TicketPrinter(PAGE_FORMAT.CARTA, params, taras);
-                } else {
-                    report = new Ticket(RemitoReport.PAGE_FORMAT.A4, params, taras);
+        updateReportCount(params);
+        ReportBase report = null;
+        if (modalidad != null
+                && modalidad.equals(Tare.MODO.M_ADUANA.label)) {
+            report = new TicketAduana(PAGE_FORMAT.A4, params, taras);
+        } else {
+            final String typeTicket = paramConfigurationService.get(GlobalParameter.P_TICKET_ETIQUETADORA);
+            boolean ticketEt = false;
+            if(typeTicket.equals(GlobalParameter.TYPE_TICKET.FORMATO_ETIQUETADORA.label))
+                ticketEt = true;
+            else if(typeTicket.equals(GlobalParameter.TYPE_TICKET.NORMAL.label) || (typeTicket.equals(GlobalParameter.TYPE_TICKET.REMITO.label)))
+                ticketEt = false;
+            else {
+                try {
+                    ticketEt= Boolean.valueOf(typeTicket);
+                }catch (Exception e) {
                 }
             }
-            try {
-                report.build();
-            } catch (Exception e) {
-                e.printStackTrace();
+
+            if (ticketEt) {
+                report = new TicketPrinter(PAGE_FORMAT.CARTA, params, taras);
+            } else {
+                report = new Ticket(RemitoReport.PAGE_FORMAT.A4, params, taras);
             }
-            report.show();
-        } catch (JRException e) {
-            logger.error(e);
         }
+        try {
+            report.build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        report.show();
     }
     
     private void buildRemito() {
@@ -214,8 +229,10 @@ public class ReportService implements  Runnable {
 		data.put(RemitoFieldType.CONDUCTOR.label, tare.getConductor());
 		data.put(RemitoFieldType.ACOPLADO.label, tare.getPatenteAceptado());
 		data.put(RemitoFieldType.PESO_ENTRADA.label, tare.getPesoEntrada().toString());
-		data.put(RemitoFieldType.PESO_SALIDA.label, tare.getPesoSalida().toString());
-		data.put(RemitoFieldType.PESO_NETO.label, tare.getPesoNeto().toString());		
+		if(tare.getPesoSalida() != null)
+		    data.put(RemitoFieldType.PESO_SALIDA.label, tare.getPesoSalida().toString());
+        if(tare.getPesoNeto() != null)
+		    data.put(RemitoFieldType.PESO_NETO.label, tare.getPesoNeto().toString());
     	RemitoReport remito = new RemitoReport(page, data, remitoFieldService.findAll());
 		try {
 			remito.build();
@@ -223,6 +240,54 @@ public class ReportService implements  Runnable {
 			e.printStackTrace();
 		}
 		remito.show();
+    }
+
+    private void buildTare() {
+        TransaccionesInforme informe = new TransaccionesInforme((List<Tare>) params.get("tares"));
+        try {
+            informe.generateReport();
+            informe.show();
+        } catch (Exception e) {
+            logger.error(e);
+        }
+    }
+
+    private void buildTareDetalle(){
+        /*PROPIETARIO DE LA BALANZA*/
+        params.put(GlobalParameter.P_EMPRESA_NOMBRE_BAL, paramConfigurationService.get(GlobalParameter.P_EMPRESA_NOMBRE_BAL));
+        params.put(GlobalParameter.P_EMPRESA_DIR_BAL, paramConfigurationService.get(GlobalParameter.P_EMPRESA_DIR_BAL));
+        params.put(GlobalParameter.P_EMPRESA_TEL_BAL, paramConfigurationService.get(GlobalParameter.P_EMPRESA_TEL_BAL));
+        params.put(GlobalParameter.P_EMPRESA_EMAIL_BAL, paramConfigurationService.get(GlobalParameter.P_EMPRESA_EMAIL_BAL));
+        params.put(GlobalParameter.P_EMPRESA_LOC_BAL, paramConfigurationService.get(GlobalParameter.P_EMPRESA_LOC_BAL));
+        params.put(GlobalParameter.P_EMPRESA_PROV_BAL, paramConfigurationService.get(GlobalParameter.P_EMPRESA_PROV_BAL));
+
+        /* EMPRESA*/
+        params.put(GlobalParameter.P_EMPRESA_NOMBRE, paramConfigurationService.get(GlobalParameter.P_EMPRESA_NOMBRE));
+        params.put(GlobalParameter.P_EMPRESA_DIR, paramConfigurationService.get(GlobalParameter.P_EMPRESA_DIR));
+        params.put(GlobalParameter.P_EMPRESA_TEL, paramConfigurationService.get(GlobalParameter.P_EMPRESA_TEL));
+        params.put(GlobalParameter.P_EMPRESA_LOC, paramConfigurationService.get(GlobalParameter.P_EMPRESA_LOC));
+        params.put(GlobalParameter.P_EMPRESA_PROV, paramConfigurationService.get(GlobalParameter.P_EMPRESA_PROV));
+        params.put("USUARIO", User.getUsuarioLogeado());
+
+        Blob pg = paramConfigurationService.getBlob(GlobalParameter.P_EMPRESA_IMG);
+        if(pg != null) {
+            try {
+                byte[] img = new byte[new Long(pg.length()).intValue()];
+                Image image = ImageIO.read(new ByteArrayInputStream(img));
+
+                params.put(GlobalParameter.P_EMPRESA_IMG, image);
+            } catch (SQLException e) {
+                logger.error(e);
+            } catch (IOException e) {
+                logger.error(e);
+            }
+        }
+
+        try {
+            ShowJasper.openBeanDataSource("transaccionesDetalles", params, new JRBeanCollectionDataSource((List<Tare>) params.get("tares")));
+        } catch (JRException e) {
+            logger.error(e);
+        }
     }
 
     private void updateReportCount(HashMap<String, Object> params) {

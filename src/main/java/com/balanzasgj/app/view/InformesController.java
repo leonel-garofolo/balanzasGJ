@@ -215,54 +215,12 @@ public class InformesController {
     
     @FXML
     private void handleImprimir(ActionEvent event) {
-        TransaccionesInforme informe = new TransaccionesInforme(tblPesajes.getItems());
-        try {
-            informe.generateReport();
-            informe.show();
-        } catch (Exception e) {
-            logger.error(e);
-        }
-
+		reportService.tare(tblPesajes.getItems());
     }
 
     @FXML
     private void handleImprimirDetalle(ActionEvent event) {
-    	HashMap<String, Object> params = new HashMap<>();
-    	/*PROPIETARIO DE LA BALANZA*/		
-        params.put(GlobalParameter.P_EMPRESA_NOMBRE_BAL, globalParameterService.get(GlobalParameter.P_EMPRESA_NOMBRE_BAL));        
-        params.put(GlobalParameter.P_EMPRESA_DIR_BAL, globalParameterService.get(GlobalParameter.P_EMPRESA_DIR_BAL));
-        params.put(GlobalParameter.P_EMPRESA_TEL_BAL, globalParameterService.get(GlobalParameter.P_EMPRESA_TEL_BAL));
-        params.put(GlobalParameter.P_EMPRESA_EMAIL_BAL, globalParameterService.get(GlobalParameter.P_EMPRESA_EMAIL_BAL));      
-        params.put(GlobalParameter.P_EMPRESA_LOC_BAL, globalParameterService.get(GlobalParameter.P_EMPRESA_LOC_BAL));       
-        params.put(GlobalParameter.P_EMPRESA_PROV_BAL, globalParameterService.get(GlobalParameter.P_EMPRESA_PROV_BAL));
-        
-        /* EMPRESA*/
-        params.put(GlobalParameter.P_EMPRESA_NOMBRE, globalParameterService.get(GlobalParameter.P_EMPRESA_NOMBRE));
-        params.put(GlobalParameter.P_EMPRESA_DIR, globalParameterService.get(GlobalParameter.P_EMPRESA_DIR));     
-        params.put(GlobalParameter.P_EMPRESA_TEL, globalParameterService.get(GlobalParameter.P_EMPRESA_TEL));
-        params.put(GlobalParameter.P_EMPRESA_LOC, globalParameterService.get(GlobalParameter.P_EMPRESA_LOC));      
-        params.put(GlobalParameter.P_EMPRESA_PROV, globalParameterService.get(GlobalParameter.P_EMPRESA_PROV));
-        params.put("USUARIO", User.getUsuarioLogeado());
-        
-        Blob pg = globalParameterService.getBlob(GlobalParameter.P_EMPRESA_IMG); 
-		if(pg != null) {
-			try {
-				byte[] img = new byte[new Long(pg.length()).intValue()];
-				Image image = ImageIO.read(new ByteArrayInputStream(img));
-	            
-	            params.put(GlobalParameter.P_EMPRESA_IMG, image);
-			} catch (SQLException e) {
-				logger.error(e);
-			} catch (IOException e) {
-				logger.error(e);
-			}
-		}
-		
-		try {
-			ShowJasper.openBeanDataSource("transaccionesDetalles", params, new JRBeanCollectionDataSource(tblPesajes.getItems()) );
-		} catch (JRException e) {
-			logger.error(e);
-		}
+    	reportService.tareDetalle(tblPesajes.getItems());
     }
 
     public void initialize() {  

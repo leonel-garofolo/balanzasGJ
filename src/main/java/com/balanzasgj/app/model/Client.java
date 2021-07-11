@@ -6,10 +6,10 @@
 
 package com.balanzasgj.app.model;
 
-import java.io.Serializable;
-
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.io.Serializable;
 
 
 /**
@@ -19,7 +19,7 @@ import com.j256.ormlite.table.DatabaseTable;
  *
  */
 @DatabaseTable(tableName = "clientes")
-public class Client extends Entity implements Serializable
+public class Client extends EntityLong implements Serializable
 {
     private static final long serialVersionUID = 1L;
    

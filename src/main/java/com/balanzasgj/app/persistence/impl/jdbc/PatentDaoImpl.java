@@ -20,9 +20,9 @@ public class PatentDaoImpl extends GenericJdbcDAO<Patent, String> implements Pat
 		try {
 			Patent find = queryForSameId(entity);
 			if(find == null)
-				entity.setCodigo((long)create(entity));				
+				create(entity);
 			else
-				update(entity);	
+				update(entity);
 		} catch (SQLException e) {
 			logger.error(e);
 		}		

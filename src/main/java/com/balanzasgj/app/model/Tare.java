@@ -63,9 +63,9 @@ public class Tare implements Serializable
     private String     transaccion  ;
     @DatabaseField(canBeNull = false, columnName = "fecha_entrada")
     private Date       fechaEntrada        ;
-    @DatabaseField(canBeNull = true, columnName = "fecha_salida")
+    @DatabaseField(columnName = "fecha_salida")
     private Date 		fechaSalida  ;
-    @DatabaseField(canBeNull = true)
+    @DatabaseField()
     private String     balanza      ;
     @DatabaseField(canBeNull = true, foreign = true, columnName = "id_producto", foreignColumnName = "codigo")
     private Product    producto   ;
@@ -91,7 +91,7 @@ public class Tare implements Serializable
     private String     tipoDoc      ;
     @DatabaseField(canBeNull = true, columnName = "num_doc")
     private String     numDoc       ;
-    @DatabaseField(canBeNull = true, foreign = true, columnName = "patente")
+    @DatabaseField(canBeNull = true, foreign = true, columnName = "patente", foreignColumnName = "codigo")
     private Patent    patente      ;
     @DatabaseField(canBeNull = true, columnName = "patente_aceptado")
     private String     patenteAceptado ;
@@ -109,7 +109,7 @@ public class Tare implements Serializable
     private BigDecimal pesoNeto   ;
     @DatabaseField(canBeNull = true)
     private String     modoChasis ;
-    @DatabaseField(canBeNull = true, foreign = true, columnName = "id_ata")
+    @DatabaseField(canBeNull = true, foreign = true, columnName = "id_ata", foreignColumnName = "codigo")
     private Ata ata;
     @DatabaseField(canBeNull = true)
     private String contenedor;

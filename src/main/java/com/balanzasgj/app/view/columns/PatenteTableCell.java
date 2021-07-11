@@ -8,6 +8,6 @@ public class PatenteTableCell<Taras> extends TableCell<Taras, Patent> {
 	@Override
 	protected void updateItem(Patent item, boolean empty) {
 		super.updateItem(item, empty);
-		setText(empty || item == null ? "" : item.getPatente());
+		setText(empty || item == null ? "" : item.getCodigo());
 	}
 }

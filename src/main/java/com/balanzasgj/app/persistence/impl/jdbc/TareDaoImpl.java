@@ -234,7 +234,7 @@ public class TareDaoImpl extends GenericJdbcDAO<Tare, Long> implements TareDao{
 		
 		if(rs.getString("patente") != null) {
 			Patent p = new Patent();
-			p.setPatente(rs.getString("patente"));			
+			p.setCodigo(rs.getString("patente"));
 			taras.setPatente(p);
 		}
 		taras.setPatenteAceptado(rs.getString("patente_aceptado")); // java.lang.String

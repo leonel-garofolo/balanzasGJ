@@ -460,7 +460,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 				&& cbxModoTara.getSelectionModel().getSelectedItem().equals(Tare.ACTION.T_TOMAR_TARA.label)) {
 			if (!txtTara.getText().isEmpty() && !txtDiasVenc.getText().isEmpty()) {
 				Patent p = new Patent();
-				p.setPatente(txtPatente.getText());
+				p.setCodigo(txtPatente.getText());
 				p.setTara(Double.valueOf(txtTara.getText()));
 				p.setDiasVenc(Integer.valueOf(txtDiasVenc.getText()));
 				this.pantentService.save(p);
@@ -534,7 +534,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 					}
 
 					Patent p = new Patent();
-					p.setPatente(txtPatente.getText());
+					p.setCodigo(txtPatente.getText());
 					tara.setPatente(p);
 					tara.setNumDoc(txtNumDoc.getText());
 					tara.setConductor(txtConductor.getText());
@@ -589,16 +589,13 @@ public class PesarEntradaSalidaController extends AnchorPane
 						}
 					}
 					// comprobar si existe una patente con pesaje de salida pendiente
-					boolean existPending = tareService.checkPending(tara.getPatente().getPatente());
+					boolean existPending = tareService.checkPending(tara.getPatente().getCodigo());
 					if (tara.getIdtaras() == null && existPending) {
 						Message.error("Error al guardar, ya existe un pesaje pendiente con la patente "
 								+ tara.getPatente() + ".");
 						return;
 					}
-					
-					if (idTaraEdit == -1) {
-						idTaraEdit = tareService.save(tara);
-					}
+					idTaraEdit = tareService.save(tara);
 
 					// guardo todos los ejes cargados
 					if (isEje) {
@@ -621,7 +618,14 @@ public class PesarEntradaSalidaController extends AnchorPane
 						taraEdit = tareService.findById(tara.getIdtaras());
 						handleTicket(null);
 					}
-					reportService.exportCsv("sistema_balanzas_taras.csv");
+					/*
+					try{
+						reportService.exportCsv("sistema_balanzas_taras.csv");
+					}catch (NullPointerException e){
+						logger.error("ERROR EXPORTAR CSV", e);
+					}
+					 */
+
 					clearForm();
 					btnIngresoManual.setDisable(true);
 					handleNuevoPesaje(event);
@@ -725,7 +729,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		long timestamp = System.currentTimeMillis();
 		txtFecha.setText(format.format(new Date(timestamp)));
 		txtTransaccion.setText(taraEdit.getTransaccion());
-		txtPatente.setText(this.pantentService.findById(taraEdit.getPatente().getPatente()).getPatente());
+		txtPatente.setText(taraEdit.getPatente().getCodigo());
 		txtPatenteChasis.setText(taraEdit.getPatenteAceptado());
 		txtEntrada.setText(taraEdit.getPesoEntrada().toString());
 
@@ -845,7 +849,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		String value = Message.addElement("Ingrese la nueva patente:");
 		if (!value.equals("")) {
 			Patent pat = new Patent();
-			pat.setPatente(value);
+			pat.setCodigo(value);
 			pat.setTara(0d);
 			long timestamp = System.currentTimeMillis();
 			pat.setUpdate(new Date(timestamp));
@@ -1025,7 +1029,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 				lblProducto.setPrefWidth(80);										
 			} else {
 				lblPatente.setText("Patente");
-				lblChasis.setText("Chasis");
+				lblChasis.setText("Acoplado");
 				lblProducto.setText("Producto");
 				lblProducto.setPrefWidth(53);
 			}	
@@ -1080,7 +1084,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 				boolean desicion = Message.option("La patente no existe, desea agregarla?");
 				if (desicion) {
 					Patent newPatente = new Patent();
-					newPatente.setPatente(pantente);
+					newPatente.setCodigo(pantente);
 					newPatente.setTara(Double.valueOf(txtTara.getText()));
 					pantentService.save(newPatente);
 				} else {
@@ -1365,7 +1369,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 			}
 		}
 		if (newValue != null && newValue.equals(Tare.ACTION.T_CON_TARA.label) && taraEdit.getPatente() != null) {
-			Patent p = this.pantentService.findById(taraEdit.getPatente().getPatente());			
+			Patent p = this.pantentService.findById(taraEdit.getPatente().getCodigo());
 			if (p.getTara() != null) {
 				lblTara.setVisible(true);
 				txtTara.setVisible(true);

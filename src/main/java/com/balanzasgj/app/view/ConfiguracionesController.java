@@ -1,65 +1,30 @@
 package com.balanzasgj.app.view;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import com.balanzasgj.app.model.Ata;
-import com.balanzasgj.app.model.Client;
-import com.balanzasgj.app.model.Comunication;
-import com.balanzasgj.app.model.Entity;
-import com.balanzasgj.app.model.GlobalParameter;
-import com.balanzasgj.app.model.ImportAndExport;
-import com.balanzasgj.app.model.Indicator;
-import com.balanzasgj.app.model.Origin;
-import com.balanzasgj.app.model.Patent;
-import com.balanzasgj.app.model.Product;
-import com.balanzasgj.app.model.Transport;
-import com.balanzasgj.app.model.User;
-import com.balanzasgj.app.services.AtaService;
-import com.balanzasgj.app.services.ClientService;
-import com.balanzasgj.app.services.ComunicationService;
-import com.balanzasgj.app.services.GlobalParameterService;
-import com.balanzasgj.app.services.ImportAndExportService;
-import com.balanzasgj.app.services.IndicatorService;
-import com.balanzasgj.app.services.OriginService;
-import com.balanzasgj.app.services.PatentService;
-import com.balanzasgj.app.services.ProductService;
-import com.balanzasgj.app.services.TransportService;
+import com.balanzasgj.app.model.*;
+import com.balanzasgj.app.services.*;
 import com.balanzasgj.app.utils.Message;
 import com.balanzasgj.app.view.settings.RemitoView;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.*;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class ConfiguracionesController extends AnchorPane {
 
@@ -74,7 +39,7 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private TableView<Entity> tblEntidades;
 	@FXML
-	private TableColumn<Entity, Long> colCodigo;
+	private TableColumn<EntityLong, Long> colCodigo;
 
 	@FXML
 	private TableColumn<Entity, String> colNombre;
@@ -300,7 +265,7 @@ public class ConfiguracionesController extends AnchorPane {
 			modoEditEntidades = true;
 			if (tblEntidades.getSelectionModel().getSelectedItem() instanceof Patent) {
 				Patent p = (Patent) tblEntidades.getSelectionModel().getSelectedItem();
-				txtEntidadNombre.setText(p.getPatente());
+				txtEntidadNombre.setText(p.getCodigo());
 				SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				txtEntidadCuitAlias.setText(String.valueOf(p.getTara()));
 				txtEntidadUltMov.setText(sd.format(p.getUpdate()));
@@ -439,31 +404,32 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private void handleEliminarEntidades(ActionEvent event) {
 		if (!cbxEntidades.getSelectionModel().isEmpty() && !tblEntidades.getSelectionModel().isEmpty()) {
+			Entity entity = tblEntidades.getSelectionModel().getSelectedItem();
 			String entidadType = cbxEntidades.getSelectionModel().getSelectedItem();
 			switch (entidadType) {
 			case CLIENTE:
-				clientService.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				clientService.deleteById(((EntityLong) entity).getCodigo());
 				break;
 			case PROCEDENCIAS:
-				originService.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				originService.deleteById(((EntityLong) entity).getCodigo());
 				break;
 			case PRODUCTOS:
-				productService.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				productService.deleteById(((EntityLong) entity).getCodigo());
 				break;
 			case TRANSPORTES:
-				transportService.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				transportService.deleteById(((EntityLong) entity).getCodigo());
 				break;
 			case IMPORTADORES:
 				importAndExportService
-						.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+						.deleteById(((EntityLong) entity).getCodigo());
 				break;
 			case ATA_TRANSPORTISTA:
-				ataService.deleteById(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+				ataService.deleteById(((EntityLong) entity).getCodigo());
 				break;
 
 			case PATENTES:
 				patentService
-						.deleteById(((Patent) tblEntidades.getSelectionModel().getSelectedItem()).getPatente());
+						.deleteById(((EntityString) entity).getCodigo());
 				break;
 			default:
 				break;
@@ -629,11 +595,12 @@ public class ConfiguracionesController extends AnchorPane {
 		if (nombre.equals("")) {
 
 		} else {
+			Entity entity = tblEntidades.getSelectionModel().getSelectedItem();
 			switch (entidadType) {
 			case CLIENTE:
 				Client cli = new Client();
 				if (modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
-					cli.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+					cli.setCodigo(((EntityLong) entity).getCodigo());
 				}
 				cli.setNombre(nombre);
 				cli.setCuit(txtEntidadCuitAlias.getText());
@@ -643,7 +610,7 @@ public class ConfiguracionesController extends AnchorPane {
 			case PROCEDENCIAS:
 				Origin pro = new Origin();
 				if (modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
-					pro.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+					pro.setCodigo(((EntityLong) entity).getCodigo());
 				}
 				pro.setNombre(nombre);
 				originService.save(pro);
@@ -651,7 +618,7 @@ public class ConfiguracionesController extends AnchorPane {
 			case PRODUCTOS:
 				Product producto = new Product();
 				if (modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
-					producto.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+					producto.setCodigo(((EntityLong) entity).getCodigo());
 				}
 
 				producto.setNombre(nombre);
@@ -661,7 +628,7 @@ public class ConfiguracionesController extends AnchorPane {
 			case TRANSPORTES:
 				Transport tras = new Transport();
 				if (modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
-					tras.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+					tras.setCodigo(((EntityLong) entity).getCodigo());
 				}
 				tras.setNombre(nombre);
 				tras.setCuit(txtEntidadCuitAlias.getText());
@@ -670,7 +637,7 @@ public class ConfiguracionesController extends AnchorPane {
 			case IMPORTADORES:
 				ImportAndExport ie = new ImportAndExport();
 				if (modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
-					ie.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+					ie.setCodigo(((EntityLong) entity).getCodigo());
 				}
 				ie.setNombre(nombre);
 				ie.setCuit(txtEntidadCuitAlias.getText());
@@ -679,7 +646,7 @@ public class ConfiguracionesController extends AnchorPane {
 			case ATA_TRANSPORTISTA:
 				Ata ata = new Ata();
 				if (modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
-					ata.setCodigo(tblEntidades.getSelectionModel().getSelectedItem().getCodigo());
+					ata.setCodigo(((EntityLong) entity).getCodigo());
 				}
 				ata.setNombre(nombre);
 				ata.setCuit(txtEntidadCuitAlias.getText());
@@ -688,7 +655,7 @@ public class ConfiguracionesController extends AnchorPane {
 			case PATENTES:
 				Patent p = new Patent();
 				if (modoEditEntidades && tblEntidades.getSelectionModel().getSelectedItem() != null) {
-					p.setPatente(((Patent) tblEntidades.getSelectionModel().getSelectedItem()).getPatente());
+					p.setCodigo(((EntityString) entity).getCodigo());
 				}
 				p.setTara(Double.valueOf(txtEntidadCuitAlias.getText()));
 				p.setDiasVenc(Integer.valueOf(txtEntidadAcumulado.getText()));
@@ -907,9 +874,9 @@ public class ConfiguracionesController extends AnchorPane {
 			@Override
 			public String getValue() {
 				if (cellData.getValue() instanceof Patent) {
-					return ((Patent) cellData.getValue()).getPatente();
+					return  ((Patent)cellData.getValue()).getCodigo();
 				} else {
-					return cellData.getValue().getNombre().toString();
+					return cellData.getValue().getNombre();
 				}
 
 			}

@@ -18,7 +18,7 @@ import com.j256.ormlite.table.DatabaseTable;
  *
  */
 @DatabaseTable(tableName = "procedencias")
-public class Origin extends Entity implements Serializable
+public class Origin extends EntityLong implements Serializable
 {
     private static final long serialVersionUID = 1L;
     public Origin() {

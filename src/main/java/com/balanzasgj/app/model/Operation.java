@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @author Telosys Tools Generator
  *
  */
-public class Operation extends Entity implements Serializable
+public class Operation extends EntityLong implements Serializable
 {
     private static final long serialVersionUID = 1L;
 

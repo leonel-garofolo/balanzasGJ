@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.j256.ormlite.field.DatabaseField;
 
-public abstract class TransportEntity extends Entity{
+public abstract class TransportEntity extends EntityLong{
 
 	@DatabaseField(canBeNull = true, columnName = "ultimo_movimiento")
 	protected Date ultimoMovimiento; // Date

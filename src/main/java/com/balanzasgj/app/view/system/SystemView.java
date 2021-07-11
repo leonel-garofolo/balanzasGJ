@@ -1,8 +1,11 @@
 package com.balanzasgj.app.view.system;
 
+import com.balanzasgj.app.db.UpdateDB;
 import com.balanzasgj.app.model.GlobalParameter;
 import com.balanzasgj.app.model.GlobalParameter.TYPE_TICKET;
 import com.balanzasgj.app.services.GlobalParameterService;
+import com.balanzasgj.app.utils.Message;
+import com.balanzasgj.app.utils.Utils;
 import com.balanzasgj.app.view.DashboardView;
 import com.balanzasgj.app.view.IView;
 import com.balanzasgj.app.view.MainActions;
@@ -11,16 +14,19 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 import org.javafx.form.FormBuilder;
 import org.javafx.form.model.FormField;
 import org.javafx.form.model.FormFieldList;
 import org.javafx.form.model.FormFieldType;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SystemView extends VBox implements IView {	
-	
+public class SystemView extends VBox implements IView {
+	final static Logger logger = Logger.getLogger(SystemView.class);
+
 	private final DashboardView dashboardView;
 	private GlobalParameterService paramConfigurationService;
 	private static final int PADDING= 25;
@@ -100,17 +106,51 @@ public class SystemView extends VBox implements IView {
 		param = GlobalParameter.P_PASS_WINDOWS;
 		fields.add(new FormField(param, "Clave de Windows", FormFieldType.STRING, paramConfigurationService.get(param)));
 		
-		fields.add(new FormField(null, "Backup", FormFieldType.SUBTITLE1, null));
+		fields.add(new FormField(null, "Tramiento de Base de datos", FormFieldType.SUBTITLE1, null));
 		param = GlobalParameter.P_EMPRESA_AUTOMATICO;
 		fields.add(new FormField(param, "Backup Automatico", FormFieldType.STRING, paramConfigurationService.get(param), false, "HH:mm"));
 		fields.add(new FormField(FormFieldType.NEW_ROW));
 		param = GlobalParameter.P_EMPRESA_BACKUP;
 		fields.add(new FormField(param, "Ubicación", FormFieldType.DIRECTORY, paramConfigurationService.get(param)));
-		fields.add(new FormField("btnBackupUbicacion", "Generar", FormFieldType.BUTTON, null));
+
+		FormField field =new FormField("btnBackupUbicacion", "Generar", FormFieldType.BUTTON, null);
+		field.setAction(event -> {
+			save();
+			final String pathBackup = paramConfigurationService.get(GlobalParameter.P_EMPRESA_BACKUP);
+			if (!pathBackup.isEmpty()) {
+				try {
+					Utils.generarBackup(pathBackup);
+					Message.info("Backup Finalizado.");
+				} catch (IOException e) {
+					e.printStackTrace();
+					Message.error("Se produjo un error al generar el backup.");
+				}
+			}
+		});
+		fields.add(field);
 		fields.add(new FormField(FormFieldType.NEW_ROW));
 		param = GlobalParameter.P_EMPRESA_RESTORE;
-		fields.add(new FormField(param, "Restaurar", FormFieldType.FILE, paramConfigurationService.get(param)));		
-		fields.add(new FormField("btnBackupRestaurar", "Restaurar", FormFieldType.BUTTON, null));
+		fields.add(new FormField(param, "Restaurar", FormFieldType.FILE, paramConfigurationService.get(param)));
+		field = new FormField("btnBackupRestaurar", "Restaurar", FormFieldType.BUTTON, null);
+		field.setAction(event -> {
+			final String pathRestore = paramConfigurationService.get(GlobalParameter.P_EMPRESA_RESTORE);
+			if(!pathRestore.isEmpty()) {
+				try {
+					UpdateDB db = new UpdateDB();
+					db.dropDatabase();
+					//Utils.restaurarBackup(txtPathRst.getText());
+					boolean result = Utils.restoreDB(pathRestore);
+					logger.info("Corriendo actualizacion RUN: " + result);
+					//db.run();
+					Message.info("Restauración Finalizada. El sistema se cerrara al presionar OK.");
+					System.exit(0);
+				} catch (Exception e) {
+					e.printStackTrace();
+					Message.error("Se produjo un error al restaurar el backup.");
+				}
+			}
+		});
+		fields.add(field);
 		fields.add(new FormField(FormFieldType.NEW_ROW));
 		param = GlobalParameter.P_ACTIVAR_DEBUG;
 		fields.add(new FormField(param, "Activar Debug", FormFieldType.BOOLEAN, paramConfigurationService.get(param)));
@@ -162,7 +202,7 @@ public class SystemView extends VBox implements IView {
 		showFiedValidation(validationType, validation, GlobalParameter.V_DOCUMENTO, "Documento");
 		showFiedValidation(validationType, validation, GlobalParameter.V_CONDUCTOR, "Conductor");
 		showFiedValidation(validationType, validation, GlobalParameter.V_NACIONALIDAD, "Nacionalidad");
-		showFiedValidation(validationType, validation, GlobalParameter.V_CHASIS, "Chasis");
+		showFiedValidation(validationType, validation, GlobalParameter.V_CHASIS, "Acoplado");
 		showFiedValidation(validationType, validation, GlobalParameter.V_FACTURA, "Comprobante");
 		fields.add(new FormField(FormFieldType.NEW_ROW));
 		showFiedValidation(validationType, validation, GlobalParameter.V_OBSERVACION, "Observacion");

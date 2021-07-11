@@ -21,7 +21,7 @@ import com.j256.ormlite.table.DatabaseTable;
  *
  */
 @DatabaseTable(tableName = "productos", daoClass = ProductDaoImpl.class)
-public class Product extends Entity implements Serializable
+public class Product extends EntityLong implements Serializable
 {
     private static final long serialVersionUID = 1L;    
 

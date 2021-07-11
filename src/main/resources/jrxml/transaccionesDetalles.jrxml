@@ -182,7 +182,7 @@
 				<textElement>
 					<font fontName="Arial" size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{patente}.getPatente()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{patente}.getCodigo()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="101" width="80" height="20" uuid="2500f553-c2c1-41d3-b2d9-ae2e8b9f2225"/>

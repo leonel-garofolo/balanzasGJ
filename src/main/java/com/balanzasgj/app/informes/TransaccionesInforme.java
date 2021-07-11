@@ -19,12 +19,13 @@ import net.sf.jasperreports.view.JasperViewer;
 import java.awt.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class TransaccionesInforme  extends ReportBase{
     private List<Tare> taras;
     public TransaccionesInforme(List<Tare> taras){
-        super(null, null);
+        super(PAGE_FORMAT.A4, new HashMap<>());
         this.taras = taras;
     }
 
@@ -58,7 +59,7 @@ public class TransaccionesInforme  extends ReportBase{
                 .build();
 
         AbstractColumn colChasis = ColumnBuilder.getNew()
-                .setColumnProperty("patente.patente", String.class.getName())
+                .setColumnProperty("patente.codigo", String.class.getName())
                 .setTitle("Patente").setWidth(15)
                 .setStyle(numberColStyle)
                 .build();
@@ -144,7 +145,11 @@ public class TransaccionesInforme  extends ReportBase{
 
     @Override
     public void build() throws Exception {
-
+        jasperDesign.setName("Taras");
+        int margin = 14;
+        jasperDesign.setLeftMargin(margin);
+        jasperDesign.setTopMargin(margin);
+        jasperDesign.setBottomMargin(margin);
     }
 
     public void show(){

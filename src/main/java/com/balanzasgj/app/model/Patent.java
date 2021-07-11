@@ -6,19 +6,17 @@
 
 package com.balanzasgj.app.model;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+import java.util.Date;
+
 @DatabaseTable(tableName = "patentes")
-public class Patent extends Entity implements Serializable
+public class Patent extends EntityString implements Serializable
 {
     private static final long serialVersionUID = 1L;
-      
-    @DatabaseField(canBeNull = false, columnName = "codigo")
-    private String patente ; // String // Id or Primary Key
+
     @DatabaseField(canBeNull = true, persisted = false)
 	protected String     nombre       ;
     
@@ -34,18 +32,6 @@ public class Patent extends Entity implements Serializable
      */
     public Patent() {
         super();
-    }
-       
-	public void setPatente( String patente ) {
-        this.patente = patente ;
-    }
-    /**
-     * Get the "codigo" field value
-     * This field is mapped on the database column "codigo" ( type "VARCHAR", NotNull : true ) 
-     * @return the field value
-     */
-	public String getPatente() {
-        return this.patente;
     }
 
     //----------------------------------------------------------------------

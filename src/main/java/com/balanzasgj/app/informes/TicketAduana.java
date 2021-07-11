@@ -7,60 +7,54 @@ import com.balanzasgj.app.model.User;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.design.JRDesignBand;
-import net.sf.jasperreports.engine.design.JRDesignSection;
-import net.sf.jasperreports.engine.design.JRDesignStaticText;
-import net.sf.jasperreports.engine.design.JRDesignStyle;
+import net.sf.jasperreports.engine.design.*;
 import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
+import net.sf.jasperreports.engine.type.ModeEnum;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class TicketAduana extends ReportBase{
+    private int col1 = 5;
+    private int col1Value = col1 + 100;
+    private int col2;
+    private int col2Value;
+
+    private final SimpleDateFormat dateFormat;
+    private JRDesignStaticText textStatic;
+    private final JRDesignStyle subTitleStyle;
     private final JRDesignStyle textStyle;
-    private List<Tare> taras;
+    private final Tare tare;
     public TicketAduana(PAGE_FORMAT page, Map<String, Object> params, List<Tare> taras) {
         super(page, params);
-        this.taras =taras;
+        this.tare =taras.get(0);
         this.textStyle= style("textStyle", "Arial", 10);
         setTextStyle(textStyle);
+        this.dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        this.subTitleStyle = style("subTitleStyle", "Arial", 12);
+        this.subTitleStyle.setBold(true);
+
     }
 
     public void build() throws Exception {
         logger.info("Print: " + TicketPrinter.class.getName());
+        this.col2 = this.jasperDesign.getPageWidth() / 2;
+        this.col2Value = col2 + 100;
         jasperDesign.setName("TicketAduana");
         int margin = 14;
         jasperDesign.setLeftMargin(margin);
-        jasperDesign.setRightMargin(margin);
         jasperDesign.setTopMargin(margin);
         jasperDesign.setBottomMargin(margin);
 
+        jasperDesign.addStyle(subTitleStyle);
         jasperDesign.addStyle(textStyle);
         jasperDesign.setTitle(buildTitle());
         jasperDesign.setPageHeader(buildHeader());
-        JRDesignBand detail = buildDetail(taras.get(0));
-        int y = 160;
-        JRDesignStaticText textStatic = staticText(Unit.px, 0, y, parameter.get(GlobalParameter.P_EMPRESA_NOMBRE));
-        textStatic.setWidth(200);
-        detail.addElement(textStatic);
-
-        y= newLine(y);
-        String company = "" +
-                parameter.get(GlobalParameter.P_EMPRESA_DIR) + " - " +
-                parameter.get(GlobalParameter.P_EMPRESA_LOC) + " - " +
-                parameter.get(GlobalParameter.P_EMPRESA_PROV)
-                ;
-        textStatic = staticText(Unit.px, 0, y, company);
-        textStatic.setWidth(200);
-        detail.addElement(textStatic);
-        y = newLine(y);
-
-        textStatic = staticText(Unit.px, 0,y, "Tel:" + parameter.get(GlobalParameter.P_EMPRESA_TEL));
-        textStatic.setWidth(200);
-        detail.addElement(textStatic);
-
-        ((JRDesignSection) jasperDesign.getDetailSection()).addBand(detail);
+        ((JRDesignSection) jasperDesign.getDetailSection()).addBand(buildDetail(tare));
+        jasperDesign.setLastPageFooter(null);
+        jasperDesign.setPageFooter(buildFooter());
     }
 
     @Override
@@ -82,7 +76,7 @@ public class TicketAduana extends ReportBase{
         band.setHeight(20);
         JRDesignStyle titleStyle= style("titleStyle", "Arial", 14);
         titleStyle.setHorizontalTextAlign(HorizontalTextAlignEnum.CENTER);
-        JRDesignStaticText staticText = staticText(Unit.px, titleStyle, 0, 0, "Comprobante de Pesaje");
+        JRDesignStaticText staticText = staticText(Unit.px, titleStyle, 0, 0, "Razon social de la Firma");
         staticText.setWidth(jasperDesign.getPageWidth());
         band.addElement(staticText);
         titleStyle.setBold(true);
@@ -92,109 +86,225 @@ public class TicketAduana extends ReportBase{
 
     private JRDesignBand buildHeader(){
         JRDesignBand band = new JRDesignBand();
-        band.setHeight(50);
-        int y = 0;
-        band.addElement(staticText(Unit.px, 0,y,  parameter.get(GlobalParameter.P_EMPRESA_NOMBRE_BAL)));
-        band.addElement(staticText(Unit.px, 400,y,  parameter.get(GlobalParameter.P_REPORT_COPY)));
+
+        final JRDesignRectangle rectangle = new JRDesignRectangle();
+        rectangle.setRadius(5);
+        rectangle.setMode(ModeEnum.TRANSPARENT);
+        rectangle.setWidth(jasperDesign.getColumnWidth());
+        band.addElement(rectangle);
+
+        int y = 4;
+        band.addElement(staticText(Unit.px, col1,y, "Empresa: " + parameter.get(GlobalParameter.P_EMPRESA_NOMBRE_BAL)));
+        band.addElement(staticText(Unit.px, col2Value,y,  parameter.get(GlobalParameter.P_REPORT_COPY)));
 
         y = newLine(y);
-        String datosCliente = parameter.get(GlobalParameter.P_EMPRESA_DIR_BAL) + " - " +
+        String datosCliente = "Dirección: " + parameter.get(GlobalParameter.P_EMPRESA_DIR_BAL) + " - " +
                 parameter.get(GlobalParameter.P_EMPRESA_LOC_BAL) + " - " +
                 parameter.get(GlobalParameter.P_EMPRESA_PROV_BAL);
-        band.addElement(staticText(Unit.px, 0,y, datosCliente));
+        band.addElement(staticText(Unit.px, col1,y, datosCliente));
         y =newLine(y);
-        JRDesignStaticText textStatic = staticText(Unit.px, 0,y, "Tel:" + parameter.get(GlobalParameter.P_EMPRESA_TEL_BAL));
+        textStatic = staticText(Unit.px, col1,y, "Tel:" + parameter.get(GlobalParameter.P_EMPRESA_TEL_BAL));
         textStatic.setWidth(200);
         band.addElement(textStatic);
+
+        textStatic = staticText(Unit.px, col2Value ,y,  "TICKET DE EMPRESA: Nº " + tare.getTransaccion());
+        textStatic.setWidth(150);
+        band.addElement(textStatic);
+
+        rectangle.setHeight(y + 14);
+        band.setHeight(rectangle.getHeight() + 8);
+        logger.info("PAGE HEADER HEIGHT: " + (rectangle.getHeight() + 8));
         return band;
     }
 
     private JRDesignBand buildDetail(Tare t) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-
         JRDesignBand band = new JRDesignBand();
-        band.setHeight((new Double(210)).intValue());
-        int col1 = 0;
-        int col1Value = 80;
-        int col2 = 210;
-        int col2Value = col2 + 55;
-        int col3 = 360;
-        int col3Value = col3 + 82;
+        int y = 2;
+        y = buildRectDataAduana(band, y);
+        y = buildRectDataTare(band, y);
+        y = buildRectContBulto(band, y);
+        y = buildRectObservation(band, y);
+        band.setHeight((new Double(y + 50 )).intValue());
+        return band;
+    }
 
-        int y = 0;
-        JRDesignStaticText textStatic = null;
-        band.addElement(staticText(Unit.px, col1,y, "Entrada: "));
-        band.addElement(staticText(Unit.px, col1Value,y, dateFormat.format(t.getFechaEntrada())));
+    private int buildRectDataAduana(JRDesignBand band, int y){
+        final SimpleDateFormat dateFormatDate = new SimpleDateFormat("dd/MM/yyyy");
+        final SimpleDateFormat dateFormatHour = new SimpleDateFormat("HH:mm");
+        final JRDesignRectangle rectangle = new JRDesignRectangle();
+        rectangle.setX(0);
+        rectangle.setY(0);
+        rectangle.setRadius(5);
+        rectangle.setMode(ModeEnum.TRANSPARENT);
+        rectangle.setWidth(jasperDesign.getColumnWidth());
+        band.addElement(rectangle);
 
-        band.addElement(staticText(Unit.px, col2,y, "Operador: "));
-        band.addElement(staticText(Unit.px, col2Value,y, User.getUsuarioLogeado()));
+        band.addElement(staticText(Unit.px, col1,y, "Fecha: "));
+        band.addElement(staticText(Unit.px, col1Value,y, dateFormatDate.format(new Date())));
+        band.addElement(staticText(Unit.px, col2,y, "Hora: "));
+        band.addElement(staticText(Unit.px, col2Value, y, dateFormatHour.format(new Date())));
 
-        band.addElement(staticText(Unit.px, col3,y, "TICKET: "));
-        band.addElement(staticText(Unit.px, col3Value,y, t.getTransaccion()));
+        y = newLine(y) +2;
+        textStatic = staticText(Unit.px, subTitleStyle, col1 ,y ,"Exportador / Importador");
+        textStatic.setWidth(jasperDesign.getColumnWidth());
+        band.addElement(textStatic);
+        y = buildRazonSocial(band, y, "Razon Social: ", tare.getImpExp() == null ? "" : tare.getImpExp().getNombre(), "CUIT: ", tare.getImpExp().getCuit());
 
-        y = newLine(y);
-        band.addElement(staticText(Unit.px, col1,y, "Salida: "));
-        if(t.getFechaSalida() != null)
-            band.addElement(staticText(Unit.px, col1Value,y, dateFormat.format(t.getFechaSalida())));
+        y = newLine(y) +2;
+        textStatic = staticText(Unit.px, subTitleStyle, col1,y, "Destinación / Operación Aduana");
+        textStatic.setWidth(jasperDesign.getColumnWidth());
+        band.addElement(textStatic);
+        y = buildRazonSocial(band, y, "Número: ", tare.getDestino(), "Mercaderia: ", tare.getProducto() == null ? "": tare.getProducto().getNombre());
+        y = buildRazonSocial(band, y, "Código Aduana: ", parameter.get(GlobalParameter.A_CODIGO_ADUANA).toString(), "Código LOT: ",  parameter.get(GlobalParameter.A_CODIGO_LOG).toString());
+        rectangle.setHeight(y + 15);
+        return y;
+    }
 
-        band.addElement(staticText(Unit.px, col2,y, "Balanza: "));
-        band.addElement(staticText(Unit.px, col2Value,y, t.getBalanza()));
+    private int buildRectDataTare(JRDesignBand band, int y){
+        y = newLine(y) + 5;
+        final JRDesignRectangle rectangle = new JRDesignRectangle();
+        rectangle.setX(0);
+        rectangle.setY(y);
+        rectangle.setRadius(5);
+        rectangle.setMode(ModeEnum.TRANSPARENT);
+        rectangle.setWidth(jasperDesign.getColumnWidth());
+        band.addElement(rectangle);
 
-        band.addElement(staticText(Unit.px, col3,y, "Conductor: "));
-        band.addElement(staticText(Unit.px, col3Value,y, t.getConductor()));
+        y = y + 2;
+        textStatic = staticText(Unit.px, subTitleStyle, col1 ,y ,"Transportista");
+        textStatic.setWidth(jasperDesign.getColumnWidth());
+        band.addElement(textStatic);
+        y = buildRazonSocial(band, y, "Razon Social: ", tare.getTransporte() == null ? "" : tare.getTransporte().getNombre(), "CUIT: ", tare.getTransporte() == null ? "" : tare.getTransporte() == null ? "": tare.getTransporte().getCuit());
 
-        y= newLine(y);
-        band.addElement(staticText(Unit.px, col1,y, "Producto:"));
-        if(t.getProducto() != null)
-            band.addElement(staticText(Unit.px, col1Value,y, t.getProducto().getNombre()));
+        y = newLine(y) +2;
+        textStatic = staticText(Unit.px, subTitleStyle, col1,y, "ATA");
+        textStatic.setWidth(jasperDesign.getColumnWidth());
+        band.addElement(textStatic);
+        y = buildRazonSocial(band, y, "Razon Social: ", tare.getAta() == null ? "" : tare.getAta().getNombre(), "CUIT: ", tare.getTransporte() == null ? "" : tare.getAta() == null ? "": tare.getAta().getCuit());
 
-        band.addElement(staticText(Unit.px, col3,y, "DNI: "));
-        band.addElement(staticText(Unit.px, col3Value,y, t.getNumDoc()));
+        y = newLine(y) +2;
+        textStatic = staticText(Unit.px, subTitleStyle, col1,y, "Chofer");
+        textStatic.setWidth(jasperDesign.getColumnWidth());
+        band.addElement(textStatic);
+        y = buildRazonSocial(band, y, "Apellido y Nombre: ", tare.getConductor(), "Nacionalidad: ", tare.getNacionalidad());
+        y = buildRazonSocial(band, y, "Nº Documento: ", tare.getNumDoc(), "Tipo: ", tare.getTipoDoc()== null? "DNI" : tare.getTipoDoc());
 
-        y= newLine(y);
-        band.addElement(staticText(Unit.px, col1,y, "Cliente:"));
-        if(t.getCliente() != null)
-            band.addElement(staticText(Unit.px, col1Value,y, t.getCliente().getNombre()));
+        y = newLine(y) +2;
+        textStatic = staticText(Unit.px, subTitleStyle, col1,y, "Vehiculo");
+        textStatic.setWidth(jasperDesign.getColumnWidth());
+        band.addElement(textStatic);
+        y = buildRazonSocial(band, y, "Patente Tractor: ", tare.getPatente().getCodigo(), "País Destino / : ", tare.getProcedencias() == null ? "": tare.getProcedencias().getNombre());
+        y = buildRazonSocial(band, y, "Patente Acoplado: ", tare.getPatenteAceptado(), "Procedencia", "");
+        y = buildRazonSocial(band, y, "Entrada: ", dateFormat.format(tare.getFechaEntrada()), "Salida: ", tare.getFechaSalida() == null ? "" : dateFormat.format(tare.getFechaSalida()));
 
-        band.addElement(staticText(Unit.px, col3,y, "Nac.: "));
-        band.addElement(staticText(Unit.px, col3Value,y, t.getNacionalidad()));
+        y = newLine(y) +2;
+        textStatic = staticText(Unit.px, subTitleStyle, col1,y, "Pesada");
+        textStatic.setWidth(jasperDesign.getColumnWidth());
+        band.addElement(textStatic);
+        y = buildRazonSocial(band, y, "Operador: ", User.getUsuarioLogeado(), "", "");
+        y = buildRazonSocial(band, y, "PESO ENTRADA: ", tare.getPesoEntrada().toString(), "Balanza: ", tare.getBalanza());
+        y = buildRazonSocial(band, y, "PESO SALIDA: ", tare.getPesoSalida() == null ? "": tare.getPesoSalida().toString(), "Nº Certificado Habilitación: ", parameter.get(GlobalParameter.A_CERTIFICADO).toString());
+        y = buildRazonSocial(band, y, "PESO NETO: ", tare.getPesoNeto() == null ? "": tare.getPesoNeto().toString(), "Vencimiento: ", parameter.get(GlobalParameter.A_VENCIMIENTO).toString());
 
-        y= newLine(y);
-        band.addElement(staticText(Unit.px, col1,y, "Transporte:"));
-        if(t.getTransporte() != null)
-            band.addElement(staticText(Unit.px, col1Value,y, t.getTransporte().getNombre()));
+        rectangle.setHeight(y - 80);
+        return y;
+    }
 
-        band.addElement(staticText(Unit.px, col3,y, "Patente: "));
-        band.addElement(staticText(Unit.px, col3Value,y, t.getPatente().getCodigo()));
+    private int buildRectContBulto(JRDesignBand band, int y){
+        y = newLine(y) + 10;
+        final JRDesignRectangle rectContainer = new JRDesignRectangle();
+        rectContainer.setX(0);
+        rectContainer.setY(y);
+        rectContainer.setRadius(5);
+        rectContainer.setMode(ModeEnum.TRANSPARENT);
+        rectContainer.setWidth((jasperDesign.getColumnWidth() / 2) - 5);
+        rectContainer.setHeight(50);
+        band.addElement(rectContainer);
 
-        y= newLine(y);
-        band.addElement(staticText(Unit.px, col1,y, "Procedencia:"));
-        if(t.getProcedencias() != null)
-            band.addElement(staticText(Unit.px, col1Value,y, t.getProcedencias().getNombre()));
-        band.addElement(staticText(Unit.px, col3,y, "Acoplado: "));
-        band.addElement(staticText(Unit.px, col3Value,y, t.getPatenteAceptado()));
+        int xBulk = (jasperDesign.getColumnWidth() / 2) + 5;
+        final JRDesignRectangle rectBulk = new JRDesignRectangle();
+        rectBulk.setX(xBulk);
+        rectBulk.setY(y);
+        rectBulk.setRadius(5);
+        rectBulk.setMode(ModeEnum.TRANSPARENT);
+        rectBulk.setWidth((jasperDesign.getColumnWidth() / 2) - 5);
+        rectBulk.setHeight(50);
+        band.addElement(rectBulk);
 
-        y= newLine(y);
-        y= newLine(y);
-        band.addElement(staticText(Unit.px, col1,y, "Comprobante: "));
-        band.addElement(staticText(Unit.px, col1Value,y, t.getComprobanteNun1()));
-
-        band.addElement(staticText(Unit.px, col3,y, "PESO ENTRADA: "));
-        band.addElement(staticText(Unit.px, col3Value,y, t.getPesoEntrada()));
-
-        y= newLine(y);
-        band.addElement(staticText(Unit.px, col1,y, "Observación: "));
-        textStatic= staticText(Unit.px, col1Value,y, t.getObservacion());
-        textStatic.setWidth(150);
-        textStatic.setHeight(40);
+        y = y + 2;
+        textStatic = staticText(Unit.px, subTitleStyle, col1,y, "Contenedor");
+        textStatic.setWidth(jasperDesign.getColumnWidth());
+        band.addElement(textStatic);
+        textStatic = staticText(Unit.px, subTitleStyle, col2,y, "Bulto");
+        textStatic.setWidth(jasperDesign.getColumnWidth());
         band.addElement(textStatic);
 
-        band.addElement(staticText(Unit.px, col3,y, "PESO SALIDA: "));
-        band.addElement(staticText(Unit.px, col3Value,y, t.getPesoSalida()));
+        y = buildRazonSocial(band, y, "Contenedor: ", tare.getContenedor(), "Identificador: ", tare.getMercaderia());
+        y = buildRazonSocial(band, y, "Tara Contenedor: ", tare.getContenedorNum(), "Manifiesto: ", tare.getManifiesto());
+        return y;
+    }
+
+    private int buildRectObservation(JRDesignBand band, int y){
+        y = newLine(y) + 10;
+        final JRDesignRectangle rectangle = new JRDesignRectangle();
+        rectangle.setX(0);
+        rectangle.setY(y);
+        rectangle.setRadius(5);
+        rectangle.setMode(ModeEnum.TRANSPARENT);
+        rectangle.setWidth(jasperDesign.getColumnWidth());
+        band.addElement(rectangle);
+
+        band.addElement(staticText(Unit.px, col1, y, "Observación: "));
+        textStatic = staticText(Unit.px, col1Value, y, tare.getObservacion());
+        textStatic.setWidth(jasperDesign.getColumnWidth());
+        band.addElement(textStatic);
+        y = newLine(y);
+        band.addElement(staticText(Unit.px, col1, y, "Obs. Aduana: "));
+        textStatic = staticText(Unit.px, col1Value, y, tare.getObservacionAduana());
+        textStatic.setWidth(jasperDesign.getColumnWidth());
+        band.addElement(textStatic);
+        rectangle.setHeight(30);
+        return y;
+    }
+
+    private int buildRazonSocial(JRDesignBand band, int y, String label1, String value1, String label2, String value2){
+        y = newLine(y);
+        textStatic = staticText(Unit.px, col1, y, label1);
+        textStatic.setWidth(100);
+        band.addElement(textStatic);
+        band.addElement(staticText(Unit.px, col1Value, y, value1 == null ? "" : value1));
+
+        textStatic = staticText(Unit.px, col2, y, label2);
+        textStatic.setWidth(100);
+        band.addElement(textStatic);
+
+        band.addElement(staticText(Unit.px, col2Value, y, value2 == null ? "" : value2));
+        return y;
+    }
+
+    private JRDesignBand buildFooter(){
+        JRDesignBand band = new JRDesignBand();
+        int y = 0;
+        textStatic = staticText(Unit.px, 0, y, parameter.get(GlobalParameter.P_EMPRESA_NOMBRE));
+        textStatic.setWidth(200);
+        band.addElement(textStatic);
 
         y= newLine(y);
-        band.addElement(staticText(Unit.px, col3,y, "PESO NETO: "));
-        band.addElement(staticText(Unit.px, col3Value,y, t.getPesoNeto()));
+        String company = "" +
+                parameter.get(GlobalParameter.P_EMPRESA_DIR) + " - " +
+                parameter.get(GlobalParameter.P_EMPRESA_LOC) + " - " +
+                parameter.get(GlobalParameter.P_EMPRESA_PROV)
+                ;
+        textStatic = staticText(Unit.px, 0, y, company);
+        textStatic.setWidth(200);
+        band.addElement(textStatic);
+        y = newLine(y);
+
+        textStatic = staticText(Unit.px, 0,y, "Tel:" + parameter.get(GlobalParameter.P_EMPRESA_TEL));
+        textStatic.setWidth(200);
+        band.addElement(textStatic);
+        band.setHeight(y +20);
+        logger.info("PAGE FOOTER HEIGHT: " + (y +20));
         return band;
     }
 }

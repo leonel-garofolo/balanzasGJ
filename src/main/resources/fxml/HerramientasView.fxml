@@ -105,7 +105,7 @@
                                                 <Label text="Campos requeridos en la Entrada" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                                                 <CheckBox fx:id="chbConductorEV" mnemonicParsing="false" text="Conductor" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <CheckBox fx:id="chbNacionalidadEV" mnemonicParsing="false" text="Nacionalidad" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                                <CheckBox fx:id="chbChasisEV" mnemonicParsing="false" text="Chasis" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                                <CheckBox fx:id="chbChasisEV" mnemonicParsing="false" text="Acoplado" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                                                 <CheckBox fx:id="chbFacturarEV" mnemonicParsing="false" text="Comprobante" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                                                 <CheckBox fx:id="chbObservacionesEV" mnemonicParsing="false" text="Observaciones" GridPane.rowIndex="3" />
                                                 <CheckBox fx:id="chbProductoEV" mnemonicParsing="false" text="Producto" GridPane.columnIndex="1" GridPane.rowIndex="3" />

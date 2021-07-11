@@ -2,6 +2,7 @@ package com.balanzasgj.app.services;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -42,6 +43,7 @@ public class PatentService {
 	}
 	
 	public void save(Patent entity) {
+		entity.setUpdate(new Date());
 		patentDao.save(entity);
 	}
 
