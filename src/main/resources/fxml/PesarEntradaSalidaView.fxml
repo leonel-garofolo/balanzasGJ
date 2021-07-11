@@ -200,7 +200,7 @@
                      <children>
                         <HBox prefHeight="208.0" prefWidth="1205.0">
                            <children>
-                              <GridPane focusTraversable="true" prefHeight="173.0" prefWidth="1303.0">
+                              <GridPane focusTraversable="true" prefHeight="173.0" prefWidth="1400.0">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="74.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="104.0" />

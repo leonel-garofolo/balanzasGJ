@@ -19,7 +19,7 @@ public class TransportDaoImpl extends GenericJdbcDAO<Transport, Long> implements
 	public Long save(Transport entity) {
 		try {
 			if(entity.getCodigo() == null)
-				entity.setCodigo((long)create(entity));				
+				create(entity);
 			else
 				update(entity);	
 		} catch (SQLException e) {

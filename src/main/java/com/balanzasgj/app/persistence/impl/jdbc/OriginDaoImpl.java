@@ -19,7 +19,7 @@ public class OriginDaoImpl extends GenericJdbcDAO<Origin, Long> implements Origi
 	public Long save(Origin entity) {
 		try {
 			if(entity.getCodigo() == null)
-				entity.setCodigo((long)create(entity));				
+				create(entity);
 			else
 				update(entity);	
 		} catch (SQLException e) {

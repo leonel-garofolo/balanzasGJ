@@ -19,7 +19,7 @@ public class OperationDaoImpl extends GenericJdbcDAO<Operation, Long> implements
 	public Long save(Operation entity) {
 		try {
 			if(entity.getCodigo() == null)
-				entity.setCodigo((long)create(entity));				
+				create(entity);
 			else
 				update(entity);	
 		} catch (SQLException e) {

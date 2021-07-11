@@ -3,7 +3,7 @@ package com.balanzasgj.app.model;
 import com.j256.ormlite.field.DatabaseField;
 
 public abstract class EntityLong extends Entity{
-    @DatabaseField(id = true)
+    @DatabaseField(generatedId = true)
     protected Long    codigo       ; // Id or Primary Key
 
     public Long getCodigo() {

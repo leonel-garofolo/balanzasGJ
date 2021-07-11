@@ -56,7 +56,7 @@ public class Tare implements Serializable
     private static final String C_COMPLETO = "COMPLETO";
     private static final String C_POR_EJE = "POR EJE";
 
-    @DatabaseField(id = true, columnName = "idTaras")
+    @DatabaseField(columnName = "idTaras", generatedId = true)
     private Long    idtaras      ; // Id or Primary Key
 
     @DatabaseField(canBeNull = false)
@@ -83,19 +83,19 @@ public class Tare implements Serializable
     private String     comprobanteNun1 ;
     @DatabaseField(canBeNull = true, columnName = "modoTara")
     private String     modoTara ;
-    @DatabaseField(canBeNull = true)
+    @DatabaseField(canBeNull = true, columnName = "destino")
     private String     destino      ;
-    @DatabaseField(canBeNull = true)
+    @DatabaseField(canBeNull = true, columnName = "conductor")
     private String     conductor    ;
     @DatabaseField(canBeNull = true, columnName = "tipo_doc")
     private String     tipoDoc      ;
     @DatabaseField(canBeNull = true, columnName = "num_doc")
     private String     numDoc       ;
-    @DatabaseField(canBeNull = true, foreign = true, columnName = "patente", foreignColumnName = "codigo")
+    @DatabaseField(foreign = true, columnName = "patente", foreignColumnName = "codigo")
     private Patent    patente      ;
     @DatabaseField(canBeNull = true, columnName = "patente_aceptado")
     private String     patenteAceptado ;
-    @DatabaseField(canBeNull = true)
+    @DatabaseField(canBeNull = true, columnName = "observacion")
     private String     observacion  ;
     @DatabaseField(canBeNull = true, columnName = "observacion_aduana")
     private String     observacionAduana  ;

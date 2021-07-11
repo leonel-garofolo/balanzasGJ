@@ -19,7 +19,7 @@ public class RemitoFieldDaoImpl extends GenericJdbcDAO<RemitoField, Long> implem
 	public Long save(RemitoField entity) {
 		try {
 			if(entity.getId() == null)
-				entity.setId((long)create(entity));				
+				create(entity);
 			else
 				update(entity);	
 		} catch (SQLException e) {

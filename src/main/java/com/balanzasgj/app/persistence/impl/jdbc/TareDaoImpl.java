@@ -45,7 +45,7 @@ public class TareDaoImpl extends GenericJdbcDAO<Tare, Long> implements TareDao{
 	public Long save(Tare entity) {
 		try {
 			if(entity.getIdtaras() == null)
-				entity.setIdtaras((long)create(entity));				
+				create(entity);
 			else
 				update(entity);	
 		} catch (SQLException e) {

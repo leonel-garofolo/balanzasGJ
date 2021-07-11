@@ -19,7 +19,7 @@ public class AtaDaoImpl extends GenericJdbcDAO<Ata, Long> implements AtaDao{
 	public Long save(Ata entity) {
 		try {
 			if(entity.getCodigo() == null)
-				entity.setCodigo((long)create(entity));				
+				create(entity);
 			else
 				update(entity);	
 		} catch (SQLException e) {

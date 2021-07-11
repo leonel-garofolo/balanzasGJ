@@ -163,7 +163,7 @@ public class Ticket extends ReportBase{
             band.addElement(staticText(Unit.px, col1Value,y, t.getTransporte().getNombre()));
 
         band.addElement(staticText(Unit.px, col3,y, "Patente: "));
-        band.addElement(staticText(Unit.px, col3Value,y, t.getPatente().getCodigo()));
+        band.addElement(staticText(Unit.px, col3Value,y, t.getPatente() == null ? "" : t.getPatente().getCodigo()));
 
         y= newLine(y);
         band.addElement(staticText(Unit.px, col1,y, "Procedencia:"));

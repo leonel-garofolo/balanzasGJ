@@ -19,7 +19,7 @@ public class ClientDaoImpl extends GenericJdbcDAO<Client, Long> implements Clien
 	public Long save(Client entity) {
 		try {
 			if(entity.getCodigo() == null)
-				entity.setCodigo((long)create(entity));				
+				create(entity);
 			else
 				update(entity);	
 		} catch (SQLException e) {

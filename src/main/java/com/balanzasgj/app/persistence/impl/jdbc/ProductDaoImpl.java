@@ -19,7 +19,7 @@ public class ProductDaoImpl extends GenericJdbcDAO<Product, Long> implements Pro
 	public Long save(Product entity) {
 		try {
 			if(entity.getCodigo() == null)
-				entity.setCodigo((long)create(entity));				
+				create(entity);
 			else
 				update(entity);	
 		} catch (SQLException e) {

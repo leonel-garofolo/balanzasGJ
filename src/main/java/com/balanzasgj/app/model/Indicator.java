@@ -23,7 +23,7 @@ public class Indicator implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    @DatabaseField(id=true)
+    @DatabaseField(generatedId = true)
     private Long    idindicadores ; // Id or Primary Key
 
     @DatabaseField(canBeNull = false)

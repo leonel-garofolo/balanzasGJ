@@ -17,7 +17,7 @@ public class Report implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    @DatabaseField(id = true)
+    @DatabaseField(generatedId = true)
     private Long id ; // Integer // Id or Primary Key
 
     @DatabaseField(canBeNull = false, columnName = "tara_id")

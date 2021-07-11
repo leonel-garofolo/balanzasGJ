@@ -344,7 +344,7 @@ public class HerramientasController extends AnchorPane implements IView {
 		}
 
 		if (txtExportPath != null && txtExportPath.getText() != null && !txtExportPath.getText().isEmpty()) {
-			paramConfigurationService.save(GlobalParameter.P_EXPORT_PATH, txtExportPath.getText());
+			paramConfigurationService.save(GlobalParameter.P_CSV_EXPORT_PATH, txtExportPath.getText());
 		}
 		if (txtUserWindows != null && txtUserWindows.getText() != null && !txtUserWindows.getText().isEmpty()) {
 			paramConfigurationService.save(GlobalParameter.P_USER_WINDOWS, txtUserWindows.getText());
@@ -624,7 +624,7 @@ public class HerramientasController extends AnchorPane implements IView {
 		txtPathRst.setText(paramConfigurationService.get(GlobalParameter.P_EMPRESA_RESTORE));
 		txtClaveIngManual.setText(paramConfigurationService.get(GlobalParameter.P_EMPRESA_ING_MANUAL));
 
-		txtExportPath.setText(paramConfigurationService.get(GlobalParameter.P_EXPORT_PATH));
+		txtExportPath.setText(paramConfigurationService.get(GlobalParameter.P_CSV_EXPORT_PATH));
 		txtUserWindows.setText(paramConfigurationService.get(GlobalParameter.P_USER_WINDOWS));
 		txtPassWindows.setText(paramConfigurationService.get(GlobalParameter.P_PASS_WINDOWS));
 		loadCamposRequeridos();

@@ -19,7 +19,7 @@ public class IndicatorDaoImpl extends GenericJdbcDAO<Indicator, Long> implements
 	public Long save(Indicator entity) {
 		try {
 			if(entity.getIdindicadores() == null)
-				entity.setIdindicadores((long)create(entity));				
+				create(entity);
 			else
 				update(entity);	
 		} catch (SQLException e) {

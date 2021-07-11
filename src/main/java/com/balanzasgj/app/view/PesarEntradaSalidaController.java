@@ -1,57 +1,14 @@
 package com.balanzasgj.app.view;
 
-import java.math.BigDecimal;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import org.apache.log4j.Logger;
-import org.javafx.controls.customs.ComboBoxAutoComplete;
-
 import com.balanzasgj.app.conn.serial.JSocketConnection;
 import com.balanzasgj.app.conn.serial.SocketConnection;
-import com.balanzasgj.app.model.Ata;
-import com.balanzasgj.app.model.Axis;
-import com.balanzasgj.app.model.Client;
-import com.balanzasgj.app.model.Comunication;
-import com.balanzasgj.app.model.Entity;
-import com.balanzasgj.app.model.GlobalParameter;
-import com.balanzasgj.app.model.ImportAndExport;
-import com.balanzasgj.app.model.Indicator;
-import com.balanzasgj.app.model.Origin;
-import com.balanzasgj.app.model.Patent;
-import com.balanzasgj.app.model.Product;
-import com.balanzasgj.app.model.Tare;
-import com.balanzasgj.app.model.Transport;
-import com.balanzasgj.app.model.User;
-import com.balanzasgj.app.services.AtaService;
-import com.balanzasgj.app.services.AxisService;
-import com.balanzasgj.app.services.ClientService;
-import com.balanzasgj.app.services.ComunicationService;
-import com.balanzasgj.app.services.GlobalParameterService;
-import com.balanzasgj.app.services.ImportAndExportService;
-import com.balanzasgj.app.services.IndicatorService;
-import com.balanzasgj.app.services.OriginService;
-import com.balanzasgj.app.services.PatentService;
-import com.balanzasgj.app.services.ProductService;
-import com.balanzasgj.app.services.ReportService;
-import com.balanzasgj.app.services.TareService;
-import com.balanzasgj.app.services.TransportService;
+import com.balanzasgj.app.model.*;
+import com.balanzasgj.app.services.*;
 import com.balanzasgj.app.utils.Message;
-import com.balanzasgj.app.view.columns.ClientesTableCell;
-import com.balanzasgj.app.view.columns.ImpExpTableCell;
-import com.balanzasgj.app.view.columns.PatenteTableCell;
-import com.balanzasgj.app.view.columns.ProcedenciasTableCell;
-import com.balanzasgj.app.view.columns.ProductosTableCell;
-import com.balanzasgj.app.view.columns.TransportesTableCell;
+import com.balanzasgj.app.view.columns.*;
 import com.balanzasgj.app.view.custom.AduanaDialog;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -60,21 +17,24 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import org.apache.log4j.Logger;
+import org.javafx.controls.customs.ComboBoxAutoComplete;
+
+import java.math.BigDecimal;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class PesarEntradaSalidaController extends AnchorPane
 		implements Initializable, SerialPortDataListener, EventHandler<KeyEvent> {
@@ -383,11 +343,6 @@ public class PesarEntradaSalidaController extends AnchorPane
 		if(indicador.isEje()) 
 			cbxModoChasis.setValue(Tare.TIPO.C_POR_EJE.label);
 		
-		String ticketFormat = globalParameterService.get(GlobalParameter.P_TICKET_ETIQUETADORA);
-		if(ticketFormat.equals(GlobalParameter.TYPE_TICKET.REMITO.label)) {
-			btnTicket.setText("Remito");
-		} 
-		
 		btnTicket.setDisable(true);
 		cbxIndicador.setDisable(false);
 		if (cbxIndicador.getItems().size() > 0) {
@@ -595,45 +550,52 @@ public class PesarEntradaSalidaController extends AnchorPane
 								+ tara.getPatente() + ".");
 						return;
 					}
-					idTaraEdit = tareService.save(tara);
 
-					// guardo todos los ejes cargados
-					if (isEje) {
-						Axis eje = null;
-						for (int i = 0; i < tblEjes.getItems().size(); i++) {
-							eje = tblEjes.getItems().get(i);
-							eje.setIdTaras(idTaraEdit);
-							axiService.save(eje);
+					boolean processOK = saveTareProcess(tara, isEje);
+					if(processOK){
+						boolean ticket = Message
+								.optionYesNo("Los datos se guardaron correctamente. Desea Imprimir el ticket?");
+						if (ticket) {
+							taraEdit = tareService.findById(idTaraEdit);
+							handleTicket(null);
 						}
-					}
-
-					refleshTableTaras();
-					if (taraEdit == null || (taraEdit != null && taraEdit.getIdtaras() == null)) {
-						saveContadorTransaccion();
-					}
-
-					boolean ticket = Message
-							.optionYesNo("Los datos se guardaron correctamente. Desea Imprimir el ticket?");
-					if (ticket) {
-						taraEdit = tareService.findById(tara.getIdtaras());
-						handleTicket(null);
-					}
-					/*
-					try{
 						reportService.exportCsv("sistema_balanzas_taras.csv");
-					}catch (NullPointerException e){
-						logger.error("ERROR EXPORTAR CSV", e);
-					}
-					 */
 
-					clearForm();
-					btnIngresoManual.setDisable(true);
-					handleNuevoPesaje(event);
+						clearForm();
+						btnIngresoManual.setDisable(true);
+						handleNuevoPesaje(event);
+					} else {
+						Message.error("Ooops! Se ha producido un error al guardar.");
+					}
 				}
 			} else {
 				Message.error("Por favor, ingrese los campos requeridos.");
 			}
 		}
+	}
+
+	private boolean saveTareProcess(Tare tara, boolean isEje){
+		try{
+			idTaraEdit = tareService.save(tara);
+
+			// guardo todos los ejes cargados
+			if (isEje) {
+				Axis eje = null;
+				for (int i = 0; i < tblEjes.getItems().size(); i++) {
+					eje = tblEjes.getItems().get(i);
+					eje.setIdTaras(idTaraEdit);
+					axiService.save(eje);
+				}
+			}
+
+			refleshTableTaras();
+			if (taraEdit == null || (taraEdit != null && taraEdit.getIdtaras() == null)) {
+				saveContadorTransaccion();
+			}
+		}catch (Exception e){
+			return false;
+		}
+		return true;
 	}
 
 	private boolean validateForm() {
@@ -1709,6 +1671,11 @@ public class PesarEntradaSalidaController extends AnchorPane
 		// don't let thread prevent JVM shutdown
 		thread.setDaemon(true);
 		thread.start();
+
+		String ticketFormat = globalParameterService.get(GlobalParameter.P_TICKET_ETIQUETADORA);
+		if(ticketFormat.equals(GlobalParameter.TYPE_TICKET.REMITO.label)) {
+			btnTicket.setText("Remito");
+		}
 	}
 
 	private void clearValidation(){

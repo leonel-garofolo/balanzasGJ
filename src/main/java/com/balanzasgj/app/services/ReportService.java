@@ -119,7 +119,9 @@ public class ReportService implements  Runnable {
     }
 
     private void buildExportCsv(){
-        final String path = paramConfigurationService.get(GlobalParameter.P_EXPORT_PATH);
+        final String path = paramConfigurationService.get(GlobalParameter.P_CSV_EXPORT_PATH);
+        if(!path.isEmpty())
+            return;
         final String userWin = paramConfigurationService.get(GlobalParameter.P_USER_WINDOWS);
         final String passWind = paramConfigurationService.get(GlobalParameter.P_PASS_WINDOWS);
         final String fileName = (String) params.get("fileName");

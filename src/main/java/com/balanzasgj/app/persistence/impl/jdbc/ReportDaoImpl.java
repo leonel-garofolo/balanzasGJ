@@ -19,7 +19,7 @@ public class ReportDaoImpl extends GenericJdbcDAO<Report, Long> implements Repor
 	public Long save(Report entity) {
 		try {
 			if(entity.getId() == null)
-				entity.setId((long)create(entity));				
+				create(entity);
 			else
 				update(entity);	
 		} catch (SQLException e) {

@@ -23,7 +23,7 @@ public class Comunication implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    @DatabaseField(id = false)
+    @DatabaseField(generatedId = true)
     private Long    idcomunicaciones ; // Id or Primary Key
 
     @DatabaseField(canBeNull = false)

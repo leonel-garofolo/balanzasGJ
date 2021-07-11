@@ -19,7 +19,7 @@ public class UserDaoImpl extends GenericJdbcDAO<User, Long> implements UserDao{
 	public Long save(User entity) {
 		try {
 			if(entity.getId() == null)
-				entity.setId((long)create(entity));				
+				create(entity);
 			else
 				update(entity);	
 		} catch (SQLException e) {

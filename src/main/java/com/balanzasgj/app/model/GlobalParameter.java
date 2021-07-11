@@ -55,7 +55,7 @@ public class GlobalParameter implements Serializable
 	public static final String P_VALIDACION_SALIDA= "VALIDACION_SALIDA";
 	
 	//csv
-	public static final String P_EXPORT_PATH= "EXPORT_PATH";
+	public static final String P_CSV_EXPORT_PATH = "EXPORT_PATH";
 	public static final String P_USER_WINDOWS= "USER_WINDOWS";
 	public static final String P_PASS_WINDOWS= "PASS_WINDOWS";
 	

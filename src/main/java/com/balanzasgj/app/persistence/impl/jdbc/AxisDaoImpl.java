@@ -19,7 +19,7 @@ public class AxisDaoImpl extends GenericJdbcDAO<Axis, Long> implements AxisDao{
 	public Long save(Axis entity) {
 		try {
 			if(entity.getIdEje() == null)
-				entity.setIdEje((long)create(entity));				
+				create(entity);
 			else
 				update(entity);	
 		} catch (SQLException e) {

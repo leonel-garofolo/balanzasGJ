@@ -19,7 +19,7 @@ public class ImportAndExportDaoImpl extends GenericJdbcDAO<ImportAndExport, Long
 	public Long save(ImportAndExport entity) {
 		try {
 			if(entity.getCodigo() == null)
-				entity.setCodigo((long)create(entity));				
+				create(entity);
 			else
 				update(entity);	
 		} catch (SQLException e) {

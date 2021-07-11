@@ -98,7 +98,7 @@ public class SystemView extends VBox implements IView {
 		loadChecksValidation(GlobalParameter.P_VALIDACION_SALIDA);
 		
 		fields.add(new FormField(null, "Exportar CSV", FormFieldType.SUBTITLE1, null));		
-		param = GlobalParameter.P_EXPORT_PATH;
+		param = GlobalParameter.P_CSV_EXPORT_PATH;
 		fields.add(new FormField(param, "Ubicación a exportar", FormFieldType.DIRECTORY, paramConfigurationService.get(param)));
 		fields.add(new FormField(FormFieldType.NEW_ROW));
 		param = GlobalParameter.P_USER_WINDOWS;

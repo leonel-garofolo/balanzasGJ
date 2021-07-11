@@ -13,7 +13,7 @@ public class User {
 	private static String usuarioLogeado;
 	private static String perfilLogeado;
 	
-	@DatabaseField(id = true)
+	@DatabaseField(generatedId = true)
 	private Long id;
 	
 	@DatabaseField(canBeNull = false, columnName = "id_perfil")
