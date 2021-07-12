@@ -204,7 +204,7 @@ public abstract class ReportBase {
 		return new Double(( 96 / 2.54 ) * pixel).intValue();
 	}
 
-	public void show(){
+	public boolean show(){
 		JasperReport report;
 		try {
 			logger.info("report dimention:  width: " + this.jasperDesign.getPageWidth() + " | height: " + this.jasperDesign.getPageHeight());
@@ -212,8 +212,10 @@ public abstract class ReportBase {
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, new HashMap(), getDataSource());
 			JasperViewer.viewReport(jasperPrint, false);
+			return true;
 		} catch (JRException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 }

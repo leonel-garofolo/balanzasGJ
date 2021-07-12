@@ -6,6 +6,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.design.JRDesignBand;
 import net.sf.jasperreports.engine.design.JRDesignSection;
+import net.sf.jasperreports.engine.design.JRDesignStaticText;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,7 +32,9 @@ public class RemitoReport extends ReportBase{
         JRDesignBand band = new JRDesignBand();
         band.setHeight((new Double(page.height - (page.height * 0.04))).intValue());        
         for (RemitoField f : fields) {
-            band.addElement(staticText(Unit.cm, Double.valueOf(f.getPosX().replaceAll(",", ".")), Double.valueOf(f.getPosY().replaceAll(",", ".")), parameter.containsKey(f.getDato())? String.valueOf(parameter.get(f.getDato())): ""));
+            JRDesignStaticText staticText = staticText(Unit.cm, Double.valueOf(f.getPosX().replaceAll(",", ".")), Double.valueOf(f.getPosY().replaceAll(",", ".")), parameter.containsKey(f.getDato())? String.valueOf(parameter.get(f.getDato())): "");
+            staticText.setWidth(150);
+            band.addElement(staticText);
 		}
         ((JRDesignSection) jasperDesign.getDetailSection()).addBand(band);
         jasperDesign.setPageHeader(null);

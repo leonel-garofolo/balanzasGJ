@@ -1,22 +1,14 @@
 package com.balanzasgj.app;
 
 
-import org.apache.log4j.Logger;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.CronTrigger;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
-import org.quartz.TriggerBuilder;
-import org.quartz.impl.StdSchedulerFactory;
-
 import com.balanzasgj.app.db.UpdateDB;
 import com.balanzasgj.app.model.GlobalParameter;
 import com.balanzasgj.app.quartz.SimpleJob;
 import com.balanzasgj.app.services.GlobalParameterService;
 import com.balanzasgj.app.utils.MiPrinterJob;
+import org.apache.log4j.Logger;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
 
 public class App {
 	final static Logger logger = Logger.getLogger(App.class);
@@ -61,6 +53,7 @@ public class App {
 		UpdateDB updateDb = new UpdateDB();
 		updateDb.run();
 		MiPrinterJob.preparedPrinter();
+
 		AppClient.iniciar();
 	}
 	

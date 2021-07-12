@@ -6,7 +6,5 @@ public interface MainActions {
 	
 	void showDashboard();
 	
-	void close();
-	
 	Stage getStage();
 }

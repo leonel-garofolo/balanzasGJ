@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import com.balanzasgj.app.persistence.impl.jdbc.commons.DataSourceProvider;
 
 @SuppressWarnings("rawtypes")
-public class UpdateDB {
+public class UpdateDB extends UtilDB{
 	
 	final static Logger logger = Logger.getLogger(UpdateDB.class);
 	private int currentVersion; // ultimo script corrido
@@ -99,25 +99,7 @@ public class UpdateDB {
 		}
 	}
 	
-	private void closeConnection(Connection conn) {
-		try {
-			conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
-	private void closeConnection(Connection conn, Statement st) {
-		if(st != null)
-			try {
-				st.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		closeConnection(conn);	
-	}
 
 	private void createTableVersion() {
 		Connection conn = null;
@@ -157,8 +139,6 @@ public class UpdateDB {
 			closeConnection(conn);
 		}
 	}
-
-	
 
 	private void insertQueryExecute(int version) {
 		Connection conn = null;

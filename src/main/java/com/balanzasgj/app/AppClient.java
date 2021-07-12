@@ -25,8 +25,6 @@ public class AppClient extends Application implements MainActions {
 	public void start(Stage primaryStage) throws Exception {	
 		Platform.setImplicitExit(true);
 		this.primaryStage = new Stage();
-		//primaryStage.setTitle(App.APP_NAME);
-		//primaryStage.setMaximized(true);		
 		showLogin();
 	}
 	
@@ -41,32 +39,23 @@ public class AppClient extends Application implements MainActions {
 	}
 
 	@Override
-	public void showDashboard() {			 
+	public void showDashboard() {
+		primaryStage.close();
 		DashboardView dashboardView = new DashboardView(this);
-		Screen screen = Screen.getPrimary();
-		Rectangle2D bounds = screen.getVisualBounds();
-
-		primaryStage.setX(bounds.getMinX());
-		primaryStage.setY(bounds.getMinY());
-		primaryStage.setWidth(bounds.getWidth());
-		primaryStage.setHeight(bounds.getHeight());
-		
-		primaryStage.centerOnScreen();
-		primaryStage.setTitle(App.APP_NAME);
-		//primaryStage.setMaximized(true);
-		primaryStage.resizableProperty().setValue(Boolean.FALSE);
+		primaryStage.setMaximized(true);
+		primaryStage.resizableProperty().setValue(Boolean.TRUE);
 		
 	    Scene scene = new Scene(dashboardView);
 		scene.getStylesheets().add(getClass().getClassLoader().getResource(App.STYLE_CSS).toExternalForm());	    
 		primaryStage.setScene(scene);   
-		primaryStage.show();		
-		primaryStage.setOnHiding(e-> close());		
+		primaryStage.show();
+		primaryStage.setOnCloseRequest(e->
+			close()
+		);
 	}
-	
-	@Override
+
 	public void close() {
 		System.exit(0);
-		
 	}
 
 	@Override
@@ -77,8 +66,10 @@ public class AppClient extends Application implements MainActions {
 	private void openLogin(String fxmlName, String title) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/" + fxmlName + ".fxml"));
-			Parent rootHerramientas = (Parent)loader.load();		
-			
+			Parent rootHerramientas = (Parent)loader.load();
+			primaryStage.close();
+
+			primaryStage.setMaximized(false);
 			primaryStage.setWidth(350);
 			primaryStage.setHeight(180);
 			primaryStage.centerOnScreen();
@@ -86,10 +77,10 @@ public class AppClient extends Application implements MainActions {
 			primaryStage.setTitle(title);
 		    Scene scene = new Scene(rootHerramientas);
 		    scene.getStylesheets().add(getClass().getClassLoader().getResource(App.STYLE_CSS).toExternalForm());
-		    primaryStage.setScene(scene); 
-		    primaryStage.setOnHiding(e-> {
-		    	close();
-		    });		
+		    primaryStage.setScene(scene);
+			primaryStage.setOnCloseRequest(e->
+				close()
+			);
 		    
 		    LoginController controller = (LoginController)loader.getController();			
 		    controller.setMainActions(this);

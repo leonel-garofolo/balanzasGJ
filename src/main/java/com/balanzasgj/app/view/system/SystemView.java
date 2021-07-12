@@ -1,11 +1,11 @@
 package com.balanzasgj.app.view.system;
 
+import com.balanzasgj.app.db.ProcessDB;
 import com.balanzasgj.app.db.UpdateDB;
 import com.balanzasgj.app.model.GlobalParameter;
 import com.balanzasgj.app.model.GlobalParameter.TYPE_TICKET;
 import com.balanzasgj.app.services.GlobalParameterService;
 import com.balanzasgj.app.utils.Message;
-import com.balanzasgj.app.utils.Utils;
 import com.balanzasgj.app.view.DashboardView;
 import com.balanzasgj.app.view.IView;
 import com.balanzasgj.app.view.MainActions;
@@ -112,14 +112,13 @@ public class SystemView extends VBox implements IView {
 		fields.add(new FormField(FormFieldType.NEW_ROW));
 		param = GlobalParameter.P_EMPRESA_BACKUP;
 		fields.add(new FormField(param, "Ubicación", FormFieldType.DIRECTORY, paramConfigurationService.get(param)));
-
 		FormField field =new FormField("btnBackupUbicacion", "Generar", FormFieldType.BUTTON, null);
 		field.setAction(event -> {
 			save();
 			final String pathBackup = paramConfigurationService.get(GlobalParameter.P_EMPRESA_BACKUP);
 			if (!pathBackup.isEmpty()) {
 				try {
-					Utils.generarBackup(pathBackup);
+					ProcessDB.generarBackup(pathBackup);
 					Message.info("Backup Finalizado.");
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -139,7 +138,7 @@ public class SystemView extends VBox implements IView {
 					UpdateDB db = new UpdateDB();
 					db.dropDatabase();
 					//Utils.restaurarBackup(txtPathRst.getText());
-					boolean result = Utils.restoreDB(pathRestore);
+					boolean result = ProcessDB.restoreDB(pathRestore);
 					logger.info("Corriendo actualizacion RUN: " + result);
 					//db.run();
 					Message.info("Restauración Finalizada. El sistema se cerrara al presionar OK.");
@@ -152,6 +151,20 @@ public class SystemView extends VBox implements IView {
 		});
 		fields.add(field);
 		fields.add(new FormField(FormFieldType.NEW_ROW));
+		FormField btnCleanDatabase = new FormField(null, "Limpiar DB", FormFieldType.BUTTON, null);
+		btnCleanDatabase.setAction(e->{
+			boolean choice = Message.optionYesNo("Quieres limpiar los datos de la base de datos?");
+			if(choice){
+				ProcessDB db = new ProcessDB();
+				boolean result = db.cleanDB();
+				if(result) {
+					formBuilder.getField(GlobalParameter.P_EMPRESA_TRANSACCION).setValue("0");
+					formBuilder.refresh();
+					Message.info("La base de datos se limpio correctamente!");
+				}
+			}
+		});
+		fields.add(btnCleanDatabase);
 		param = GlobalParameter.P_ACTIVAR_DEBUG;
 		fields.add(new FormField(param, "Activar Debug", FormFieldType.BOOLEAN, paramConfigurationService.get(param)));
 		
@@ -171,7 +184,7 @@ public class SystemView extends VBox implements IView {
 		param = GlobalParameter.P_EMPRESA_EMAIL;
 		fields.add(new FormField(param, "Email", FormFieldType.STRING, paramConfigurationService.get(param)));
 		
-		this.formBuilder = new FormBuilder("Configuraciones", fields);	
+		this.formBuilder = new FormBuilder("Configuraciones", fields);
 		getChildren().add(formBuilder.build());
 		
 		final HBox hbox = new HBox();
@@ -223,11 +236,12 @@ public class SystemView extends VBox implements IView {
 	private void save() {
 		String checkEntradaList ="";
 		String checkSalidaList ="";
-		for (FormField formField : fields) {			
+		List<FormField> fieldsValue = formBuilder.getFields();
+		for (FormField formField : fieldsValue) {
 			if(formField.getId() == null || (formField.getId() != null && formBuilder.getValue(formField.getId()) == null)) {
 				continue;
 			}
-			final Object value = formBuilder.getValue(formField.getId());
+			final Object value = formField.getValue();
 			
 			System.out.println(formField.getId() + " || " + value);			
 			if(formField.getId().contains(GlobalParameter.P_VALIDACION_ENTRADA) || formField.getId().contains(GlobalParameter.P_VALIDACION_SALIDA)) {

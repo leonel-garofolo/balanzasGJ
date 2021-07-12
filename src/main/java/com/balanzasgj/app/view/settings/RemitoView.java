@@ -45,7 +45,11 @@ public class RemitoView extends VBox {
 		this.setupPage = new ComboBoxAutoCompleteView<String>("Seleccione el formato de pagina");
 		setupPage.addItem(PAGE_FORMAT.A4.label);
 		setupPage.getItems().add(PAGE_FORMAT.A5.label);
-		screen.getChildren().add(setupPage);	
+		screen.getChildren().add(setupPage);
+
+		String valorPageSetup = globalParameterService.get(GlobalParameter.P_REMITO_PAGE_FORMAT);
+		if(!valorPageSetup.isEmpty())
+			setupPage.setValue(globalParameterService.get(GlobalParameter.P_REMITO_PAGE_FORMAT));
 		
 		
 		Label lbl = new Label("Indique en la tabla las posiciones vertical y horizontal de cada variable en centimetros:");
@@ -61,11 +65,18 @@ public class RemitoView extends VBox {
 		colFieldName.setText("Variable");
 		colFieldName.setCellValueFactory(new PropertyValueFactory<>("dato"));
 		
-		TableColumn<RemitoField, String> colFieldPosX = new TableColumn<RemitoField, String>();
+		TableColumn<RemitoField, String> colFieldPosX = new TableColumn();
 		colFieldPosX.setText("Posición X");
 		colFieldPosX.setCellFactory(TextFieldTableCell.forTableColumn());
+
 		colFieldPosX.setOnEditCommit(e ->{
-			e.getRowValue().setPosX(e.getNewValue());
+			String value = e.getNewValue();
+			try{
+				e.getRowValue().setPosX(Double.valueOf(value).toString());
+			}catch (NumberFormatException error){
+				Message.error("Solo valor numerico ( numeros 0 al 9 y '.' )");
+				tblRemito.refresh();
+			}
 		});				
 		colFieldPosX.setCellValueFactory(new PropertyValueFactory<>("posX"));
 		
@@ -73,8 +84,14 @@ public class RemitoView extends VBox {
 		colFieldPosY.setText("Posición Y");
 		colFieldPosY.setCellFactory(TextFieldTableCell.forTableColumn());
 		colFieldPosY.setOnEditCommit(e ->{
-			e.getRowValue().setPosY(e.getNewValue());
-		});	
+			String value = e.getNewValue();
+			try{
+				e.getRowValue().setPosY(Double.valueOf(value).toString());
+			}catch (NumberFormatException error){
+				Message.error("Solo valor numerico ( numeros 0 al 9 y '.' )");
+				tblRemito.refresh();
+			}
+		});
 		colFieldPosY.setCellValueFactory(new PropertyValueFactory<>("posY"));
 		tblRemito.getColumns().add(colFieldName);
 		tblRemito.getColumns().add(colFieldPosX);
@@ -88,7 +105,12 @@ public class RemitoView extends VBox {
 		hbox.setPadding(new Insets(5, 10, 5, 0));
 		
 		final Button btnPrimary = new Button("Guardar");
-		btnPrimary.setOnAction(v -> save());
+		btnPrimary.setOnAction(v -> {
+			if(save())
+				Message.info("Se ha guardado correctamente!");
+			else
+				Message.error("Seleccione el formato de Hoja");
+		});
 		btnPrimary.setId("btnPrimary");		
 		hbox.getChildren().add(btnPrimary);		
 		
@@ -121,11 +143,13 @@ public class RemitoView extends VBox {
 			
 			RemitoReport remito = new RemitoReport(RemitoReport.PAGE_FORMAT.A4, data, remitoFieldService.findAll());
 			try {
-				remito.buildReport();
+				remito.build();
+				boolean status = remito.show();
+				if(!status)
+					Message.error("Las posiciones ingresadas producen un desborde de hoja");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			remito.show();
 		}		
 	}
 		
@@ -138,10 +162,8 @@ public class RemitoView extends VBox {
 			for(RemitoField f: fieldsValid) {
 				remitoFieldService.save(f);				
 			}
-			Message.info("Se ha guardado correctamente!");
 			return true;
-		} else 
-			Message.error("Seleccione el formato de Hoja");
+		}
 		return false;
 	}
 	

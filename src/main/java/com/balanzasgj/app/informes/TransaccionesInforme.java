@@ -152,8 +152,8 @@ public class TransaccionesInforme  extends ReportBase{
         jasperDesign.setBottomMargin(margin);
     }
 
-    public void show(){
-
+    public boolean show(){
         JasperViewer.viewReport(this.jp, false);
+        return true;
     }
 }

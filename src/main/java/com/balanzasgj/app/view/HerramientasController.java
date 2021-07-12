@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
 
+import com.balanzasgj.app.db.ProcessDB;
 import org.apache.log4j.Logger;
 import org.javafx.controls.customs.StringField;
 
@@ -442,7 +443,7 @@ public class HerramientasController extends AnchorPane implements IView {
 				UpdateDB db = new UpdateDB();
 				db.dropDatabase();
 				//Utils.restaurarBackup(txtPathRst.getText());
-				boolean result = Utils.restoreDB(txtPathRst.getText());				
+				boolean result = ProcessDB.restoreDB(txtPathRst.getText());
 				logger.info("Corriendo actualizacion RUN: " + result);
 				//db.run();
 				Message.info("Restauración Finalizada. El sistema se cerrara al presionar OK.");	
@@ -458,7 +459,7 @@ public class HerramientasController extends AnchorPane implements IView {
 	private void handleGenerar(ActionEvent event) {
 		if (!txtPathBkp.getText().isEmpty()) {
 			try {
-				Utils.generarBackup(txtPathBkp.getText());
+				ProcessDB.generarBackup(txtPathBkp.getText());
 				Message.info("Backup Finalizado.");
 			} catch (IOException e) {
 				e.printStackTrace();

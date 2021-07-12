@@ -3,6 +3,8 @@ package com.balanzasgj.app.quartz;
 import java.io.IOException;
 import java.util.Date;
 
+import com.balanzasgj.app.db.ProcessDB;
+import com.balanzasgj.app.db.UtilDB;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -25,7 +27,7 @@ public class SimpleJob implements Job {
 		 String pg = dao.get(GlobalParameter.P_EMPRESA_BACKUP);		 
 		 if(!pg.isEmpty()) {
 			 try {
-				Utils.generarBackup(pg);
+				 ProcessDB.generarBackup(pg);
 				logger.info("BACKUP GENERADO Hora: " + new Date());
 			} catch (IOException e) {
 				logger.error(e);
