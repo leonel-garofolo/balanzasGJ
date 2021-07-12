@@ -70,7 +70,7 @@ public class SystemView extends VBox implements IView {
 		param = GlobalParameter.P_EMPRESA_TRANSACCION;
 		fields.add(new FormField(param, "Transacción", FormFieldType.NUMBER, paramConfigurationService.get(param)));
 		param = GlobalParameter.P_EMPRESA_ING_MANUAL;
-		fields.add(new FormField(param, "Clave Ingreso Manual", FormFieldType.NUMBER, paramConfigurationService.get(param)));		
+		fields.add(new FormField(param, "Clave Ingreso Manual", FormFieldType.PASSWORD, paramConfigurationService.get(param)));
 		param = GlobalParameter.P_NUM_BALANZAS;
 		fields.add(new FormField(param, "Número de Balanzas", FormFieldType.NUMBER, paramConfigurationService.get(param)));				
 		fields.add(new FormField(FormFieldType.NEW_ROW));
@@ -104,7 +104,7 @@ public class SystemView extends VBox implements IView {
 		param = GlobalParameter.P_USER_WINDOWS;
 		fields.add(new FormField(param, "Usuario de Windows", FormFieldType.STRING, paramConfigurationService.get(param)));
 		param = GlobalParameter.P_PASS_WINDOWS;
-		fields.add(new FormField(param, "Clave de Windows", FormFieldType.STRING, paramConfigurationService.get(param)));
+		fields.add(new FormField(param, "Clave de Windows", FormFieldType.PASSWORD, paramConfigurationService.get(param)));
 		
 		fields.add(new FormField(null, "Tramiento de Base de datos", FormFieldType.SUBTITLE1, null));
 		param = GlobalParameter.P_EMPRESA_AUTOMATICO;
@@ -241,7 +241,7 @@ public class SystemView extends VBox implements IView {
 			if(formField.getId() == null || (formField.getId() != null && formBuilder.getValue(formField.getId()) == null)) {
 				continue;
 			}
-			final Object value = formField.getValue();
+			final Object value = formBuilder.getValue(formField.getId());
 			
 			System.out.println(formField.getId() + " || " + value);			
 			if(formField.getId().contains(GlobalParameter.P_VALIDACION_ENTRADA) || formField.getId().contains(GlobalParameter.P_VALIDACION_SALIDA)) {

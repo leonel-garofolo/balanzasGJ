@@ -13,7 +13,7 @@ import org.quartz.impl.StdSchedulerFactory;
 public class App {
 	final static Logger logger = Logger.getLogger(App.class);
 	public static final String STYLE_CSS = "styles/main.css";
-	public static final String APP_NAME = "Sistemas de Balanzas v1.28";
+	public static final String APP_NAME = "Sistemas de Balanzas v1.30";
 	private GlobalParameterService globalParameterService;
 	
 	public static final String PATH_ICONO = "images/icono/fullserivices.jpg";
@@ -44,7 +44,7 @@ public class App {
 
 				sched.scheduleJob(job, trigger);
 				sched.start();
-			} catch (SchedulerException e) {
+			} catch (ArrayIndexOutOfBoundsException | SchedulerException e) {
 				logger.error(e);
 			}
 			

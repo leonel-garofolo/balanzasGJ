@@ -1,5 +1,6 @@
 package com.balanzasgj.app.view.settings;
 
+import com.balanzasgj.app.App;
 import com.balanzasgj.app.informes.RemitoReport;
 import com.balanzasgj.app.informes.ReportBase.PAGE_FORMAT;
 import com.balanzasgj.app.informes.model.RemitoFieldType;
@@ -15,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.apache.log4j.Logger;
 import org.javafx.controls.customs.view.ComboBoxAutoCompleteView;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RemitoView extends VBox {
+	final static Logger logger = Logger.getLogger(RemitoView.class);
 	private VBox screen;	
 	private ComboBoxAutoCompleteView<String> setupPage;
 	private TableView<RemitoField> tblRemito;

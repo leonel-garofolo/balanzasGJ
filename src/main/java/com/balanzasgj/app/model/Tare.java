@@ -105,7 +105,7 @@ public class Tare implements Serializable
     private BigDecimal pesoEntrada  ;
     @DatabaseField(canBeNull = true, columnName = "peso_salida")
     private BigDecimal pesoSalida   ;
-    @DatabaseField(canBeNull = true, columnName = "peso_neto")
+    @DatabaseField(persisted = false)
     private BigDecimal pesoNeto   ;
     @DatabaseField(canBeNull = true)
     private String     modoChasis ;

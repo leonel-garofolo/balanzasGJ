@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.balanzasGJ</groupId>
 	<artifactId>balanzasGJ</artifactId>
-	<version>v1.28</version>
+	<version>v1.30</version>
 	<properties>
 		<compileSource>1.8</compileSource>
 		<jdk>C:\Program Files\Java\jdk1.8.0_291\bin\javac.exe</jdk>
