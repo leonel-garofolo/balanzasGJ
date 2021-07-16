@@ -25,6 +25,7 @@ public class GlobalParameter implements Serializable
 	public static final String P_EMPRESA_TEL= "EMPRESA_TEL";
 	public static final String P_EMPRESA_EMAIL= "EMPRESA_EMAIL";
 	public static final String P_EMPRESA_NOMBRE_BAL= "EMPRESA_NOMBRE_BAL";
+	public static final String P_EMPRESA_DENOMINACION_BAL= "EMPRESA_DENOMINACION_BAL";
 	public static final String P_EMPRESA_DIR_BAL= "EMPRESA_DIR_BAL";
 	public static final String P_EMPRESA_LOC_BAL= "EMPRESA_LOC_BAL";
 	public static final String P_EMPRESA_PROV_BAL = "EMPRESA_PROV_BAL";

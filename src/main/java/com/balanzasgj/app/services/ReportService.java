@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -223,18 +224,23 @@ public class ReportService implements  Runnable {
     	}
     	
     	Map<String, Object> data = new HashMap();
-		data.put(RemitoFieldType.DENOMINACION.label, "<DENOMINACION>");
-		data.put(RemitoFieldType.DOMICILIO.label, paramConfigurationService.get(GlobalParameter.P_EMPRESA_DIR_BAL));
-		data.put(RemitoFieldType.LOCALIDAD.label, paramConfigurationService.get(GlobalParameter.P_EMPRESA_LOC_BAL));
-		data.put(RemitoFieldType.PROVINCIA.label, paramConfigurationService.get(GlobalParameter.P_EMPRESA_PROV_BAL));
-		data.put(RemitoFieldType.CUIT.label, tare.getCliente().getCuit());
-		data.put(RemitoFieldType.CONDUCTOR.label, tare.getConductor());
-		data.put(RemitoFieldType.ACOPLADO.label, tare.getPatenteAceptado());
-		data.put(RemitoFieldType.PESO_ENTRADA.label, tare.getPesoEntrada().toString());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        data.put(RemitoFieldType.FECHA.label, dateFormat.format(tare.getFechaEntrada()));
+		data.put(RemitoFieldType.DENOMINACION.label, (tare.getCliente() != null && tare.getCliente().getDenominacion() != null)? tare.getCliente().getDenominacion():"");
+		data.put(RemitoFieldType.DOMICILIO.label, (tare.getCliente() != null && tare.getCliente().getDireccion() != null)? tare.getCliente().getDireccion():"");
+		data.put(RemitoFieldType.LOCALIDAD.label, (tare.getCliente() != null && tare.getCliente().getLocalidad() != null)? tare.getCliente().getLocalidad():"");
+		data.put(RemitoFieldType.PROVINCIA.label, (tare.getCliente() != null && tare.getCliente().getProvincia() != null)? tare.getCliente().getProvincia():"");
+		data.put(RemitoFieldType.CUIT.label, (tare.getCliente() != null && tare.getCliente().getCuit() != null)? tare.getCliente().getCuit():"");
+		data.put(RemitoFieldType.CONDUCTOR.label, (tare.getConductor() != null)? tare.getConductor():"");
+        data.put(RemitoFieldType.CONDUCTOR_DNI.label, (tare.getNumDoc() != null)? tare.getNumDoc():"");
+        data.put(RemitoFieldType.CHASIS.label,  (tare.getPatente() != null && tare.getPatente().getCodigo() != null? tare.getPatente().getCodigo():""));
+		data.put(RemitoFieldType.ACOPLADO.label,  (tare.getPatenteAceptado() != null)? tare.getPatenteAceptado():"");
+        data.put(RemitoFieldType.TRANSPORTE.label,  (tare.getTransporte() != null && tare.getTransporte().getNombre() != null? tare.getTransporte().getNombre():""));
+		data.put(RemitoFieldType.PESO_ENTRADA.label,  tare.getPesoEntrada()!= null ? tare.getPesoEntrada().toString(): "");
 		if(tare.getPesoSalida() != null)
-		    data.put(RemitoFieldType.PESO_SALIDA.label, tare.getPesoSalida().toString());
+		    data.put(RemitoFieldType.PESO_SALIDA.label, tare.getPesoSalida() != null ? tare.getPesoSalida().toString(): "");
         if(tare.getPesoNeto() != null)
-		    data.put(RemitoFieldType.PESO_NETO.label, tare.getPesoNeto().toString());
+		    data.put(RemitoFieldType.PESO_NETO.label, tare.getPesoNeto()!= null ? tare.getPesoNeto().toString(): "");
     	RemitoReport remito = new RemitoReport(page, data, remitoFieldService.findAll());
 		try {
 			remito.build();

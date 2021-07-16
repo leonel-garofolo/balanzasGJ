@@ -14,6 +14,7 @@ public class UpdateDB extends UtilDB{
 	
 	final static Logger logger = Logger.getLogger(UpdateDB.class);
 	private int currentVersion; // ultimo script corrido
+	private int newVersion;
 	private String query;
 
 	public void run() {
@@ -24,7 +25,8 @@ public class UpdateDB extends UtilDB{
 			conn = DataSourceProvider.getConnection();
 			createTableVersion();
 			st = conn.createStatement();
-			if (currentVersion < 1) {
+			newVersion = 1;
+			if (currentVersion < newVersion) {
 				try {
 					query = "alter table ata ADD COLUMN nacionalidad VARCHAR(255)";
 					st.execute(query);	
@@ -46,15 +48,18 @@ public class UpdateDB extends UtilDB{
 					st.execute(query);
 				}catch (Exception e) {
 				}
-				insertQueryExecute(1);
+				insertQueryExecute(newVersion);
 			}
 
-			if (currentVersion < 2) {
+			newVersion = 2;
+			if (currentVersion < newVersion) {
 				query = "alter table taras add column nacionalidad varchar(255) NULL";
 				st.execute(query);
-				insertQueryExecute(2);
+				insertQueryExecute(newVersion);
 			}
-			if (currentVersion < 3) {
+
+			newVersion = 3;
+			if (currentVersion < newVersion) {
 				query = "CREATE TABLE `reports` ( " +
 						"  `id` int(11) NOT NULL AUTO_INCREMENT, " +
 						"  `tara_id` int(11) NOT NULL, " +
@@ -68,19 +73,25 @@ public class UpdateDB extends UtilDB{
 				st.execute(query);
 				query = "insert into parametros_globales(id, value) values('VALIDACION_SALIDA', '7,8,9,10')";
 				st.execute(query);
-				insertQueryExecute(3);
+				insertQueryExecute(newVersion);
 			}
-			if (currentVersion < 4) {
+
+			newVersion = 4;
+			if (currentVersion < newVersion) {
 				query = "alter table indicadores add column is_eje bit(1) NULL";
 				st.execute(query);
-				insertQueryExecute(4);
+				insertQueryExecute(newVersion);
 			}
-			if (currentVersion < 5) {
+
+			newVersion = 5;
+			if (currentVersion < newVersion) {
 				query = "alter table patentes add column nombre varchar(255) NULL";
 				st.execute(query);
-				insertQueryExecute(5);
+				insertQueryExecute(newVersion);
 			}
-			if (currentVersion < 6) {
+
+			newVersion = 6;
+			if (currentVersion < newVersion) {
 				query = "CREATE TABLE `remito_field` ( " +
 						"  `id` int(11) NOT NULL AUTO_INCREMENT, " +
 						"  `dato` varchar(100) NOT NULL, " +
@@ -89,8 +100,28 @@ public class UpdateDB extends UtilDB{
 						"  PRIMARY KEY (`id`) " +
 						") ENGINE=InnoDB DEFAULT CHARSET=utf8";
 				st.execute(query);
-				insertQueryExecute(6);
-			}					
+				insertQueryExecute(newVersion);
+			}
+
+			newVersion = 7;
+			if (currentVersion < newVersion) {
+				query = "alter table clientes add column direccion varchar(255) NULL";
+				st.execute(query);
+
+				query = "alter table clientes add column localidad varchar(255) NULL";
+				st.execute(query);
+				insertQueryExecute(newVersion);
+			}
+
+			newVersion = 8;
+			if (currentVersion < newVersion) {
+				query = "alter table clientes add column provincia varchar(255) NULL";
+				st.execute(query);
+
+				query = "alter table clientes add column denominacion varchar(255) NULL";
+				st.execute(query);
+				insertQueryExecute(newVersion);
+			}
 
 		} catch (Exception e) {
 			logger.error("update DDBB ERROR", e);

@@ -133,13 +133,17 @@ public class RemitoView extends VBox {
 	private void generarRemito() {
 		if(save()) {
 			Map<String, Object> data = new HashMap();
-			data.put(RemitoFieldType.DENOMINACION.label, "<DENOMINACION>");
-			data.put(RemitoFieldType.DOMICILIO.label, globalParameterService.get(GlobalParameter.P_EMPRESA_DIR_BAL));
-			data.put(RemitoFieldType.LOCALIDAD.label, globalParameterService.get(GlobalParameter.P_EMPRESA_LOC_BAL));
-			data.put(RemitoFieldType.PROVINCIA.label, globalParameterService.get(GlobalParameter.P_EMPRESA_PROV_BAL));
+			data.put(RemitoFieldType.FECHA.label, "<TARA_FECHA>");
+			data.put(RemitoFieldType.DENOMINACION.label, "<TARA_CLIENTE_DENOM>");
+			data.put(RemitoFieldType.DOMICILIO.label, "<TARA_CLIENTE_DIR>");
+			data.put(RemitoFieldType.LOCALIDAD.label,"<TARA_CLIENTE_LOC>");
+			data.put(RemitoFieldType.PROVINCIA.label, "<TARA_CLIENTE_PROV>");
 			data.put(RemitoFieldType.CUIT.label, "<TARA_CLIENTE_CUIT>");
 			data.put(RemitoFieldType.CONDUCTOR.label, "<TARA_CONDUCTOR>");
+			data.put(RemitoFieldType.CONDUCTOR_DNI.label, "<TARA_CONDUCTOR_DNI>");
+			data.put(RemitoFieldType.CHASIS.label, "<TARA_CHASIS>");
 			data.put(RemitoFieldType.ACOPLADO.label, "<TARA_ACOPLADO>");
+			data.put(RemitoFieldType.TRANSPORTE.label, "<TARA_TRANSPORTE>");
 			data.put(RemitoFieldType.PESO_ENTRADA.label, "<PESO_ENTRADA>");
 			data.put(RemitoFieldType.PESO_SALIDA.label, "<PESO_SALIDA>");
 			data.put(RemitoFieldType.PESO_NETO.label, "<PESO_NETO>");
@@ -162,7 +166,9 @@ public class RemitoView extends VBox {
 			globalParameterService.save(GlobalParameter.P_REMITO_PAGE_FORMAT, setupPage.getSelectionModel().getSelectedItem());
 			List<RemitoField> fields = tblRemito.getItems();
 			List<RemitoField> fieldsValid =fields.stream().filter(f -> validateNull(f)).collect(Collectors.toList());
+			remitoFieldService.deleteAll();
 			for(RemitoField f: fieldsValid) {
+				f.setId(null);
 				remitoFieldService.save(f);				
 			}
 			return true;
@@ -176,14 +182,18 @@ public class RemitoView extends VBox {
 
 	private List<RemitoField> buildItems(){
 		List<RemitoField> fields = remitoFieldService.findAll();
-		List<RemitoField> items = new ArrayList<>();		
+		List<RemitoField> items = new ArrayList<>();
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.FECHA.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.DENOMINACION.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.DOMICILIO.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.LOCALIDAD.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.PROVINCIA.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.CUIT.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.CONDUCTOR.label, "", "")));
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.CONDUCTOR_DNI.label, "", "")));
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.CHASIS.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.ACOPLADO.label, "", "")));
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.TRANSPORTE.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.PESO_ENTRADA.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.PESO_SALIDA.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.PESO_NETO.label, "", "")));

@@ -34,6 +34,18 @@ public class Client extends EntityLong implements Serializable
     @DatabaseField(canBeNull = true)
 	protected String cuit; // String
 
+    @DatabaseField(canBeNull = true)
+    protected String direccion; // String
+
+    @DatabaseField(canBeNull = true)
+    protected String localidad; // String
+
+    @DatabaseField(canBeNull = true)
+    protected String provincia; // String
+
+    @DatabaseField(canBeNull = true)
+    protected String denominacion; // String
+
 	public String getCuit() {
 		return cuit;
 	}
@@ -41,7 +53,39 @@ public class Client extends EntityLong implements Serializable
 	public void setCuit(String cuit) {
 		this.cuit = cuit;
 	}
-    
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public String getDenominacion() {
+        return denominacion;
+    }
+
+    public void setDenominacion(String denominacion) {
+        this.denominacion = denominacion;
+    }
+
     @Override
     public String toString() { 
         StringBuffer sb = new StringBuffer();       

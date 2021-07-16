@@ -54,6 +54,8 @@ public class SystemView extends VBox implements IView {
 		fields.add(new FormField(null, "Encabezado de Tickets", FormFieldType.SUBTITLE2, null));
 		param = GlobalParameter.P_EMPRESA_NOMBRE_BAL;
 		fields.add(new FormField(param, "Nombre", FormFieldType.STRING, paramConfigurationService.get(param), true));
+		param = GlobalParameter.P_EMPRESA_DENOMINACION_BAL;
+		fields.add(new FormField(param, "Denominación", FormFieldType.STRING, paramConfigurationService.get(param), true));
 		fields.add(new FormField(FormFieldType.NEW_ROW));
 		param = GlobalParameter.P_EMPRESA_DIR_BAL;
 		fields.add(new FormField(param, "Dirección", FormFieldType.STRING, paramConfigurationService.get(param)));

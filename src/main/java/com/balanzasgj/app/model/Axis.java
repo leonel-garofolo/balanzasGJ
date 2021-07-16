@@ -10,14 +10,14 @@ public class Axis implements Serializable {
 		
 	private static final long serialVersionUID = 1L;
 	
-	@DatabaseField(generatedId = true)
+	@DatabaseField(generatedId = true, columnName = "idEjes")
 	private Long idEje;
 	
 	@DatabaseField(canBeNull = false)
 	private Integer nroEje;
-	@DatabaseField(canBeNull = false)
+	@DatabaseField(canBeNull = false, columnName = "peso_entrada")
 	private Double pesoEntrada;
-	@DatabaseField(canBeNull = false)
+	@DatabaseField(canBeNull = false, columnName = "peso_salida")
 	private Double pesoSalida;	
 	@DatabaseField(canBeNull = false)
 	private Long idTaras;

@@ -147,11 +147,22 @@ public class ConfiguracionesController extends AnchorPane {
 	private Label lblAcum;
 
 	@FXML
+	private Label lblProvincia;
+
+	@FXML
+	private Label lblDenominacion;
+
+	@FXML
 	private TextField txtEntidadCuitAlias;
 	@FXML
 	private TextField txtEntidadUltMov;
 	@FXML
 	private TextField txtEntidadAcumulado;
+
+	@FXML
+	private TextField txtEntidadProvincia;
+	@FXML
+	private TextField txtEntidadDenominacion;
 
 	@FXML
 	private TextField txtCodAduana;
@@ -200,12 +211,36 @@ public class ConfiguracionesController extends AnchorPane {
 	@FXML
 	private void handleSelectedEntidades(ActionEvent event) {		
 		loadFormEntidades(this.cbxEntidades.getSelectionModel().getSelectedItem());
+		lblProvincia.setVisible(false);
+		txtEntidadProvincia.setVisible(false);
+		lblDenominacion.setVisible(false);
+		txtEntidadDenominacion.setVisible(false);
 		switch (this.cbxEntidades.getSelectionModel().getSelectedItem()) {
 		case PRODUCTOS:
 			lblCuitAlias.setText("Alias");
 			break;
 		case CLIENTE:
 			lblCuitAlias.setText("CUIT");
+			lblCuitAlias.setVisible(true);
+			txtEntidadCuitAlias.setVisible(true);
+
+			lblMov.setText("Dirección");
+			lblMov.setVisible(true);
+			txtEntidadUltMov.setDisable(false);
+			txtEntidadUltMov.setVisible(true);
+
+			lblAcum.setText("Localidad");
+			lblAcum.setVisible(true);
+			txtEntidadAcumulado.setDisable(false);
+			txtEntidadAcumulado.setVisible(true);
+
+			lblProvincia.setVisible(true);
+			txtEntidadProvincia.setDisable(false);
+			txtEntidadProvincia.setVisible(true);
+
+			lblDenominacion.setVisible(true);
+			txtEntidadDenominacion.setDisable(false);
+			txtEntidadDenominacion.setVisible(true);
 			break;
 
 		default:
@@ -276,7 +311,12 @@ public class ConfiguracionesController extends AnchorPane {
 				SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				switch (this.cbxEntidades.getSelectionModel().getSelectedItem()) {
 				case CLIENTE:
-					txtEntidadCuitAlias.setText(((Client)tblEntidades.getSelectionModel().getSelectedItem()).getCuit());
+					Client cli = (Client)tblEntidades.getSelectionModel().getSelectedItem();
+					txtEntidadCuitAlias.setText(cli.getCuit());
+					txtEntidadUltMov.setText(cli.getDireccion());
+					txtEntidadAcumulado.setText(cli.getLocalidad());
+					txtEntidadProvincia.setText(cli.getProvincia());
+					txtEntidadDenominacion.setText(cli.getDenominacion());
 					break;
 				case PRODUCTOS:
 					txtEntidadCuitAlias.setText(((Product)tblEntidades.getSelectionModel().getSelectedItem()).getAlias());
@@ -469,6 +509,21 @@ public class ConfiguracionesController extends AnchorPane {
 			lblCuitAlias.setVisible(true);
 			lblCuitAlias.setText("Cuit");
 			txtEntidadCuitAlias.setVisible(true);
+			txtEntidadCuitAlias.setDisable(false);
+			lblMov.setText("Dirección");
+			lblMov.setVisible(true);
+			txtEntidadUltMov.setDisable(false);
+			txtEntidadUltMov.setVisible(true);
+			lblAcum.setText("Localidad");
+			lblAcum.setVisible(true);
+			txtEntidadAcumulado.setDisable(false);
+			txtEntidadAcumulado.setVisible(true);
+			lblProvincia.setVisible(true);
+			txtEntidadProvincia.setVisible(true);
+			txtEntidadProvincia.setDisable(false);
+			lblDenominacion.setVisible(true);
+			txtEntidadDenominacion.setVisible(true);
+			txtEntidadDenominacion.setDisable(false);
 			break;
 		case PROCEDENCIAS:
 			tblEntidades.getItems().addAll(originService.findAll());
@@ -494,6 +549,10 @@ public class ConfiguracionesController extends AnchorPane {
 			tblEntidades.getItems().addAll(patentService.findAll());
 			setVisiblePatente(true);
 			colNombre.setText("Patentes");
+			lblProvincia.setVisible(false);
+			txtEntidadProvincia.setVisible(false);
+			lblDenominacion.setVisible(true);
+			txtEntidadDenominacion.setVisible(false);
 			break;
 		default:
 			break;
@@ -531,6 +590,10 @@ public class ConfiguracionesController extends AnchorPane {
 		txtEntidadUltMov.setVisible(isVisible);
 		txtEntidadAcumulado.setVisible(isVisible);
 		txtEntidadAcumulado.setDisable(true);
+		lblProvincia.setVisible(false);
+		txtEntidadProvincia.setVisible(false);
+		lblDenominacion.setVisible(true);
+		txtEntidadDenominacion.setVisible(false);
 
 	}
 
@@ -577,6 +640,8 @@ public class ConfiguracionesController extends AnchorPane {
 		txtEntidadCuitAlias.setText("");
 		txtEntidadUltMov.setText("");
 		txtEntidadAcumulado.setText("");
+		txtEntidadProvincia.setText("");
+		txtEntidadDenominacion.setText("");
 	}
 
 	private void cleanFormIndicadores() {
@@ -604,6 +669,10 @@ public class ConfiguracionesController extends AnchorPane {
 				}
 				cli.setNombre(nombre);
 				cli.setCuit(txtEntidadCuitAlias.getText());
+				cli.setDireccion(txtEntidadUltMov.getText());
+				cli.setLocalidad(txtEntidadAcumulado.getText());
+				cli.setProvincia(txtEntidadProvincia.getText());
+				cli.setDenominacion(txtEntidadDenominacion.getText());
 				clientService.save(cli);
 				this.loadFormEntidades(entidadType);
 				break;

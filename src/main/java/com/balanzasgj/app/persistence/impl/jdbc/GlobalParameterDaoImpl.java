@@ -28,9 +28,8 @@ public class GlobalParameterDaoImpl extends GenericJdbcDAO<GlobalParameter, Stri
 	@Override
 	public void save(GlobalParameter entity) {
 		try {
-			GlobalParameter find = queryForSameId(entity);
-			if(find == null)
-				create(entity);				
+			if(!idExists(entity.getId()))
+				create(entity);
 			else
 				update(entity);	
 		} catch (SQLException e) {

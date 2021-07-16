@@ -304,7 +304,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 					ejes.addAll(tblEjes.getItems());
 
 					for (int i = 0; i < ejes.size(); i++) {
-						if (ejes.get(i).getPesoSalida() == 0d) {
+						if (ejes.get(i).getPesoSalida() == null) {
 							ejes.get(i).setPesoSalida(Double.valueOf(txtNumberSerial.getText()));
 							break;
 						}
