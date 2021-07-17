@@ -4,6 +4,7 @@ import com.balanzasgj.app.model.Entity;
 import com.balanzasgj.app.services.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -12,7 +13,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.javafx.form.FormBuilder;
 import org.javafx.form.FormView;
+import org.javafx.form.model.FormField;
+import org.javafx.form.model.FormFieldType;
 import org.javafx.utils.JavaFxUtilities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CRUDEntityView extends FormView {
 
@@ -58,6 +64,7 @@ public class CRUDEntityView extends FormView {
     }
 
     private void initialize(){
+        this.hboxBottom.setVisible(false);
         divider= new HBox();
         tblEntidades = new TableView<>();
         colCodigo = new TableColumn<>();
@@ -92,7 +99,17 @@ public class CRUDEntityView extends FormView {
         tblEntidades.getColumns().add(colCodigo);
         tblEntidades.getColumns().add(colNombre);
         divider.getChildren().add(dividerLeft);
-        getChildren().add(divider);
+        divider.getChildren().add(buildFormEditClient());
+
+        screen.getChildren().add(divider);
+    }
+
+    private Node buildFormEditClient(){
+        List<FormField> fields = new ArrayList<>();
+        fields.add(new FormField("txtNombre", "Nombre", FormFieldType.STRING, null, true));
+        fields.add(new FormField("txtCuit", "Cuit", FormFieldType.STRING, null, true));
+        final FormBuilder builder = new FormBuilder("", fields);
+        return builder.build();
     }
 
 
