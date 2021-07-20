@@ -49,57 +49,32 @@ public class MainCenterView extends VBox {
 		final Button tara = new Button("Tomar Pesajes");	
 		tara.setContentDisplay(ContentDisplay.TOP);
 		tara.setGraphic(new ImageView(new Image("images/baseline_compare_arrows_black_48dp.png")));
-		tara.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent event) {
-				actions.showCenter(PANEL.TARA);				
-			}
-		});
+		tara.setOnAction(event -> actions.showCenter(PANEL.TARA));
 		
 		final Button settings = new Button("Configuraciones");
 		settings.setContentDisplay(ContentDisplay.TOP);
 		settings.setGraphic(new ImageView(new Image("images/baseline_settings_black_48dp.png")));
-		settings.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent event) {
-				actions.showCenter(PANEL.SETTINGS);				
-			}
-		});
+		settings.setOnAction(event -> actions.showCenter(PANEL.SETTINGS));
 		
 		final Button report = new Button("Informes");
 		report.setContentDisplay(ContentDisplay.TOP);
 		report.setGraphic(new ImageView(new Image("images/baseline_insert_chart_outlined_black_48dp.png")));
-		report.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent event) {
-				actions.showCenter(PANEL.REPORT);				
-			}
-		});
+		report.setOnAction(event -> actions.showCenter(PANEL.REPORT));
 		
 		final Button systems = new Button("Sistema");
 		systems.setContentDisplay(ContentDisplay.TOP);
 		systems.setGraphic(new ImageView(new Image("images/baseline_security_black_48dp.png")));
-		systems.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent event) {
-				actions.showCenter(PANEL.SYSTEMS);				
-			}
-		});
+		systems.setOnAction(event -> actions.showCenter(PANEL.SYSTEMS));
 		
 		final Button closeSession = new Button("Cerrar Sesión");
 		closeSession.setContentDisplay(ContentDisplay.TOP);
 		closeSession.setGraphic(new ImageView(new Image("images/baseline_vpn_key_black_48dp.png")));
-		closeSession.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent event) {
-				actions.showCenter(PANEL.CLOSE_SESSION);				
-			}
-		});
+		closeSession.setOnAction(event -> actions.showCenter(PANEL.CLOSE_SESSION));
+
+		final Button close = new Button("Salir");
+		close.setContentDisplay(ContentDisplay.TOP);
+		close.setGraphic(new ImageView(new Image("images/baseline_exit_to_app_black_48dp.png")));
+		close.setOnAction(event -> actions.showCenter(PANEL.CLOSE));
 		
 		
 		buttons.setSpacing(30);		
@@ -109,6 +84,7 @@ public class MainCenterView extends VBox {
 		buttons.getChildren().add(report);
 		buttons.getChildren().add(systems);
 		buttons.getChildren().add(closeSession);
+		buttons.getChildren().add(close);
 				
 		final VBox showCompanyData = new VBox();
 		showCompanyData.setAlignment(Pos.BOTTOM_CENTER);

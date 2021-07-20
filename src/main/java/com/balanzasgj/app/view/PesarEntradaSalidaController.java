@@ -7,6 +7,7 @@ import com.balanzasgj.app.services.*;
 import com.balanzasgj.app.utils.Message;
 import com.balanzasgj.app.view.columns.*;
 import com.balanzasgj.app.view.custom.AduanaDialog;
+import com.balanzasgj.app.view.dashboard.DashboardActions;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import javafx.application.Platform;
@@ -17,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
@@ -24,6 +26,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.javafx.controls.customs.ComboBoxAutoComplete;
 
@@ -37,12 +40,13 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class PesarEntradaSalidaController extends AnchorPane
-		implements Initializable, SerialPortDataListener, EventHandler<KeyEvent> {
+		implements Initializable, SerialPortDataListener, EventHandler<KeyEvent>, IHome {
 	final static Logger logger = Logger.getLogger(PesarEntradaSalidaController.class);
 
 	private static final String STYLE_BOLD_LABEL = "-fx-font-weight:bold;";
 	private static final String STYLE_NOMAL_LABEL = "-fx-font-weight:normal;";
 
+	private DashboardActions actions;
 	@FXML
 	private HBox layout1;
 
@@ -347,6 +351,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 		cbxIndicador.setDisable(false);
 		if (cbxIndicador.getItems().size() > 0) {
 			cbxIndicador.setValue(cbxIndicador.getItems().get(0));
+			handleIndicador();
 		}
 	}
 
@@ -1403,20 +1408,23 @@ public class PesarEntradaSalidaController extends AnchorPane
 						2000);
 				if (conect) {
 					socket.addEventSocket(this);
-					/*
-					stage.setTitle(
-							"Tomar Pesajes: Indicador Conectado -> " + indicadorConfig.getNombre() + " | Puerto: COM"
-									+ indicadorConfig.getPuerto() + " | Velocidad: " + indicadorConfig.getVelocidad());
-					*/
+					this.actions.setTitle(
+							"Tara: Indicador Conectado -> " + indicadorConfig.getNombre() + " | Puerto: COM"
+									+ indicadorConfig.getPuerto() + " | Velocidad: " + indicadorConfig.getVelocidad() +
+									" | Bit de datos: " + indicadorConfig.getBitsDeDatos() +
+									" | Paridad: " + indicadorConfig.getParidad() +
+									" | Bit de Parada: " + indicadorConfig.getBitsDeParada() +
+									" | Control: " + indicadorConfig.getControlDeFlujo()
+					);
 				} else {
-					//stage.setTitle("Tomar Pesajes: ERROR DE CONEXION CON EL INDICADOR ");
+					this.actions.setTitle("Tomar Pesajes: ERROR DE CONEXION CON EL INDICADOR ");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				//stage.setTitle("Tomar Pesajes: ERROR DE CONEXION CON EL INDICADOR ");
+				this.actions.setTitle("Tomar Pesajes: ERROR DE CONEXION CON EL INDICADOR ");
 			}
 		} else {
-			//stage.setTitle("Tomar Pesajes: INDICADOR NO SELECCIONADO ");
+			this.actions.setTitle("Tomar Pesajes: INDICADOR NO SELECCIONADO ");
 		}
 	}
 
@@ -2020,5 +2028,10 @@ public class PesarEntradaSalidaController extends AnchorPane
 			//}
 		}
 		
+	}
+
+	@Override
+	public void setDashboard(DashboardActions actions) {
+		this.actions = actions;
 	}
 }

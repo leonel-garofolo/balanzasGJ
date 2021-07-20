@@ -263,7 +263,8 @@ public class ConfiguracionesController extends AnchorPane {
 			txtIndicadorInfo.setText("");
 		} else {
 			Indicator indicador = cbxIndicador.getSelectionModel().getSelectedItem();
-			String text = "CONFIGURACION INDICADOR DE PESO N° 2 \n";
+			String text = "CONFIGURACION INDICADOR DE PESO N° " + cbxNroIndicador.getValue() + " \n";
+			text += "Nombre: " + indicador.getNombre() + "\n";
 			text += "Puerto: " + indicador.getPuerto() + "\n";
 			text += "Velocidad: " + indicador.getVelocidad() + "\n";
 			text += "Bits de Datos: " + indicador.getBitsDeDatos() + "\n";

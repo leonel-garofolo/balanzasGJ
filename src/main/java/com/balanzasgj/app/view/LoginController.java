@@ -108,6 +108,7 @@ public class LoginController implements Initializable, IView, EventHandler<Windo
 
 	@Override
 	public void setMainActions(MainActions mainActions) {
-		this.mainActions = mainActions;	
+		this.mainActions = mainActions;
+		txtUsuario.requestFocus();
 	}
 }

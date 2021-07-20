@@ -16,9 +16,6 @@ import java.util.Date;
 public class Patent extends EntityString implements Serializable
 {
     private static final long serialVersionUID = 1L;
-
-    @DatabaseField()
-	protected String     nombre       ;
     
     @DatabaseField(canBeNull = true)
     private Double tara ;  // Double

@@ -1,6 +1,7 @@
 package com.balanzasgj.app.persistence.impl.jdbc;
 
 import java.sql.SQLException;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 
@@ -18,11 +19,18 @@ public class PatentDaoImpl extends GenericJdbcDAO<Patent, String> implements Pat
 	@Override
 	public void save(Patent entity) {
 		try {
-			Patent find = queryForSameId(entity);
-			if(find == null)
-				create(entity);
-			else
+			if(entity.getNombre() == null)
+				entity.setNombre(entity.getCodigo());
+			if(entity.getUpdate() == null)
+				entity.setUpdate(new Date());
+
+			if(entity.getTara() == null)
+				entity.setTara(0.0);
+
+			if(idExists(entity.getCodigo()))
 				update(entity);
+			else
+				create(entity);
 		} catch (SQLException e) {
 			logger.error(e);
 		}		

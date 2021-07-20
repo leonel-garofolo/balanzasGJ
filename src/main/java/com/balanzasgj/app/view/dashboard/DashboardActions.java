@@ -11,4 +11,6 @@ public interface DashboardActions {
 	void showSuccess(String msj);
 	
 	void showError(String msj);
+
+	void setTitle(String title);
 }

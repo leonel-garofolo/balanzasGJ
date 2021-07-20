@@ -2,6 +2,8 @@ package com.balanzasgj.app.view;
 
 import java.io.IOException;
 
+import javafx.event.EventHandler;
+import javafx.stage.WindowEvent;
 import org.apache.log4j.Logger;
 
 import com.balanzasgj.app.App;
@@ -34,11 +36,13 @@ public class DashboardView extends BorderPane implements DashboardActions {
 	private GlobalParameterService paramConfigurationService;
 	private HBox msjSuccess;
 	private HBox msjError;
+	private Label lblTitle;
 
 	public static enum PANEL {
-		MAIN, TARA, SETTINGS, REPORT, SYSTEMS, CLOSE_SESSION
+		MAIN, TARA, SETTINGS, REPORT, SYSTEMS, CLOSE_SESSION, CLOSE
 	};
 
+	private FXMLLoader loader;
 	private Stage stage;
 	private final MainActions mainActions;
 
@@ -86,6 +90,9 @@ public class DashboardView extends BorderPane implements DashboardActions {
 		case CLOSE_SESSION:
 			mainActions.showLogin();
 			break;
+		case CLOSE:
+			System.exit(0);
+			break;
 		default:
 			break;
 		}
@@ -102,7 +109,7 @@ public class DashboardView extends BorderPane implements DashboardActions {
 	private VBox getPanel(String fxmlName, String title) {
 		final VBox screen = new VBox();
 		screen.setPadding(new Insets(5, 25, 5, 25));
-		final Label lblTitle = new Label();
+		lblTitle = new Label();
 		lblTitle.setId("lblTitle");
 		
 		HBox header = new HBox();
@@ -111,30 +118,25 @@ public class DashboardView extends BorderPane implements DashboardActions {
 		
 		
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/" + fxmlName + ".fxml"));
+			loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/" + fxmlName + ".fxml"));
 			Parent rootHerramientas = (Parent) loader.load();
-			Stage stage = new Stage();
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.resizableProperty().setValue(Boolean.FALSE);
-			stage.setTitle(title);
+			Stage stagePane = new Stage();
+			stagePane.initModality(Modality.APPLICATION_MODAL);
+			stagePane.resizableProperty().setValue(Boolean.FALSE);
+			stagePane.setTitle(title);
 			
-			
-			addStackPane(header, stage);
+			addStackPane(header, stagePane);
 			screen.getChildren().add(header);
 
 			if (loader.getController() instanceof PesarEntradaSalidaController) {
 				Scene scene = new Scene(rootHerramientas);
 				scene.getStylesheets().add(getClass().getClassLoader().getResource(App.STYLE_CSS).toExternalForm());
-				stage.setScene(scene);
+				stagePane.setScene(scene);
 
 				PesarEntradaSalidaController controller = (PesarEntradaSalidaController) loader.getController();
-				stage.setOnCloseRequest(E -> {
-					controller.closeSocket();
-				});
-				//controller.setStage(stage);
+				((IHome)controller).setDashboard(this);
 			}
 			screen.getChildren().add(rootHerramientas);
-			//this.stage = stage;
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.error(e.getCause());
@@ -144,7 +146,7 @@ public class DashboardView extends BorderPane implements DashboardActions {
 		return screen;
 	}
 
-	private void addStackPane(HBox hb, Stage stage) {
+	private void addStackPane(HBox hb, Stage stagePane) {
 		StackPane stack = new StackPane();
 		Rectangle helpIcon = new Rectangle(30.0, 25.0);
 		helpIcon.setArcHeight(3.5);
@@ -153,7 +155,11 @@ public class DashboardView extends BorderPane implements DashboardActions {
 		Button close = new Button("X");
 		StackPane.setMargin(close, new Insets(0, 10, 0, 0)); // Center "?"
 		close.setOnAction(e -> {
-			stage.close();
+			if (loader.getController() instanceof PesarEntradaSalidaController){
+				PesarEntradaSalidaController controller = (PesarEntradaSalidaController) loader.getController();
+				controller.closeSocket();
+			}
+			stagePane.close();
 			showMain();
 		});
 		// helpText.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
@@ -191,5 +197,10 @@ public class DashboardView extends BorderPane implements DashboardActions {
 	public void showError(String msj) {
 		msjError.getChildren().add(new Label(msj));
 		setBottom(msjError);
+	}
+
+	@Override
+	public void setTitle(String title) {
+		this.lblTitle.setText(title);
 	}
 }

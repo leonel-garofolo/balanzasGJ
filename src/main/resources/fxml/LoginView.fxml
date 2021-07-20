@@ -33,7 +33,7 @@
                   <Insets left="15.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="txtUsuario" focusTraversable="false" GridPane.columnIndex="1" />
+            <TextField fx:id="txtUsuario" focusTraversable="true" GridPane.columnIndex="1" />
             <PasswordField fx:id="txtClave" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <ImageView fitHeight="33.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <image>

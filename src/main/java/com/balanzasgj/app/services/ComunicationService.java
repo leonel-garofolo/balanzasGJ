@@ -49,8 +49,7 @@ public class ComunicationService {
 		try {
 			comunicationDao.deleteById(id);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e);
 		}	
 	}
 }

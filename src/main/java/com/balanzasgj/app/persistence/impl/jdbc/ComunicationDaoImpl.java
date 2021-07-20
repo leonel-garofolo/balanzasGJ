@@ -18,10 +18,10 @@ public class ComunicationDaoImpl extends GenericJdbcDAO<Comunication, Long> impl
 	@Override
 	public Long save(Comunication entity) {
 		try {
-			if(entity.getIdcomunicaciones() == null)
-				create(entity);
+			if(idExists(entity.getIdcomunicaciones().longValue()))
+				update(entity);
 			else
-				update(entity);	
+				create(entity);
 		} catch (SQLException e) {
 			logger.error(e);
 		}

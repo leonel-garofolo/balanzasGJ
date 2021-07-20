@@ -2,6 +2,8 @@ package com.balanzasgj.app;
 
 import java.io.IOException;
 
+import javafx.stage.Modality;
+import javafx.stage.StageStyle;
 import org.apache.log4j.Logger;
 
 import com.balanzasgj.app.view.DashboardView;
@@ -43,9 +45,8 @@ public class AppClient extends Application implements MainActions {
 		primaryStage.close();
 		DashboardView dashboardView = new DashboardView(this);
 		primaryStage.setMaximized(true);
-		primaryStage.resizableProperty().setValue(Boolean.TRUE);
-		
-	    Scene scene = new Scene(dashboardView);
+
+		Scene scene = new Scene(dashboardView);
 		scene.getStylesheets().add(getClass().getClassLoader().getResource(App.STYLE_CSS).toExternalForm());	    
 		primaryStage.setScene(scene);   
 		primaryStage.show();
