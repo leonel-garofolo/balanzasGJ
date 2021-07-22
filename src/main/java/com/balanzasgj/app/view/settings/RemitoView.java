@@ -144,6 +144,7 @@ public class RemitoView extends VBox {
 			data.put(RemitoFieldType.CHASIS.label, "<TARA_CHASIS>");
 			data.put(RemitoFieldType.ACOPLADO.label, "<TARA_ACOPLADO>");
 			data.put(RemitoFieldType.TRANSPORTE.label, "<TARA_TRANSPORTE>");
+			data.put(RemitoFieldType.PRODUCTO.label, "<TARA_PRODUCTO>");
 			data.put(RemitoFieldType.PESO_ENTRADA.label, "<PESO_ENTRADA>");
 			data.put(RemitoFieldType.PESO_SALIDA.label, "<PESO_SALIDA>");
 			data.put(RemitoFieldType.PESO_NETO.label, "<PESO_NETO>");
@@ -194,6 +195,7 @@ public class RemitoView extends VBox {
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.CHASIS.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.ACOPLADO.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.TRANSPORTE.label, "", "")));
+		items.add(findPositions(fields, new RemitoField(RemitoFieldType.PRODUCTO.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.PESO_ENTRADA.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.PESO_SALIDA.label, "", "")));
 		items.add(findPositions(fields, new RemitoField(RemitoFieldType.PESO_NETO.label, "", "")));

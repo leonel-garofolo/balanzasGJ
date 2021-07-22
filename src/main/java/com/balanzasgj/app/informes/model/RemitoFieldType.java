@@ -11,6 +11,7 @@ public enum RemitoFieldType {
 	CHASIS("Chasis"),
 	ACOPLADO("Acoplado"),
 	TRANSPORTE("Transporte"),
+	PRODUCTO("Producto"),
 	PESO_ENTRADA("Peso Entrada"),
 	PESO_SALIDA("Peso Salida"),
 	PESO_NETO("Peso Neto"),	

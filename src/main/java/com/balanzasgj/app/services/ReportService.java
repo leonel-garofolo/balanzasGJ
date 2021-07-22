@@ -236,6 +236,7 @@ public class ReportService implements  Runnable {
         data.put(RemitoFieldType.CHASIS.label,  (tare.getPatente() != null && tare.getPatente().getCodigo() != null? tare.getPatente().getCodigo():""));
 		data.put(RemitoFieldType.ACOPLADO.label,  (tare.getPatenteAceptado() != null)? tare.getPatenteAceptado():"");
         data.put(RemitoFieldType.TRANSPORTE.label,  (tare.getTransporte() != null && tare.getTransporte().getNombre() != null? tare.getTransporte().getNombre():""));
+        data.put(RemitoFieldType.PRODUCTO.label,  (tare.getProducto() != null && tare.getProducto().getNombre() != null? tare.getProducto().getNombre():""));
 		data.put(RemitoFieldType.PESO_ENTRADA.label,  tare.getPesoEntrada()!= null ? tare.getPesoEntrada().toString(): "");
 		if(tare.getPesoSalida() != null)
 		    data.put(RemitoFieldType.PESO_SALIDA.label, tare.getPesoSalida() != null ? tare.getPesoSalida().toString(): "");

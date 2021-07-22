@@ -13,7 +13,7 @@ import org.quartz.impl.StdSchedulerFactory;
 public class App {
 	final static Logger logger = Logger.getLogger(App.class);
 	public static final String STYLE_CSS = "styles/main.css";
-	public static final String APP_NAME = "Sistemas de Balanzas v1.31";
+	public static final String APP_NAME = "Sistemas de Balanzas v1.32";
 	private GlobalParameterService globalParameterService;
 	
 	public static final String PATH_ICONO = "images/icono/fullserivices.jpg";
