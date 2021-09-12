@@ -386,7 +386,9 @@ public class PesarEntradaSalidaController extends AnchorPane
 			if(ticketFormat.equals(GlobalParameter.TYPE_TICKET.REMITO.label)) {
 				reportService.remito(taraEdit.getIdtaras().longValue());
 			}else
-				reportService.ticket(modalidad, taraEdit.getIdtaras().longValue());						
+				reportService.ticket(modalidad, taraEdit.getIdtaras().longValue());		
+			
+			reportService.exportCsv("sistema_balanzas_taras.csv");
 		}
 	}
 
@@ -431,123 +433,11 @@ public class PesarEntradaSalidaController extends AnchorPane
 			}
 		} else {
 			if (validateForm()) {
-				if (statusTara == 'S' || statusTara == 'E') {					
+				if (statusTara == 'S' || statusTara == 'E') {	
 					boolean isEje = cbxModoChasis.getSelectionModel().getSelectedItem().equals(Tare.TIPO.C_POR_EJE.label);
 					boolean isConTara = cbxModoTara.getSelectionModel().getSelectedItem().equals(Tare.ACTION.T_CON_TARA.label);
-					Tare tara = new Tare();
-					if (idTaraEdit >= 0) {
-						tara = tareService.findById(idTaraEdit);
-					}
-					tara.setTransaccion(txtTransaccion.getText());
-					try {
-						if (statusTara == 'E') {
-							tara.setFechaEntrada(format.parse(txtFecha.getText()));
-						} else {							
-							if(cbxModoTara.getSelectionModel().getSelectedItem().equals(Tare.ACTION.T_CON_TARA.label)) {
-								tara.setFechaEntrada(format.parse(txtFecha.getText()));
-							}
-							tara.setFechaSalida(format.parse(txtFecha.getText()));
-						}
-
-					} catch (ParseException e) {
-						System.out.println("error de formato");
-					}
+					Tare tara = setEntities(isEje, isConTara);
 					
-					if (cbxProducto.isVisible() && cbxProducto.getValue() != null) {
-						tara.setProducto(cbxProducto.getValue());
-					}
-					if (cbxCliente.isVisible() && cbxCliente.getValue() != null) {
-						tara.setCliente(cbxCliente.getValue());
-					}
-					if (cbxTransporte.isVisible() && cbxTransporte.getValue() != null) {
-						tara.setTransporte(cbxTransporte.getValue());
-					}
-					if (cbxProcedencia.isVisible() && cbxProcedencia.getValue() != null) {
-						tara.setProcedencias(cbxProcedencia.getValue());
-					}					
-					if (cbxImpExp.isVisible() && cbxImpExp.getValue() != null) {
-						tara.setImpExp(cbxImpExp.getValue());
-					}
-					if (cbxATA.isVisible() && cbxATA.getValue() != null) {
-						tara.setAta(cbxATA.getValue());
-					}
-					if (txtContenedor.isVisible() && txtContenedor.getText() != null) {
-						tara.setContenedor(txtContenedor.getText());
-					}
-					if (txtTaraContenedor.isVisible() && txtTaraContenedor.getText() != null) {
-						tara.setContenedorNum(txtTaraContenedor.getText());
-					}
-					if (txtManifiesto.isVisible() && txtManifiesto.getText() != null) {
-						tara.setManifiesto(txtManifiesto.getText());
-					}					
-
-					if (txtDestinatario.isVisible() && txtDestinatario.getText() != null) {
-						tara.setDestino(txtDestinatario.getText());
-					}
-
-					if (txtMercaderia.isVisible() && txtMercaderia.getText() != null) {
-						tara.setMercaderia(txtMercaderia.getText());
-					}
-
-					if (txtObservacionesAduana.isVisible() && txtObservacionesAduana.getText() != null) {
-						tara.setObservacionAduana(txtObservacionesAduana.getText());
-					}
-
-					Patent p = new Patent();
-					p.setCodigo(txtPatente.getText());
-					tara.setPatente(p);
-					tara.setNumDoc(txtNumDoc.getText());
-					tara.setConductor(txtConductor.getText());
-					tara.setComprobanteNun1(txtFactura.getText());
-					tara.setObservacion(txtObservaciones.getText());
-					tara.setModoTara(cbxModoTara.getSelectionModel().getSelectedItem());
-					tara.setModalidad(cbxModalidad.getSelectionModel().getSelectedItem());
-					tara.setModoChasis(cbxModoChasis.getSelectionModel().getSelectedItem());
-					tara.setPatenteAceptado(txtPatenteChasis.getText());
-					tara.setNacionalidad(txtNacionalidad.getText());
-					//if (indicadorConfig != null && !stage.getTitle().contains("ERROR")) {
-					if (indicadorConfig != null) {
-						tara.setBalanza(indicadorConfig.getNombre());
-					} else {
-						tara.setBalanza("ING. MANUAL");
-					}
-
-					double totalPesaje = 0d;
-					if (isEje) {
-						int count = tblEjes.getItems().size();
-						for (int i = 0; i < count; i++) {
-							if (statusTara == 'E') {
-								totalPesaje += tblEjes.getItems().get(i).getPesoEntrada();
-							}
-							if (statusTara == 'S') {
-								totalPesaje += tblEjes.getItems().get(i).getPesoSalida();
-							}
-						}
-					}
-
-					double totalPeso = 0d;
-					if (isEje) {
-						totalPeso = totalPesaje;
-					} else {
-						totalPeso = Double.valueOf(txtNumberSerial.getText());
-					}					
-					if (statusTara == 'S') {
-						if(cbxModoTara.getSelectionModel().getSelectedItem().equals(Tare.ACTION.T_CON_TARA.label)) {
-							tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
-						}						
-						
-						txtSalida.setText(String.valueOf(totalPeso));
-						tara.setPesoSalida(new BigDecimal(txtSalida.getText()));
-						calcularNeto();
-					} else if (statusTara == 'E') {
-						txtEntrada.setText(String.valueOf(totalPeso));
-						tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
-
-						if (cbxModalidad.getSelectionModel().getSelectedItem().equals(Tare.MODO.M_PUBLICA.label)) {
-							tara.setPesoSalida(new BigDecimal(0));
-							tara.setPesoNeto(new BigDecimal(0));
-						}
-					}
 					// comprobar si existe una patente con pesaje de salida pendiente
 					boolean existPending = tareService.checkPending(tara.getPatente().getCodigo());
 					if (tara.getIdtaras() == null && existPending) {
@@ -577,6 +467,125 @@ public class PesarEntradaSalidaController extends AnchorPane
 				Message.error("Por favor, ingrese los campos requeridos.");
 			}
 		}
+	}
+	
+	private Tare setEntities(boolean isEje, boolean isConTara) {
+		
+		Tare tara = new Tare();
+		if (idTaraEdit >= 0) {
+			tara = tareService.findById(idTaraEdit);
+		}
+		tara.setTransaccion(txtTransaccion.getText());
+		try {
+			if (statusTara == 'E') {
+				tara.setFechaEntrada(format.parse(txtFecha.getText()));
+			} else {							
+				if(cbxModoTara.getSelectionModel().getSelectedItem().equals(Tare.ACTION.T_CON_TARA.label)) {
+					tara.setFechaEntrada(format.parse(txtFecha.getText()));
+				}
+				tara.setFechaSalida(format.parse(txtFecha.getText()));
+			}
+
+		} catch (ParseException e) {
+			System.out.println("error de formato");
+		}
+		
+		if (cbxProducto.isVisible() && cbxProducto.getValue() != null) {
+			tara.setProducto(cbxProducto.getValue());
+		}
+		if (cbxCliente.isVisible() && cbxCliente.getValue() != null) {
+			tara.setCliente(cbxCliente.getValue());
+		}
+		if (cbxTransporte.isVisible() && cbxTransporte.getValue() != null) {
+			tara.setTransporte(cbxTransporte.getValue());
+		}
+		if (cbxProcedencia.isVisible() && cbxProcedencia.getValue() != null) {
+			tara.setProcedencias(cbxProcedencia.getValue());
+		}					
+		if (cbxImpExp.isVisible() && cbxImpExp.getValue() != null) {
+			tara.setImpExp(cbxImpExp.getValue());
+		}
+		if (cbxATA.isVisible() && cbxATA.getValue() != null) {
+			tara.setAta(cbxATA.getValue());
+		}
+		if (txtContenedor.isVisible() && txtContenedor.getText() != null) {
+			tara.setContenedor(txtContenedor.getText());
+		}
+		if (txtTaraContenedor.isVisible() && txtTaraContenedor.getText() != null) {
+			tara.setContenedorNum(txtTaraContenedor.getText());
+		}
+		if (txtManifiesto.isVisible() && txtManifiesto.getText() != null) {
+			tara.setManifiesto(txtManifiesto.getText());
+		}					
+
+		if (txtDestinatario.isVisible() && txtDestinatario.getText() != null) {
+			tara.setDestino(txtDestinatario.getText());
+		}
+
+		if (txtMercaderia.isVisible() && txtMercaderia.getText() != null) {
+			tara.setMercaderia(txtMercaderia.getText());
+		}
+
+		if (txtObservacionesAduana.isVisible() && txtObservacionesAduana.getText() != null) {
+			tara.setObservacionAduana(txtObservacionesAduana.getText());
+		}
+
+		Patent p = new Patent();
+		p.setCodigo(txtPatente.getText());
+		tara.setPatente(p);
+		tara.setNumDoc(txtNumDoc.getText());
+		tara.setConductor(txtConductor.getText());
+		tara.setComprobanteNun1(txtFactura.getText());
+		tara.setObservacion(txtObservaciones.getText());
+		tara.setModoTara(cbxModoTara.getSelectionModel().getSelectedItem());
+		tara.setModalidad(cbxModalidad.getSelectionModel().getSelectedItem());
+		tara.setModoChasis(cbxModoChasis.getSelectionModel().getSelectedItem());
+		tara.setPatenteAceptado(txtPatenteChasis.getText());
+		tara.setNacionalidad(txtNacionalidad.getText());
+		//if (indicadorConfig != null && !stage.getTitle().contains("ERROR")) {
+		if (indicadorConfig != null) {
+			tara.setBalanza(indicadorConfig.getNombre());
+		} else {
+			tara.setBalanza("ING. MANUAL");
+		}
+
+		double totalPesaje = 0d;
+		if (isEje) {
+			int count = tblEjes.getItems().size();
+			for (int i = 0; i < count; i++) {
+				if (statusTara == 'E') {
+					totalPesaje += tblEjes.getItems().get(i).getPesoEntrada();
+				}
+				if (statusTara == 'S') {
+					totalPesaje += tblEjes.getItems().get(i).getPesoSalida();
+				}
+			}
+		}
+
+		double totalPeso = 0d;
+		if (isEje) {
+			totalPeso = totalPesaje;
+		} else {
+			totalPeso = Double.valueOf(txtNumberSerial.getText());
+		}					
+		if (statusTara == 'S') {
+			if(cbxModoTara.getSelectionModel().getSelectedItem().equals(Tare.ACTION.T_CON_TARA.label)) {
+				tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
+			}						
+			
+			txtSalida.setText(String.valueOf(totalPeso));
+			tara.setPesoSalida(new BigDecimal(txtSalida.getText()));
+			calcularNeto();
+		} else if (statusTara == 'E') {
+			txtEntrada.setText(String.valueOf(totalPeso));
+			tara.setPesoEntrada(new BigDecimal(txtEntrada.getText()));
+
+			if (cbxModalidad.getSelectionModel().getSelectedItem().equals(Tare.MODO.M_PUBLICA.label)) {
+				tara.setPesoSalida(new BigDecimal(0));
+				tara.setPesoNeto(new BigDecimal(0));
+			}
+		}
+		return tara;
 	}
 
 	private boolean saveTareProcess(Tare tara, boolean isEje){

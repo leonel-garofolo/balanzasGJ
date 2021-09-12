@@ -40,7 +40,7 @@ public abstract class GenerateCsv {
         BufferedWriter writer = null;
         try {
             CSVFormat format = CSVFormat.DEFAULT.withHeader(headers);
-            writer = Files.newBufferedWriter(Paths.get(this.path + this.nameFile));
+            writer = Files.newBufferedWriter(Paths.get(this.path + "\\" + this.nameFile));
             this.csvPrinter = new CSVPrinter(writer, format);
         } catch (IOException e) {
             e.printStackTrace();

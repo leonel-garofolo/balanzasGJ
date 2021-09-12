@@ -60,39 +60,38 @@ public class ReportService implements  Runnable {
     }
     
     public void exportCsv(String fileName){
-        params = new HashMap<>();
-        params.put("fileName", fileName);
-        runReport(REPORT.EXPORT_CSV, new HashMap<>());
+    	this.params = new HashMap<>();
+    	this.params.put("fileName", fileName);
+        runReport(REPORT.EXPORT_CSV);
     }
 
     public void ticket(String modalidad, long idTaras){
-        final HashMap<String, Object> params = new HashMap<>();
-        params.put("idtaras", idTaras);
-        params.put("modalidad", modalidad);
-        runReport(REPORT.TICKET, params);
+        this.params = new HashMap<>();
+        this.params.put("idtaras", idTaras);
+        this.params.put("modalidad", modalidad);
+        runReport(REPORT.TICKET);
     }
     
     public void remito(long idTaras) {
-    	params = new HashMap<>();
-        params.put("idtaras", idTaras);
-        runReport(REPORT.REMITO, params);
+    	this.params = new HashMap<>();
+    	this.params.put("idtaras", idTaras);
+        runReport(REPORT.REMITO);
     }
 
     public void tare(ObservableList<Tare> items) {
-        params = new HashMap<>();
-        params.put("tares", items);
-        runReport(REPORT.TARE, params);
+    	this.params = new HashMap<>();
+    	this.params.put("tares", items);
+        runReport(REPORT.TARE);
     }
 
     public void tareDetalle(ObservableList<Tare> items) {
-        params = new HashMap<>();
-        params.put("tares", items);
-        runReport(REPORT.TARE_DETALLE, params);
+    	this.params = new HashMap<>();
+    	this.params.put("tares", items);
+        runReport(REPORT.TARE_DETALLE);
     }
 
-    private  void runReport(REPORT mode, HashMap<String, Object> params){
-    	this.modeReport = mode;
-    	this.params = params;
+    private  void runReport(REPORT mode){
+    	this.modeReport = mode;    	
         Thread t = new Thread(this);
         t.run();
     }
@@ -121,7 +120,7 @@ public class ReportService implements  Runnable {
 
     private void buildExportCsv(){
         final String path = paramConfigurationService.get(GlobalParameter.P_CSV_EXPORT_PATH);
-        if(!path.isEmpty())
+        if(path.isEmpty())
             return;
         final String userWin = paramConfigurationService.get(GlobalParameter.P_USER_WINDOWS);
         final String passWind = paramConfigurationService.get(GlobalParameter.P_PASS_WINDOWS);

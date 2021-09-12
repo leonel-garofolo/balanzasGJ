@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Sistema de Pesaje"
-#define MyAppVersion "1.31"
+#define MyAppVersion "1.32"
 #define MyAppPublisher "LG, Inc."
 #define MyAppURL "http://www.example.com/"
 #define MyAppExeName "SistemaDePesaje.exe"
@@ -28,6 +28,7 @@ Compression=lzma
 SolidCompression=yes
 DisableDirPage=yes
 PrivilegesRequired=admin
+ArchitecturesAllowed=x86 x64
 
 
 [Languages]
