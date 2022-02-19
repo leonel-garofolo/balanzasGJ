@@ -5,7 +5,7 @@
 Instalar las siguientes herramientas:
 1. Eclipse
 2. Gestor de librerias, [Maven](https://maven.apache.org/)
-3. [Git](https://git-scm.com/downloads)
+3. [Git](https://git-scm.com/downloads) y para gestionar GIT [Source Tree](https://www.sourcetreeapp.com/)
 4. Instalar base de datos Mysql o instalar [Docker Desktop](https://www.docker.com/products/docker-desktop) y ejecutar en la raiz del proyecto **docker-compose up**
 5. Herramienta de Gestion de base de datos [DBeaver](https://dbeaver.io/)
 6. [iReport](https://community.jaspersoft.com/project/ireport-designer), para ver los reportes (*.jrxml) 
