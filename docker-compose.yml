@@ -1,10 +1,18 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
 version: '3'
+volumes:
+  data-volume: {}
+
+# Define services
 services:
   mysql:
     image: mysql:5.5.62
     restart: always
+    volumes:
+      - data-volume:/var/lib/mysql
+      - ./db/bk_inicial.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - 3306:3306    
+      - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: sist_pesada
+      MYSQL_ROOT_PASSWORD: 1234

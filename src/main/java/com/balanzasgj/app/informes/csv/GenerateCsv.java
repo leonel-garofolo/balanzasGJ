@@ -1,13 +1,13 @@
 package com.balanzasgj.app.informes.csv;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
 public abstract class GenerateCsv {
     private boolean showHeader;
@@ -40,7 +40,8 @@ public abstract class GenerateCsv {
         BufferedWriter writer = null;
         try {
             CSVFormat format = CSVFormat.DEFAULT.withHeader(headers);
-            writer = Files.newBufferedWriter(Paths.get(this.path + "\\" + this.nameFile));
+            writer = Files.newBufferedWriter(Paths.get(this.path + "\\" + this.nameFile));            
+            
             this.csvPrinter = new CSVPrinter(writer, format);
         } catch (IOException e) {
             e.printStackTrace();

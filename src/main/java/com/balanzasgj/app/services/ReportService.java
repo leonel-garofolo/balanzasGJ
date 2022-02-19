@@ -1,23 +1,6 @@
 package com.balanzasgj.app.services;
 
-import com.balanzasgj.app.informes.*;
-import com.balanzasgj.app.informes.ReportBase.PAGE_FORMAT;
-import com.balanzasgj.app.informes.csv.ExportTaraCsv;
-import com.balanzasgj.app.informes.model.RemitoFieldType;
-import com.balanzasgj.app.model.GlobalParameter;
-import com.balanzasgj.app.model.Report;
-import com.balanzasgj.app.model.Tare;
-import com.balanzasgj.app.model.User;
-import com.balanzasgj.app.persistence.ReportDao;
-import com.balanzasgj.app.persistence.impl.jdbc.ReportDaoImpl;
-import com.balanzasgj.app.utils.ShowJasper;
-import javafx.collections.ObservableList;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.apache.log4j.Logger;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Image;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.Blob;
@@ -27,6 +10,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
+
+import org.apache.log4j.Logger;
+
+import com.balanzasgj.app.informes.RemitoReport;
+import com.balanzasgj.app.informes.ReportBase;
+import com.balanzasgj.app.informes.ReportBase.PAGE_FORMAT;
+import com.balanzasgj.app.informes.Ticket;
+import com.balanzasgj.app.informes.TicketAduana;
+import com.balanzasgj.app.informes.TicketPrinter;
+import com.balanzasgj.app.informes.TransaccionesInforme;
+import com.balanzasgj.app.informes.csv.ExportTaraCsv;
+import com.balanzasgj.app.informes.model.RemitoFieldType;
+import com.balanzasgj.app.model.GlobalParameter;
+import com.balanzasgj.app.model.Report;
+import com.balanzasgj.app.model.Tare;
+import com.balanzasgj.app.model.User;
+import com.balanzasgj.app.persistence.ReportDao;
+import com.balanzasgj.app.persistence.impl.jdbc.ReportDaoImpl;
+import com.balanzasgj.app.utils.ShowJasper;
+
+import javafx.collections.ObservableList;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public class ReportService implements  Runnable {
     final static Logger logger = Logger.getLogger(ReportService.class);
@@ -120,12 +128,12 @@ public class ReportService implements  Runnable {
 
     private void buildExportCsv(){
         final String path = paramConfigurationService.get(GlobalParameter.P_CSV_EXPORT_PATH);
-        if(path.isEmpty())
+    	if(path.isEmpty())
             return;
         final String userWin = paramConfigurationService.get(GlobalParameter.P_USER_WINDOWS);
         final String passWind = paramConfigurationService.get(GlobalParameter.P_PASS_WINDOWS);
         final String fileName = (String) params.get("fileName");
-        List<Tare> tarasList = this.tareService.findAll();
+        List<Tare> tarasList = this.tareService.findAll();                
         final ExportTaraCsv exportTaraCsv = ExportTaraCsv
                 .newBuild()
                 .setTaras(tarasList)

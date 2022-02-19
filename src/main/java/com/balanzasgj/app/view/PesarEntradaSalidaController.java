@@ -2016,7 +2016,7 @@ public class PesarEntradaSalidaController extends AnchorPane
 								if (!sBufferConnection.isEmpty()
 										&& !txtNumberSerial.getText().trim().equals(sBufferConnection.trim())) {
 									try {
-										Double.valueOf(sBufferConnection);
+										Double.valueOf(sBufferConnection);										
 										txtNumberSerial.setText(sBufferConnection);
 									} catch (NumberFormatException e) {
 										logger.error("ERROR DE CONVERSION. ", e);

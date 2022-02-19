@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.balanzasGJ</groupId>
 	<artifactId>balanzasGJ</artifactId>
-	<version>v1.32</version>
+	<version>v1.33</version>
 	<properties>
 		<compileSource>1.8</compileSource>
 		<jdk>C:\Program Files\Java\jdk1.8.0_291\bin\javac.exe</jdk>
@@ -150,24 +150,24 @@
 
 	<dependencies>
 		<dependency>
-		    <groupId>com.fazecast</groupId>
-		    <artifactId>jSerialComm</artifactId>
-		    <version>2.6.2</version>
+			<groupId>com.fazecast</groupId>
+			<artifactId>jSerialComm</artifactId>
+			<version>2.6.2</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.code.gson</groupId>
-		    <artifactId>gson</artifactId>
-		    <version>2.8.5</version>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.5</version>
 		</dependency>
-		
+
 		<!-- ORM -->
 		<dependency>
-            <groupId>com.j256.ormlite</groupId>
-            <artifactId>ormlite-jdbc</artifactId>
-            <version>5.6</version>
-        </dependency>
-		
-	
+			<groupId>com.j256.ormlite</groupId>
+			<artifactId>ormlite-jdbc</artifactId>
+			<version>5.6</version>
+		</dependency>
+
+
 		<!-- quartz -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
@@ -228,7 +228,7 @@
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
-		</dependency>
+		</dependency>		
 
 		<!-- logs -->
 		<dependency>
