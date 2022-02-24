@@ -1,7 +1,6 @@
 package com.balanzasgj.app.db;
 
 import com.balanzasgj.app.persistence.impl.jdbc.commons.DataSourceProvider;
-import com.ibm.icu.text.SimpleDateFormat;
 import org.apache.log4j.Logger;
 
 import java.io.FileOutputStream;
@@ -10,6 +9,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ProcessDB extends UtilDB{

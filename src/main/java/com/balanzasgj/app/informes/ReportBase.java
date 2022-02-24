@@ -4,16 +4,12 @@ import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
 import ar.com.fdvs.dj.core.layout.LayoutManager;
 import ar.com.fdvs.dj.domain.DynamicReport;
-import com.balanzasgj.app.services.RemitoFieldService;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.*;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.view.JasperViewer;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;

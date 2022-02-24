@@ -1,8 +1,8 @@
 package com.balanzasgj.app.utils;
 
-import com.ibm.icu.text.SimpleDateFormat;
 import org.apache.log4j.Logger;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;

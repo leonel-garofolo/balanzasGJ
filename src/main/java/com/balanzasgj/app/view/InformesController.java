@@ -1,6 +1,5 @@
 package com.balanzasgj.app.view;
 
-import com.balanzasgj.app.informes.TransaccionesInforme;
 import com.balanzasgj.app.model.*;
 import com.balanzasgj.app.services.*;
 import com.balanzasgj.app.services.TareService.ReportFilter;
@@ -8,31 +7,20 @@ import com.balanzasgj.app.utils.Message;
 import com.balanzasgj.app.utils.ShowJasper;
 import com.balanzasgj.app.utils.Utils;
 import com.balanzasgj.app.view.columns.*;
-import com.ibm.icu.util.Calendar;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.javafx.controls.customs.ComboBoxAutoComplete;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 
 
