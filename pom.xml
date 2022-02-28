@@ -200,20 +200,9 @@
 				<exclusion>
 					 <groupId>com.lowagie</groupId>
     				 <artifactId>itext</artifactId>
-				</exclusion>
+				</exclusion>				
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.jasperreports</groupId>
-			<artifactId>jasperreports</artifactId>
-			<version>6.4.1</version>
-			<exclusions>
-				<exclusion>
-					 <groupId>com.lowagie</groupId>
-    				 <artifactId>itext</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+		</dependency>		
 		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
